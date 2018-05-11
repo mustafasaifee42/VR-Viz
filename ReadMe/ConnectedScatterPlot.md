@@ -1,18 +1,6 @@
 ## ConnectedScatterPlot Component
 
-#### React Component
-```
-<ConnectedScatterPlot 
-  data = {d.data}
-  style = {d.style}
-  mark = {d.mark}
-  x = {d.x}
-  y = {d.y}
-  z = {d.z}
-/>
-```
-
-#### Parameter required in graph variable
+#### Parameter required in `graph` variable
 ```
 {
   'type': 'ConnectedScatterPlot',
@@ -140,4 +128,16 @@
     },
   }
 }
+```
+
+#### React Component
+```
+<ConnectedScatterPlot 
+  data = {d.data}
+  style = {d.style}
+  mark = {d.mark}
+  x = {d.x}
+  y = {d.y}
+  z = {d.z}
+/>
 ```
