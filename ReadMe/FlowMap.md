@@ -1,5 +1,7 @@
 ## FlowMap Component
 
+![FlowMap](../imgs/FlowMap.png)
+
 #### Parameter required in `graph` variable
 ```
 {

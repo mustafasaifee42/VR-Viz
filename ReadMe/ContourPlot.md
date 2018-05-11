@@ -1,5 +1,7 @@
 ## ContourPlot Component
 
+![ContourPlot](../imgs/ContourPlot.png)
+
 #### Parameter required in `graph` variable
 ```
 {

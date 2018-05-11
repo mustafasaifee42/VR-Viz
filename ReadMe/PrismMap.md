@@ -1,5 +1,7 @@
 ## PrismMap Component
 
+![PrismMap](../imgs/PrismMap.png)
+
 #### Parameter required in `graph` variable
 ```
 {

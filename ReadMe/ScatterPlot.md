@@ -1,5 +1,7 @@
 ## ScatterPlot Component
 
+![ScatterPlot](../imgs/ScatterPlot.png)
+
 #### Parameter required in `graph` variable
 ```
 {

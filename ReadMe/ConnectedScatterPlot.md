@@ -1,5 +1,7 @@
 ## ConnectedScatterPlot Component
 
+![ConnectedScatterPlot](../imgs/ConnectedScatterPlot.png)
+
 #### Parameter required in `graph` variable
 ```
 {
@@ -35,7 +37,6 @@
       },
     },
     'line':{
-      'opacity': 0.4,
       'style': {
         'opacity': 0.4,
         'color': {

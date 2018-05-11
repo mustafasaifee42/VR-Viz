@@ -1,5 +1,7 @@
 ## Bargraph Component
 
+![Bargraph](../imgs/BarGraph.png)
+
 #### Parameter required in `graph` variable
 ```
 {

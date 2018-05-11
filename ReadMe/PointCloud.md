@@ -1,5 +1,7 @@
 ## PointCloud Component
 
+![PointCloud](../imgs/PointCloud.png)
+
 #### Parameter required in `graph` variable
 ```
 {

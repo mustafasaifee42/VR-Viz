@@ -1,5 +1,7 @@
 ## ForceDirectedGraph Component
 
+![ForceDirectedGraph](../imgs/ForceDirectedGraph.png)
+
 #### Parameter required in `graph` variable
 ```
 {

@@ -1,5 +1,7 @@
 ## ContourMap Component
 
+![ContourMap](../imgs/ContourMap.png)
+
 #### Parameter required in `graph` variable
 ```
 {

@@ -1,5 +1,7 @@
 ## SurfacePlot Component
 
+![SurfacePlot](../imgs/SurfacePlot.png)
+
 #### Parameter required in `graph` variable
 ```
 {

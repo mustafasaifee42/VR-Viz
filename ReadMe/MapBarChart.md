@@ -1,5 +1,7 @@
 ## MapBarChart Component
 
+![MapBarChart](../imgs/MapBarChart.png)
+
 #### Parameter required in `graph` variable
 ```
 {
