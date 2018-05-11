@@ -2,6 +2,8 @@
 
 ![ConnectedScatterPlot](../imgs/ConnectedScatterPlot.png)
 
+#### [Example](../examples/ConnectedScatterPlot.js)
+
 #### Parameter required in `graph` variable
 ```
 {
