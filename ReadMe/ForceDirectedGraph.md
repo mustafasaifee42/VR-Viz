@@ -57,9 +57,9 @@
     },
   },
 }
+```
 
 #### React Component
-
 ```
 <ForceDirectedGraph 
   data = {d.data}
