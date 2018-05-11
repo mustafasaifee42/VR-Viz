@@ -2,20 +2,13 @@
 
 A-Frame based React component for data visualization in VR and AR.
 
-This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+VR-Viz provides a higher-level react components for data visualization in webVR. VR-Viz is a collection of reusable visualization React components. VR-Viz combines A-Frame with React (for DOM manipulation) and D3 (for data visualizations) to generate visualization in VR. 
 
-### Installation
+### Goal
+The goal is to create a library of reusable React components that can be used to make reusable charts, visualizations, or dashboards in VR or custom visualization or data stories in VR. 
 
-This project uses yarn. Install it as described here [https://yarnpkg.com/lang/en/](https://yarnpkg.com/lang/en/) if you haven't already.
-
-To install this project, simply clone the repo and run yarn
-
-### Local Development
-In the project directory, you can run:
-```
-yarn start
-```
-Runs the app in the development mode.
+### How?
+Under the hood, VR-Viz uses D3 for the data manipulation and generating layouts for certain visualization types and React for DOM manipulation and to add A-Frame entities and geometry to the 3D scene.
 
 ### Supported Visualization
 * [3D Bar Graph](/ReadMe/BarGraph.md)
@@ -35,3 +28,18 @@ Runs the app in the development mode.
 * Waterfall Plot
 * Interactivity
 * Animation
+
+### Installation
+
+This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+
+This project uses yarn. Install it as described here [https://yarnpkg.com/lang/en/](https://yarnpkg.com/lang/en/) if you haven't already.
+
+To install this project, simply clone the repo and run yarn
+
+### Local Development
+In the project directory, you can run:
+```
+yarn start
+```
+Runs the app in the development mode.
