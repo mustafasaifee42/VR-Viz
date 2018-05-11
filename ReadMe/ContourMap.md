@@ -1,16 +1,6 @@
 ## ContourMap Component
 
-#### React Component
-```
-<ContourMap 
-  data = {d.data}
-  style = {d.style}
-  mark = {d.mark}
-  heightThreshold = {heightThreshold}
-/>
-```
-
-#### Parameter required in graph variable
+#### Parameter required in `graph` variable
 ```
 {
   'type': 'ContourMap',
@@ -36,4 +26,14 @@
   },
   'heightThreshold':100,
 }
+```
+
+#### React Component
+```
+<ContourMap 
+  data = {d.data}
+  style = {d.style}
+  mark = {d.mark}
+  heightThreshold = {heightThreshold}
+/>
 ```
