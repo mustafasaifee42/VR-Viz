@@ -35,10 +35,98 @@ Under the hood, VR-Viz uses D3 for the data manipulation and generating layouts 
 * Interactivity
 * Animation
 
-### Start using VR-Viz - Setting Up the Visualization Scene
+### Start using VR-Viz 
+#### Setting Up the Visualization Scene
+Successful setup of a visualization scene requires 2 steps:
+1. Setting the 3D environment
+2. Setting up the graph 
 
+##### Setting the 3D environment
+The environment in VR is composed of four main elements:
+* Skybox or sky
+* Floor or ground (not mandatory)
+* Camera and camera position
+* Lights
 
-##### Installation
+Scene is setup in the `scene` parameter of the `visualization` component. To learn the parameters required to setup a scene [click here](/ReadMe/Scene.md).
+
+##### Setting up the graph 
+Once the scene is created, one or multiple graphs can be placed in that scene. Graphs are defined in the `graph` parameter of the `visualization` component. All the graphs components that can be used and the paramteres required to plot them can be [seen here](/ReadMe).
+
+Example of the visualization component:
+```
+<Visualization
+  scene = {
+    {
+      'sky': {
+        'style': {
+          'color': '#ccc',
+          'texture':false,
+        }
+      },
+      'lights': [
+        {
+          'type': 'directional',
+          'color': '#fff',
+          'position': '0 1 1',
+          'intensity': 1,
+          "decay": 1,
+        },
+        {
+          'type': 'ambient',
+          'color': '#fff',
+          'intensity': 1,
+          "decay": 1,
+        }
+      ],
+      'camera': {
+        'position': '0 0 10',
+        'rotation': '0 0 0',
+      },
+      'floor': {
+        'style': {
+          'color': '#ccc',
+          'texture':false,
+          'width': 10,
+          'height': 10,
+        }
+      }
+    }
+  }
+  graph={
+    [
+      {
+        'type': 'ContourMap',
+        'data': {
+          'dataFile': "data/contourMapData.csv",
+          'fileType': 'text',
+        },
+        'style': {
+          'origin': [0, 0, 0],
+        },
+        'mark': {
+          'style': {
+            'opacity': 0.4,
+            'color': {
+              'scale': true,
+              'fill': ['green', 'blue'],
+            },
+            'scale':{
+              'ground':0.1,
+              'height':0.1,
+            }
+          },
+        },
+        'heightThreshold':100,
+      }
+    ]
+  }
+/>
+```
+
+As can be seen in the example above the `graph` parameter is an array and multiple different kind of graph objects can be used in th same scene by changing the position.
+
+#### Installation
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
@@ -46,7 +134,7 @@ This project uses yarn. Install it as described here [https://yarnpkg.com/lang/e
 
 To install this project, simply clone the repo and run yarn
 
-##### Local Development
+#### Local Development
 In the project directory, you can run:
 ```
 yarn start
