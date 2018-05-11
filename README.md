@@ -1,6 +1,6 @@
 # VR-Viz
 
-#### [VR-Viz](/imgs/vr-viz.png)
+![VR-Viz](/imgs/vr-viz.png)
 
 A-Frame based React component for data visualization in VR and AR.
 
