@@ -1,18 +1,6 @@
 ## ScatterPlot Component
 
-#### React Component
-```
-<ScatterPlot 
-  data = {d.data}
-  style = {d.style}
-  mark = {d.mark}
-  x = {d.x}
-  y = {d.y}
-  z = {d.z}
-/>
-```
-
-#### Parameter required in graph variable
+#### Parameter required in `graph` variable
 ```
 {
   'type': 'ScatterPlot',
@@ -165,4 +153,16 @@
     },
   }
 }
+```
+
+#### React Component
+```
+<ScatterPlot 
+  data = {d.data}
+  style = {d.style}
+  mark = {d.mark}
+  x = {d.x}
+  y = {d.y}
+  z = {d.z}
+/>
 ```
