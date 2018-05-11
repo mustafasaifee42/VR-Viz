@@ -2,6 +2,8 @@
 
 ![PointCloud](../imgs/PointCloud.png)
 
+#### [Example](../examples/PointCloud.js)
+
 #### Parameter required in `graph` variable
 ```
 {

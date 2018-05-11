@@ -2,6 +2,8 @@
 
 ![ForceDirectedGraph](../imgs/ForceDirectedGraph.png)
 
+#### [Example](../examples/ForceDirectedGraph.js)
+
 #### Parameter required in `graph` variable
 ```
 {

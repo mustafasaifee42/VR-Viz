@@ -2,6 +2,8 @@
 
 ![SurfacePlot](../imgs/SurfacePlot.png)
 
+#### [Example](../examples/SurfacePlot.js)
+
 #### Parameter required in `graph` variable
 ```
 {

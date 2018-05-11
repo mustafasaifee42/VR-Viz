@@ -2,6 +2,8 @@
 
 ![MapBarChart](../imgs/MapBarChart.png)
 
+#### [Example](../examples/MapBarChart.js)
+
 #### Parameter required in `graph` variable
 ```
 {

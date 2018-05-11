@@ -2,6 +2,8 @@
 
 ![FlowMap](../imgs/FlowMap.png)
 
+#### [Example](../examples/FlowMap.js)
+
 #### Parameter required in `graph` variable
 ```
 {

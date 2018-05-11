@@ -2,6 +2,8 @@
 
 ![PrismMap](../imgs/PrismMap.png)
 
+#### [Example](../examples/PrismMap.js)
+
 #### Parameter required in `graph` variable
 ```
 {

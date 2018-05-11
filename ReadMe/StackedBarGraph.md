@@ -2,6 +2,8 @@
 
 ![StackedBargraph](../imgs/StackedBarchart.png)
 
+#### [Example](../examples/StackedBarchart.js)
+
 #### Parameter required in `graph` variable
 ```
 {

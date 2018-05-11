@@ -2,6 +2,8 @@
 
 ![ContourPlot](../imgs/ContourPlot.png)
 
+#### [Example](../examples/ContourPlot.js)
+
 #### Parameter required in `graph` variable
 ```
 {

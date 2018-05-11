@@ -2,6 +2,8 @@
 
 ![ScatterPlot](../imgs/ScatterPlot.png)
 
+#### [Example](../examples/ScatterPlot.js)
+
 #### Parameter required in `graph` variable
 ```
 {
