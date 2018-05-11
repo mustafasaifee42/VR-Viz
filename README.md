@@ -28,8 +28,6 @@ Under the hood, VR-Viz uses D3 for the data manipulation and generating layouts 
 * [3D Point Cloud](/ReadMe/PointCloud.md)
 
 ###### To-Do
-* Grid in the axes doesnt work right now
-* Titles of the axes doesnt work right now
 * 3D TreeMap
 * Waterfall Plot
 * 3D Parametric Curve Plot
@@ -145,3 +143,7 @@ In the project directory, you can run:
 yarn start
 ```
 Runs the app in the development mode.
+
+### Known Issues
+* Grid in the axes doesnt work right now
+* Titles of the axes doesnt work right now
