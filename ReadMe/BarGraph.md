@@ -2,6 +2,8 @@
 
 ![Bargraph](../imgs/Barchart.png)
 
+#### [Example](../examples/Barchart.js)
+
 #### Parameter required in `graph` variable
 ```
 {
