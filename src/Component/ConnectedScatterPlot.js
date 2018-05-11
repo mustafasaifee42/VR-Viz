@@ -337,7 +337,7 @@ class ConnectedScatterPlot extends Component {
           <a-curve id={'lineGraph'}>
             {points}
           </a-curve>
-          <a-draw-curve curveref='#lineGraph' material={`shader: line; color: ${this.props.mark.line.style.color.fill}; opacity: ${this.props.mark.line.style.color.opacity}`} />
+          <a-draw-curve curveref='#lineGraph' material={`shader: line; color: ${this.props.mark.line.style.color.fill}; opacity: ${this.props.mark.line.style.opacity}`} />
           {xAxis}
           {yAxis}
           {zAxis}
