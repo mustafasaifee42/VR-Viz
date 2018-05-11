@@ -1,5 +1,7 @@
 # VR-Viz
 
+#### [VR-Viz](/imgs/vr-viz.png)
+
 A-Frame based React component for data visualization in VR and AR.
 
 VR-Viz provides a higher-level react components for data visualization in webVR. VR-Viz is a collection of reusable visualization React components. VR-Viz combines A-Frame with React (for DOM manipulation) and D3 (for data visualizations) to generate visualization in VR. 
