@@ -1,15 +1,6 @@
 ## FlowMap Component
 
-#### React Component
-```
-<FlowMap 
-  data = {d.data}
-  style = {d.style}
-  mark = {d.mark}
-/>
-```
-
-#### Parameter required in graph variable
+#### Parameter required in `graph` variable
 ```
 {
   'type': 'FlowMap',
@@ -58,4 +49,13 @@
     }
   },
 }
+```
+
+#### React Component
+```
+<FlowMap 
+  data = {d.data}
+  style = {d.style}
+  mark = {d.mark}
+/>
 ```
