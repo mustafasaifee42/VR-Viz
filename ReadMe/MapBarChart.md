@@ -1,15 +1,6 @@
 ## MapBarChart Component
 
-#### React Component
-```
-<MapBarChart 
-  data = {d.data}
-  style = {d.style}
-  mark = {d.mark}
-/>
-```
-
-#### Parameter required in graph variable
+#### Parameter required in `graph` variable
 ```
 {
   'type': 'MapBarChart',
@@ -62,4 +53,13 @@
     },
   },
 }
+```
+
+#### React Component
+```
+<MapBarChart 
+  data = {d.data}
+  style = {d.style}
+  mark = {d.mark}
+/>
 ```
