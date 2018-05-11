@@ -27,7 +27,7 @@
     'function': (y) => Math.sin(y),
     'axis': {
       'axis': true,
-      'orient': 'bottom-back',
+      'orient': 1,
       'title': {
         'text': '',
         'font-size': 10,
@@ -48,12 +48,12 @@
     },
   },
   'y': {
-    'domain': [0, 2 * Math.PI],
+    'domain': [0, 2 * Math.PI],       //'domain' is required for contour plot
+    'steps': 50,                      //'steps' defines granularity of the plot
     'range': [0, 10],
-    'steps': 50,
     'axis': {
       'axis': true,
-      'orient': 'bottom-back',
+      'orient': 1,
       'title': {
         'text': '',
         'font-size': 10,
@@ -76,7 +76,7 @@
     'function': (y) => Math.cos(y),
     'axis': {
       'axis': true,
-      'orient': 'bottom-back',
+      'orient': 1,
       'title': {
         'text': '',
         'font-size': 10,

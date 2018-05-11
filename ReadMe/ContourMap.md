@@ -28,6 +28,20 @@
 }
 ```
 
+#### DataFile
+
+**Datafile**: `text`
+
+The data file is without header. Rows corresponding to grid lines running east to west and columns to grid lines running south to north.
+
+```
+100,100,101,101,101
+101,101,102,102,102
+102,102,103,103,103
+102,102,103,103,103
+102,102,103,103,103
+```
+
 #### React Component
 ```
 <ContourMap 

@@ -22,17 +22,17 @@
         'color': {
           'scale':true,
           'function':(x, z) => x * z,
-          'fill': ['green', 'blue'],
+          'fill': ['green', 'blue'],  //If the scale is false then 'fill' needs to be a value and not an array
         }
       }
     }
   },
   'x': {
-    'domain': [0, 2 * Math.PI],
-    'steps': 50,
+    'domain': [0, 2 * Math.PI],       //'domain' is required for surface plot
+    'steps': 50,                      //'steps' defines granularity of the plot
     'axis': {
       'axis': true,
-      'orient': 'bottom-back',
+      'orient': 1,
       'title': {
         'text': '',
         'font-size': 10,
@@ -57,7 +57,7 @@
     'range': [0, 10],
     'axis': {
       'axis': true,
-      'orient': 'bottom-back',
+      'orient': 1,
       'title': {
         'text': '',
         'font-size': 10,
@@ -77,11 +77,11 @@
     },
   },
   'z': {
-    'domain': [0, 2 * Math.PI],
-    'steps': 50,
+    'domain': [0, 2 * Math.PI],       //'domain' is required for surface plot
+    'steps': 50,                      //'steps' defines granularity of the plot
     'axis': {
       'axis': true,
-      'orient': 'bottom-back',
+      'orient': 1,
       'title': {
         'text': '',
         'font-size': 10,

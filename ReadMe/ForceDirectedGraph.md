@@ -46,17 +46,46 @@
         },
       },
     },
-    'labels':{
+    'labels':{                //If labels are not needed then this object can be skiped
       'field': 'id',
       'style': {
-        'color': 'black',
-        'opacity': 1,
+        'opacity': 1,        // Labels takes the color of node it is attached to
         'size': 1,
         'padding': 0.1,
       }
     },
   },
 }
+```
+
+#### DataFile
+
+**Datafile**: `json`
+
+```
+{
+  "nodes": [
+    {
+      "id": "Myriel",
+      "group": 1
+    },
+    {
+      "id": "Napoleon",
+      "group": 1
+    },
+  ]
+  "links": [
+    {
+      "fromId": "Napoleon",
+      "toId": "Myriel",
+      "value": 1
+    },
+    {
+      "fromId": "Mlle_Baptistine",
+      "toId": "Myriel",
+      "value": 8
+    },
+  ]
 ```
 
 #### React Component

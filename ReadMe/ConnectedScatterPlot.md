@@ -21,11 +21,11 @@
   },
   'mark': {
     'points':{
-      'type': 'sphere',
+      'type': 'sphere',       //Possible Value: 'box', 'sphere'
       'style': {
         'radius': {
           'scale': false,
-          'value': 0.05,
+          'value': 0.05,     //If the 'type' is 'box' the depth, width and height of the box is same as the value
           },
         'opacity': 0.4,
         'color': {
@@ -58,7 +58,7 @@
     'field': 'Cars',
     'axis': {
       'axis': true,
-      'orient': 'bottom-back',
+      'orient': 1,
       'title': {
         'text': '',
         'font-size': 10,
@@ -84,7 +84,7 @@
     'range': [0, 10],
     'axis': {
       'axis': true,
-      'orient': 'bottom-back',
+      'orient': 1,
       'title': {
         'text': '',
         'font-size': 10,
@@ -108,7 +108,7 @@
     'field': 'Bikes',
     'axis': {
       'axis': true,
-      'orient': 'bottom-back',
+      'orient': 1,
       'title': {
         'text': '',
         'font-size': 10,
@@ -128,6 +128,21 @@
     },
   }
 }
+```
+
+#### DataFile
+
+**Datafile**: `csv`
+
+In connected scatterplot the order of the dataset is considered as the order in which the connected scatterplot is plotted.
+
+```
+Year,Cars,Trucks,Bikes
+1990,119,143,1
+1991,104,30,2
+1992,58,83,3
+1993,134,88,4
+1994,119,60,5
 ```
 
 #### React Component

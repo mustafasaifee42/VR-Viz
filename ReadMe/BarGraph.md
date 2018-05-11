@@ -131,6 +131,22 @@
 }
 ```
 
+#### DataFile
+
+**Datafile**: `csv`
+
+```
+Year,Month,Tornadoes,Deaths
+1996,January,35,1
+1996,February,14,1
+1997,January,50,2
+1997,February,23,1
+1998,January,47,0
+1998,February,72,42
+1999,January,212,18
+1999,February,22,0
+```
+
 #### React Component
 ```
 <BarGraph 

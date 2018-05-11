@@ -14,9 +14,9 @@
   },
   'mark': {
     'map':{
-      'data': mapData,
-      'projection': 'Mercator',
-      'shapeIdentifier':'id',
+      'data': mapData,              //GeoJson object of map
+      'projection': 'Mercator',     //Possible value: 'Mercator','Robinson','Gall-Peter','Winkel-Tripel','Equirectangular','Natural Earth1'
+      'shapeIdentifier':'id',       //Identifier of shapes in GeoJson map data. This identifier must be present in the data from the datasheet.
       'style': {
         'scale': 20,
         'position': [5, 5],
@@ -38,6 +38,19 @@
     },
   },
 }
+```
+
+#### DataFile
+
+**Datafile**: `csv`
+
+The data file must have **latitude**, **longitude** as the header values.
+
+```
+id,value,colorValue
+004,6.769927552817786,1
+024,6.860288838552762,5
+008,6.492813386791552,3
 ```
 
 #### React Component
