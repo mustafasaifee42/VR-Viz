@@ -30,3 +30,8 @@ Runs the app in the development mode.
 * [3D Flow Map](/ReadMe/FlowMap.md)
 * [3D Contour Map](/ReadMe/ContourMap.md)
 * [3D Point Cloud](/ReadMe/PointCloud.md)
+
+###### To-Do
+* Waterfall Plot
+* Interactivity
+* Animation
