@@ -35,7 +35,10 @@ Under the hood, VR-Viz uses D3 for the data manipulation and generating layouts 
 * Interactivity
 * Animation
 
-### Installation
+### Start using VR-Viz - Setting Up the Visualization Scene
+
+
+##### Installation
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
@@ -43,7 +46,7 @@ This project uses yarn. Install it as described here [https://yarnpkg.com/lang/e
 
 To install this project, simply clone the repo and run yarn
 
-### Local Development
+##### Local Development
 In the project directory, you can run:
 ```
 yarn start
