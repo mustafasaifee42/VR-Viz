@@ -1,17 +1,6 @@
 ## SurfacePlot Component
 
-#### React Component
-```
-<SurfacePlot 
-  style = {d.style}
-  mark = {d.mark}
-  x = {d.x}
-  y = {d.y}
-  z = {d.z}
-/>
-```
-
-#### Parameter required in graph variable
+#### Parameter required in `graph` variable
 ```
 {
   'type': 'SurfacePlot',
@@ -112,4 +101,15 @@
     },
   }
 }
+```
+
+#### React Component
+```
+<SurfacePlot 
+  style = {d.style}
+  mark = {d.mark}
+  x = {d.x}
+  y = {d.y}
+  z = {d.z}
+/>
 ```
