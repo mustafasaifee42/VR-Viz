@@ -1,5 +1,7 @@
-ScatterPlot Component
+## ScatterPlot Component
 
+#### React Component
+```
 <ScatterPlot 
   data = {d.data}
   style = {d.style}
@@ -8,160 +10,159 @@ ScatterPlot Component
   y = {d.y}
   z = {d.z}
 />
+```
 
-
-visualization={
-  [
-    {
-      'type': 'ScatterPlot',
+#### Parameter required in graph variable
+```
+{
+  'type': 'ScatterPlot',
+  'style': {
+    'origin': [0, 0, 0],
+    'dimensions': {
+      'width': 10,
+      'height': 10,
+      'depth': 10,
+    },
+    'axis-box': true,
+    'axis-box-color': 'black',
+  },
+  'data': {
+    'dataFile': "data/scatterPlot.csv",
+    'fileType': 'csv',
+    'fieldDesc': [['sepal_length', 'number'], ['sepal_width', 'number'], ['petal_length', 'number'], ['petal_width', 'number'], ['species', 'text']]
+  },
+  'mark': {
+    'points':{
+      'type': 'sphere',
       'style': {
-        'origin': [0, 0, 0],
-        'dimensions': {
-          'width': 10,
-          'height': 10,
-          'depth': 10,
+        'opacity': 0.4,
+        'radius':{
+          'scale': true,
+          'scaleType': 'linear',
+          'field': 'petal_width',
+          'value': [0, 0.2],
         },
-        'axis-box': true,
-        'axis-box-color': 'black',
-      },
-      'data': {
-        'dataFile': "data/scatterPlot.csv",
-        'fileType': 'csv',
-        'fieldDesc': [['sepal_length', 'number'], ['sepal_width', 'number'], ['petal_length', 'number'], ['petal_width', 'number'], ['species', 'text']]
-      },
-      'mark': {
-        'points':{
-          'type': 'sphere',
-          'style': {
-            'opacity': 0.4,
-            'radius':{
-              'scale': true,
-              'scaleType': 'linear',
-              'field': 'petal_width',
-              'value': [0, 0.2],
-            },
-            'color': {
-              'scale': true,
-              'scaleType': 'ordinal',
-              'field': 'species',
-              'fill': ['red', 'green', 'blue'],
-              'domain': ['setosa', 'versicolor', 'virginica'],
-            },
-          }
+        'color': {
+          'scale': true,
+          'scaleType': 'ordinal',
+          'field': 'species',
+          'fill': ['red', 'green', 'blue'],
+          'domain': ['setosa', 'versicolor', 'virginica'],
         },
-        'droplines':{
-          'type': 'line',
-          'xz':true,
-          'yz':false,
-          'xy':false,
-          'style': {
-            'opacity': 0.4,
-            'color': {
-              'scale': true,
-              'scaleType': 'ordinal',
-              'field': 'species',
-              'fill': ['red', 'green', 'blue'],
-              'domain': ['setosa', 'versicolor', 'virginica'],
-            },
-          }
+      }
+    },
+    'droplines':{
+      'type': 'line',
+      'xz':true,
+      'yz':false,
+      'xy':false,
+      'style': {
+        'opacity': 0.4,
+        'color': {
+          'scale': true,
+          'scaleType': 'ordinal',
+          'field': 'species',
+          'fill': ['red', 'green', 'blue'],
+          'domain': ['setosa', 'versicolor', 'virginica'],
         },
-        'projections':{
-          'type': 'circle',
-          'xz':false,
-          'yz':true,
-          'xy':true,
-          'style': {
-            'opacity': 0.4,
-            'color': {
-              'scale': true,
-              'scaleType': 'ordinal',
-              'field': 'species',
-              'fill': ['red', 'green', 'blue'],
-              'domain': ['setosa', 'versicolor', 'virginica'],
-            },
-            'radius':{
-              'scale': true,
-              'scaleType': 'linear',
-              'field': 'petal_width',
-              'value': [0, 0.2],
-            },
-          }
-        }
-      },
-      'x': {
-        'type': 'linear',
-        'field': 'sepal_length',
-        'axis': {
-          'axis': true,
-          'orient': 'bottom-back',
-          'title': {
-            'text': '',
-            'font-size': 10,
-            'color': 'black',
-            'opacity': 1,
-          },
-          'ticks': {
-            'no-of-ticks': 10,
-            'tick-size': 0.1,
-            'tick-color': 'black',
-            'tick-opacity': 1,
-            'grid': true,
-            'grid-color': 'black',
-            'grid-opacity': 1,
-            'font': 'Arial',
-            'font-size': 10,
-          }
+      }
+    },
+    'projections':{
+      'type': 'circle',
+      'xz':false,
+      'yz':true,
+      'xy':true,
+      'style': {
+        'opacity': 0.4,
+        'color': {
+          'scale': true,
+          'scaleType': 'ordinal',
+          'field': 'species',
+          'fill': ['red', 'green', 'blue'],
+          'domain': ['setosa', 'versicolor', 'virginica'],
         },
-      },
-      'y': {
-        'type': 'linear',
-        'field': 'sepal_width',
-        'range': [0, 10],
-        'axis': {
-          'axis': true,
-          'orient': 'bottom-back',
-          'title': {
-            'text': '',
-            'font-size': 10,
-            'color': 'black',
-            'opacity': 1,
-          },
-          'ticks': {
-            'no-of-ticks': 10,
-            'tick-size': 0.1,
-            'tick-color': 'black',
-            'tick-opacity': 1,
-            'grid': true,
-            'grid-color': 'black',
-            'grid-opacity': 1,
-            'font-size': 10,
-          }
-        },
-      },
-      'z': {
-        'type': 'linear',
-        'field': 'petal_length',
-        'axis': {
-          'axis': true,
-          'orient': 'bottom-back',
-          'title': {
-            'text': '',
-            'font-size': 10,
-            'color': 'black',
-            'opacity': 1,
-          },
-          'ticks': {
-            'no-of-ticks': 10,
-            'tick-size': 0.1,
-            'tick-color': 'black',
-            'tick-opacity': 1,
-            'grid': true,
-            'grid-color': 'black',
-            'grid-opacity': 1,
-            'font-size': 10,
-          }
+        'radius':{
+          'scale': true,
+          'scaleType': 'linear',
+          'field': 'petal_width',
+          'value': [0, 0.2],
         },
       }
     }
-  ]
+  },
+  'x': {
+    'type': 'linear',
+    'field': 'sepal_length',
+    'axis': {
+      'axis': true,
+      'orient': 'bottom-back',
+      'title': {
+        'text': '',
+        'font-size': 10,
+        'color': 'black',
+        'opacity': 1,
+      },
+      'ticks': {
+        'no-of-ticks': 10,
+        'tick-size': 0.1,
+        'tick-color': 'black',
+        'tick-opacity': 1,
+        'grid': true,
+        'grid-color': 'black',
+        'grid-opacity': 1,
+        'font': 'Arial',
+        'font-size': 10,
+      }
+    },
+  },
+  'y': {
+    'type': 'linear',
+    'field': 'sepal_width',
+    'range': [0, 10],
+    'axis': {
+      'axis': true,
+      'orient': 'bottom-back',
+      'title': {
+        'text': '',
+        'font-size': 10,
+        'color': 'black',
+        'opacity': 1,
+      },
+      'ticks': {
+        'no-of-ticks': 10,
+        'tick-size': 0.1,
+        'tick-color': 'black',
+        'tick-opacity': 1,
+        'grid': true,
+        'grid-color': 'black',
+        'grid-opacity': 1,
+        'font-size': 10,
+      }
+    },
+  },
+  'z': {
+    'type': 'linear',
+    'field': 'petal_length',
+    'axis': {
+      'axis': true,
+      'orient': 'bottom-back',
+      'title': {
+        'text': '',
+        'font-size': 10,
+        'color': 'black',
+        'opacity': 1,
+      },
+      'ticks': {
+        'no-of-ticks': 10,
+        'tick-size': 0.1,
+        'tick-color': 'black',
+        'tick-opacity': 1,
+        'grid': true,
+        'grid-color': 'black',
+        'grid-opacity': 1,
+        'font-size': 10,
+      }
+    },
+  }
 }
+```
