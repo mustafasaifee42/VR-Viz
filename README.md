@@ -17,7 +17,7 @@ yarn start
 ```
 Runs the app in the development mode.
 
-#### Supported Visualization
+### Supported Visualization
 * [3D Bar Graph](/ReadMe/BarGraph.md)
 * [3D Stacked Bar Graph](/ReadMe/StackedBarGraph.md)
 * [3D Scatter Plot / 3D Bubble Chat](/ReadMe/ScatterPlot.md)
