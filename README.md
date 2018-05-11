@@ -1,4 +1,4 @@
-# vr-viz
+# VR-Viz
 
 A-Frame based React component for data visualization in VR and AR.
 
