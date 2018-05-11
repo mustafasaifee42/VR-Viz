@@ -1,15 +1,6 @@
 ## PrismMap Component
 
-#### React Component
-```
-<PrismMap 
-  data = {d.data}
-  style = {d.style}
-  mark = {d.mark}
-/>
-```
-
-#### Parameter required in graph variable
+#### Parameter required in `graph` variable
 ```
 {
   'type': 'PrismMap',
@@ -47,4 +38,13 @@
     },
   },
 }
+```
+
+#### React Component
+```
+<PrismMap 
+  data = {d.data}
+  style = {d.style}
+  mark = {d.mark}
+/>
 ```
