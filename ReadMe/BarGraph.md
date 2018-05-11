@@ -21,16 +21,31 @@
   },
   'mark': {
     'bars':{
-      'type': 'box',
+      'type': 'box',    //Possible values: 'box','cylinder','cone'
       'style': {
+         /*
+         
+         if the 'type' is 'cylinder'
+         'radius': 0.2,
+         'segments': 8,
+         
+         if the 'type' is 'cone'
+         'radiusBottom': 0.2,
+         'radiusTop': 0,
+         'segments': 8,
+         
+         */
+         
+         // if the 'type' is 'box'
         'depth': 0.2,
         'width': 0.2,
+        
         'opacity': 0.4,
         'color': {
           'scale': true,
           'scaleType': 'linear',
           'field': 'Deaths',
-          'fill': ['red', 'green'],
+          'fill': ['red', 'green'],   //If 'scale' is false 'fill' is not an array but a single value
         },
       }
     }
@@ -38,10 +53,11 @@
   'x': {
     'type': 'ordinal',
     'field': 'Month',
-    'domain': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    'range':[0,10],   //If the 'range' is not mentioned the default range is [0,width of the graph]
+    'domain': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],   //If the 'domain' is not mentioned the default domain is created using the data and type
     'axis': {
       'axis': true,
-      'orient': 'bottom-back',
+      'orient': 1,    //Possible values: 1, 2, 3, 4
       'title': {
         'text': '',
         'font-size': 10,
@@ -64,9 +80,11 @@
   'y': {
     'type': 'linear',
     'field': 'Tornadoes',
+    'domain':[0,100], //If the 'domain' is not mentioned the default domain is created using the data and type. For 'type' 'linear' the domain is [minimum value of the field in the data, maximum value of the field in the data]
+    'range':[0,10],   //If the 'range' is not mentioned the default range is [0,height of the graph]
     'axis': {
       'axis': true,
-      'orient': 'bottom-back',
+      'orient': 1,    //Possible values: 1, 2, 3, 4
       'title': {
         'text': '',
         'font-size': 10,
@@ -88,9 +106,10 @@
   'z': {
     'type': 'ordinal',
     'field': 'Year',
+    'range':[0,10],   //If the 'range' is not mentioned the default range is [0,depth of the graph]
     'axis': {
       'axis': true,
-      'orient': 'bottom-back',
+      'orient': 1,    //Possible values: 1, 2, 3, 4
       'title': {
         'text': '',
         'font-size': 10,
