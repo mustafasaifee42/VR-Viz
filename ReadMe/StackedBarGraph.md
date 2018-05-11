@@ -1,6 +1,6 @@
 ## StackedBargraph Component
 
-![StackedBargraph](../imgs/StackedBargraph.png)
+![StackedBargraph](../imgs/StackedBarchart.png)
 
 #### Parameter required in `graph` variable
 ```
