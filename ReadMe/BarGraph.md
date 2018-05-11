@@ -1,18 +1,6 @@
 ## Bargraph Component
 
-#### React Component
-```
-<BarGraph 
-  data = {d.data}
-  style = {d.style}
-  mark = {d.mark}
-  x = {d.x}
-  y = {d.y}
-  z = {d.z}
-/>
-```
-
-#### Parameter required in graph variable
+#### Parameter required in `graph` variable
 ```
 {
   'type': 'BarGraph',
@@ -122,4 +110,16 @@
     },
   }
 }
+```
+
+#### React Component
+```
+<BarGraph 
+  data = {d.data}
+  style = {d.style}
+  mark = {d.mark}
+  x = {d.x}
+  y = {d.y}
+  z = {d.z}
+/>
 ```
