@@ -1,17 +1,6 @@
 ## ContourPlot Component
 
-#### React Component
-```
-<ContourPlot 
-  style = {d.style}
-  mark = {d.mark}
-  x = {d.x}
-  y = {d.y}
-  z = {d.z}
-/>
-```
-
-#### Parameter required in graph variable
+#### Parameter required in `graph` variable
 ```
 {
   'type': 'ContourPlot',
@@ -107,4 +96,15 @@
     },
   }
 }
+```
+
+#### React Component
+```
+<ContourPlot 
+  style = {d.style}
+  mark = {d.mark}
+  x = {d.x}
+  y = {d.y}
+  z = {d.z}
+/>
 ```
