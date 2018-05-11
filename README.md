@@ -4,13 +4,14 @@ A-Frame based React component for data visualization in VR and AR.
 
 VR-Viz provides a higher-level react components for data visualization in webVR. VR-Viz is a collection of reusable visualization React components. VR-Viz combines A-Frame with React (for DOM manipulation) and D3 (for data visualizations) to generate visualization in VR. 
 
+### Catalouge of different 3D Visualizations
+To see a catalouge of different 3D visualizations [click here](https://vr-3d-viz.herokuapp.com/).
+
 ### Goal
 The goal is to create a library of reusable React components that can be used to make reusable charts, visualizations, or dashboards in VR or custom visualization or data stories in VR. 
 
 ### How?
 Under the hood, VR-Viz uses D3 for the data manipulation and generating layouts for certain visualization types and React for DOM manipulation and to add A-Frame entities and geometry to the 3D scene.
-
-To see a catalouge of different 3D visualizations [click here](https://vr-3d-viz.herokuapp.com/).
 
 ### Supported Visualization
 * [3D Bar Graph](/ReadMe/BarGraph.md)
