@@ -1,15 +1,6 @@
 ## ForceDirectedGraph Component
 
-#### React Component
-```
-<ForceDirectedGraph 
-  data = {d.data}
-  style = {d.style}
-  mark = {d.mark}
-/>
-```
-
-#### Parameter required in graph variable
+#### Parameter required in `graph` variable
 ```
 {
   'type': 'ForceDirectedGraph',
@@ -66,3 +57,12 @@
     },
   },
 }
+
+#### React Component
+```
+<ForceDirectedGraph 
+  data = {d.data}
+  style = {d.style}
+  mark = {d.mark}
+/>
+```
