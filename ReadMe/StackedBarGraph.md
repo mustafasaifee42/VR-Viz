@@ -1,18 +1,6 @@
 ## StackedBargraph Component
 
-#### React Component
-```
-<StackedBarGraph 
-  data = {d.data}
-  style = {d.style}
-  mark = {d.mark}
-  x = {d.x}
-  y = {d.y}
-  z = {d.z}
-/>
-```
-
-#### Parameter required in graph variable
+#### Parameter required in `graph` variable
 ```
 {
   'type': 'StackedBarGraph',
@@ -121,4 +109,16 @@
     },
   }
 }
+```
+
+#### React Component
+```
+<StackedBarGraph 
+  data = {d.data}
+  style = {d.style}
+  mark = {d.mark}
+  x = {d.x}
+  y = {d.y}
+  z = {d.z}
+/>
 ```
