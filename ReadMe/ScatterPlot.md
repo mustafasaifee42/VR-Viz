@@ -21,7 +21,7 @@
   },
   'mark': {
     'points':{
-      'type': 'sphere',
+      'type': 'sphere',     //Possible Value: 'sphere','box'
       'style': {
         'opacity': 0.4,
         'radius':{
@@ -39,7 +39,7 @@
         },
       }
     },
-    'droplines':{
+    'droplines':{           //Not Compulsary
       'type': 'line',
       'xz':true,
       'yz':false,
@@ -55,7 +55,7 @@
         },
       }
     },
-    'projections':{
+    'projections':{         //Not Compulsary
       'type': 'circle',
       'xz':false,
       'yz':true,
@@ -83,7 +83,7 @@
     'field': 'sepal_length',
     'axis': {
       'axis': true,
-      'orient': 'bottom-back',
+      'orient': 1,
       'title': {
         'text': '',
         'font-size': 10,
@@ -109,7 +109,7 @@
     'range': [0, 10],
     'axis': {
       'axis': true,
-      'orient': 'bottom-back',
+      'orient': 1,
       'title': {
         'text': '',
         'font-size': 10,
@@ -133,7 +133,7 @@
     'field': 'petal_length',
     'axis': {
       'axis': true,
-      'orient': 'bottom-back',
+      'orient': 1,
       'title': {
         'text': '',
         'font-size': 10,
@@ -153,6 +153,21 @@
     },
   }
 }
+```
+
+#### DataFile
+
+**Datafile**: `csv`
+
+```
+sepal_length,sepal_width,petal_length,petal_width,species
+5.1,3.5,1.4,0.2,setosa
+4.9,3.0,1.4,0.2,setosa
+4.7,3.2,1.3,0.2,setosa
+4.6,3.1,1.5,0.2,setosa
+5.0,3.6,1.4,0.2,setosa
+5.4,3.9,1.7,0.4,setosa
+4.6,3.4,1.4,0.3,setosa
 ```
 
 #### React Component
