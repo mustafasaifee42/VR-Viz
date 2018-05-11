@@ -10,6 +10,8 @@ The goal is to create a library of reusable React components that can be used to
 ### How?
 Under the hood, VR-Viz uses D3 for the data manipulation and generating layouts for certain visualization types and React for DOM manipulation and to add A-Frame entities and geometry to the 3D scene.
 
+To see a catalouge of different 3D visualizations [click here](https://vr-3d-viz.herokuapp.com/).
+
 ### Supported Visualization
 * [3D Bar Graph](/ReadMe/BarGraph.md)
 * [3D Stacked Bar Graph](/ReadMe/StackedBarGraph.md)
