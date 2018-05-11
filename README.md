@@ -19,13 +19,19 @@ Under the hood, VR-Viz uses D3 for the data manipulation and generating layouts 
 * [3D Surface Plot](/ReadMe/SurfacePlot.md)
 * [3D Force Directed Graph](/ReadMe/ForceDirectedGraph.md)
 * [3D Prism Map](/ReadMe/PrismMap.md)
-* [3D Map Bar Chart](/ReadMe/MapBarChart.md)
+* [3D Map Bar Graph](/ReadMe/MapBarChart.md)
 * [3D Flow Map](/ReadMe/FlowMap.md)
 * [3D Contour Map](/ReadMe/ContourMap.md)
 * [3D Point Cloud](/ReadMe/PointCloud.md)
 
 ###### To-Do
+* 3D TreeMap
 * Waterfall Plot
+* 3D Parametric Curve Plot
+* 3D Parametric Surface Plot
+* 3D Mesh Plot
+* 3D Map Stacked Bar Graph
+* 3D Time Series
 * Interactivity
 * Animation
 
