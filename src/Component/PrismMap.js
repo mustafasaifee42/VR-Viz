@@ -146,7 +146,7 @@ class PrismMap extends Component {
       });
     }
   }
-  
+
   render() {
     if (!this.state.data) {
       return <a-entity />
@@ -157,8 +157,8 @@ class PrismMap extends Component {
 
       let data = {}
       for (let i = 0; i < this.state.data.length; i++) {
-        if(this.props.mark.map.style.color.scale)
-          data[this.state.data[i][this.props.mark.map.shapeIdentifier]] = { 'value': this.state.data[i][this.props.mark.map.style.extrusion.field], 'colorField': this.state.data[i][this.props.mark.map.style.color.field] }
+        if (this.props.mark.map.style.fill.scale)
+          data[this.state.data[i][this.props.mark.map.shapeIdentifier]] = { 'value': this.state.data[i][this.props.mark.map.style.extrusion.field], 'colorField': this.state.data[i][this.props.mark.map.style.fill.field] }
         else
           data[this.state.data[i][this.props.mark.map.shapeIdentifier]] = { 'value': this.state.data[i][this.props.mark.map.style.extrusion.field], 'colorField': 'NA' }
       }
@@ -173,11 +173,11 @@ class PrismMap extends Component {
           extrusionDomain = this.props.mark.map.style.extrusion.domain
       }
 
-      if (this.props.mark.map.style.color.scale) {
-        if (!this.props.mark.map.style.color.domain) {
-          colorDomain = GetDomain(this.state.data, this.props.mark.map.style.color.field, this.props.mark.map.style.color.scaleType)
+      if (this.props.mark.map.style.fill.scale) {
+        if (!this.props.mark.map.style.fill.domain) {
+          colorDomain = GetDomain(this.state.data, this.props.mark.map.style.fill.field, this.props.mark.map.style.fill.scaleType)
         } else
-          colorDomain = this.props.mark.map.style.color.domain
+          colorDomain = this.props.mark.map.style.fill.domain
       }
 
       //Adding scales
@@ -188,30 +188,36 @@ class PrismMap extends Component {
         .domain(extrusionDomain)
         .range(this.props.mark.map.style.extrusion.value)
 
-      if (this.props.mark.map.style.color.scale)
-        if (this.props.mark.map.style.color.scaleType === 'ordinal')
+      if (this.props.mark.map.style.fill.scale)
+        if (this.props.mark.map.style.fill.scaleType === 'ordinal')
           colorScale = d3.scaleOrdinal()
             .domain(colorDomain)
-            .range(this.props.mark.map.style.color.fill)
+            .range(this.props.mark.map.style.fill.color)
         else
           colorScale = d3.scaleLinear()
             .domain(colorDomain)
-            .range(this.props.mark.map.style.color.fill)
+            .range(this.props.mark.map.style.fill.color)
 
       //Adding marks
 
-      let geoData = GetMapShape(this.props.mark.map.data, this.props.mark.map.projection, this.props.mark.map.style.scale, this.props.mark.map.style.position,  this.props.mark.map.shapeIdentifier);
+      let geoData = GetMapShape(this.props.mark.map.data, this.props.mark.map.projection, this.props.mark.map.style.scale, this.props.mark.map.style.position, this.props.mark.map.shapeIdentifier);
 
       let shapes = geoData.map((d, i) => {
         let primitive = `primitive: map; vertices: ${d.vertices}; extrude: ${extrusionScale(data[d['code']]['value'])}`
-        if (this.props.mark.map.style.color.scale)
-          return (<a-entity geometry={primitive} material={`color: ${colorScale(data[d['code']]['colorField'])}; metalness: 0.2; opacity:${this.props.mark.map.style.opacity}`} />)
+        if (this.props.mark.map.style.fill.scale)
+          return (<a-entity geometry={primitive} material={`color: ${colorScale(data[d['code']]['colorField'])}; metalness: 0.2; opacity:${this.props.mark.map.style.fill.opacity}`} />)
         else
-          return (<a-entity geometry={primitive} material={`color: ${this.props.mark.map.style.color.fill}; metalness: 0.2; opacity:${this.props.mark.map.style.opacity}`} />)
+          return (<a-entity geometry={primitive} material={`color: ${this.props.mark.map.style.fill.color}; metalness: 0.2; opacity:${this.props.mark.map.style.fill.opacity}`} />)
       })
+
+      let border;
+      if (this.props.mark.map.style.stroke)
+        border = geoData.map((d, i) => <a-entity meshline={`lineWidth: ${this.props.mark.map.style.stroke.width}; path:${`${d.vertices.replace(/,/g, ` ${extrusionScale(data[d['code']]['value'])},`)} ${extrusionScale(data[d['code']]['value'])}`}; color:${this.props.mark.map.style.stroke.color}`} />);
+
       return (
-        <a-entity rotation={this.props.mark.map.style.rotation} position = {`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
+        <a-entity rotation={this.props.mark.map.style.rotation} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
           {shapes}
+          {border}
         </a-entity>
       )
     }

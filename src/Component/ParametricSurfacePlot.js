@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import Axis from './Axis.js';
 import AxisBox from './AxisBox.js';
-import 'aframe-meshline-component';
 
 
 class SurfacePlot extends Component {
@@ -18,34 +17,35 @@ class SurfacePlot extends Component {
 
 
     let dataCoordinate = [], dataSphere = [];
-    let xStep = (this.props.x.domain[1] - this.props.x.domain[0]) / this.props.x.steps;
-    let zStep = (this.props.z.domain[1] - this.props.z.domain[0]) / this.props.z.steps;
-    for (let i = 0; i < this.props.x.steps - 1; i++) {
-      for (let j = 0; j < this.props.z.steps - 1; j++) {
+    let parameterStep1 = (this.props.parameter.parameter1.domain[1] - this.props.parameter.parameter1.domain[0]) / this.props.parameter.parameter1.steps;
+    let parameterStep2 = (this.props.parameter.parameter2.domain[1] - this.props.parameter.parameter2.domain[0]) / this.props.parameter.parameter2.steps;
+    for (let i = this.props.parameter.parameter1.domain[0]; i <= this.props.parameter.parameter1.domain[1]; i = i + parameterStep1) {
+      for (let j = this.props.parameter.parameter2.domain[0]; j <= this.props.parameter.parameter2.domain[1]; j = j + parameterStep2) {
         let tempData = [];
-        tempData.push(this.props.x.domain[0] + xStep * i)
-        tempData.push(this.props.y.function(this.props.x.domain[0] + xStep * i, this.props.z.domain[0] + zStep * j))
-        tempData.push(this.props.z.domain[0] + zStep * j)
-        tempData.push(this.props.x.domain[0] + xStep * (i + 1))
-        tempData.push(this.props.y.function(this.props.x.domain[0] + xStep * (i + 1), this.props.z.domain[0] + zStep * j))
-        tempData.push(this.props.z.domain[0] + zStep * j)
-        tempData.push(this.props.x.domain[0] + xStep * (i + 1))
-        tempData.push(this.props.y.function(this.props.x.domain[0] + xStep * (i + 1), this.props.z.domain[0] + zStep * (j + 1)))
-        tempData.push(this.props.z.domain[0] + zStep * (j + 1))
-        tempData.push(this.props.x.domain[0] + xStep * i)
-        tempData.push(this.props.y.function(this.props.x.domain[0] + xStep * i, this.props.z.domain[0] + zStep * (j + 1)))
-        tempData.push(this.props.z.domain[0] + zStep * (j + 1))
+        tempData.push(this.props.x.function(i, j));
+        tempData.push(this.props.y.function(i, j));
+        tempData.push(this.props.z.function(i, j));
+        tempData.push(this.props.x.function(i + parameterStep1, j));
+        tempData.push(this.props.y.function(i + parameterStep1, j));
+        tempData.push(this.props.z.function(i + parameterStep1, j));
+        tempData.push(this.props.x.function(i + parameterStep1, j + parameterStep2));
+        tempData.push(this.props.y.function(i + parameterStep1, j + parameterStep2));
+        tempData.push(this.props.z.function(i + parameterStep1, j + parameterStep2));
+        tempData.push(this.props.x.function(i, j + parameterStep2));
+        tempData.push(this.props.y.function(i, j + parameterStep2));
+        tempData.push(this.props.z.function(i, j + parameterStep2));
         if (this.props.mark.surface.style.fill.function)
-          tempData.push(this.props.mark.surface.style.fill.function(this.props.x.domain[0] + xStep * i, this.props.z.domain[0] + zStep * j))
+          tempData.push(this.props.mark.surface.style.fill.function(i, j))
         dataCoordinate.push(tempData);
       }
     }
-    for (let i = 0; i < this.props.x.steps; i++) {
-      for (let j = 0; j < this.props.z.steps; j++) {
+
+    for (let i = this.props.parameter.parameter1.domain[0]; i <= this.props.parameter.parameter1.domain[1]; i = i + parameterStep1) {
+      for (let j = this.props.parameter.parameter2.domain[0]; j <= this.props.parameter.parameter2.domain[1]; j = j + parameterStep2) {
         let tempData = [];
-        tempData.push(this.props.x.domain[0] + xStep * i)
-        tempData.push(this.props.y.function(this.props.x.domain[0] + xStep * i, this.props.z.domain[0] + zStep * j))
-        tempData.push(this.props.z.domain[0] + zStep * j);
+        tempData.push(this.props.x.function(i, j))
+        tempData.push(this.props.y.function(i, j))
+        tempData.push(this.props.z.function(i, j))
         dataSphere.push(tempData);
       }
     }
@@ -58,24 +58,32 @@ class SurfacePlot extends Component {
     let xScale, yScale, zScale, colorScale;
 
 
-    xScale = d3.scaleLinear()
-      .range([0, this.props.style.dimensions.width])
-      .domain(xDomain);
-
+    if (this.props.x.domain)
+      xScale = d3.scaleLinear()
+        .domain(this.props.x.domain)
+        .range([0, this.props.style.dimensions.height]);
+    else
+      xScale = d3.scaleLinear()
+        .domain([d3.min(dataSphere, d => d[0]), d3.max(dataSphere, d => d[0])])
+        .range([0, this.props.style.dimensions.width]);
 
     if (this.props.y.domain)
       yScale = d3.scaleLinear()
         .domain(this.props.y.domain)
-        .range(this.props.y.range)
+        .range([0, this.props.style.dimensions.height]);
     else
       yScale = d3.scaleLinear()
         .domain([d3.min(dataSphere, d => d[1]), d3.max(dataSphere, d => d[1])])
-        .range(this.props.y.range)
+        .range([0, this.props.style.dimensions.height]);
 
-
-    zScale = d3.scaleLinear()
-      .domain(zDomain)
-      .range([0, this.props.style.dimensions.depth]);
+    if (this.props.z.domain)
+      zScale = d3.scaleLinear()
+        .domain(this.props.z.domain)
+        .range([0, this.props.style.dimensions.depth]);
+    else
+      zScale = d3.scaleLinear()
+        .domain([d3.min(dataSphere, d => d[2]), d3.max(dataSphere, d => d[2])])
+        .range([0, this.props.style.dimensions.depth]);
 
 
     if (this.props.mark.surface.style.fill.scale)
@@ -156,7 +164,7 @@ class SurfacePlot extends Component {
       border = dataCoordinate.map((d, i) => <a-entity meshline={`lineWidth: ${this.props.mark.surface.style.stroke.width}; path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}; color:${this.props.mark.surface.style.stroke.color}`} />);
 
     return (
-      <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} >
+      <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
         {marks}
         {border}
         {xAxis}

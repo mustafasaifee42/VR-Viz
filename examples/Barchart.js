@@ -37,7 +37,7 @@ class App extends Component {
             'floor': {
               'style': {
                 'color': '#ccc',
-                'texture':false,
+                'texture': false,
                 'width': 100,
                 'height': 100,
               }
@@ -64,17 +64,17 @@ class App extends Component {
                 'axis-box-color': 'black',
               },
               'mark': {
-                'bars':{
+                'bars': {
                   'type': 'box',
                   'style': {
                     'depth': 0.2,
                     'width': 0.2,
                     'opacity': 0.4,
-                    'color': {
+                    'fill': {
                       'scale': true,
                       'scaleType': 'linear',
                       'field': 'Deaths',
-                      'fill': ['red', 'green'],
+                      'color': ['red', 'green'],
                     },
                   }
                 }

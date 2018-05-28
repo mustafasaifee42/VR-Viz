@@ -42,47 +42,47 @@ class App extends Component {
               'type': 'ForceDirectedGraph',
               'data': {
                 'dataFile': "data/ForceDirectedGraph.json",
-                'fileType':'json',
+                'fileType': 'json',
               },
               'style': {
                 'origin': [0, 0, 0],
                 'scale': 0.1,
               },
               'mark': {
-                'nodes':{
-                  'type':'sphere',
+                'nodes': {
+                  'type': 'sphere',
                   'style': {
                     'radius': {
                       'scale': false,
                       'value': 0.1,
                     },
-                    'opacity': 1,
-                    'color': {
+                    'fill': {
                       'scale': true,
                       'scaleType': 'ordinal',
+                      'opacity': 1,
                       'field': 'group',
-                      'fill': ['green', 'blue', 'red', 'yellow', 'tomato', 'olive', 'magenta', 'cyan', 'gray', 'maroon'],
+                      'color': ['green', 'blue', 'red', 'yellow', 'tomato', 'olive', 'magenta', 'cyan', 'gray', 'maroon'],
                       'domain': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                     },
                   },
                 },
-                'links':{
+                'links': {
                   'type': 'line',
                   'style': {
-                    'opacity':{
-                      'scale': false,
-                      'value': 0.3,
-                    },
-                    'color': {
+                    'fill': {
                       'scale': true,
                       'scaleType': 'ordinal',
+                      'opacity': {
+                        'scale': false,
+                        'value': 0.3,
+                      },
                       'field': 'value',
-                      'fill': ['green', 'blue', 'red', 'yellow', 'tomato', 'olive', 'magenta', 'cyan', 'gray', 'maroon'],
+                      'color': ['green', 'blue', 'red', 'yellow', 'tomato', 'olive', 'magenta', 'cyan', 'gray', 'maroon'],
                       'domain': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                     },
                   },
                 },
-                'labels':{
+                'labels': {
                   'field': 'id',
                   'style': {
                     'color': 'black',

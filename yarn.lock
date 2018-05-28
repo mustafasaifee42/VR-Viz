@@ -63,6 +63,10 @@ aframe-faceset-component@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/aframe-faceset-component/-/aframe-faceset-component-0.4.1.tgz#17d27f81861316c2e962d7c6c34cb1a00946886a"
 
+aframe-meshline-component@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/aframe-meshline-component/-/aframe-meshline-component-0.2.1.tgz#53050233fd887c50be5f999097a16f5ba888cab3"
+
 aframe@^0.8.2:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/aframe/-/aframe-0.8.2.tgz#435dd7c7d2f059316af87f4a9783427b0617e11f"

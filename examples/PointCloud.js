@@ -49,14 +49,14 @@ class App extends Component {
                 'scale': 0.01,
               },
               'mark': {
-                'points':{
-                  'type':'box',
+                'points': {
+                  'type': 'box',
                   'style': {
                     'radius': 0.1,
-                    'opacity':0.4,
-                    'color': {
+                    'fill': {
                       'scale': false,
-                      'fill': 'green',
+                      'opacity': 0.4,
+                      'color': 'green',
                     },
                   },
                 },

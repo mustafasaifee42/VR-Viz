@@ -47,7 +47,12 @@ class App extends Component {
         graph={
           [
             {
-              'type': 'ScatterPlot',
+              'type': 'RectangleChart',
+              'data': {
+                'dataFile': "data/rectangleChart.csv",
+                'fileType': 'csv',
+                'fieldDesc': [['Year', 'text'], ['Type', 'number'], ['Tornadoes', 'number'], ['Deaths', 'number']]
+              },
               'style': {
                 'origin': [0, 0, 0],
                 'dimensions': {
@@ -58,73 +63,25 @@ class App extends Component {
                 'axis-box': true,
                 'axis-box-color': 'black',
               },
-              'data': {
-                'dataFile': "data/scatterPlot.csv",
-                'fileType': 'csv',
-                'fieldDesc': [['sepal_length', 'number'], ['sepal_width', 'number'], ['petal_length', 'number'], ['petal_width', 'number'], ['species', 'text']]
-              },
               'mark': {
-                'points': {
-                  'type': 'sphere',
+                'bars': {
+                  'type': 'box',
                   'style': {
-                    'radius': {
-                      'scale': true,
-                      'scaleType': 'linear',
-                      'field': 'petal_width',
-                      'value': [0, 0.2],
-                    },
+                    'depth': 0.2,
+                    'width': 0.2,
+                    'opacity': 0.4,
                     'fill': {
                       'scale': true,
                       'scaleType': 'ordinal',
-                      'opacity': 0.4,
-                      'field': 'species',
-                      'color': ['red', 'green', 'blue'],
-                      'domain': ['setosa', 'versicolor', 'virginica'],
-                    },
-                  }
-                },
-                'droplines': {
-                  'type': 'line',
-                  'xz': true,
-                  'yz': false,
-                  'xy': false,
-                  'style': {
-                    'fill': {
-                      'scale': true,
-                      'scaleType': 'ordinal',
-                      'field': 'species',
-                      'color': ['red', 'green', 'blue'],
-                      'opacity': 0.4,
-                      'domain': ['setosa', 'versicolor', 'virginica'],
-                    },
-                  }
-                },
-                'projections': {
-                  'type': 'circle',
-                  'xz': false,
-                  'yz': true,
-                  'xy': true,
-                  'style': {
-                    'fill': {
-                      'scale': true,
-                      'scaleType': 'ordinal',
-                      'field': 'species',
-                      'color': ['red', 'green', 'blue'],
-                      'opacity': 0.4,
-                      'domain': ['setosa', 'versicolor', 'virginica'],
-                    },
-                    'radius': {
-                      'scale': true,
-                      'scaleType': 'linear',
-                      'field': 'petal_width',
-                      'value': [0, 0.2],
+                      'field': 'Type',
+                      'color': ['red', 'green'],
                     },
                   }
                 }
               },
               'x': {
-                'type': 'linear',
-                'field': 'sepal_length',
+                'type': 'ordinal',
+                'field': 'Year',
                 'axis': {
                   'axis': true,
                   'orient': 'bottom-back',
@@ -149,8 +106,7 @@ class App extends Component {
               },
               'y': {
                 'type': 'linear',
-                'field': 'sepal_width',
-                'range': [0, 10],
+                'field': 'Tornadoes',
                 'axis': {
                   'axis': true,
                   'orient': 'bottom-back',
@@ -174,7 +130,7 @@ class App extends Component {
               },
               'z': {
                 'type': 'linear',
-                'field': 'petal_length',
+                'field': 'Deaths',
                 'axis': {
                   'axis': true,
                   'orient': 'bottom-back',

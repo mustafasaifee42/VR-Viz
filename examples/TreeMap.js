@@ -34,45 +34,41 @@ class App extends Component {
               'position': '0 0 10',
               'rotation': '0 0 0',
             },
+            'floor': {
+              'style': {
+                'color': '#ccc',
+                'texture': false,
+                'width': 100,
+                'height': 100,
+              }
+            }
           }
         }
         graph={
           [
             {
-              'type': 'PrismMap',
+              'type': 'TreeMap',
               'data': {
-                'dataFile': "data/prismMapData.csv",
-                'fileType': 'csv',
-                'fieldDesc': [['id', 'text'], ['value', 'number'], ['colorValue', 'number']]
+                'dataFile': "data/TreeMap.json",
+                'fileType': 'json',
               },
               'style': {
                 'origin': [0, 0, 0],
+                'width': 50,
+                'length': 50,
               },
               'mark': {
-                'map': {
-                  'data': mapData,
-                  'projection': 'Mercator',
-                  'shapeIdentifier': 'id',
+                'squares': {
                   'style': {
-                    'scale': 20,
-                    'position': [5, 5],
-                    'rotation': '-45 0 0',
-                    'extrusion': {
-                      'scale': true,
-                      'scaleType': 'linear',
-                      'field': 'value',
-                      'value': [0, 5],
+                    'paddingInner': 0.5,
+                    'paddingOuter': 0.1,
+                    'height': {
+                      'field': 'size',
+                      'range': [1, 5],
                     },
                     'fill': {
-                      'scale': true,
-                      'scaleType': 'ordinal',
-                      'opacity': 0.9,
-                      'field': 'colorValue',
-                      'color': ['green', 'blue', 'red', 'yellow', 'magenta', 'cyan'],
-                    },
-                    'stroke': {
-                      'width': 1,
-                      'color': 'black',
+                      'color': ['red', 'blue', 'green', 'yellow', 'cyan', 'magenta'],
+                      'opacity': 1,
                     },
                   },
                 },

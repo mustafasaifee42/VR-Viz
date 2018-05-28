@@ -118,18 +118,18 @@ class ForceDirectedGraph extends Component {
       return <a-entity />
     }
     else {
-    
-      let radiusValue = this.props.mark.nodes.style.radius.value, nodeColorValue = this.props.mark.nodes.style.color.fill, ifNodeColorScale = this.props.mark.nodes.style.color.scale, ifLinkColorScale = this.props.mark.links.style.color.scale, ifLinkOpacityScale = this.props.mark.links.style.opacity.scale,ifRadiusScale = this.props.mark.nodes.style.radius.scale, linkColor = this.props.mark.links.style.color.fill, linkOpacity = ifLinkColorScale = this.props.mark.links.style.opacity.value, ifLabel = this.props.mark.labels, labelWidth;
 
-      let nodeType = this.props.mark.nodes.type, labelPadding, scale = this.props.style.scale; 
+      let radiusValue = this.props.mark.nodes.style.radius.value, nodeColorValue = this.props.mark.nodes.style.fill.color, ifNodeColorScale = this.props.mark.nodes.style.fill.scale, ifLinkColorScale = this.props.mark.links.style.fill.scale, ifLinkOpacityScale = this.props.mark.links.style.fill.opacity.scale, ifRadiusScale = this.props.mark.nodes.style.radius.scale, linkColor = this.props.mark.links.style.fill.color, linkOpacity = ifLinkColorScale = this.props.mark.links.style.fill.opacity.value, ifLabel = this.props.mark.labels, labelWidth;
 
-      
+      let nodeType = this.props.mark.nodes.type, labelPadding, scale = this.props.style.scale;
 
-      if(ifLabel){
+
+
+      if (ifLabel) {
         labelWidth = this.props.mark.labels.style.size
         labelPadding = this.props.mark.labels.style.padding
       }
-      
+
 
       // Adding Domain
       let nodeRadiusDomain, linkColorDomain, nodeColorDomain, linkOpacityDomain;
@@ -141,25 +141,25 @@ class ForceDirectedGraph extends Component {
           nodeRadiusDomain = this.props.mark.nodes.style.radius.domain
       }
 
-      if (this.props.mark.nodes.style.color.scale) {
-        if (!this.props.mark.nodes.style.color.domain) {
-          nodeColorDomain = GetDomain(this.state.data.nodes, this.props.mark.nodes.style.color.field, this.props.mark.nodes.style.color.scaleType)
+      if (this.props.mark.nodes.style.fill.scale) {
+        if (!this.props.mark.nodes.style.fill.domain) {
+          nodeColorDomain = GetDomain(this.state.data.nodes, this.props.mark.nodes.style.fill.field, this.props.mark.nodes.style.fill.scaleType)
         } else
-          nodeColorDomain = this.props.mark.nodes.style.color.domain
+          nodeColorDomain = this.props.mark.nodes.style.fill.domain
       }
 
-      if (this.props.mark.links.style.color.scale) {
-        if (!this.props.mark.links.style.color.domain) {
-          linkColorDomain = GetDomain(this.state.data.link, this.props.mark.links.style.color.field, this.props.mark.links.style.color.scaleType)
+      if (this.props.mark.links.style.fill.scale) {
+        if (!this.props.mark.links.style.fill.domain) {
+          linkColorDomain = GetDomain(this.state.data.link, this.props.mark.links.style.fill.field, this.props.mark.links.style.fill.scaleType)
         } else
-          linkColorDomain = this.props.mark.links.style.color.domain
+          linkColorDomain = this.props.mark.links.style.fill.domain
       }
 
-      if (this.props.mark.links.style.opacity.scale) {
-        if (!this.props.mark.links.style.opacity.domain) {
-          linkOpacityDomain = GetDomain(this.state.data.link, this.props.mark.links.style.opacity.field, this.props.mark.links.style.opacity.scaleType)
+      if (this.props.mark.links.style.fill.opacity.scale) {
+        if (!this.props.mark.links.style.fill.opacity.domain) {
+          linkOpacityDomain = GetDomain(this.state.data.link, this.props.mark.links.style.fill.opacity.field, this.props.mark.links.style.fill.opacity.scaleType)
         } else
-          linkOpacityDomain = this.props.mark.links.style.opacity.domain
+          linkOpacityDomain = this.props.mark.links.style.fill.opacity.domain
       }
 
 
@@ -174,30 +174,30 @@ class ForceDirectedGraph extends Component {
           .domain(nodeRadiusDomain)
           .range(this.props.mark.nodes.style.radius.value)
 
-      if (this.props.mark.nodes.style.color)
-        if (this.props.mark.nodes.style.color.scaleType === 'ordinal')
+      if (this.props.mark.nodes.style.fill)
+        if (this.props.mark.nodes.style.fill.scaleType === 'ordinal')
           nodeColorScale = d3.scaleOrdinal()
             .domain(nodeColorDomain)
-            .range(this.props.mark.nodes.style.color.fill)
+            .range(this.props.mark.nodes.style.fill.color)
         else
           nodeColorScale = d3.scaleLinear()
             .domain(nodeColorDomain)
-            .range(this.props.mark.nodes.style.color.fill)
+            .range(this.props.mark.nodes.style.fill.color)
 
-      if (this.props.mark.links.style.color)
-        if (this.props.mark.links.style.color.type === 'ordinal')
+      if (this.props.mark.links.style.fill)
+        if (this.props.mark.links.style.fill.type === 'ordinal')
           linkColorScale = d3.scaleOrdinal()
             .domain(linkColorDomain)
-            .range(this.props.mark.links.style.color.fill);
+            .range(this.props.mark.links.style.fill.color);
         else
           linkColorScale = d3.scaleLinear()
             .domain(linkColorDomain)
-            .range(this.props.mark.links.style.color.fill);
+            .range(this.props.mark.links.style.fill.color);
 
-      if (this.props.mark.links.style.opacity.scale)
+      if (this.props.mark.links.style.fill.opacity.scale)
         linkOpacityScale = d3.scaleLinear()
           .domain(linkOpacityDomain)
-          .range(this.props.mark.links.style.opacity.value)
+          .range(this.props.mark.links.style.fill.opacity.value)
 
 
 
@@ -215,11 +215,11 @@ class ForceDirectedGraph extends Component {
           r = nodeRadiusScale(this.state.data.nodes[i][this.props.mark.nodes.style.radius.field])
         else
           r = this.props.mark.nodes.style.radius.value
-        if (this.props.mark.nodes.style.color.scale)
-          col = nodeColorScale(this.state.data.nodes[i][this.props.mark.nodes.style.color.field])
+        if (this.props.mark.nodes.style.fill.scale)
+          col = nodeColorScale(this.state.data.nodes[i][this.props.mark.nodes.style.fill.field])
         else
-          col = this.props.mark.nodes.style.color.fill
-        if (this.props.mark.labels) 
+          col = this.props.mark.nodes.style.fill.color
+        if (this.props.mark.labels)
           lab = this.state.data.nodes[i][this.props.mark.labels.field]
         else
           lab = ''
@@ -233,14 +233,14 @@ class ForceDirectedGraph extends Component {
 
       for (let i = 0; i < this.state.data.links.length; i++) {
         let col, op;
-        if (this.props.mark.links.style.opacity.scale)
-          op = linkOpacityScale(this.state.data.links[i][this.props.mark.links.style.opacity.field])
+        if (this.props.mark.links.style.fill.opacity.scale)
+          op = linkOpacityScale(this.state.data.links[i][this.props.mark.links.style.fill.opacity.field])
         else
-          op = this.props.mark.links.style.opacity.value
-        if (this.props.mark.links.style.color.scale)
-          col = linkColorScale(this.state.data.links[i][this.props.mark.links.style.color.field])
+          op = this.props.mark.links.style.fill.opacity.value
+        if (this.props.mark.links.style.fill.scale)
+          col = linkColorScale(this.state.data.links[i][this.props.mark.links.style.fill.field])
         else
-          col = this.props.mark.links.style.color.fill
+          col = this.props.mark.links.style.fill.color
 
         g.addLink(this.state.data.links[i].fromId, this.state.data.links[i].toId, {
           color: col,
@@ -266,7 +266,7 @@ class ForceDirectedGraph extends Component {
         lines.push(<a-entity line={`start: ${layout.getLinkPosition(link.id).from.x * scale}, ${layout.getLinkPosition(link.id).from.y * scale}, ${layout.getLinkPosition(link.id).from.z * scale}; end: ${layout.getLinkPosition(link.id).to.x * scale} ${layout.getLinkPosition(link.id).to.y * scale} ${layout.getLinkPosition(link.id).to.z * scale}; color: ${link.data.color}; opacity: ${link.data.opacity}`} />)
       })
       return (
-        <a-entity position = {`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
+        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
           {sphere}
           {lines}
           {label}

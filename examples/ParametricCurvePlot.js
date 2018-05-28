@@ -47,7 +47,7 @@ class App extends Component {
         graph={
           [
             {
-              'type': 'ScatterPlot',
+              'type': 'ParametricCurvePlot',
               'style': {
                 'origin': [0, 0, 0],
                 'dimensions': {
@@ -58,73 +58,17 @@ class App extends Component {
                 'axis-box': true,
                 'axis-box-color': 'black',
               },
-              'data': {
-                'dataFile': "data/scatterPlot.csv",
-                'fileType': 'csv',
-                'fieldDesc': [['sepal_length', 'number'], ['sepal_width', 'number'], ['petal_length', 'number'], ['petal_width', 'number'], ['species', 'text']]
-              },
               'mark': {
-                'points': {
-                  'type': 'sphere',
-                  'style': {
-                    'radius': {
-                      'scale': true,
-                      'scaleType': 'linear',
-                      'field': 'petal_width',
-                      'value': [0, 0.2],
-                    },
-                    'fill': {
-                      'scale': true,
-                      'scaleType': 'ordinal',
-                      'opacity': 0.4,
-                      'field': 'species',
-                      'color': ['red', 'green', 'blue'],
-                      'domain': ['setosa', 'versicolor', 'virginica'],
-                    },
-                  }
-                },
-                'droplines': {
+                'path': {
                   'type': 'line',
-                  'xz': true,
-                  'yz': false,
-                  'xy': false,
                   'style': {
-                    'fill': {
-                      'scale': true,
-                      'scaleType': 'ordinal',
-                      'field': 'species',
-                      'color': ['red', 'green', 'blue'],
-                      'opacity': 0.4,
-                      'domain': ['setosa', 'versicolor', 'virginica'],
-                    },
-                  }
-                },
-                'projections': {
-                  'type': 'circle',
-                  'xz': false,
-                  'yz': true,
-                  'xy': true,
-                  'style': {
-                    'fill': {
-                      'scale': true,
-                      'scaleType': 'ordinal',
-                      'field': 'species',
-                      'color': ['red', 'green', 'blue'],
-                      'opacity': 0.4,
-                      'domain': ['setosa', 'versicolor', 'virginica'],
-                    },
-                    'radius': {
-                      'scale': true,
-                      'scaleType': 'linear',
-                      'field': 'petal_width',
-                      'value': [0, 0.2],
-                    },
+                    'opacity': 0.4,
+                    'color': 'red',
                   }
                 }
               },
               'x': {
-                'type': 'linear',
-                'field': 'sepal_length',
+                'function': (y) => Math.sin(y),
                 'axis': {
                   'axis': true,
                   'orient': 'bottom-back',
@@ -148,9 +92,7 @@ class App extends Component {
                 },
               },
               'y': {
-                'type': 'linear',
-                'field': 'sepal_width',
-                'range': [0, 10],
+                'function': (y) => Math.sin(y),
                 'axis': {
                   'axis': true,
                   'orient': 'bottom-back',
@@ -173,8 +115,7 @@ class App extends Component {
                 },
               },
               'z': {
-                'type': 'linear',
-                'field': 'petal_length',
+                'function': (y) => Math.cos(y),
                 'axis': {
                   'axis': true,
                   'orient': 'bottom-back',
@@ -195,6 +136,10 @@ class App extends Component {
                     'font-size': 10,
                   }
                 },
+              },
+              'parameter': {
+                'domain': [0, 6 * Math.PI],
+                'steps': 150,
               }
             }
           ]

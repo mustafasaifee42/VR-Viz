@@ -37,7 +37,7 @@ class App extends Component {
             'floor': {
               'style': {
                 'color': '#ccc',
-                'texture':false,
+                'texture': false,
                 'width': 100,
                 'height': 100,
               }
@@ -59,14 +59,18 @@ class App extends Component {
                 'axis-box-color': 'black',
               },
               'mark': {
-                'surface':{
+                'surface': {
                   'type': 'plane',
                   'style': {
-                    'opacity': 0.4,
-                    'color': {
-                      'scale':true,
-                      'function':(x, z) => x * z,
-                      'fill': ['green', 'blue'],
+                    'fill': {
+                      'scale': true,
+                      'function': (x, z) => x * z,
+                      'color': ['green', 'blue'],
+                      'opacity': 1,
+                    },
+                    'stroke': {
+                      'width': 1,
+                      'color': 'black',
                     }
                   }
                 }

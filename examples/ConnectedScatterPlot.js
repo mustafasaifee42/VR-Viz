@@ -37,7 +37,7 @@ class App extends Component {
             'floor': {
               'style': {
                 'color': '#ccc',
-                'texture':false,
+                'texture': false,
                 'width': 100,
                 'height': 100,
               }
@@ -64,35 +64,34 @@ class App extends Component {
                 'axis-box-color': 'black',
               },
               'mark': {
-                'points':{
+                'points': {
                   'type': 'sphere',
                   'style': {
                     'radius': {
                       'scale': false,
                       'value': 0.05,
-                      },
+                    },
                     'opacity': 1,
-                    'color': {
+                    'fill': {
                       'scale': false,
-                      'fill': 'red',
+                      'color': 'red',
                     },
                   },
                 },
-                'line':{
+                'line': {
                   'style': {
                     'opacity': 1,
-                    'color': {
+                    'stroke': {
                       'scale': false,
-                      'fill': 'black',
+                      'color': 'black',
                     },
                   },
                 },
-                'label':{
+                'label': {
                   'field': 'Year',
                   'style': {
                     'color': 'black',
-                    'opacity': 1,
-                    'size': 1,
+                    'size': 2,
                   }
                 }
               },

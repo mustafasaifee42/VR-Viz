@@ -34,16 +34,32 @@ class App extends Component {
               'position': '0 0 10',
               'rotation': '0 0 0',
             },
+            'floor': {
+              'style': {
+                'color': '#ccc',
+                'texture': false,
+                'width': 100,
+                'height': 100,
+              }
+            },
+            '3D-objects': [
+              {
+                'objectFile': '/path/to/tree.obj',
+                'materialFile': '/path/to/tree.mtl',
+                'objectId': 'tree-obj',
+                'materialId': 'tree-mtl',
+              },
+            ]
           }
         }
         graph={
           [
             {
-              'type': 'PrismMap',
+              'type': 'MapStackedBarChart',
               'data': {
-                'dataFile': "data/prismMapData.csv",
+                'dataFile': "data/mapStackedBarChart.csv",
                 'fileType': 'csv',
-                'fieldDesc': [['id', 'text'], ['value', 'number'], ['colorValue', 'number']]
+                'fieldDesc': [['latitude', 'number'], ['longitude', 'number'], ['value', 'number'], ['value1', 'number']]
               },
               'style': {
                 'origin': [0, 0, 0],
@@ -56,25 +72,40 @@ class App extends Component {
                   'style': {
                     'scale': 20,
                     'position': [5, 5],
-                    'rotation': '-45 0 0',
+                    'rotation': '-90 0 0',
                     'extrusion': {
-                      'scale': true,
-                      'scaleType': 'linear',
-                      'field': 'value',
-                      'value': [0, 5],
+                      'value': 0.0000001,
                     },
                     'fill': {
-                      'scale': true,
-                      'scaleType': 'ordinal',
-                      'opacity': 0.9,
-                      'field': 'colorValue',
-                      'color': ['green', 'blue', 'red', 'yellow', 'magenta', 'cyan'],
+                      'opacity': 1,
+                      'scale': false,
+                      'color': 'red',
                     },
                     'stroke': {
                       'width': 1,
                       'color': 'black',
                     },
                   },
+                },
+                'bars': {
+                  'type': 'box',
+                  'style': {
+                    'depth': 0.2,
+                    'width': 0.2,
+                    'height': {
+                      'scale': true,
+                      'scaleType': 'linear',
+                      'field': ['value', 'value1'],
+                      'value': [0, 5],
+                    },
+                    'fill': {
+                      'scale': true,
+                      'opacity': 0.9,
+                      'scaleType': 'ordinal',
+                      'color': ['green', 'blue'],
+                      'field': ['value', 'value1'],
+                    },
+                  }
                 },
               },
             }

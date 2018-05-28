@@ -162,12 +162,16 @@ class FlowMap extends Component {
       //Drawing Map
 
       let geoData = GetMapShape(this.props.mark.map.data, this.props.mark.map.projection, this.props.mark.map.style.scale, this.props.mark.map.style.position, this.props.mark.map.shapeIdentifier);
-      
+
       let shapes = geoData.map((d, i) => {
+        console.log(d.vertices)
         let primitive = `primitive: map; vertices: ${d.vertices}; extrude: ${this.props.mark.map.style.extrusion.value}`;
-        return (<a-entity geometry={primitive} material={`color: ${this.props.mark.map.style.color.fill}; metalness: 0.2; opacity:${this.props.mark.map.style.opacity}`} />)
+        return (<a-entity geometry={primitive} material={`color: ${this.props.mark.map.style.fill.color}; metalness: 0.2; opacity:${this.props.mark.map.style.fill.opacity}`} />)
       })
 
+      let border;
+      if (this.props.mark.map.style.stroke)
+        border = geoData.map((d, i) => <a-entity meshline={`lineWidth: ${this.props.mark.map.style.stroke.width}; path:${`${d.vertices.replace(/,/g, " 0,")} 0`}; color:${this.props.mark.map.style.stroke.color}`} />);
 
       //Adding Bars
 
@@ -219,9 +223,10 @@ class FlowMap extends Component {
       })
 
       return (
-        <a-entity rotation={this.props.mark.map.style.rotation} position = {`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
+        <a-entity rotation={this.props.mark.map.style.rotation} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
           {shapes}
           {curves}
+          {border}
           {flowLines}
         </a-entity>
       )

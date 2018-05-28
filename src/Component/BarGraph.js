@@ -114,7 +114,7 @@ class BarGraph extends Component {
   }
 
   render() {
-    if(!this.state.data){
+    if (!this.state.data) {
       return <a-entity />
     }
     else {
@@ -142,11 +142,11 @@ class BarGraph extends Component {
           zDomain = this.props.z.domain
       }
 
-      if (this.props.mark.bars.style.color) {
-        if (!this.props.mark.bars.style.color.domain) {
-          colorDomain = GetDomain(this.state.data, this.props.mark.bars.style.color.field, this.props.mark.bars.style.color.type)
+      if (this.props.mark.bars.style.fill) {
+        if (!this.props.mark.bars.style.fill.domain) {
+          colorDomain = GetDomain(this.state.data, this.props.mark.bars.style.fill.field, this.props.mark.bars.style.fill.type)
         } else
-          colorDomain = this.props.mark.bars.style.color.domain
+          colorDomain = this.props.mark.bars.style.fill.domain
       }
 
       //Adding Scale
@@ -170,15 +170,15 @@ class BarGraph extends Component {
         .range([this.props.mark.bars.style.depth / 2, this.props.style.dimensions.depth]);
 
 
-      if (this.props.mark.bars.style.color.scale)
-        if (this.props.mark.bars.style.color.scaleType === 'ordinal')
+      if (this.props.mark.bars.style.fill.scale)
+        if (this.props.mark.bars.style.fill.scaleType === 'ordinal')
           colorScale = d3.scaleOrdinal()
             .domain(colorDomain)
-            .range(this.props.mark.bars.style.color.fill)
+            .range(this.props.mark.bars.style.fill.color)
         else
           colorScale = d3.scaleLinear()
             .domain(colorDomain)
-            .range(this.props.mark.bars.style.color.fill)
+            .range(this.props.mark.bars.style.fill.color)
 
       //Axis
       let xAxis, yAxis, zAxis;
@@ -245,13 +245,13 @@ class BarGraph extends Component {
           {
             marks = this.state.data.map((d, i) => {
               let hght = yScale(d[this.props.y.field]);
-              if(yScale(d[this.props.y.field]) === 0){
+              if (yScale(d[this.props.y.field]) === 0) {
                 hght = 0.000000000001;
               }
-              if (this.props.mark.bars.style.color.scale) {
-                return <a-box key={i} color={`${colorScale(d[this.props.mark.bars.style.color.field])}`} opacity={this.props.mark.bars.style.opacity} depth={`${this.props.mark.bars.style.depth}`} height={`${hght}`} width={`${this.props.mark.bars.style.width}`} position={`${xScale(d[this.props.x.field])} ${hght / 2} ${zScale(d[this.props.z.field])}`} />
+              if (this.props.mark.bars.style.fill.scale) {
+                return <a-box key={i} color={`${colorScale(d[this.props.mark.bars.style.fill.field])}`} opacity={this.props.mark.bars.style.opacity} depth={`${this.props.mark.bars.style.depth}`} height={`${hght}`} width={`${this.props.mark.bars.style.width}`} position={`${xScale(d[this.props.x.field])} ${hght / 2} ${zScale(d[this.props.z.field])}`} />
               } else
-                return <a-box key={i} color={`${this.props.mark.bars.style.color.fill}`} opacity={this.props.mark.bars.style.opacity} depth={`${this.props.mark.bars.style.depth}`} height={`${hght}`} width={`${this.props.mark.bars.style.width}`} position={`${xScale(d[this.props.x.field])} ${hght / 2} ${zScale(d[this.props.z.field])}`} />
+                return <a-box key={i} color={`${this.props.mark.bars.style.fill.color}`} opacity={this.props.mark.bars.style.opacity} depth={`${this.props.mark.bars.style.depth}`} height={`${hght}`} width={`${this.props.mark.bars.style.width}`} position={`${xScale(d[this.props.x.field])} ${hght / 2} ${zScale(d[this.props.z.field])}`} />
             });
             break;
           }
@@ -259,13 +259,13 @@ class BarGraph extends Component {
           {
             marks = this.state.data.map((d, i) => {
               let hght = yScale(d[this.props.y.field]);
-              if(yScale(d[this.props.y.field]) === 0){
+              if (yScale(d[this.props.y.field]) === 0) {
                 hght = 0.000000000001;
               }
-              if (this.props.mark.bars.style.color.scale)
-                return <a-cylinder key={i} opacity={this.props.mark.bars.style.opacity} color={`${colorScale(d[this.props.mark.bars.style.color.field])}`} height={`${hght}`} radius={`${this.props.mark.bars.style.radius}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${xScale(d[this.props.x.field])} ${hght / 2} ${zScale(d[this.props.z.field])}`} />
+              if (this.props.mark.bars.style.fill.scale)
+                return <a-cylinder key={i} opacity={this.props.mark.bars.style.opacity} color={`${colorScale(d[this.props.mark.bars.style.fill.field])}`} height={`${hght}`} radius={`${this.props.mark.bars.style.radius}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${xScale(d[this.props.x.field])} ${hght / 2} ${zScale(d[this.props.z.field])}`} />
               else
-                return <a-cylinder key={i} opacity={this.props.mark.bars.style.opacity} color={`${this.props.mark.bars.style.color.fill}`} height={`${hght}`} radius={`${this.props.mark.bars.style.radius}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${xScale(d[this.props.x.field])} ${hght / 2} ${zScale(d[this.props.z.field])}`} />
+                return <a-cylinder key={i} opacity={this.props.mark.bars.style.opacity} color={`${this.props.mark.bars.style.fill.color}`} height={`${hght}`} radius={`${this.props.mark.bars.style.radius}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${xScale(d[this.props.x.field])} ${hght / 2} ${zScale(d[this.props.z.field])}`} />
             });
             break;
           }
@@ -273,13 +273,13 @@ class BarGraph extends Component {
           {
             marks = this.state.data.map((d, i) => {
               let hght = yScale(d[this.props.y.field]);
-              if(yScale(d[this.props.y.field]) === 0){
+              if (yScale(d[this.props.y.field]) === 0) {
                 hght = 0.000000000001;
               }
-              if (this.props.mark.bars.style.color.scale)
-                return <a-cone key={i} opacity={this.props.mark.bars.style.opacity} color={`${colorScale(d[this.props.mark.bars.style.color.field])}`} height={`${hght}`} radius-bottom={`${this.props.mark.bars.style.radiusBottom}`} radius-top={`${this.props.mark.bars.style.radiusTop}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${xScale(d[this.props.x.field])} ${hght / 2} ${zScale(d[this.props.z.field])}`} />
+              if (this.props.mark.bars.style.fill.scale)
+                return <a-cone key={i} opacity={this.props.mark.bars.style.opacity} color={`${colorScale(d[this.props.mark.bars.style.fill.field])}`} height={`${hght}`} radius-bottom={`${this.props.mark.bars.style.radiusBottom}`} radius-top={`${this.props.mark.bars.style.radiusTop}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${xScale(d[this.props.x.field])} ${hght / 2} ${zScale(d[this.props.z.field])}`} />
               else
-                return <a-cone key={i} opacity={this.props.mark.bars.style.opacity} color={`${this.props.mark.bars.style.color.fill}`} height={`${hght}`} radius-bottom={`${this.props.mark.bars.style.radiusBottom}`} radius-top={`${this.props.mark.bars.style.radiusTop}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${xScale(d[this.props.x.field])} ${hght / 2} ${zScale(d[this.props.z.field])}`} />
+                return <a-cone key={i} opacity={this.props.mark.bars.style.opacity} color={`${this.props.mark.bars.style.fill.color}`} height={`${hght}`} radius-bottom={`${this.props.mark.bars.style.radiusBottom}`} radius-top={`${this.props.mark.bars.style.radiusTop}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${xScale(d[this.props.x.field])} ${hght / 2} ${zScale(d[this.props.z.field])}`} />
             });
             break;
           }
@@ -287,20 +287,20 @@ class BarGraph extends Component {
           {
             marks = this.state.data.map((d, i) => {
               let hght = yScale(d[this.props.y.field]);
-              if(yScale(d[this.props.y.field]) === 0){
+              if (yScale(d[this.props.y.field]) === 0) {
                 hght = 0.000000000001;
               }
-              if (this.props.mark.bars.style.color.scale)
-                return <a-box key={i} opacity={this.props.mark.bars.style.opacity} color={`${colorScale(d[this.props.mark.bars.style.color.field])}`} depth={`${this.props.mark.bars.style.depth}`} height={`${hght}`} width={`${this.props.mark.bars.style.width}`} position={`${xScale(d[this.props.x.field])} ${hght / 2} ${zScale(d[this.props.z.field])}`} />
+              if (this.props.mark.bars.style.fill.scale)
+                return <a-box key={i} opacity={this.props.mark.bars.style.opacity} color={`${colorScale(d[this.props.mark.bars.style.fill.field])}`} depth={`${this.props.mark.bars.style.depth}`} height={`${hght}`} width={`${this.props.mark.bars.style.width}`} position={`${xScale(d[this.props.x.field])} ${hght / 2} ${zScale(d[this.props.z.field])}`} />
               else
-                return <a-box key={i} opacity={this.props.mark.bars.style.opacity} color={`${this.props.mark.bars.style.color.fill}`} depth={`${this.props.mark.bars.style.depth}`} height={`${hght}`} width={`${this.props.mark.bars.style.width}`} position={`${xScale(d[this.props.x.field])} ${hght / 2} ${zScale(d[this.props.z.field])}`} />
+                return <a-box key={i} opacity={this.props.mark.bars.style.opacity} color={`${this.props.mark.bars.style.fill.color}`} depth={`${this.props.mark.bars.style.depth}`} height={`${hght}`} width={`${this.props.mark.bars.style.width}`} position={`${xScale(d[this.props.x.field])} ${hght / 2} ${zScale(d[this.props.z.field])}`} />
             });
             break;
           }
       }
 
       return (
-        <a-entity position = {`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
+        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
           {marks}
           {xAxis}
           {yAxis}

@@ -49,25 +49,28 @@ class App extends Component {
                 'origin': [0, 0, 0],
               },
               'mark': {
-                'map':{
+                'map': {
                   'data': mapData,
                   'projection': 'Mercator',
-                  'shapeIdentifier':'id',
+                  'shapeIdentifier': 'id',
                   'style': {
                     'scale': 20,
                     'position': [5, 5],
                     'rotation': '-90 0 0',
-                    'opacity': 1,
-                    'extrusion':{
+                    'extrusion': {
                       'value': 0.0000001,
                     },
-                    'color': {
-                      'scale':false,
-                      'fill': 'red',
+                    'fill': {
+                      'color': 'red',
+                      'opacity': 1,
+                    },
+                    'stroke': {
+                      'width': 1,
+                      'color': 'black',
                     },
                   },
                 },
-                'bars':{
+                'bars': {
                   'type': 'box',
                   'style': {
                     'depth': 0.2,
@@ -76,14 +79,14 @@ class App extends Component {
                       'scale': true,
                       'scaleType': 'linear',
                       'field': 'value',
-                      'value': [0,5],
+                      'value': [0, 5],
                     },
-                    'opacity': 0.9,
-                    'color': {
+                    'fill': {
                       'scale': true,
                       'scaleType': 'linear',
+                      'opacity': 0.9,
                       'field': 'value',
-                      'fill': ['green', 'blue'],
+                      'color': ['green', 'blue'],
                     },
                   }
                 },

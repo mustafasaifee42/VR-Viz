@@ -6,8 +6,8 @@ A-Frame based React component for data visualization in VR and AR.
 
 VR-Viz provides a higher-level react components for data visualization in webVR. VR-Viz is a collection of reusable visualization React components. VR-Viz combines A-Frame with React (for DOM manipulation) and D3 (for data visualizations) to generate visualization in VR. 
 
-### Catalouge of different 3D Visualizations
-To see a catalouge of different 3D visualizations [click here](https://vr-3d-viz.herokuapp.com/).
+### Catalogue of different 3D Visualizations
+To see a catalogue of different 3D visualizations [click here](https://vr-3d-viz.herokuapp.com/).
 
 ### Goal
 The goal is to create a library of reusable React components that can be used to make reusable charts, visualizations, or dashboards in VR or custom visualization or data stories in VR. 
@@ -21,22 +21,30 @@ Under the hood, VR-Viz uses D3 for the data manipulation and generating layouts 
 * [3D Scatter Plot / 3D Bubble Chat](/ReadMe/ScatterPlot.md)
 * [3D Connected Scatter Plot](/ReadMe/ConnectedScatterPlot.md)
 * [3D Contour Plot](/ReadMe/ContourPlot.md)
+* [3D Parametric Curve Plot](/ReadMe/ParametricCurvePlot.md)
 * [3D Surface Plot](/ReadMe/SurfacePlot.md)
+* [3D Parametric Surface Plot](/ReadMe/ParametricSurfacePlot.md)
 * [3D Force Directed Graph](/ReadMe/ForceDirectedGraph.md)
 * [3D Prism Map](/ReadMe/PrismMap.md)
 * [3D Map Bar Graph](/ReadMe/MapBarChart.md)
+* [3D Map Stacked Bar Graph](/ReadMe/MapStackedBarChart.md)
 * [3D Flow Map](/ReadMe/FlowMap.md)
 * [3D Contour Map](/ReadMe/ContourMap.md)
 * [3D Point Cloud](/ReadMe/PointCloud.md)
+* [3D TreeMap](/ReadMe/TreeMap.md)
+* [Waterfall Plot](/ReadMe/WaterFallPlot.md)
+* [3D Mesh Plot](/ReadMe/MeshPlot.md)
+* [3D Time Series](/ReadMe/TimeSeries.md)
 
 ###### To-Do
-* 3D TreeMap
-* Waterfall Plot
-* 3D Parametric Curve Plot
-* 3D Parametric Surface Plot
-* 3D Mesh Plot
-* 3D Map Stacked Bar Graph
-* 3D Time Series
+* ~~3D TreeMap~~
+* ~~Waterfall Plot~~
+* ~~3D Parametric Curve Plot~~
+* ~~3D Parametric Surface Plot~~
+* ~~3D Mesh Plot~~
+* ~~3D Map Stacked Bar Graph~~
+* ~~3D Rectangle Chart~~
+* ~~3D Time Series~~
 * Interactivity
 * Animation
 

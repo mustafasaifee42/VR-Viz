@@ -10,8 +10,9 @@ import { csv } from 'd3-request';
 import { json } from 'd3-request';
 import { text } from 'd3-request';
 import ReadPLY from './ReadPLY.js';
+import 'aframe-meshline-component';
 
-class StackedBarGraph extends Component {
+class BarGraph extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -118,70 +119,87 @@ class StackedBarGraph extends Component {
       return <a-entity />
     }
     else {
-
-      // Data manipulation
-
-      let data = d3.stack().keys(this.props.mark.bars.style.fill.field)(this.state.data), max = 0;
-      let dataset = []
-      for (let i = 0; i < data.length; i++) {
-        for (let j = 0; j < data[i].length; j++) {
-          dataset.push(data[i][j])
-        }
-      }
-      console.log(data)
-      for (let i = 0; i < dataset.length; i++) {
-        if (max < dataset[i][1]) {
-          max = dataset[i][1]
-        }
-      }
-      console.log(dataset)
       // Getting domain for axis
-      let xDomain, yDomain, zDomain, colorDomain = this.props.mark.bars.style.fill.field;
+      let xDomain, yDomain, zDomain, colorDomain;
 
-      if (!this.props.x.domain)
-        xDomain = GetDomain(this.state.data, this.props.x.field, this.props.x.type)
-      else
-        xDomain = this.props.x.domain
+      if (this.props.x) {
+        if (!this.props.x.domain) {
+          xDomain = GetDomain(this.state.data, this.props.x.field, this.props.x.type)
+        } else
+          xDomain = this.props.x.domain
+      }
+
+      if (this.props.z) {
+        if (!this.props.z.domain) {
+          console.log(Object.keys(this.state.data[0]))
+          zDomain = [];
+          for (let k = 0; k < Object.keys(this.state.data[0]).length; k++)
+            if (Object.keys(this.state.data[0])[k] !== this.props.x.field)
+              zDomain.push(Object.keys(this.state.data[0])[k]);
+        } else
+          zDomain = this.props.z.domain
+      }
 
 
-      if (!this.props.y.domain)
-        yDomain = [0, max]
-      else
-        yDomain = this.props.y.domain
 
+      if (this.props.y) {
+        if (!this.props.y.domain) {
+          let min = 9999999999999999, max = -99999999999999999;
+          for (let k = 0; k < zDomain.length; k++) {
+            for (let i = 0; i < this.state.data.length; i++) {
+              if (min > this.state.data[i][zDomain[k]]) {
+                min = this.state.data[i][zDomain[k]]
+              }
+              if (max < this.state.data[i][zDomain[k]])
+                max = this.state.data[i][zDomain[k]]
+            }
+          }
+          yDomain = [min, max]
+        } else
+          yDomain = this.props.y.domain
+      }
 
-      if (!this.props.z.domain)
-        zDomain = GetDomain(this.state.data, this.props.z.field, this.props.z.type)
-      else
-        zDomain = this.props.z.domain
-
+      console.log(xDomain, yDomain, zDomain)
 
       //Adding Scale
+      let zRange = [];
+      for (let i = 0; i < zDomain.length; i++) {
+        zRange.push(i * this.props.style.dimensions.depth / (zDomain.length - 1))
+      }
+      let xRange = [];
+      for (let i = 0; i < xDomain.length; i++) {
+        xRange.push(i * this.props.style.dimensions.width / (xDomain.length - 1))
+      }
+
       let xScale, yScale, zScale, colorScale;
 
-      if (this.props.x)
-        xScale = d3.scaleBand()
-          .range([this.props.mark.bars.style.width / 2, this.props.style.dimensions.width])
+      if (this.props.x.type === 'ordinal')
+        xScale = d3.scaleOrdinal()
+          .range(xRange)
+          .domain(xDomain);
+      else
+        xScale = d3.scaleLinear()
+          .range([0, this.props.style.dimensions.width])
           .domain(xDomain);
 
-      if (this.props.y)
-        if (this.props.y.range)
-          yScale = d3.scaleLinear()
-            .domain(yDomain)
-            .range(this.props.y.range)
-        else
-          yScale = d3.scaleLinear()
-            .domain(yDomain)
-            .range([0, this.props.style.dimensions.height])
+      if (this.props.y.range)
+        yScale = d3.scaleLinear()
+          .domain(yDomain)
+          .range(this.props.y.range)
+      else
+        yScale = d3.scaleLinear()
+          .domain(yDomain)
+          .range([0, this.props.style.dimensions.height])
 
-      if (this.props.z)
-        zScale = d3.scaleBand()
+      if (this.props.z.type === 'ordinal')
+        zScale = d3.scaleOrdinal()
           .domain(zDomain)
-          .range([this.props.mark.bars.style.depth / 2, this.props.style.dimensions.depth]);
+          .range(zRange);
+      else
+        zScale = d3.scaleLinear()
+          .domain(zDomain)
+          .range(zRange);
 
-      colorScale = d3.scaleOrdinal()
-        .domain(colorDomain)
-        .range(this.props.mark.bars.style.fill.color)
 
       //Axis
       let xAxis, yAxis, zAxis;
@@ -240,50 +258,43 @@ class StackedBarGraph extends Component {
       }
 
       //Adding marks
-      let marks;
-
-      switch (this.props.mark.type) {
-        case 'box':
-          {
-            marks = data.map((d, i) => {
-              let markTemp = d.map((d1, j) => {
-                return <a-box key={i} color={`${this.props.mark.bars.style.fill.color[i]}`} opacity={this.props.mark.bars.style.fill.opacity} depth={`${this.props.mark.bars.style.depth}`} height={`${yScale(d1[1] - d1[0])}`} width={`${this.props.mark.bars.style.width}`} position={`${xScale(d1.data[this.props.x.field])} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2} ${zScale(d1.data[this.props.z.field])}`} />
-              })
-              return markTemp
-            });
-            break;
+      let marks, line;
+      if (this.props.mark.curve.style.stroke)
+        line = zDomain.map((d, i) => {
+          let path = ''
+          for (let j = 0; j < this.state.data.length; j++) {
+            if (j !== this.state.data.length - 1)
+              path = path + ` ${xScale(this.state.data[j][this.props.x.field])} ${yScale(this.state.data[j][d])} ${zScale(d)},`
+            else
+              path = path + ` ${xScale(this.state.data[j][this.props.x.field])} ${yScale(this.state.data[j][d])} ${zScale(d)}`
           }
-        case 'cylinder':
-          {
-            marks = data.map((d, i) => {
-              let markTemp = d.map((d1, j) => {
-                return <a-cylinder key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${this.props.mark.bars.style.fill.color[i]}`} height={`${yScale(d1[1] - d1[0])}`} radius={`${this.props.mark.bars.style.radius}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${xScale(d1.data[this.props.x.field])} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2} ${zScale(d1.data[this.props.z.field])}`} />
-              })
-              return markTemp
-            });
-            break;
+          return <a-entity meshline={`lineWidth: ${this.props.mark.curve.style.stroke.width}; path:${path}; color: ${this.props.mark.curve.style.stroke.color}`}></a-entity>
+        })
+      if (this.props.mark.curve.style.fill)
+        marks = zDomain.map((d, i) => {
+          let path = `0 0 ${zScale(d)},`
+          for (let j = 0; j < this.state.data.length; j++) {
+            if (j !== this.state.data.length - 1)
+              path = path + ` ${xScale(this.state.data[j][this.props.x.field])} ${yScale(this.state.data[j][d])},`
+            else
+              path = path + ` ${xScale(this.state.data[j][this.props.x.field])} ${yScale(this.state.data[j][d])}`
           }
-        default:
-          {
-            marks = data.map((d, i) => {
-              let markTemp = d.map((d1, j) => {
-                return <a-box key={i} color={`${this.props.mark.bars.style.fill.color[i]}`} opacity={this.props.mark.bars.style.fill.opacity} depth={`${this.props.mark.bars.style.depth}`} height={`${yScale(d1[1] - d1[0])}`} width={`${this.props.mark.bars.style.width}`} position={`${xScale(d1.data[this.props.x.field])} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2} ${zScale(d1.data[this.props.z.field])}`} />
-              })
-              return markTemp
-            });
-            break;
-          }
-      }
+          path = path + `, ${xScale(this.state.data[this.state.data.length - 1][this.props.x.field])} 0`
+          let primitive = `primitive: map; vertices: ${path}; extrude: 0.00000001`;
+          console.log(path)
+          return <a-entity key={i} position={`0 0 ${zScale(d)}`} geometry={primitive} material={`color: ${this.props.mark.curve.style.fill.color}; side: double; opacity:${this.props.mark.curve.style.fill.opacity}`} />
+        })
       return (
         <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
-          {marks}
           {xAxis}
           {yAxis}
           {zAxis}
           {box}
+          {marks}
+          {line}
         </a-entity>
       )
     }
   }
 }
-export default StackedBarGraph
+export default BarGraph

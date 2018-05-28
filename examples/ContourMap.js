@@ -50,9 +50,13 @@ class App extends Component {
               'mark': {
                 'style': {
                   'opacity': 0.4,
-                  'color': {
+                  'fill': {
                     'scale': true,
-                    'fill': ['green', 'blue'],
+                    'color': ['green', 'blue'],
+                  },
+                  'stroke': {
+                    'width': 1,
+                    'color': 'black',
                   },
                   'scale': {
                     'ground': 0.1,
