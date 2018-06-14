@@ -139,9 +139,10 @@ __Example__
 Sky has property called `style` in which the visual properties of sky is defined.
 
 __Style Properties for Sky__
+
 Property|Type|Description
 ---|---|---
-color|string|Color of the skybox. __Not required if `texture` is true.__
+color|string|Color of the skybox. __Not Required if `texture` is true.__
 texture|bool|If there is texture present in the skybox or not. __Default value is false.__
 img|string|Path to the texture / image that is shown on the skybox. __Not required if `texture` is false.__ 
 
@@ -149,6 +150,7 @@ img|string|Path to the texture / image that is shown on the skybox. __Not requir
 Light property is defined as array which can have multiple lights. Proposed light system is a combination of an ambient light source and directional light source. Each element of array i.e. light is defined using the properties mentioned below.
 
 __Properties for Light__
+
 Property|Type|Description
 ----|----|----
 type|string|Type of light. __Required. Available values: `ambient`, `directional`, `point`.__
@@ -160,10 +162,11 @@ position|string|Position of light source. __Not required if `type` is ambient. F
 #### camera
 
 __Properties for Camera__
+
 Property|Type|Description
 ---|---|---
-position|string|Position of the camera. __Require. Format is "0 0 0".__
-rotation|string|Rotation of the camera. __Require. Format is "90 0 0".__ Note that the values are in degree and the numbers represent ratation along x-axis, y-axis and z-axis respectively.
+position|string|Position of the camera. __Required. Format is "0 0 0".__
+rotation|string|Rotation of the camera. __Required. Format is "90 0 0".__ Note that the values are in degree and the numbers represent ratation along x-axis, y-axis and z-axis respectively.
 
 #### floor
 Floor has property called `style` in which the visual properties of floor is defined.
@@ -171,17 +174,18 @@ Floor has property called `style` in which the visual properties of floor is def
 __Style Properties for Floor__
 Property|Type|Description
 ---|---|---
-color|string|Color of the floor. __Not required if `texture` is true.__
+color|string|Color of the floor. __Not Required if `texture` is true.__
 width|float|Width of the floor. __Required__
 depth|float|Depth of the floor. __Required__
-texture|bool|If there is texture present in the floor or not. __Default value is false.__
-img|string|Path to the texture / image that is shown on the floor. __Not required if `texture` is false.__ 
-repeat|bool|__Not required if `texture` is false.__ 
+texture|bool|If there is texture present in the floor or not. __Not Required. Default value is false.__
+img|string|Path to the texture / image that is shown on the floor. __Not Required if `texture` is false.__ 
+repeat|bool|__Not Required if `texture` is false.__ 
 
 #### 3D-Object
 3D-Object property is defined as array which can have multiple 3D objects. Each element of array i.e. 3D object is defined using the properties mentioned below.
 
 __Properties for 3D-Object__
+
 Property|Type|Description
 ---|---|---
 objectFile|string|Path of the 3D object. __Required__
@@ -195,9 +199,7 @@ Main features / properties of the scene objects are:
 * data
 * style
 * mark
-* x __Not required for all the types__
-* y __Not required for all the types__
-* z __Not required for all the types__
+* axis __Not required for all the types__
 
 #### type
 type is used to define what kind of visualization is needed. The availabe values for type are :
