@@ -51,4 +51,4 @@ style|object|Defines the style of the contour. __Required__
 style.opacity|float|Defines the opacity of the contour. __Required.__ _Value must be between 0 and 1._
 style.color|string|Defines the color for contour. __Required.__
 
-## [Example JS of the Visualization](../examples/ContourPlot.js)
+### [Example JS of the Visualization](../examples/ContourPlot.js)

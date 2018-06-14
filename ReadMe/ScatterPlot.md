@@ -70,8 +70,6 @@
 }
 ```
 
-## DataFile
-
 __Properties for `mark` for Prism Map__
 
 Property|Type|Description
@@ -138,6 +136,10 @@ projections.style.fill.domain|array|Defines the domain for fill. __Not Required.
 projections.style.fill.color|array or string|Defines the color for fill. __Not Required if projections.style.fill.scaleType is present, else required. Default value: d3.schemeCategory10__ _If projections.style.fill.scaleType is not present the this needs to be a string otherwise an array._
 projections.style.fill.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if projections.style.fill.color is not given and projections.style.fill.scaleType is `linear`._
 
+### [Example JS of the Visualization](../examples/ScatterPlot.js)
+
+## Data
+
 **Datafile**: `csv`
 
 ```
@@ -150,5 +152,3 @@ sepal_length,sepal_width,petal_length,petal_width,species
 5.4,3.9,1.7,0.4,setosa
 4.6,3.4,1.4,0.3,setosa
 ```
-
-## [Example JS of the Visualization](../examples/ScatterPlot.js)

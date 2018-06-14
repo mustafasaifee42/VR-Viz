@@ -66,7 +66,9 @@ style.stroke|object|Defines the stroke for the mesh. __Not Required. If not pres
 style.stroke.width|float|Defines the stroke of the mesh.  __Required.__
 style.stroke.color|string|Defines the stroke color for  mesh. __Required.__
 
-## The Data
+### [Example JS of the Visualization](../examples/MeshPlot.js)
+
+## Data
 
 **Datafile**: `csv`
 
@@ -76,5 +78,3 @@ Alpha,-10,0,10
 20,-0.159781,-0.159673,-0.159781
 30,-0.16475,-0.177522,-0.16475
 ```
-
-## [Example JS of the Visualization](../examples/MeshPlot.js)

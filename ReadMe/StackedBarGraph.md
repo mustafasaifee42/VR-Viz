@@ -67,7 +67,9 @@ style.fill.scaleType|string|Defines the scale type for fill of the bar. __Requir
 style.fill.field|array of string|Defines the field in the data that will be mapped as fill of the bar. __Required if `style.fill.scaleType` is present.__
 style.fill.color|array| Defines the color for fill. __Not Required if style.fill.scaleType is present, else required. Default value: d3.schemeCategory10__ _If style.fill.scaleType is not present the this needs to be a string otherwise an array._
 
-## DataFile
+### [Example JS of the Visualization](../examples/StackedBargraph.js)
+
+## Data
 
 **Datafile**: `csv`
 
@@ -98,5 +100,3 @@ Mexico,Fourth,103,144,10
 Asia,Fourth,144,169,10
 Africa,Fourth,45,33,10
 ```
-
-## [Example JS of the Visualization](../examples/StackedBargraph.js)

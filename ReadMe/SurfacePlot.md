@@ -67,4 +67,4 @@ style.stroke|object|Defines the stroke for the planes. __Not Required. If not pr
 style.stroke.width|float|Defines the stroke of the surface.  __Required.__
 style.stroke.color|string|Defines the stroke color for  surface. __Required.__
 
-## [Example JS of the Visualization](../examples/SurfacePlot.js)
+### [Example JS of the Visualization](../examples/SurfacePlot.js)

@@ -78,7 +78,9 @@ Axis object in spiral chart is different from other charts which is shown in the
 }
 ```
 
-## The Data
+### [Example JS of the Visualization](../examples/SpiralChart.js)
+
+## Data
 
 **Datafile**: `csv`
 
@@ -89,5 +91,3 @@ Year,GDP1,GDP2,GDP3,GDP4,GDP5
 2002,3,3,3,3,3
 2003,4,4,4,4,4
 ```
-
-## [Example JS of the Visualization](../examples/SpiralChart.js)

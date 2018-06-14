@@ -90,7 +90,9 @@ bars.style.fill.domain|array|Defines the domain for fill. __Not Required.__ _If 
 bars.style.fill.color|array or string|Defines the color for fill. __Not Required if bars.style.fill.scaleType is present, else required. Default value: d3.schemeCategory10__ _If bars.style.fill.scaleType is not present the this needs to be a string otherwise an array._
 bars.style.fill.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if bars.style.fill.color is not given and bars.style.fill.scaleType is `linear`._
 
-## DataFile
+### [Example JS of the Visualization](../examples/MapBarChart.js)
+
+## Data
 
 **Datafile**: `csv`
 
@@ -102,5 +104,3 @@ latitude,longitude,value
 23.424076,53.847818,9.563725062
 33.93911,67.709953,7.260326865
 ```
-
-## [Example JS of the Visualization](../examples/MapBarChart.js)

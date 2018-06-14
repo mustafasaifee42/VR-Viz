@@ -36,7 +36,9 @@ style.stroke|object|Defines the stroke for the planes. __Not Required. If not pr
 style.stroke.width|float|Defines the stroke of the planes. __Required.__
 style.stroke.color|string|Defines the stroke color for plane. __Required.__
 
-## The Data
+### [Example JS of the Visualization](../examples/ContourMap.js)
+
+## Data
 
 **Datafile**: `text`
 
@@ -49,7 +51,5 @@ The data file is without header. Rows corresponding to grid lines running east t
 102,102,103,103,103
 102,102,103,103,103
 ```
-
-## [Example JS of the Visualization](../examples/ContourMap.js)
 
 

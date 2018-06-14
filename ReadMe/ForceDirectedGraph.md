@@ -89,7 +89,9 @@ label.style.opacity|float|Defines the opacity for label. __Required.__ _Value mu
 label.style.fontSize|float|Defines the size of label. __Required.__
 label.style.padding|float|Defines the distance between the label and node. __Required.__
 
-## DataFile
+### [Example JS of the Visualization](../examples/ForceDirectedGraph.js)
+
+## Data
 
 **Datafile**: `json`
 
@@ -118,6 +120,4 @@ label.style.padding|float|Defines the distance between the label and node. __Req
     },
   ]
 ```
-
-## [Example JS of the Visualization](../examples/ForceDirectedGraph.js)
 

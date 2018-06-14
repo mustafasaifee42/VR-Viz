@@ -62,7 +62,9 @@ style.stroke|object|Defines the stroke for the timeseries. __Not Required. If no
 style.stroke.width|float|Defines the stroke of the timeseries.  __Required.__
 style.stroke.color|string|Defines the stroke color for the timeseries. __Required.__
 
-## The Data
+### [Example JS of the Visualization](../examples/TimeSeries.js)
+
+## Data
 
 **Datafile**: `csv`
 
@@ -72,5 +74,3 @@ Year,Tornadoes,Deaths
 1997,14,1
 1998,71,0
 ```
-
-## [Example JS of the Visualization](../examples/TimeSeries.js)

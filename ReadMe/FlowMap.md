@@ -82,7 +82,9 @@ flowline.height|object|Defines the peak height which flowlines can achieve. __No
 flowline.height.field|string|Defines the field in the data that will be mapped as height of the flowline. __Required.__
 flowline.height.scaleFactor|float|Defines the factor with which the height is scaled. __Required.__
 
-## DataFile
+### [Example JS of the Visualization](../examples/FlowMap.js)
+
+## Data
 
 **Datafile**: `csv`
 
@@ -94,5 +96,3 @@ source_latitude,source_longitude,target_latitude,target_longitude,value
 33.93911,67.709953,17.060816,-61.796428,7.260326865
 18.220554,-63.068615,41.153332,20.168331,9.61927466
 ```
-
-## [Example JS of the Visualization](../examples/FlowMap.js)

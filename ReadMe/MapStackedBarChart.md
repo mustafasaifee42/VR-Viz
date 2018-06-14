@@ -86,7 +86,9 @@ bars.style.fill.scaleType|string|Defines the scale type for fill of the bar. __R
 bars.style.fill.field|array of string|Defines the field in the data that will be mapped as fill of the bar. __Required if `bars.style.fill.scaleType` is present.__
 bars.style.fill.color|array| Defines the color for fill. __Not Required if bars.style.fill.scaleType is present, else required. Default value: d3.schemeCategory10__ _If bars.style.fill.scaleType is not present the this needs to be a string otherwise an array._
 
-## DataFile
+### [Example JS of the Visualization](../examples/MapStackedBarChart.js)
+
+## Data
 
 **Datafile**: `csv`
 
@@ -98,5 +100,3 @@ latitude,longitude,value,value1
 23.424076,53.847818,9.563725062,9.563725062
 33.93911,67.709953,7.260326865,7.260326865
 ```
-
-## [Example JS of the Visualization](../examples/MapStackedBarChart.js)

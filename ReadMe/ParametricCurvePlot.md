@@ -64,4 +64,4 @@ Property|Type|Description
 domain|array|Defines the domain for which the curve is plot. __Required.__
 steps|array|Defines the intervals at which the curve is calculated. __Required.__
 
-## [Example JS of the Visualization](../examples/ParametricCurvePlot.js)
+### [Example JS of the Visualization](../examples/ParametricCurvePlot.js)

@@ -90,4 +90,4 @@ parameter2|object|Defines the setting for the first paramete. __Required.__
 parameter2.domain|array|Defines the domain for which the curve is plot. __Required.__
 parameter2.steps|array|Defines the intervals at which the curve is calculated. __Required.__
 
-## [Example JS of the Visualization](../examples/ParametricSurfacePlot.js)
+### [Example JS of the Visualization](../examples/ParametricSurfacePlot.js)

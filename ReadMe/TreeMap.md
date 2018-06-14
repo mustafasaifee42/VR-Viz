@@ -43,7 +43,9 @@ style.fill.domain|array|Defines the domain for fill. __Not Required.__ _If not p
 style.fill.color|array or string|Defines the color for fill. __Not Required if style.fill.scaleType is present, else required. Default value: d3.schemeCategory10__ _If style.fill.scaleType is not present the this needs to be a string otherwise an array._
 style.fill.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if style.fill.color is not given and style.fill.scaleType is `linear`._
 
-## DataFile
+### [Example JS of the Visualization](../examples/TreeMap.js)
+
+## Data
 
 **Datafile**: `json`
 
@@ -114,5 +116,3 @@ style.fill.startFromZero|boolean|Defines if the domain starts from 0 or not. __N
   ]
 }
 ```
-
-## [Example JS of the Visualization](../examples/TreeMap.js)

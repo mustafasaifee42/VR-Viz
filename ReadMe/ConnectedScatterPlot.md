@@ -97,7 +97,9 @@ label.style.color|string|Defines the color for label. __Required.__
 label.style.opacity|float|Defines the opacity for label. __Required.__ _Value must be between 0 and 1._
 label.style.fontSize|float|Defines the size of label. __Required.__
 
-#### DataFile
+### [Example JS of the Visualization](../examples/ConnectedScatterPlot.js)
+
+#### Data
 
 **Datafile**: `csv`
 
@@ -111,5 +113,3 @@ Year,Cars,Trucks,Bikes
 1993,134,88,4
 1994,119,60,5
 ```
-
-## [Example JS of the Visualization](../examples/ConnectedScatterPlot.js)

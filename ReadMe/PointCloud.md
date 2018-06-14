@@ -32,7 +32,9 @@ style.fill.field|array of string|Defines the field in the data that will be mapp
 style.fill.color|array| Defines the color for fill. __Not Required if style.fill.scaleType is present, else required. Default value: d3.schemeCategory10__ _If style.fill.scaleType is not present the this needs to be a string otherwise an array._
 style.fill.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if style.fill.domain is not given and style.fill.scaleType is `linear`. Only applicable if file used to plot the point cloud is csv._
 
-## DataFile
+### [Example JS of the Visualization](../examples/PointCloud.js)
+
+## Data
 
 **Datafile**: `csv` or `ply`
 
@@ -44,5 +46,3 @@ x,y,z
 23.424076,53.847818,9.563725062
 33.93911,67.709953,7.260326865
 ```
-
-## [Example JS of the Visualization](../examples/PointCloud.js)

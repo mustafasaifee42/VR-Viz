@@ -58,7 +58,9 @@ style.stroke|object|Defines the stroke for the planes. __Not Required. If not pr
 style.stroke.width|float|Defines the stroke of the map. __Required.__
 style.stroke.color|string|Defines the stroke color for map. __Required.__
 
-## DataFile
+### [Example JS of the Visualization](../examples/PrismMap.js)
+
+## Data
 
 **Datafile**: `csv`
 
@@ -70,5 +72,3 @@ id,value,colorValue
 024,6.860288838552762,5
 008,6.492813386791552,3
 ```
-
-## [Example JS of the Visualization](../examples/PrismMap.js)
