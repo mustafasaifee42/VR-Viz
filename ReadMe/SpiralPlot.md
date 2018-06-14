@@ -42,21 +42,21 @@
 ```
 
 __Properties for `mark` for Parametric Spiral Chart__
-Property | Type | Description
---- | --- | ---
-vertices | array of objects | Defines the how the position of vertices for contour will be mapped. __Required. The keys of the object are `title`,`scaleType`,`domain`,`startFromZero`.__
-vertices[i].title | string | Defines the field in the data that will be mapped as vertice position of the spiral. __Required.__
-vertices[i].scaleType | string | Defines the scale type for vertice position of the spiral. __Required.__ _Available values: linear or ordinal._
-vertices[i].domain | array | Defines the domain for vertice position of the spiral. __Not Required.__ _If not present the domain is calculated from the provide data depending on the vertices[i].scaleType._
-vertices[i].startFromZero | boolean | Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if style.stroke.domain is not given and vertices[i].scaleType is `linear`._
-style | object | Defines the style of the contour. __Required__
-style.stroke | object | Defines the stroke of the spiral. __Required.__
-style.stroke.width | int | Defines the stroke width of the spiral. __Required.__
-style.stroke.scaleType | string | Defines the scale type for color of stroke of the spiral. __Not Required. If not present then a constant stroke that is defined is used.__ _Available values: linear or ordinal._
-style.stroke.field | string | Defines the field in the data that will be mapped as color of stroke of the spiral. __Required if `style.stroke.scaleType` is present.__
-style.stroke.domain | array | Defines the domain for color of stroke. __Not Required.__ _If not present the domain is calculated from the provide data depending on the style.stroke.scaleType._
-style.stroke.color | array of string or string | Defines the range for color of stroke. __Required.__ _If `style.stroke.scaleType` is not present the `style.stroke.value` is string or else its an array of string._
-style.stroke.startFromZero | boolean | Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if style.stroke.domain is not given and style.stroke.scaleType is `linear`._
+Property|Type|Description
+---|---|---
+vertices|array of objects|Defines the how the position of vertices for contour will be mapped. __Required. The keys of the object are `title`,`scaleType`,`domain`,`startFromZero`.__
+vertices[i].title|string|Defines the field in the data that will be mapped as vertice position of the spiral. __Required.__
+vertices[i].scaleType|string|Defines the scale type for vertice position of the spiral. __Required.__ _Available values: linear or ordinal._
+vertices[i].domain|array|Defines the domain for vertice position of the spiral. __Not Required.__ _If not present the domain is calculated from the provide data depending on the vertices[i].scaleType._
+vertices[i].startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if style.stroke.domain is not given and vertices[i].scaleType is `linear`._
+style|object|Defines the style of the contour. __Required__
+style.stroke|object|Defines the stroke of the spiral. __Required.__
+style.stroke.width|int|Defines the stroke width of the spiral. __Required.__
+style.stroke.scaleType|string|Defines the scale type for color of stroke of the spiral. __Not Required. If not present then a constant stroke that is defined is used.__ _Available values: linear or ordinal._
+style.stroke.field|string|Defines the field in the data that will be mapped as color of stroke of the spiral. __Required if `style.stroke.scaleType` is present.__
+style.stroke.domain|array|Defines the domain for color of stroke. __Not Required.__ _If not present the domain is calculated from the provide data depending on the style.stroke.scaleType._
+style.stroke.color|array of string or string|Defines the range for color of stroke. __Required.__ _If `style.stroke.scaleType` is not present the `style.stroke.value` is string or else its an array of string._
+style.stroke.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if style.stroke.domain is not given and style.stroke.scaleType is `linear`._
 
 ## `axis` Object in Graph Props (currently this feature is not available for spiral chart)
 

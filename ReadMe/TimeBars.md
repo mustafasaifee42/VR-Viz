@@ -39,39 +39,39 @@
 ```
 
 __Properties for `mark` for Parametric Time Bars__
-Property | Type | Description
---- | --- | ---
-type | string | Defines type of contour that would be created. __Required. Default value: disk__. _Available values: disk, box. (box is currently unavailable)_
-position | object | Defines the how the position of vertices for contour will be mapped. __Required__
-position.x | object | __Required.__
-position.x.scaleType | string | Defines the scale type for x position of the disks in time bars. __Required.__ _Available values: linear or ordinal._
-position.x.field | string | Defines the field in the data that will be mapped as x position of the disks in time bars. __Required.__
-position.x.domain | float | Defines the domain for x position. __Not Required.__ _If not present the domain is calculated from the provide data depending on the position.x.scaleType._
-position.x.startFromZero | boolean | Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if position.x.domain is not given and position.x.scaleType is `linear`._
-position.y | object | __Required.__
-position.y.scaleType | string | Defines the scale type for y position of the disks in time bars. __Required.__ _Available values: linear or ordinal._
-position.y.field | string | Defines the field in the data that will be mapped as y position of the disks in time bars. __Required.__
-position.y.domain | float | Defines the domain for y position. __Not Required.__ _If not present the domain is calculated from the provide data depending on the position.y.scaleType._
-position.y.format | string | Defines the format in which the ticks are created. __Required.__
-position.z | object | __Required.__
-position.z.scaleType | string | Defines the scale type for z position of the disks in time bars. __Required.__ _Available values: linear or ordinal._
-position.z.field | string | Defines the field in the data that will be mapped as z position of the disks in time bars. __Required.__
-position.z.domain | float | Defines the domain for z position. __Not Required.__ _If not present the domain is calculated from the provide data depending on the position.z.scaleType._
-position.z.startFromZero | boolean | Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if position.z.domain is not given and position.z.scaleType is `linear`._
-style | object | Defines the style of the contour. __Required__
-style.radius | object | Defines the radius of the disks. __Required.__
-style.radius.scaleType | string | Defines the scale type for radius of the disks. __Not Required. If not present then a constant radius that is defined is used.__ _Available values: linear or ordinal._
-style.radius.field | string | Defines the field in the data that will be mapped as radius of the disks. __Required if `style.radius.scaleType` is present.__
-style.radius.domain | array | Defines the domain for radius. __Not Required.__ _If not present the domain is calculated from the provide data depending on the style.radius.scaleType_
-style.radius.value | array of float or float | Defines the range for radius. __Required.__ _If `style.radius.scaleType` is not present the `style.radius.value` is float or else its an array of float._
-style.radius.startFromZero | boolean | Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if style.radius.domain is not given and style.radius.scaleType is `linear`._
-style.fill | object | Defines the fill of the disks. __Required.__
-style.fill.opacity | float | Defines the opacity of the disks. __Required.__ _Value must be between 0 and 1._
-style.fill.scaleType | string | Defines the scale type for fill of the disks. __Not Required. If not present then a constant color that is defined is filled in the disks.__ _Available values: linear or ordinal._
-style.fill.field | string | Defines the field in the data that will be mapped as fill of the disks. __Required if `style.fill.scaleType` is present.__
-style.fill.domain | array | Defines the domain for fill. __Not Required.__ _If not present the domain is calculated from the provide data depending on the style.fill.scaleType_
-style.fill.color | array or string | Defines the color for fill. __Not Required if style.fill.scaleType is present, else required. Default value: d3.schemeCategory10__ _If style.fill.scaleType is not present the this needs to be a string otherwise an array._
-style.fill.startFromZero | boolean | Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if style.fill.color is not given and style.fill.scaleType is `linear`._
+Property|Type|Description
+---|---|---
+type|string|Defines type of contour that would be created. __Required. Default value: disk__. _Available values: disk, box. (box is currently unavailable)_
+position|object|Defines the how the position of vertices for contour will be mapped. __Required__
+position.x|object|__Required.__
+position.x.scaleType|string|Defines the scale type for x position of the disks in time bars. __Required.__ _Available values: linear or ordinal._
+position.x.field|string|Defines the field in the data that will be mapped as x position of the disks in time bars. __Required.__
+position.x.domain|float|Defines the domain for x position. __Not Required.__ _If not present the domain is calculated from the provide data depending on the position.x.scaleType._
+position.x.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if position.x.domain is not given and position.x.scaleType is `linear`._
+position.y|object|__Required.__
+position.y.scaleType|string|Defines the scale type for y position of the disks in time bars. __Required.__ _Available values: linear or ordinal._
+position.y.field|string|Defines the field in the data that will be mapped as y position of the disks in time bars. __Required.__
+position.y.domain|float|Defines the domain for y position. __Not Required.__ _If not present the domain is calculated from the provide data depending on the position.y.scaleType._
+position.y.format|string|Defines the format in which the ticks are created. __Required.__
+position.z|object|__Required.__
+position.z.scaleType|string|Defines the scale type for z position of the disks in time bars. __Required.__ _Available values: linear or ordinal._
+position.z.field|string|Defines the field in the data that will be mapped as z position of the disks in time bars. __Required.__
+position.z.domain|float|Defines the domain for z position. __Not Required.__ _If not present the domain is calculated from the provide data depending on the position.z.scaleType._
+position.z.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if position.z.domain is not given and position.z.scaleType is `linear`._
+style|object|Defines the style of the contour. __Required__
+style.radius|object|Defines the radius of the disks. __Required.__
+style.radius.scaleType|string|Defines the scale type for radius of the disks. __Not Required. If not present then a constant radius that is defined is used.__ _Available values: linear or ordinal._
+style.radius.field|string|Defines the field in the data that will be mapped as radius of the disks. __Required if `style.radius.scaleType` is present.__
+style.radius.domain|array|Defines the domain for radius. __Not Required.__ _If not present the domain is calculated from the provide data depending on the style.radius.scaleType_
+style.radius.value|array of float or float|Defines the range for radius. __Required.__ _If `style.radius.scaleType` is not present the `style.radius.value` is float or else its an array of float._
+style.radius.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if style.radius.domain is not given and style.radius.scaleType is `linear`._
+style.fill|object|Defines the fill of the disks. __Required.__
+style.fill.opacity|float|Defines the opacity of the disks. __Required.__ _Value must be between 0 and 1._
+style.fill.scaleType|string|Defines the scale type for fill of the disks. __Not Required. If not present then a constant color that is defined is filled in the disks.__ _Available values: linear or ordinal._
+style.fill.field|string|Defines the field in the data that will be mapped as fill of the disks. __Required if `style.fill.scaleType` is present.__
+style.fill.domain|array|Defines the domain for fill. __Not Required.__ _If not present the domain is calculated from the provide data depending on the style.fill.scaleType_
+style.fill.color|array or string|Defines the color for fill. __Not Required if style.fill.scaleType is present, else required. Default value: d3.schemeCategory10__ _If style.fill.scaleType is not present the this needs to be a string otherwise an array._
+style.fill.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if style.fill.color is not given and style.fill.scaleType is `linear`._
 
 ## The Data
 
