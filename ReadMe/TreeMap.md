@@ -24,6 +24,7 @@ __Note: The `height` attribute in the `style` object in the graph component defi
 ```
 
 __Properties for `mark` for Tree Map__
+
 Property|Type|Description
 ---|---|---
 type|string|Defines type of bar that would be created. __Not Required. Default value: box__. _Available values: box._

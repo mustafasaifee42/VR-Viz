@@ -22,6 +22,7 @@
 ```
 
 __Properties for `mark` for Contour Map__
+
 Property|Type|Description
 ---|---|---
 type|string|Defines type of plane that would be created. __Required.__ _Available values: plane._

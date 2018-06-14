@@ -39,6 +39,7 @@
 ```
 
 __Properties for `mark` for Parametric Time Bars__
+
 Property|Type|Description
 ---|---|---
 type|string|Defines type of contour that would be created. __Required. Default value: disk__. _Available values: disk, box. (box is currently unavailable)_

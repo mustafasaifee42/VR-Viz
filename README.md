@@ -249,6 +249,7 @@ __Supported Visualizations__
 #### data
 
 __Properties for Data__
+
 Property|Type|Description
 ---|---|---
 dataFile|string|Path to location where the data file is located. __Required for most visualization type except for _curve plot_, _surface plot_, _parametric curve plot_ and _parametric surface plot_.__
@@ -258,6 +259,7 @@ desc|array|Description of the header. __Required only if the `fileType` is csv._
 #### style
 
 __Properties for Style__
+
 Property|Type|Description
 ---|---|---
 origin|array of numbers|Defines the position where the origin of the graph is placed. __Required.__ _Example: [0,0,0]_
@@ -345,9 +347,10 @@ __Example__
 Note: For __spiral chart__ the `axis` prop is not defined like below. To see the `axis` prop in spiral chart read the documentation of spiral chart [here](/ReadMe/SpiralPlot.md).
 
 __axis-box__
- Defines if the axis-box is drawn or not and the color and opacity of the axis box. __Not Required. If the object is not present then the axis-box is not drawn.__ The dimensions of the axis box is taken from the `dimension` object in `style`
+Defines if the axis-box is drawn or not and the color and opacity of the axis box. __Not Required. If the object is not present then the axis-box is not drawn.__ The dimensions of the axis box is taken from the `dimension` object in `style`
 
 __Properties for axis-box__
+
 Property|Type|Description
 ---|---|---
 color|string|Defines the color of the axis box. __Required__
@@ -357,6 +360,7 @@ __x-axis, y-axis, z-axis__
 Defines if the different axes are drawn or not. __Not Required. If an object is not present then that axis is not drawn.__
 
 __Properties for x-axis, y-axis, z-axis__
+
 Property|Type|Description
 ---|---|---
 orient|int|Defines where the ticks are displayed. __Not Required. Default value: 1__. _Available values: 1, 2, 3 or 4_

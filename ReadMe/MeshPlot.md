@@ -35,6 +35,7 @@
 ```
 
 __Properties for `mark` for Parametric Mesh Plot__
+
 Property|Type|Description
 ---|---|---
 type|string|Defines type of contour that would be created. __Required. Default value: plane__. _Available values: plane._

@@ -32,6 +32,7 @@
 ```
 
 __Properties for `mark` for Parametric Waterfall Plot__
+
 Property|Type|Description
 ---|---|---
 position|object|Defines the how the position of vertices for contour will be mapped. __Required__

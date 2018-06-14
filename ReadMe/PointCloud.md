@@ -19,6 +19,7 @@ __Note: The `style` object in the graph component has an additional attribute ca
 ```
 
 __Properties for `mark` for Stacked Bar Chart__
+
 Property|Type|Description
 ---|---|---
 type|string|Defines type of point that would be created. __Not Required. Default value: sphere__. _Available values: box, sphere._

@@ -32,6 +32,7 @@
 ```
 
 __Properties for `mark` for Prism Map__
+
 Property|Type|Description
 ---|---|---
 mapScale|int|Defines scale of the map. __Required.__

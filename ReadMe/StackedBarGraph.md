@@ -35,6 +35,7 @@
 ```
 
 __Properties for `mark` for Stacked Bar Graph__
+
 Property|Type|Description
 ---|---|---
 type|string|Defines type of bar that would be created. __Not Required. Default value: box__. _Available values: box, cylinder._

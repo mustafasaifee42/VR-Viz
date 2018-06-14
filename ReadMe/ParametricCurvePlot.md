@@ -28,6 +28,7 @@
 ```
 
 __Properties for `mark` for Parametric Curve Plot__
+
 Property|Type|Description
 ---|---|---
 type|string|Defines type of contour that would be created. __Required. Default value: line__. _Available values: line._
@@ -48,6 +49,7 @@ style.opacity|float|Defines the opacity of the contour. __Required.__ _Value mus
 style.color|string|Defines the color for contour. __Required.__
 
 ## `parameter` Object in Graph Props (Required)
+
 ```
 'parameter': {
   'domain': [0, 6 * Math.PI],
@@ -56,6 +58,7 @@ style.color|string|Defines the color for contour. __Required.__
 ```
 
 __Properties for `parameter` for Parametric Curve Plot__
+
 Property|Type|Description
 ---|---|---
 domain|array|Defines the domain for which the curve is plot. __Required.__

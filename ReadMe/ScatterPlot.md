@@ -73,6 +73,7 @@
 ## DataFile
 
 __Properties for `mark` for Prism Map__
+
 Property|Type|Description
 ---|---|---
 type|string|Defines type of bar that would be created. __Not Required. Default value: sphere__. _Available values: box, sphere._

@@ -34,6 +34,7 @@
 ```
 
 __Properties for `mark` for Parametric Surface Plot__
+
 Property|Type|Description
 ---|---|---
 type|string|Defines type of contour that would be created. __Required. Default value: plane__. _Available values: plane._
@@ -64,6 +65,7 @@ style.stroke.color|string|Defines the stroke color for  surface. __Required.__
 
 
 ## `parameter` Object in Graph Props (Required)
+
 ```
 'parameter': {
   'parameter1': {
@@ -78,6 +80,7 @@ style.stroke.color|string|Defines the stroke color for  surface. __Required.__
 ```
 
 __Properties for `parameter` for Parametric Curve Plot__
+
 Property|Type|Description
 ---|---|---
 parameter1|object|Defines the setting for the first paramete. __Required.__

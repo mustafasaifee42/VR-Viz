@@ -44,6 +44,7 @@
 ```
 
 __Properties for `mark` for Flow Map__
+
 Property|Type|Description
 ---|---|---
 mapScale|int|Defines scale of the map. __Required.__
@@ -86,6 +87,7 @@ flowline.height.scaleFactor|float|Defines the factor with which the height is sc
 **Datafile**: `csv`
 
 The data file must have the source and target header values as **source_latitude**,**source_longitude**,**target_latitude**,**target_longitude**.
+
 ```
 source_latitude,source_longitude,target_latitude,target_longitude,value
 42.546245,1.601554,23.424076,53.847818,3.148977637

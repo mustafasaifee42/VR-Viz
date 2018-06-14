@@ -47,6 +47,7 @@
 ```
 
 __Properties for `mark` for Connected Scatter Plot__
+
 Property|Type|Description
 ---|---|---
 nodes|object|Defines the style and shape of the noda. __Required.__

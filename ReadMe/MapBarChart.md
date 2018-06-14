@@ -48,6 +48,7 @@
 ```
 
 __Properties for `mark` for Flow Map__
+
 Property|Type|Description
 ---|---|---
 mapScale|int|Defines scale of the map. __Required.__

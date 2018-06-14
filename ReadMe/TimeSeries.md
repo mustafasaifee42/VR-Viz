@@ -34,6 +34,7 @@
 ```
 
 __Properties for `mark` for Parametric Time Series__
+
 Property|Type|Description
 ---|---|---
 type|string|Defines type of contour that would be created. __Required. Default value: plane__. _Available values: plane._

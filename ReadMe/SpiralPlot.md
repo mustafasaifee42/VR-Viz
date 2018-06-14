@@ -42,6 +42,7 @@
 ```
 
 __Properties for `mark` for Parametric Spiral Chart__
+
 Property|Type|Description
 ---|---|---
 vertices|array of objects|Defines the how the position of vertices for contour will be mapped. __Required. The keys of the object are `title`,`scaleType`,`domain`,`startFromZero`.__

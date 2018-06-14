@@ -36,6 +36,7 @@
 ```
 
 __Properties for `mark` for Bar Graph__
+
 Property|Type|Description
 ---|---|---
 type|string|Defines type of bar that would be created. __Not Required. Default value: box__. _Available values: box, cone or cylinder._
