@@ -45,4 +45,4 @@ x,y,z
 33.93911,67.709953,7.260326865
 ```
 
-#### [Example](../examples/PointCloud.js)
+## [Example JS of the Visualization](../examples/PointCloud.js)

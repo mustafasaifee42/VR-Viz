@@ -112,4 +112,4 @@ Year,Cars,Trucks,Bikes
 1994,119,60,5
 ```
 
-#### [Example](../examples/ConnectedScatterPlot.js)
+## [Example JS of the Visualization](../examples/ConnectedScatterPlot.js)

@@ -123,4 +123,4 @@ style.fill.startFromZero|boolean|Defines if the domain starts from 0 or not. __N
 ]
 ```
 
-#### [Example](../examples/TimeBars.js)
+## [Example JS of the Visualization](../examples/TimeBars.js)

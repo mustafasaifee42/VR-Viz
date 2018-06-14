@@ -151,4 +151,4 @@ sepal_length,sepal_width,petal_length,petal_width,species
 4.6,3.4,1.4,0.3,setosa
 ```
 
-#### [Example](../examples/ScatterPlot.js)
+## [Example JS of the Visualization](../examples/ScatterPlot.js)

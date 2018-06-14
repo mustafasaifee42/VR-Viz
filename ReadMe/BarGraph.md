@@ -87,4 +87,4 @@ Year,Month,Tornadoes,Deaths
 1999,February,22,0
 ```
 
-#### [Example](../examples/Bargraph.js)
+## [Example JS of the Visualization](../examples/Bargraph.js)

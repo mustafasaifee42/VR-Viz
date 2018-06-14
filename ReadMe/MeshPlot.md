@@ -77,4 +77,4 @@ Alpha,-10,0,10
 30,-0.16475,-0.177522,-0.16475
 ```
 
-#### [Example](../examples/MeshPlot.js)
+## [Example JS of the Visualization](../examples/MeshPlot.js)

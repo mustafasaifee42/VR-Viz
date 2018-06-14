@@ -115,4 +115,4 @@ style.fill.startFromZero|boolean|Defines if the domain starts from 0 or not. __N
 }
 ```
 
-#### [Example](../examples/TreeMap.js)
+## [Example JS of the Visualization](../examples/TreeMap.js)

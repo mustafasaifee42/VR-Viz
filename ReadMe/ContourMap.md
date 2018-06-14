@@ -50,6 +50,6 @@ The data file is without header. Rows corresponding to grid lines running east t
 102,102,103,103,103
 ```
 
-#### [Example](../examples/ContourMap.js)
+## [Example JS of the Visualization](../examples/ContourMap.js)
 
 

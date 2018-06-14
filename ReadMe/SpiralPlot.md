@@ -90,4 +90,4 @@ Year,GDP1,GDP2,GDP3,GDP4,GDP5
 2003,4,4,4,4,4
 ```
 
-#### [Example](../examples/SpiralChart.js)
+## [Example JS of the Visualization](../examples/SpiralChart.js)

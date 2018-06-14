@@ -103,4 +103,4 @@ latitude,longitude,value
 33.93911,67.709953,7.260326865
 ```
 
-#### [Example](../examples/MapBarChart.js)
+## [Example JS of the Visualization](../examples/MapBarChart.js)

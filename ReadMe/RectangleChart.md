@@ -75,4 +75,4 @@ Year,Tornadoes,Deaths,Type
 1999,177,12,2
 ```
 
-#### [Example](../examples/RectangleChart.js)
+## [Example JS of the Visualization](../examples/RectangleChart.js)

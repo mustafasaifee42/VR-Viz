@@ -99,4 +99,4 @@ Asia,Fourth,144,169,10
 Africa,Fourth,45,33,10
 ```
 
-#### [Example](../examples/StackedBargraph.js)
+## [Example JS of the Visualization](../examples/StackedBargraph.js)

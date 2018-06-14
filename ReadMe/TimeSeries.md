@@ -73,4 +73,4 @@ Year,Tornadoes,Deaths
 1998,71,0
 ```
 
-#### [Example](../examples/TimeSeries.js)
+## [Example JS of the Visualization](../examples/TimeSeries.js)

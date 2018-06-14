@@ -119,5 +119,5 @@ label.style.padding|float|Defines the distance between the label and node. __Req
   ]
 ```
 
-#### [Example](../examples/ForceDirectedGraph.js)
+## [Example JS of the Visualization](../examples/ForceDirectedGraph.js)
 

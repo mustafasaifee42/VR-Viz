@@ -95,4 +95,4 @@ source_latitude,source_longitude,target_latitude,target_longitude,value
 18.220554,-63.068615,41.153332,20.168331,9.61927466
 ```
 
-#### [Example](../examples/FlowMap.js)
+## [Example JS of the Visualization](../examples/FlowMap.js)

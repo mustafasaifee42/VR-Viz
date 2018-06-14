@@ -69,4 +69,4 @@ Alpha,-10,0,10
 30,-0.16475,-0.177522,-0.16475
 ```
 
-#### [Example](../examples/WaterfallPlot.js)
+## [Example JS of the Visualization](../examples/WaterfallPlot.js)

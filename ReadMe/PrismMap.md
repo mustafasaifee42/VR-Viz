@@ -71,4 +71,4 @@ id,value,colorValue
 008,6.492813386791552,3
 ```
 
-#### [Example](../examples/PrismMap.js)
+## [Example JS of the Visualization](../examples/PrismMap.js)
