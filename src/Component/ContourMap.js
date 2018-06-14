@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
 import * as THREE from 'three';
+import * as moment from 'moment';
 
 import GetDomain from '../Utils/GetDomain.js';
+import ReadPLY from '../Utils/ReadPLY.js';
 
 import { csv } from 'd3-request';
 import { json } from 'd3-request';
 import { text } from 'd3-request';
-import ReadPLY from './ReadPLY.js';
 
 AFRAME.registerGeometry('planeFromVertices', {
   schema: {
@@ -60,6 +61,8 @@ class ContourMap extends Component {
               for (let i = 0; i < this.props.data.fieldDesc.length; i++) {
                 if (this.props.data.fieldDesc[i][1] === 'number')
                   d[this.props.data.fieldDesc[i][0]] = +d[this.props.data.fieldDesc[i][0]]
+                if ((this.props.data.fieldDesc[i][1] === 'date') || (this.props.data.fieldDesc[i][1] === 'time'))
+                  d[this.props.data.fieldDesc[i][0]] = moment(d[this.props.data.fieldDesc[i][0]], this.props.data.fieldDesc[i][2])['_d']
               }
               return d
             })
@@ -160,7 +163,7 @@ class ContourMap extends Component {
       // Getting domain
       let colorDomain;
 
-      if (this.props.mark.style.fill.scale) {
+      if (this.props.mark.style.fill.scaleType) {
         if (!this.props.mark.style.fill.domain) {
           colorDomain = [d3.min(dataFormatted, d => d[1]), d3.max(dataFormatted, d => d[1])]
         } else
@@ -171,24 +174,33 @@ class ContourMap extends Component {
 
       let colorScale;
 
-      if (this.props.mark.style.fill.scale)
-        colorScale = d3.scaleLinear()
-          .domain(colorDomain)
-          .range(this.props.mark.style.fill.color)
+      if (this.props.mark.style.fill.scaleType) {
+        let colorRange = d3.schemeCategory10;
+        if (this.props.mark.style.fill.color)
+          colorRange = this.props.mark.style.fill.color;
+        if (this.props.mark.style.fill.scaleType === 'ordinal')
+          colorScale = d3.scaleOrdinal()
+            .domain(colorDomain)
+            .range(colorRange)
+        else
+          colorScale = d3.scaleLinear()
+            .domain(colorDomain)
+            .range(colorRange)
+      }
 
 
       //Drawing Contour
 
       let shapes = dataFormatted.map((d, i) => {
         let color = this.props.mark.style.fill.color;
-        if (this.props.mark.style.fill.scale)
+        if (this.props.mark.style.fill.scaleType)
           color = colorScale(d[1])
-        return (<a-entity geometry={`primitive: planeFromVertices; vertices: ${d[0] * this.props.mark.style.scale.ground} ${(d[1] - this.props.heightThreshold) * this.props.mark.style.scale.height} ${d[2] * this.props.mark.style.scale.ground}, ${d[3] * this.props.mark.style.scale.ground} ${(d[4] - this.props.heightThreshold) * this.props.mark.style.scale.height} ${d[5] * this.props.mark.style.scale.ground}, ${d[6] * this.props.mark.style.scale.ground} ${(d[7] - this.props.heightThreshold) * this.props.mark.style.scale.height} ${d[8] * this.props.mark.style.scale.ground}, ${d[9] * this.props.mark.style.scale.ground} ${(d[10] - this.props.heightThreshold) * this.props.mark.style.scale.height} ${d[11] * this.props.mark.style.scale.ground}`} material={`color: ${color}; side: double; opacity:${this.props.mark.style.opacity}`} />)
+        return (<a-entity geometry={`primitive: planeFromVertices; vertices: ${d[0] * this.props.style.objectScale.ground} ${(d[1] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[2] * this.props.style.objectScale.ground}, ${d[3] * this.props.style.objectScale.ground} ${(d[4] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[5] * this.props.style.objectScale.ground}, ${d[6] * this.props.style.objectScale.ground} ${(d[7] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[8] * this.props.style.objectScale.ground}, ${d[9] * this.props.style.objectScale.ground} ${(d[10] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[11] * this.props.style.objectScale.ground}`} material={`color: ${color}; side: double; opacity:${this.props.mark.style.fill.opacity}`} />)
       })
 
       let border;
       if (this.props.mark.style.stroke)
-        border = dataFormatted.map((d, i) => <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${d[0] * this.props.mark.style.scale.ground} ${(d[1] - this.props.heightThreshold) * this.props.mark.style.scale.height} ${d[2] * this.props.mark.style.scale.ground}, ${d[3] * this.props.mark.style.scale.ground} ${(d[4] - this.props.heightThreshold) * this.props.mark.style.scale.height} ${d[5] * this.props.mark.style.scale.ground}, ${d[6] * this.props.mark.style.scale.ground} ${(d[7] - this.props.heightThreshold) * this.props.mark.style.scale.height} ${d[8] * this.props.mark.style.scale.ground}, ${d[9] * this.props.mark.style.scale.ground} ${(d[10] - this.props.heightThreshold) * this.props.mark.style.scale.height} ${d[11] * this.props.mark.style.scale.ground}; color:${this.props.mark.style.stroke.color}`} />);
+        border = dataFormatted.map((d, i) => <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${d[0] * this.props.style.objectScale.ground} ${(d[1] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[2] * this.props.style.objectScale.ground}, ${d[3] * this.props.style.objectScale.ground} ${(d[4] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[5] * this.props.style.objectScale.ground}, ${d[6] * this.props.style.objectScale.ground} ${(d[7] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[8] * this.props.style.objectScale.ground}, ${d[9] * this.props.style.objectScale.ground} ${(d[10] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[11] * this.props.style.objectScale.ground}; color:${this.props.mark.style.stroke.color}`} />);
 
       return (
         <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>

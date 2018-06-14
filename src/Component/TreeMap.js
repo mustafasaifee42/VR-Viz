@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
+import * as moment from 'moment';
 
 import GetDomain from '../Utils/GetDomain.js';
+import ReadPLY from '../Utils/ReadPLY.js';
 import Axis from './Axis.js';
 import AxisBox from './AxisBox.js';
 
 import { csv } from 'd3-request';
 import { json } from 'd3-request';
 import { text } from 'd3-request';
-import ReadPLY from './ReadPLY.js';
 
-class StackedBarGraph extends Component {
+class TreeMap extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -42,6 +43,8 @@ class StackedBarGraph extends Component {
               for (let i = 0; i < this.props.data.fieldDesc.length; i++) {
                 if (this.props.data.fieldDesc[i][1] === 'number')
                   d[this.props.data.fieldDesc[i][0]] = +d[this.props.data.fieldDesc[i][0]]
+                if ((this.props.data.fieldDesc[i][1] === 'date') || (this.props.data.fieldDesc[i][1] === 'time'))
+                  d[this.props.data.fieldDesc[i][0]] = moment(d[this.props.data.fieldDesc[i][0]], this.props.data.fieldDesc[i][2])['_d']
               }
               return d
             })
@@ -122,9 +125,9 @@ class StackedBarGraph extends Component {
       // Data manipulation
 
       const treemap = d3.treemap()
-        .size([this.props.style.width, this.props.style.length])
-        .paddingInner(this.props.mark.squares.style.paddingInner)
-        .paddingOuter(this.props.mark.squares.style.paddingOuter);
+        .size([this.props.style.dimensions.width, this.props.style.dimensions.depth])
+        .paddingInner(this.props.mark.style.paddingInner)
+        .paddingOuter(this.props.mark.style.paddingOuter);
 
       const root = d3.hierarchy(this.state.data, (d) => d.children)
         .sum((d) => d.size);
@@ -140,26 +143,46 @@ class StackedBarGraph extends Component {
 
 
       let heightDomain;
-      if (!this.props.mark.squares.style.height.domain)
-        heightDomain = [d3.min(tree.leaves(), d => d.data[this.props.mark.squares.style.height.field]), d3.max(tree.leaves(), d => d.data[this.props.mark.squares.style.height.field])]
+      if (!this.props.mark.style.extrusion.domain) {
+        if (this.props.mark.style.extrusion.startFromZero)
+          heightDomain = [0, d3.max(tree.leaves(), d => d.data[this.props.mark.style.extrusion.field])]
+        else
+          heightDomain = [d3.min(tree.leaves(), d => d.data[this.props.mark.style.extrusion.field]), d3.max(tree.leaves(), d => d.data[this.props.mark.style.extrusion.field])]
+      } else
+        heightDomain = this.props.mark.style.extrusion.domain
+
+      let heightScale
+      if (this.props.mark.style.extrusion.value)
+        heightScale = d3.scaleLinear()
+          .domain(heightDomain)
+          .range(this.props.mark.style.extrusion.value);
       else
-        heightDomain = this.props.mark.squares.style.height.domain
+        heightScale = d3.scaleLinear()
+          .domain(heightDomain)
+          .range([0, this.props.style.dimensions.height]);
 
 
-      let heightScale = d3.scaleLinear()
-        .domain(heightDomain)
-        .range(this.props.mark.squares.style.height.range);
+      let colorScale;
+      if (this.props.mark.style.fill.scaleType) {
+        let colorRange = d3.schemeCategory10;
+        if (this.props.mark.style.fill.color)
+          colorRange = this.props.mark.style.fill.color;
+        colorScale = d3.scaleOrdinal()
+          .domain(parent)
+          .range(colorRange)
+      }
 
-      let color = d3.scaleOrdinal().range(this.props.mark.squares.style.fill.color).domain(parent);
 
       let marks = tree.leaves().map((d, i) => {
         let width = (d.x1 - d.x0).toFixed(3);
         let posX = (d.x0 + (d.x1 - d.x0) / 2).toFixed(3);
         let depth = (d.y1 - d.y0).toFixed(3);
         let posZ = (d.y0 + (d.y1 - d.y0) / 2).toFixed(3);
-        let height = (heightScale(d.data[this.props.mark.squares.style.height.field])).toFixed(3);
-        console.log(width, width / 2, width - width / 2)
-        return <a-box id={`width${width}posX${posX}dx${d.x0}`} key={i} color={`${color(d.parent.data.name)}`} opacity={this.props.mark.squares.style.fill.opacity} depth={`${depth}`} height={`${height}`} width={`${width}`} position={`${posX} ${height / 2} ${posZ}`} />
+        let height = (heightScale(d.data[this.props.mark.style.extrusion.field])).toFixed(3);
+        if (this.props.mark.style.fill.scaleType)
+          return <a-box id={`width${width}posX${posX}dx${d.x0}`} key={i} color={`${colorScale(d.parent.data.name)}`} opacity={this.props.mark.style.fill.opacity} depth={`${depth}`} height={`${height}`} width={`${width}`} position={`${posX} ${height / 2} ${posZ}`} />
+        else
+          return <a-box id={`width${width}posX${posX}dx${d.x0}`} key={i} color={`${this.props.mark.style.fill.color}`} opacity={this.props.mark.style.fill.opacity} depth={`${depth}`} height={`${height}`} width={`${width}`} position={`${posX} ${height / 2} ${posZ}`} />
       });
       return (
         <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
@@ -169,4 +192,4 @@ class StackedBarGraph extends Component {
     }
   }
 }
-export default StackedBarGraph
+export default TreeMap

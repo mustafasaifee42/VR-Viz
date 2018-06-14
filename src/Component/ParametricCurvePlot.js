@@ -20,20 +20,20 @@ class ParametricCurvePlot extends Component {
     let dataCoordinate = []
     let yStep = (this.props.parameter.domain[1] - this.props.parameter.domain[0]) / this.props.parameter.steps;
     for (let k = this.props.parameter.domain[0]; k <= this.props.parameter.domain[1]; k = k + yStep) {
-      dataCoordinate.push([this.props.x.function(k), this.props.y.function(k), this.props.z.function(k)])
+      dataCoordinate.push([this.props.mark.position.x.function(k), this.props.mark.position.y.function(k), this.props.mark.position.z.function(k)])
     }
 
     // Getting domain for axis
-    let xDomain, yDomain = this.props.y.domain, zDomain;
+    let xDomain, yDomain = this.props.mark.position.y.domain, zDomain;
 
     //Adding Scale
     let xScale, yScale, zScale, colorScale;
 
-    if (this.props.x.domain) {
-      xDomain = this.props.x.domain
+    if (this.props.mark.position.x.domain) {
+      xDomain = this.props.mark.position.x.domain
       xScale = d3.scaleLinear()
         .range([0, this.props.style.dimensions.width])
-        .domain(this.props.x.domain);
+        .domain(this.props.mark.position.x.domain);
     }
     else {
       xDomain = [0, d3.max(dataCoordinate, d => d[0])]
@@ -42,23 +42,24 @@ class ParametricCurvePlot extends Component {
         .domain([d3.min(dataCoordinate, d => d[0]), d3.max(dataCoordinate, d => d[0])]);
     }
 
-    if (this.props.y.domain) {
-      yDomain = this.props.y.domain
+    if (this.props.mark.position.y.domain) {
+      yDomain = this.props.mark.position.y.domain
       yScale = d3.scaleLinear()
         .range([0, this.props.style.dimensions.height])
-        .domain(this.props.y.domain);
+        .domain(this.props.mark.position.y.domain);
     }
     else {
+      yDomain = [d3.min(dataCoordinate, d => d[1]), d3.max(dataCoordinate, d => d[1])]
       yScale = d3.scaleLinear()
         .range([0, this.props.style.dimensions.depth])
         .domain([d3.min(dataCoordinate, d => d[1]), d3.max(dataCoordinate, d => d[1])]);
     }
 
-    if (this.props.z.domain) {
-      zDomain = this.props.z.domain
+    if (this.props.mark.position.z.domain) {
+      zDomain = this.props.mark.position.z.domain
       zScale = d3.scaleLinear()
         .range([0, this.props.style.dimensions.depth])
-        .domain(this.props.z.domain);
+        .domain(this.props.mark.position.z.domain);
     }
     else {
       zDomain = [0, d3.max(dataCoordinate, d => d[2])]
@@ -69,56 +70,55 @@ class ParametricCurvePlot extends Component {
 
     //Axis
     let xAxis, yAxis, zAxis;
-    if (this.props.x.axis.axis) {
+
+    if (this.props.xAxis) {
       xAxis = <Axis
-        tickValues={xScale.ticks(this.props.x.axis.ticks['no-of-ticks'])}
-        tick={this.props.x.axis.ticks}
+        domain={xDomain}
+        tick={this.props.xAxis.ticks}
         scale={xScale}
         axis={'x'}
-        orient={this.props.x.axis.orient}
-        title={this.props.x.axis.title}
+        orient={this.props.xAxis.orient}
+        title={this.props.xAxis.title}
         dimensions={this.props.style.dimensions}
+        scaleType={this.props.mark.position.x.scaleType}
       />
-    } else
-      xAxis = <a-entity />
+    }
 
-    if (this.props.y.axis.axis) {
+    if (this.props.yAxis) {
       yAxis = <Axis
-        tickValues={yScale.ticks(this.props.y.axis.ticks['no-of-ticks'])}
-        tick={this.props.y.axis.ticks}
+        domain={yDomain}
+        tick={this.props.yAxis.ticks}
         scale={yScale}
         axis={'y'}
-        orient={this.props.y.axis.orient}
-        title={this.props.y.axis.title}
+        orient={this.props.yAxis.orient}
+        title={this.props.yAxis.title}
         dimensions={this.props.style.dimensions}
+        scaleType={this.props.mark.position.y.scaleType}
       />
-    } else
-      yAxis = <a-entity />
+    }
 
-    if (this.props.z.axis.axis) {
+    if (this.props.zAxis) {
       zAxis = <Axis
-        tickValues={zScale.ticks(this.props.z.axis.ticks['no-of-ticks'])}
-        tick={this.props.z.axis.ticks}
+        domain={zDomain}
+        tick={this.props.zAxis.ticks}
         scale={zScale}
         axis={'z'}
-        orient={this.props.z.axis.orient}
-        title={this.props.z.axis.title}
+        orient={this.props.zAxis.orient}
+        title={this.props.zAxis.title}
         dimensions={this.props.style.dimensions}
+        scaleType={this.props.mark.position.z.scaleType}
       />
 
-    } else
-      zAxis = <a-entity />
+    }
 
     let box;
-    if (this.props.style['axis-box']) {
+    if (this.props.axisBox) {
       box = <AxisBox
         width={this.props.style.dimensions.width}
         height={this.props.style.dimensions.height}
         depth={this.props.style.dimensions.depth}
-        color={this.props.style['axis-box-color']}
+        color={this.props.axisBox.color}
       />
-    } else {
-      box = <a-entity />
     }
 
     //Adding marks
@@ -129,7 +129,7 @@ class ParametricCurvePlot extends Component {
     </a-curve>
 
     return (
-        <a-entity position = {`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
+      <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
         {xAxis}
         {yAxis}
         {zAxis}
@@ -137,7 +137,7 @@ class ParametricCurvePlot extends Component {
         <a-curve id={'lineGraph'}>
           {points}
         </a-curve>
-        <a-draw-curve curveref='#lineGraph' material={`shader: line; color: ${this.props.mark.path.style.color}; opacity: ${this.props.mark.path.style.opacity};`} />
+        <a-draw-curve curveref='#lineGraph' material={`shader: line; color: ${this.props.mark.style.color}; opacity: ${this.props.mark.style.opacity};`} />
       </a-entity>
     )
   }

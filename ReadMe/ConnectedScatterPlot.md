@@ -1,137 +1,100 @@
-## ConnectedScatterPlot Component
+# ConnectedScatterPlot Component
 
 ![ConnectedScatterPlot](../imgs/ConnectedScatterPlot.png)
 
-#### [Example](../examples/ConnectedScatterPlot.js)
-
-#### Parameter required in `graph` variable
+## `mark` Object in Graph Props
 ```
-{
-  'type': 'ConnectedScatterPlot',
-  'data': {
-    'dataFile': "data/ConnectedScatterPlot.csv",
-    'fileType': 'csv',
-    'fieldDesc': [['Year', 'text'], ['Cars', 'number'], ['Trucks', 'number'], ['Bikes', 'number']]
-  },
-  'style': {
-    'origin': [0, 0, 0],
-    'dimensions': {
-      'width': 10,
-      'height': 10,
-      'depth': 10,
+'mark': {
+  'position': {
+    'x': {
+      'scaleType': 'linear',
+      'field': 'Cars',
     },
-    'axis-box': true,
-    'axis-box-color': 'black',
-  },
-  'mark': {
-    'points':{
-      'type': 'sphere',       //Possible Value: 'box', 'sphere'
-      'style': {
-        'radius': {
-          'scale': false,
-          'value': 0.05,     //If the 'type' is 'box' the depth, width and height of the box is same as the value
-          },
-        'opacity': 0.4,
-        'color': {
-          'scale': false,
-          'fill': 'red',
-        },
-      },
+    'y': {
+      'scaleType': 'linear',
+      'field': 'Trucks',
     },
-    'line':{
-      'style': {
-        'opacity': 0.4,
-        'color': {
-          'scale': false,
-          'fill': 'red',
-        },
-      },
-    },
-    'label':{
-      'field': 'Year',
-      'style': {
-        'color': 'black',
-        'opacity': 1,
-        'size': 1,
-      }
+    'z': {
+      'scaleType': 'linear',
+      'field': 'Bikes',
     }
   },
-  'x': {
-    'type': 'linear',
-    'field': 'Cars',
-    'axis': {
-      'axis': true,
-      'orient': 1,
-      'title': {
-        'text': '',
-        'font-size': 10,
-        'color': 'black',
-        'opacity': 1,
+  'points': {
+    'type': 'sphere',
+    'style': {
+      'radius': {
+        'value': 0.05,
       },
-      'ticks': {
-        'no-of-ticks': 10,
-        'tick-size': 0.1,
-        'tick-color': 'black',
-        'tick-opacity': 1,
-        'grid': true,
-        'grid-color': 'black',
-        'grid-opacity': 1,
-        'font': 'Arial',
-        'font-size': 10,
-      }
+      'fill': {
+        'opacity': 1,
+        'color': 'red',
+      },
     },
   },
-  'y': {
-    'type': 'linear',
-    'field': 'Trucks',
-    'range': [0, 10],
-    'axis': {
-      'axis': true,
-      'orient': 1,
-      'title': {
-        'text': '',
-        'font-size': 10,
+  'line': {
+    'style': {
+      'stroke': {
         'color': 'black',
         'opacity': 1,
       },
-      'ticks': {
-        'no-of-ticks': 10,
-        'tick-size': 0.1,
-        'tick-color': 'black',
-        'tick-opacity': 1,
-        'grid': true,
-        'grid-color': 'black',
-        'grid-opacity': 1,
-        'font-size': 10,
-      }
     },
   },
-  'z': {
-    'type': 'linear',
-    'field': 'Bikes',
-    'axis': {
-      'axis': true,
-      'orient': 1,
-      'title': {
-        'text': '',
-        'font-size': 10,
-        'color': 'black',
-        'opacity': 1,
-      },
-      'ticks': {
-        'no-of-ticks': 10,
-        'tick-size': 0.1,
-        'tick-color': 'black',
-        'tick-opacity': 1,
-        'grid': true,
-        'grid-color': 'black',
-        'grid-opacity': 1,
-        'font-size': 10,
-      }
+  'label': {
+    'field': 'Year',
+    'style': {
+      'color': 'black',
+      'fontSize': 2,
+      'opacity': 1,
     },
   }
 }
 ```
+
+__Properties for `mark` for Connected Scatter Plot__
+Property | Type | Description
+--- | --- | ---
+type | string | Defines type of bar that would be created. __Not Required. Default value: box__. _Available values: box, cone or cylinder._
+position | object | Defines the how the position of bars will be mapped. __Required__
+position.x | object | __Required.__
+position.x.scaleType | string | Defines the scale type for x position. __Required.__ _Available values: linear or ordinal._
+position.x.field | string | Defines the field in the data that will be mapped as x position. __Required.__
+position.x.domain | float | Defines the domain for x position. __Not Required.__ _If not present the domain is calculated from the provide data depending on the position.x.scaleType._
+position.x.startFromZero | boolean | Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if position.x.domain is not given and position.x.scaleType is `linear`._
+position.y | object | __Required.__
+position.y.scaleType | string | Defines the scale type for y position. __Required.__ _Available values: linear or ordinal._
+position.y.field | string | Defines the field in the data that will be mapped as y position. __Required.__
+position.y.domain | array | Defines the domain for y position. __Not Required.__ _If not present the domain is calculated from the provide data depending on the position.y.scaleType._
+position.y.startFromZero | boolean | Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if position.y.domain is not given and position.y.scaleType is `linear`._
+position.z | object | __Required.__
+position.z.scaleType | string | Defines the scale type for z position. __Required.__ _Available values: linear or ordinal._
+position.z.field | string | Defines the field in the data that will be mapped as z position. __Required.__
+position.z.domain | array | Defines the domain for z position. __Not Required.__ _If not present the domain is calculated from the provide data depending on the position.z.scaleType._
+position.z.startFromZero | boolean | Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if position.z.domain is not given and position.z.scaleType is `linear`._
+points | object | Defines the style of the points in connected scatter plot. __Required.__
+points.type | string | Defines the type for the point. __Not Required. Default value: sphere.__ _Available values: box or sphere._
+points.style | object | Defines the style of the point. __Required.__ 
+points.style.radius | object | Defines the radius of the point. __Required.__ 
+points.style.radius.scaleType | string | Defines the scale type for radius of the points. __Not Required. If not present then a constant color that is defined is filled in the points.__ _Available values: linear or ordinal._
+points.style.radius.domain | array | Defines the domain for radius. __Not Required.__ _If not present the domain is calculated from the provide data depending on the points.style.radius.scaleType_
+points.style.radius.startFromZero | boolean | Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if points.style.radius.color is not given and points.style.radius.scaleType is `linear`._
+points.style.radius.value | float or array | Defines the value radius of the point. __Required.__ _Array is required if points.style.radius.scaleType is present else its a float._
+points.style.fill | object | Defines the fill of the points. __Required.__
+points.style.fill.opacity | float | Defines the opacity of the points. __Required.__ _Value must be between 0 and 1._
+points.style.fill.scaleType | string | Defines the scale type for fill of the points. __Not Required. If not present then a constant color that is defined is filled in the points.__ _Available values: linear or ordinal._
+points.style.fill.field | string | Defines the field in the data that will be mapped as fill of the points. __Required if `points.style.fill.scaleType` is present.__
+points.style.fill.domain | array | Defines the domain for fill. __Not Required.__ _If not present the domain is calculated from the provide data depending on the points.style.fill.scaleType_
+points.style.fill.color | array or string | Defines the color for fill. __Not Required if points.style.fill.scaleType is present, else required. Default value: d3.schemeCategory10__ _If points.style.fill.scaleType is not present the this needs to be a string otherwise an array._
+points.style.fill.startFromZero | boolean | Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if points.style.fill.color is not given and points.style.fill.scaleType is `linear`._
+line | object | Defines the style of the connecting line in connected scatter plot. __Required.__
+line.style | object | Defines the style of the line. __Required.__ 
+line.style.stroke.color | string | Defines the color for line. __Required.__
+line.style.stroke.opacity | float | Defines the opacity for line. __Required.__ _Value must be between 0 and 1._
+label | object | Defines the style of the connecting line in connected scatter plot. __Not Required.__ _If not present the labels are not shown close to the point._
+label.field | string | Defines the field in the data that will be used as the text for the labels. __Required.__
+label.style | object | Defines the style of the label. __Required.__
+label.style.color | string | Defines the color for label. __Required.__
+label.style.opacity | float | Defines the opacity for label. __Required.__ _Value must be between 0 and 1._
+label.style.fontSize | float | Defines the size of label. __Required.__
 
 #### DataFile
 
@@ -148,14 +111,4 @@ Year,Cars,Trucks,Bikes
 1994,119,60,5
 ```
 
-#### React Component
-```
-<ConnectedScatterPlot 
-  data = {d.data}
-  style = {d.style}
-  mark = {d.mark}
-  x = {d.x}
-  y = {d.y}
-  z = {d.z}
-/>
-```
+#### [Example](../examples/ConnectedScatterPlot.js)

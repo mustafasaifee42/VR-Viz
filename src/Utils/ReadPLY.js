@@ -24,7 +24,6 @@ function loadFileAJAX(name) {
 export default function (fileName) {
   let fileText = loadFile(fileName);
 
-  console.log(fileName[0])
   const lines = fileText.split('\n');
   let startIndex = lines.indexOf('end_header');
   let vertexNo;

@@ -21,6 +21,8 @@ import WaterFallPlot from './WaterFallPlot.js';
 import MeshPlot from './MeshPlot.js';
 import RectangleChart from './RectangleChart.js';
 import TimeSeries from './TimeSeries.js';
+import TimeBars from './TimeBars.js';
+import SpiralChart from './SpiralChart.js';
 
 
 class Visualization extends Component {
@@ -57,11 +59,11 @@ class Visualization extends Component {
       if (this.props.scene.floor) {
         if (this.props.scene.floor.style.texture) {
           if (this.props.scene.floor.style.repeat === null)
-            floor = <a-plane src={this.props.scene.floor.style.img} rotation="-90 0 0" width={`${this.props.scene.floor.style.width}`} height={`${this.props.scene.floor.style.height}`} />
+            floor = <a-plane src={this.props.scene.floor.style.img} rotation="-90 0 0" width={`${this.props.scene.floor.style.width}`} height={`${this.props.scene.floor.style.depth}`} />
           else
-            floor = <a-plane src={this.props.scene.floor.style.img} rotation="-90 0 0" width={`${this.props.scene.floor.style.width}`} height={`${this.props.scene.floor.style.height}`} repeat={this.props.scene.floor.style.repeat} />
+            floor = <a-plane src={this.props.scene.floor.style.img} rotation="-90 0 0" width={`${this.props.scene.floor.style.width}`} height={`${this.props.scene.floor.style.depth}`} repeat={this.props.scene.floor.style.repeat} />
         } else {
-          floor = <a-plane color={this.props.scene.floor.style.color} rotation="-90 0 0" width={`${this.props.scene.floor.style.width}`} height={`${this.props.scene.floor.style.height}`} />
+          floor = <a-plane color={this.props.scene.floor.style.color} rotation="-90 0 0" width={`${this.props.scene.floor.style.width}`} height={`${this.props.scene.floor.style.depth}`} />
         }
       }
 
@@ -82,243 +84,419 @@ class Visualization extends Component {
     let visualization = this.props.graph.map((d, i) => {
       switch (d.type) {
         case 'BarGraph': {
-          if ((!d.data) || (!d.style) || (!d.mark) || (!d.x) || (!d.y) || (!d.z))
+          if ((!d.data) || (!d.style) || (!d.mark))
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
-          return (<BarGraph
-            data={d.data}
-            style={d.style}
-            mark={d.mark}
-            x={d.x}
-            y={d.y}
-            z={d.z}
-          />)
-          break;
+          if (d.axis)
+            return (<BarGraph
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+              xAxis={d.axis['x-axis']}
+              yAxis={d.axis['y-axis']}
+              zAxis={d.axis['z-axis']}
+              axisBox={d.axis['axis-box']}
+            />)
+          else
+            return (<BarGraph
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+            />)
         }
         case 'ConnectedScatterPlot': {
-          if ((!d.data) || (!d.style) || (!d.mark) || (!d.x) || (!d.y) || (!d.z))
+          if ((!d.data) || (!d.style) || (!d.mark))
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
-          return (<ConnectedScatterPlot
-            data={d.data}
-            style={d.style}
-            mark={d.mark}
-            x={d.x}
-            y={d.y}
-            z={d.z}
-          />)
-          break;
+          if (d.axis)
+            return (<ConnectedScatterPlot
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+              xAxis={d.axis['x-axis']}
+              yAxis={d.axis['y-axis']}
+              zAxis={d.axis['z-axis']}
+              axisBox={d.axis['axis-box']}
+            />)
+          else
+            return (<ConnectedScatterPlot
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+            />)
         }
         case 'ContourMap': {
           let heightThreshold;
           if ((!d.data) || (!d.style) || (!d.mark))
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
-          if (!d.heightThreshold)
+          if (!d.mark.heightThreshold)
             heightThreshold = 0
           else
-            heightThreshold = d.heightThreshold
-          return (<ContourMap
-            data={d.data}
-            style={d.style}
-            mark={d.mark}
-            heightThreshold={heightThreshold}
-          />)
-          break;
+            heightThreshold = d.mark.heightThreshold
+          if (d.axis)
+            return (<ContourMap
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+              heightThreshold={heightThreshold}
+              axisBox={d.axis['axis-box']}
+            />)
+          else
+            return (<ContourMap
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+              heightThreshold={heightThreshold}
+            />)
         }
         case 'ContourPlot': {
-          if ((!d.style) || (!d.mark) || (!d.x) || (!d.y) || (!d.z))
+          if ((!d.style) || (!d.mark))
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
-          return (<ContourPlot
-            style={d.style}
-            mark={d.mark}
-            x={d.x}
-            y={d.y}
-            z={d.z}
-          />)
-          break;
+          if (d.axis)
+            return (<ContourPlot
+              style={d.style}
+              mark={d.mark}
+              xAxis={d.axis['x-axis']}
+              yAxis={d.axis['y-axis']}
+              zAxis={d.axis['z-axis']}
+              axisBox={d.axis['axis-box']}
+            />)
+          else
+            return (<ContourPlot
+              style={d.style}
+              mark={d.mark}
+            />)
         }
         case 'FlowMap': {
           if ((!d.data) || (!d.style) || (!d.mark))
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
-          return (<FlowMap
-            data={d.data}
-            style={d.style}
-            mark={d.mark}
-          />)
-          break;
+          if (d.axis)
+            return (<FlowMap
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+              axisBox={d.axis['axis-box']}
+            />)
+          else
+            return (<FlowMap
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+            />)
         }
         case 'ForceDirectedGraph': {
           if ((!d.data) || (!d.style) || (!d.mark))
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
-          return (<ForceDirectedGraph
-            data={d.data}
-            style={d.style}
-            mark={d.mark}
-          />)
-          break;
+          if (d.axis)
+            return (<ForceDirectedGraph
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+              axisBox={d.axis['axis-box']}
+            />)
+          else
+            return (<ForceDirectedGraph
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+            />)
         }
         case 'MapBarChart': {
           if ((!d.data) || (!d.style) || (!d.mark))
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
-          return (<MapBarChart
-            data={d.data}
-            style={d.style}
-            mark={d.mark}
-          />)
-          break;
+          if (d.axis)
+            return (<MapBarChart
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+              axisBox={d.axis['axis-box']}
+            />)
+          else
+            return (<MapBarChart
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+            />)
         }
         case 'MapStackedBarChart': {
           if ((!d.data) || (!d.style) || (!d.mark))
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
-          return (<MapStackedBarChart
-            data={d.data}
-            style={d.style}
-            mark={d.mark}
-          />)
-          break;
+          if (d.axis)
+            return (<MapStackedBarChart
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+              axisBox={d.axis['axis-box']}
+            />)
+          else
+            return (<MapStackedBarChart
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+            />)
         }
         case 'ParametricCurvePlot': {
-          if ((!d.style) || (!d.mark) || (!d.x) || (!d.y) || (!d.z) || (!d.parameter))
+          if ((!d.style) || (!d.mark) || (!d.parameter))
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
-          return (<ParametricCurvePlot
-            style={d.style}
-            mark={d.mark}
-            x={d.x}
-            y={d.y}
-            z={d.z}
-            parameter={d.parameter}
-          />)
-          break;
+          if (d.axis)
+            return (<ParametricCurvePlot
+              style={d.style}
+              mark={d.mark}
+              xAxis={d.axis['x-axis']}
+              yAxis={d.axis['y-axis']}
+              zAxis={d.axis['z-axis']}
+              parameter={d.parameter}
+              axisBox={d.axis['axis-box']}
+            />)
+          else
+            return (<ParametricCurvePlot
+              style={d.style}
+              mark={d.mark}
+              parameter={d.parameter}
+            />)
         }
         case 'ParametricSurfacePlot': {
-          if ((!d.style) || (!d.mark) || (!d.x) || (!d.y) || (!d.z) || (!d.parameter))
+          if ((!d.style) || (!d.mark) || (!d.parameter))
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
-          return (<ParametricSurfacePlot
-            style={d.style}
-            mark={d.mark}
-            x={d.x}
-            y={d.y}
-            z={d.z}
-            parameter={d.parameter}
-          />)
-          break;
+          if (d.axis)
+            return (<ParametricSurfacePlot
+              style={d.style}
+              mark={d.mark}
+              xAxis={d.axis['x-axis']}
+              yAxis={d.axis['y-axis']}
+              zAxis={d.axis['z-axis']}
+              parameter={d.parameter}
+              axisBox={d.axis['axis-box']}
+            />)
+          else
+            return (<ParametricSurfacePlot
+              style={d.style}
+              mark={d.mark}
+              parameter={d.parameter}
+            />)
         }
         case 'PointCloud': {
           if ((!d.data) || (!d.style) || (!d.mark))
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
-          return (<PointCloud
-            data={d.data}
-            style={d.style}
-            mark={d.mark}
-          />)
-          break;
+          if (d.axis)
+            return (<PointCloud
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+              axisBox={d.axis['axis-box']}
+            />)
+          else
+            return (<PointCloud
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+            />)
         }
         case 'PrismMap': {
           if ((!d.data) || (!d.style) || (!d.mark))
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
-          return (<PrismMap
-            data={d.data}
-            style={d.style}
-            mark={d.mark}
-          />)
-          break;
+          if (d.axis)
+            return (<PrismMap
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+              axisBox={d.axis['axis-box']}
+            />)
+          else
+            return (<PrismMap
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+            />)
         }
         case 'ScatterPlot': {
-          if ((!d.data) || (!d.style) || (!d.mark) || (!d.x) || (!d.y) || (!d.z))
+          if ((!d.data) || (!d.style) || (!d.mark))
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
-          return (<ScatterPlot
-            data={d.data}
-            style={d.style}
-            mark={d.mark}
-            x={d.x}
-            y={d.y}
-            z={d.z}
-          />)
-          break;
+          if (d.axis)
+            return (<ScatterPlot
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+              xAxis={d.axis['x-axis']}
+              yAxis={d.axis['y-axis']}
+              zAxis={d.axis['z-axis']}
+              axisBox={d.axis['axis-box']}
+            />)
+          else
+            return (<ScatterPlot
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+            />)
         }
         case 'StackedBarGraph': {
-          if ((!d.data) || (!d.style) || (!d.mark) || (!d.x) || (!d.y) || (!d.z))
+          if ((!d.data) || (!d.style) || (!d.mark))
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
-          return (<StackedBarGraph
-            data={d.data}
-            style={d.style}
-            mark={d.mark}
-            x={d.x}
-            y={d.y}
-            z={d.z}
-          />)
-          break;
+          if (d.axis)
+            return (<StackedBarGraph
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+              xAxis={d.axis['x-axis']}
+              yAxis={d.axis['y-axis']}
+              zAxis={d.axis['z-axis']}
+              axisBox={d.axis['axis-box']}
+            />)
+          else
+            return (<StackedBarGraph
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+            />)
         }
         case 'SurfacePlot': {
-          if ((!d.style) || (!d.mark) || (!d.x) || (!d.y) || (!d.z))
+          if ((!d.style) || (!d.mark))
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
-          return (<SurfacePlot
-            style={d.style}
-            mark={d.mark}
-            x={d.x}
-            y={d.y}
-            z={d.z}
-          />)
-          break;
+          if (d.axis)
+            return (<SurfacePlot
+              style={d.style}
+              mark={d.mark}
+              xAxis={d.axis['x-axis']}
+              yAxis={d.axis['y-axis']}
+              zAxis={d.axis['z-axis']}
+              axisBox={d.axis['axis-box']}
+            />)
+          else
+            return (<SurfacePlot
+              style={d.style}
+              mark={d.mark}
+            />)
         }
         case 'TreeMap': {
           if ((!d.style) || (!d.data) || (!d.mark))
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
-          return (<TreeMap
-            data={d.data}
-            style={d.style}
-            mark={d.mark}
-          />)
-          break;
+          if (d.axis)
+            return (<TreeMap
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+              axisBox={d.axis['axis-box']}
+            />)
+          else
+            return (<TreeMap
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+            />)
         }
         case 'WaterFallPlot': {
-          if ((!d.data) || (!d.style) || (!d.mark) || (!d.x) || (!d.y) || (!d.z))
+          if ((!d.data) || (!d.style) || (!d.mark))
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
-          return (<WaterFallPlot
-            data={d.data}
-            style={d.style}
-            mark={d.mark}
-            x={d.x}
-            y={d.y}
-            z={d.z}
-          />)
-          break;
+          if (d.axis)
+            return (<WaterFallPlot
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+              xAxis={d.axis['x-axis']}
+              yAxis={d.axis['y-axis']}
+              zAxis={d.axis['z-axis']}
+              axisBox={d.axis['axis-box']}
+            />)
+          else
+            return (<WaterFallPlot
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+            />)
         }
-        case 'meshPlot': {
-          if ((!d.data) || (!d.style) || (!d.mark) || (!d.x) || (!d.y) || (!d.z))
+        case 'MeshPlot': {
+          if ((!d.data) || (!d.style) || (!d.mark))
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
-          return (<MeshPlot
-            data={d.data}
-            style={d.style}
-            mark={d.mark}
-            x={d.x}
-            y={d.y}
-            z={d.z}
-          />)
-          break;
+          if (d.axis)
+            return (<MeshPlot
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+              xAxis={d.axis['x-axis']}
+              yAxis={d.axis['y-axis']}
+              zAxis={d.axis['z-axis']}
+              axisBox={d.axis['axis-box']}
+            />)
+          else
+            return (<MeshPlot
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+            />)
         }
         case 'RectangleChart': {
-          if ((!d.data) || (!d.style) || (!d.mark) || (!d.x) || (!d.y) || (!d.z))
+          if ((!d.data) || (!d.style) || (!d.mark))
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
-          return (<RectangleChart
-            data={d.data}
-            style={d.style}
-            mark={d.mark}
-            x={d.x}
-            y={d.y}
-            z={d.z}
-          />)
-          break;
+          if (d.axis)
+            return (<RectangleChart
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+              xAxis={d.axis['x-axis']}
+              yAxis={d.axis['y-axis']}
+              zAxis={d.axis['z-axis']}
+              axisBox={d.axis['axis-box']}
+            />)
+          else
+            return (<RectangleChart
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+            />)
         }
         case 'TimeSeries': {
           if ((!d.data) || (!d.style) || (!d.mark) || (!d.x) || (!d.y))
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
-          return (<TimeSeries
-            data={d.data}
-            style={d.style}
-            mark={d.mark}
-            x={d.x}
-            y={d.y}
-          />)
-          break;
+          if (d.axis)
+            return (<TimeSeries
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+              xAxis={d.axis['x-axis']}
+              yAxis={d.axis['y-axis']}
+              zAxis={d.axis['z-axis']}
+              axisBox={d.axis['axis-box']}
+            />)
+          else
+            return (<TimeSeries
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+            />)
+        }
+        case 'TimeBars': {
+          if ((!d.data) || (!d.style) || (!d.mark))
+            console.log(`Error: Some necessary attributes missing for ${d.type}`)
+          if (d.axis)
+            return (<TimeBars
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+              xAxis={d.axis['x-axis']}
+              yAxis={d.axis['y-axis']}
+              zAxis={d.axis['z-axis']}
+              axisBox={d.axis['axis-box']}
+            />)
+          else
+            return (<TimeBars
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+            />)
+        }
+        case 'SpiralChart': {
+          if ((!d.data) || (!d.style) || (!d.mark) || (!d.axis))
+            console.log(`Error: Some necessary attributes missing for ${d.type}`)
+          if (d.axis)
+            return (<SpiralChart
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+              axis={d.axis}
+            />)
+          else
+            return (<SpiralChart
+              data={d.data}
+              style={d.style}
+            />)
         }
         default: {
           console.log('The visualization type does not match the set in the library.')

@@ -3,7 +3,7 @@ import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
 import GetDomain from '../Utils/GetDomain.js';
 
-class Axis extends Component {
+class AxisBox extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -27,4 +27,4 @@ class Axis extends Component {
     )
   }
 }
-export default Axis
+export default AxisBox

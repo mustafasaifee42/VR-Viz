@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
+import * as moment from 'moment';
 
 import GetDomain from '../Utils/GetDomain.js';
+import ReadPLY from '../Utils/ReadPLY.js';
 
 import { csv } from 'd3-request';
 import { json } from 'd3-request';
 import { text } from 'd3-request';
-import ReadPLY from './ReadPLY.js';
 
 
 class PointCloud extends Component {
@@ -41,6 +42,8 @@ class PointCloud extends Component {
               for (let i = 0; i < this.props.data.fieldDesc.length; i++) {
                 if (this.props.data.fieldDesc[i][1] === 'number')
                   d[this.props.data.fieldDesc[i][0]] = +d[this.props.data.fieldDesc[i][0]]
+                if ((this.props.data.fieldDesc[i][1] === 'date') || (this.props.data.fieldDesc[i][1] === 'time'))
+                  d[this.props.data.fieldDesc[i][0]] = moment(d[this.props.data.fieldDesc[i][0]], this.props.data.fieldDesc[i][2])['_d']
               }
               return d
             })
@@ -121,47 +124,51 @@ class PointCloud extends Component {
       // Getting domain for axis
       let colorDomain;
 
-      if (this.props.mark.points.style.fill.scale) {
-        if (!this.props.mark.points.style.fill.domain) {
-          colorDomain = GetDomain(this.state.data, this.props.mark.points.style.fill.field, this.props.mark.points.style.fill.type)
+      if (this.props.mark.style.fill.scaleType) {
+        if (!this.props.mark.style.fill.domain) {
+          colorDomain = GetDomain(this.state.data, this.props.mark.style.fill.field, this.props.mark.style.fill.scaleType, this.props.mark.style.fill.startFromZero)
         } else
-          colorDomain = this.props.mark.points.style.fill.domain
+          colorDomain = this.props.mark.style.fill.domain
       }
 
       //Adding Scale
 
       let colorScale;
 
-      if (this.props.mark.points.style.fill.scale)
-        if (this.props.mark.points.style.fill.scaleType === 'ordinal')
+      if (this.props.mark.style.fill.scaleType) {
+        let colorRange = d3.schemeCategory10;
+        if (this.props.mark.style.fill.color)
+          colorRange = this.props.mark.style.fill.color;
+        if (this.props.mark.style.fill.scaleType === 'ordinal')
           colorScale = d3.scaleOrdinal()
             .domain(colorDomain)
-            .range(this.props.mark.points.style.fill.color)
+            .range(colorRange)
         else
           colorScale = d3.scaleLinear()
             .domain(colorDomain)
-            .range(this.props.mark.points.style.fill.color)
+            .range(colorRange)
+      }
 
 
       //Adding marks
       let marks
       if ((!this.state.data[0].r) || (!this.state.data[0].g) || (!this.state.data[0].r)) {
-        if (this.props.mark.points.type === 'sphere') {
-          if (!this.props.mark.points.style.fill.scale)
-            marks = this.state.data.map((d, i) => <a-sphere key={i} opacity={this.props.mark.points.style.fill.opacity} color={`${this.props.mark.points.style.fill.color}`} radius={this.props.mark.points.style.radius} position={`${d.x * this.props.style.scale} ${d.y * this.props.style.scale} ${d.z * this.props.style.scale}`} />)
+        if (this.props.mark.type === 'sphere') {
+          if (!this.props.mark.style.fill.scaleType)
+            marks = this.state.data.map((d, i) => <a-sphere key={i} opacity={this.props.mark.style.fill.opacity} color={`${this.props.mark.style.fill.color}`} radius={this.props.mark.style.radius} position={`${d.x * this.props.style.objectScale} ${d.y * this.props.style.objectScale} ${d.z * this.props.style.objectScale}`} />)
           else
-            marks = this.state.data.map((d, i) => <a-sphere key={i} opacity={this.props.mark.points.style.fill.opacity} color={`${colorScale(d[this.props.mark.points.style.fill.field])}`} radius={this.props.mark.points.style.radius} position={`${d.x * this.props.style.scale} ${d.y * this.props.style.scale} ${d.z * this.props.style.scale}`} />)
+            marks = this.state.data.map((d, i) => <a-sphere key={i} opacity={this.props.mark.style.fill.opacity} color={`${colorScale(d[this.props.mark.style.fill.field])}`} radius={this.props.mark.style.radius} position={`${d.x * this.props.style.objectScale} ${d.y * this.props.style.objectScale} ${d.z * this.props.style.objectScale}`} />)
         } else {
-          if (!this.props.mark.points.style.fill.scale)
-            marks = this.state.data.map((d, i) => <a-box key={i} opacity={this.props.mark.points.style.fill.opacity} color={`${this.props.mark.points.style.fill.color}`} width={this.props.mark.points.style.radius} height={this.props.mark.points.style.radius} depth={this.props.mark.points.style.radius} position={`${d.x * this.props.style.scale} ${d.y * this.props.style.scale} ${d.z * this.props.style.scale}`} />)
+          if (!this.props.mark.style.fill.scaleType)
+            marks = this.state.data.map((d, i) => <a-box key={i} opacity={this.props.mark.style.fill.opacity} color={`${this.props.mark.style.fill.color}`} width={this.props.mark.style.radius} height={this.props.mark.style.radius} depth={this.props.mark.style.radius} position={`${d.x * this.props.style.objectScale} ${d.y * this.props.style.objectScale} ${d.z * this.props.style.objectScale}`} />)
           else
-            marks = this.state.data.map((d, i) => <a-box key={i} opacity={this.props.mark.points.style.fill.opacity} color={`${colorScale(d[this.props.mark.points.style.fill.field])}`} width={this.props.mark.points.style.radius} height={this.props.mark.points.style.radius} depth={this.props.mark.points.style.radius} position={`${d.x * this.props.style.scale} ${d.y * this.props.style.scale} ${d.z * this.props.style.scale}`} />)
+            marks = this.state.data.map((d, i) => <a-box key={i} opacity={this.props.mark.style.fill.opacity} color={`${colorScale(d[this.props.mark.style.fill.field])}`} width={this.props.mark.style.radius} height={this.props.mark.style.radius} depth={this.props.mark.style.radius} position={`${d.x * this.props.style.objectScale} ${d.y * this.props.style.objectScale} ${d.z * this.props.style.objectScale}`} />)
         }
       } else {
-        if (this.props.mark.points.type === 'sphere')
-          marks = this.state.data.map((d, i) => <a-sphere key={i} opacity={this.props.mark.points.style.fill.opacity} color={`rgb(${d.r},${d.g},${d.b})`} radius={this.props.mark.points.style.radius} position={`${d.x * this.props.style.scale} ${d.y * this.props.style.scale} ${d.z * this.props.style.scale}`} />)
+        if (this.props.mark.type === 'sphere')
+          marks = this.state.data.map((d, i) => <a-sphere key={i} opacity={this.props.mark.style.fill.opacity} color={`rgb(${d.r},${d.g},${d.b})`} radius={this.props.mark.style.radius} position={`${d.x * this.props.style.objectScale} ${d.y * this.props.style.objectScale} ${d.z * this.props.style.objectScale}`} />)
         else
-          marks = this.state.data.map((d, i) => <a-box key={i} opacity={this.props.mark.points.style.fill.opacity} color={`rgb(${d.r},${d.g},${d.b})`} width={this.props.mark.points.style.radius} height={this.props.mark.points.style.radius} depth={this.props.mark.points.style.radius} position={`${d.x * this.props.style.scale} ${d.y * this.props.style.scale} ${d.z * this.props.style.scale}`} />)
+          marks = this.state.data.map((d, i) => <a-box key={i} opacity={this.props.mark.style.fill.opacity} color={`rgb(${d.r},${d.g},${d.b})`} width={this.props.mark.style.radius} height={this.props.mark.style.radius} depth={this.props.mark.style.radius} position={`${d.x * this.props.style.objectScale} ${d.y * this.props.style.objectScale} ${d.z * this.props.style.objectScale}`} />)
       }
 
       return (

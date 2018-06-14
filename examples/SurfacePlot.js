@@ -39,7 +39,7 @@ class App extends Component {
                 'color': '#ccc',
                 'texture': false,
                 'width': 100,
-                'height': 100,
+                'depth': 100,
               }
             }
           }
@@ -55,98 +55,102 @@ class App extends Component {
                   'height': 10,
                   'depth': 10,
                 },
-                'axis-box': true,
-                'axis-box-color': 'black',
               },
               'mark': {
-                'surface': {
-                  'type': 'plane',
-                  'style': {
-                    'fill': {
-                      'scale': true,
-                      'function': (x, z) => x * z,
-                      'color': ['green', 'blue'],
-                      'opacity': 1,
-                    },
-                    'stroke': {
-                      'width': 1,
-                      'color': 'black',
-                    }
+                'type': 'plane',
+                'position': {
+                  'x': {
+                    'scaleType': 'linear',
+                    'domain': [0, 2 * Math.PI],
+                    'steps': 50,
+                  },
+                  'y': {
+                    'scaleType': 'linear',
+                    'function': (x, z) => x * Math.sin(x) - z * Math.cos(z),
+                  },
+                  'z': {
+                    'scaleType': 'linear',
+                    'domain': [0, 2 * Math.PI],
+                    'steps': 50,
+                  }
+                },
+                'style': {
+                  'fill': {
+                    'scaleType': 'linear',
+                    'function': (x, z) => x * z,
+                    'color': ['green', 'blue'],
+                    'opacity': 1,
+                  },
+                  'stroke': {
+                    'width': 1,
+                    'color': 'black',
                   }
                 }
               },
-              'x': {
-                'domain': [0, 2 * Math.PI],
-                'steps': 50,
-                'axis': {
-                  'axis': true,
+              'axis': {
+                'axis-box': {
+                  'color': 'black',
+                },
+                'x-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',
-                    'font-size': 10,
+                    'fontSize': 10,
                     'color': 'black',
                     'opacity': 1,
                   },
                   'ticks': {
-                    'no-of-ticks': 10,
-                    'tick-size': 0.1,
-                    'tick-color': 'black',
-                    'tick-opacity': 1,
-                    'grid': true,
-                    'grid-color': 'black',
-                    'grid-opacity': 1,
-                    'font': 'Arial',
-                    'font-size': 10,
+                    'noOfTicks': 10,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
+                  },
+                  'grid': {
+                    'color': 'black',
+                    'opacity': 1,
                   }
                 },
-              },
-              'y': {
-                'function': (x, z) => x * Math.sin(x) - z * Math.cos(z),
-                'range': [0, 10],
-                'axis': {
-                  'axis': true,
+                'y-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',
-                    'font-size': 10,
+                    'fontSize': 10,
                     'color': 'black',
                     'opacity': 1,
                   },
                   'ticks': {
-                    'no-of-ticks': 10,
-                    'tick-size': 0.1,
-                    'tick-color': 'black',
-                    'tick-opacity': 1,
-                    'grid': true,
-                    'grid-color': 'black',
-                    'grid-opacity': 1,
-                    'font-size': 10,
+                    'noOfTicks': 10,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
+                  },
+                  'grid': {
+                    'color': 'black',
+                    'opacity': 1,
                   }
                 },
-              },
-              'z': {
-                'domain': [0, 2 * Math.PI],
-                'steps': 50,
-                'axis': {
-                  'axis': true,
+                'z-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',
-                    'font-size': 10,
+                    'fontSize': 10,
                     'color': 'black',
                     'opacity': 1,
                   },
                   'ticks': {
-                    'no-of-ticks': 10,
-                    'tick-size': 0.1,
-                    'tick-color': 'black',
-                    'tick-opacity': 1,
-                    'grid': true,
-                    'grid-color': 'black',
-                    'grid-opacity': 1,
-                    'font-size': 10,
+                    'noOfTicks': 10,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
+                  },
+                  'grid': {
+                    'color': 'black',
+                    'opacity': 1,
                   }
-                },
+                }
               }
             }
           ]

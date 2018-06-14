@@ -39,7 +39,7 @@ class App extends Component {
                 'color': '#ccc',
                 'texture': false,
                 'width': 100,
-                'height': 100,
+                'depth': 100,
               }
             },
             '3D-objects': [
@@ -65,20 +65,19 @@ class App extends Component {
                 'origin': [0, 0, 0],
               },
               'mark': {
+                'mapScale': 20,
+                'mapOrigin': [5, 5],
+                'rotation': '-90 0 0',
                 'map': {
                   'data': mapData,
                   'projection': 'Mercator',
                   'shapeIdentifier': 'id',
                   'style': {
-                    'scale': 20,
-                    'position': [5, 5],
-                    'rotation': '-90 0 0',
                     'extrusion': {
                       'value': 0.0000001,
                     },
                     'fill': {
                       'opacity': 1,
-                      'scale': false,
                       'color': 'red',
                     },
                     'stroke': {
@@ -93,13 +92,11 @@ class App extends Component {
                     'depth': 0.2,
                     'width': 0.2,
                     'height': {
-                      'scale': true,
                       'scaleType': 'linear',
                       'field': ['value', 'value1'],
                       'value': [0, 5],
                     },
                     'fill': {
-                      'scale': true,
                       'opacity': 0.9,
                       'scaleType': 'ordinal',
                       'color': ['green', 'blue'],

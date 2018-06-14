@@ -39,7 +39,7 @@ class App extends Component {
                 'color': '#ccc',
                 'texture': false,
                 'width': 100,
-                'height': 100,
+                'depth': 100,
               }
             }
           }
@@ -60,98 +60,100 @@ class App extends Component {
                   'height': 10,
                   'depth': 10,
                 },
-                'axis-box': true,
-                'axis-box-color': 'black',
               },
               'mark': {
-                'bars': {
-                  'type': 'box',
-                  'style': {
-                    'depth': 0.2,
-                    'width': 0.2,
-                    'opacity': 0.4,
-                    'fill': {
-                      'scale': true,
-                      'scaleType': 'linear',
-                      'field': 'Deaths',
-                      'color': ['red', 'green'],
-                    },
+                'type': 'box',
+                'position': {
+                  'x': {
+                    'scaleType': 'ordinal',
+                    'field': 'Month',
+                    'domain': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                  },
+                  'z': {
+                    'scaleType': 'ordinal',
+                    'field': 'Year',
                   }
+                },
+                'style': {
+                  'depth': 0.2,
+                  'width': 0.2,
+                  'height': {
+                    'scaleType': 'linear',
+                    'startFromZero': true,
+                    'field': 'Tornadoes',
+                  },
+                  'fill': {
+                    'opacity': 0.4,
+                    'scaleType': 'linear',
+                    'field': 'Deaths',
+                    'color': ['red', 'green'],
+                  },
                 }
               },
-              'x': {
-                'type': 'ordinal',
-                'field': 'Month',
-                'domain': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                'axis': {
-                  'axis': true,
+              'axis': {
+                'axis-box': {
+                  'color': 'black',
+                },
+                'x-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',
-                    'font-size': 10,
+                    'fontSize': 10,
                     'color': 'black',
                     'opacity': 1,
                   },
                   'ticks': {
-                    'no-of-ticks': 10,
-                    'tick-size': 0.1,
-                    'tick-color': 'black',
-                    'tick-opacity': 1,
-                    'grid': true,
-                    'grid-color': 'black',
-                    'grid-opacity': 1,
-                    'font': 'Arial',
-                    'font-size': 10,
+                    'noOfTicks': 10,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
+                  },
+                  'grid': {
+                    'color': 'black',
+                    'opacity': 1,
                   }
                 },
-              },
-              'y': {
-                'type': 'linear',
-                'field': 'Tornadoes',
-                'axis': {
-                  'axis': true,
+                'y-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',
-                    'font-size': 10,
+                    'fontSize': 10,
                     'color': 'black',
                     'opacity': 1,
                   },
                   'ticks': {
-                    'no-of-ticks': 10,
-                    'tick-size': 0.1,
-                    'tick-color': 'black',
-                    'tick-opacity': 1,
-                    'grid': true,
-                    'grid-color': 'black',
-                    'grid-opacity': 1,
-                    'font-size': 10,
+                    'noOfTicks': 10,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
+                  },
+                  'grid': {
+                    'color': 'black',
+                    'opacity': 1,
                   }
                 },
-              },
-              'z': {
-                'type': 'ordinal',
-                'field': 'Year',
-                'axis': {
-                  'axis': true,
+                'z-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',
-                    'font-size': 10,
+                    'fontSize': 10,
                     'color': 'black',
                     'opacity': 1,
                   },
                   'ticks': {
-                    'no-of-ticks': 10,
-                    'tick-size': 0.1,
-                    'tick-color': 'black',
-                    'tick-opacity': 1,
-                    'grid': true,
-                    'grid-color': 'black',
-                    'grid-opacity': 1,
-                    'font-size': 10,
+                    'noOfTicks': 10,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
+                  },
+                  'grid': {
+                    'color': 'black',
+                    'opacity': 1,
                   }
-                },
+                }
               }
             }
           ]

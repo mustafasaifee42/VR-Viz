@@ -49,14 +49,14 @@ class App extends Component {
                 'origin': [0, 0, 0],
               },
               'mark': {
+                'mapScale': 20,
+                'mapOrigin': [5, 5],
+                'rotation': '-90 0 0',
                 'map': {
                   'data': mapData,
                   'projection': 'Mercator',
                   'shapeIdentifier': 'id',
                   'style': {
-                    'scale': 20,
-                    'position': [5, 5],
-                    'rotation': '-90 0 0',
                     'extrusion': {
                       'value': 0.000001,
                     },
@@ -73,18 +73,15 @@ class App extends Component {
                 'flowlines': {
                   'style': {
                     'opacity': {
-                      'scale': false,
                       'value': 0.4,
                     },
-                    'color': {
-                      'scale': false,
-                      'fill': 'red',
+                    'stroke': {
+                      'color': 'red',
                     },
                   },
                   'height': {
-                    'scale': true,
                     'field': 'value',
-                    'scale': 1,
+                    'scaleFactor': 1,
                   }
                 }
               },

@@ -18,59 +18,58 @@ class SurfacePlot extends Component {
 
 
     let dataCoordinate = [], dataSphere = [];
-    let xStep = (this.props.x.domain[1] - this.props.x.domain[0]) / this.props.x.steps;
-    let zStep = (this.props.z.domain[1] - this.props.z.domain[0]) / this.props.z.steps;
-    for (let i = 0; i < this.props.x.steps - 1; i++) {
-      for (let j = 0; j < this.props.z.steps - 1; j++) {
+    let xStep = (this.props.mark.position.x.domain[1] - this.props.mark.position.x.domain[0]) / this.props.mark.position.x.steps;
+    let zStep = (this.props.mark.position.z.domain[1] - this.props.mark.position.z.domain[0]) / this.props.mark.position.z.steps;
+    for (let i = 0; i < this.props.mark.position.x.steps - 1; i++) {
+      for (let j = 0; j < this.props.mark.position.z.steps - 1; j++) {
         let tempData = [];
-        tempData.push(this.props.x.domain[0] + xStep * i)
-        tempData.push(this.props.y.function(this.props.x.domain[0] + xStep * i, this.props.z.domain[0] + zStep * j))
-        tempData.push(this.props.z.domain[0] + zStep * j)
-        tempData.push(this.props.x.domain[0] + xStep * (i + 1))
-        tempData.push(this.props.y.function(this.props.x.domain[0] + xStep * (i + 1), this.props.z.domain[0] + zStep * j))
-        tempData.push(this.props.z.domain[0] + zStep * j)
-        tempData.push(this.props.x.domain[0] + xStep * (i + 1))
-        tempData.push(this.props.y.function(this.props.x.domain[0] + xStep * (i + 1), this.props.z.domain[0] + zStep * (j + 1)))
-        tempData.push(this.props.z.domain[0] + zStep * (j + 1))
-        tempData.push(this.props.x.domain[0] + xStep * i)
-        tempData.push(this.props.y.function(this.props.x.domain[0] + xStep * i, this.props.z.domain[0] + zStep * (j + 1)))
-        tempData.push(this.props.z.domain[0] + zStep * (j + 1))
-        if (this.props.mark.surface.style.fill.function)
-          tempData.push(this.props.mark.surface.style.fill.function(this.props.x.domain[0] + xStep * i, this.props.z.domain[0] + zStep * j))
+        tempData.push(this.props.mark.position.x.domain[0] + xStep * i)
+        tempData.push(this.props.mark.position.y.function(this.props.mark.position.x.domain[0] + xStep * i, this.props.mark.position.z.domain[0] + zStep * j))
+        tempData.push(this.props.mark.position.z.domain[0] + zStep * j)
+        tempData.push(this.props.mark.position.x.domain[0] + xStep * (i + 1))
+        tempData.push(this.props.mark.position.y.function(this.props.mark.position.x.domain[0] + xStep * (i + 1), this.props.mark.position.z.domain[0] + zStep * j))
+        tempData.push(this.props.mark.position.z.domain[0] + zStep * j)
+        tempData.push(this.props.mark.position.x.domain[0] + xStep * (i + 1))
+        tempData.push(this.props.mark.position.y.function(this.props.mark.position.x.domain[0] + xStep * (i + 1), this.props.mark.position.z.domain[0] + zStep * (j + 1)))
+        tempData.push(this.props.mark.position.z.domain[0] + zStep * (j + 1))
+        tempData.push(this.props.mark.position.x.domain[0] + xStep * i)
+        tempData.push(this.props.mark.position.y.function(this.props.mark.position.x.domain[0] + xStep * i, this.props.mark.position.z.domain[0] + zStep * (j + 1)))
+        tempData.push(this.props.mark.position.z.domain[0] + zStep * (j + 1))
+        if (this.props.mark.style.fill.function)
+          tempData.push(this.props.mark.style.fill.function(this.props.mark.position.x.domain[0] + xStep * i, this.props.mark.position.z.domain[0] + zStep * j))
         dataCoordinate.push(tempData);
       }
     }
-    for (let i = 0; i < this.props.x.steps; i++) {
-      for (let j = 0; j < this.props.z.steps; j++) {
+    for (let i = 0; i < this.props.mark.position.x.steps; i++) {
+      for (let j = 0; j < this.props.mark.position.z.steps; j++) {
         let tempData = [];
-        tempData.push(this.props.x.domain[0] + xStep * i)
-        tempData.push(this.props.y.function(this.props.x.domain[0] + xStep * i, this.props.z.domain[0] + zStep * j))
-        tempData.push(this.props.z.domain[0] + zStep * j);
+        tempData.push(this.props.mark.position.x.domain[0] + xStep * i)
+        tempData.push(this.props.mark.position.y.function(this.props.mark.position.x.domain[0] + xStep * i, this.props.mark.position.z.domain[0] + zStep * j))
+        tempData.push(this.props.mark.position.z.domain[0] + zStep * j);
         dataSphere.push(tempData);
       }
     }
 
 
     // Getting domain for axis
-    let xDomain = this.props.x.domain, zDomain = this.props.z.domain;
+    let xDomain = this.props.mark.position.x.domain, zDomain = this.props.mark.position.z.domain, yDomain;
 
     //Adding Scale
     let xScale, yScale, zScale, colorScale;
 
 
+    if (this.props.mark.position.y.domain)
+      yDomain = this.props.mark.position.y.domain
+    else
+      yDomain = [d3.min(dataSphere, d => d[1]), d3.max(dataSphere, d => d[1])];
+
     xScale = d3.scaleLinear()
       .range([0, this.props.style.dimensions.width])
       .domain(xDomain);
 
-
-    if (this.props.y.domain)
-      yScale = d3.scaleLinear()
-        .domain(this.props.y.domain)
-        .range(this.props.y.range)
-    else
-      yScale = d3.scaleLinear()
-        .domain([d3.min(dataSphere, d => d[1]), d3.max(dataSphere, d => d[1])])
-        .range(this.props.y.range)
+    yScale = d3.scaleLinear()
+      .domain(yDomain)
+      .range([0, this.props.style.dimensions.height])
 
 
     zScale = d3.scaleLinear()
@@ -78,82 +77,83 @@ class SurfacePlot extends Component {
       .range([0, this.props.style.dimensions.depth]);
 
 
-    if (this.props.mark.surface.style.fill.scale)
-      if (this.props.mark.surface.style.fill.domain)
+    if (this.props.mark.style.fill.scaleType) {
+      let colorRange = d3.schemeCategory10;
+      if (this.props.mark.style.fill.color)
+        colorRange = this.props.mark.style.fill.color;
+      if (this.props.mark.style.fill.domain)
         colorScale = d3.scaleLinear()
-          .domain(this.props.mark.surface.style.fill.domain)
-          .range(this.props.mark.surface.style.fill.color)
+          .domain(this.props.mark.style.fill.domain)
+          .range(colorRange)
       else
         colorScale = d3.scaleLinear()
           .domain([d3.min(dataCoordinate, d => d[12]), d3.max(dataCoordinate, d => d[12])])
-          .range(this.props.mark.surface.style.fill.color)
+          .range(colorRange)
+    }
 
     //Axis
     let xAxis, yAxis, zAxis;
 
-    if (this.props.x.axis.axis) {
+    if (this.props.xAxis) {
       xAxis = <Axis
-        tickValues={xScale.ticks(this.props.x.axis.ticks['no-of-ticks'])}
-        tick={this.props.x.axis.ticks}
+        domain={xDomain}
+        tick={this.props.xAxis.ticks}
         scale={xScale}
         axis={'x'}
-        orient={this.props.x.axis.orient}
-        title={this.props.x.axis.title}
+        orient={this.props.xAxis.orient}
+        title={this.props.xAxis.title}
         dimensions={this.props.style.dimensions}
+        scaleType={this.props.mark.position.x.scaleType}
       />
-    } else
-      xAxis = <a-entity />
+    }
 
-    if (this.props.y.axis.axis) {
+    if (this.props.yAxis) {
       yAxis = <Axis
-        tickValues={yScale.ticks(this.props.y.axis.ticks['no-of-ticks'])}
-        tick={this.props.y.axis.ticks}
+        domain={yDomain}
+        tick={this.props.yAxis.ticks}
         scale={yScale}
         axis={'y'}
-        orient={this.props.y.axis.orient}
-        title={this.props.y.axis.title}
+        orient={this.props.yAxis.orient}
+        title={this.props.yAxis.title}
         dimensions={this.props.style.dimensions}
+        scaleType={this.props.mark.position.y.scaleType}
       />
-    } else
-      yAxis = <a-entity />
+    }
 
-    if (this.props.z.axis.axis) {
+    if (this.props.zAxis) {
       zAxis = <Axis
-        tickValues={zScale.ticks(this.props.z.axis.ticks['no-of-ticks'])}
-        tick={this.props.z.axis.ticks}
+        domain={zDomain}
+        tick={this.props.zAxis.ticks}
         scale={zScale}
         axis={'z'}
-        orient={this.props.z.axis.orient}
-        title={this.props.z.axis.title}
+        orient={this.props.zAxis.orient}
+        title={this.props.zAxis.title}
         dimensions={this.props.style.dimensions}
+        scaleType={this.props.mark.position.z.scaleType}
       />
 
-    } else
-      zAxis = <a-entity />
-
+    }
 
     let box;
-    if (this.props.style['axis-box']) {
+    if (this.props.axisBox) {
       box = <AxisBox
         width={this.props.style.dimensions.width}
         height={this.props.style.dimensions.height}
         depth={this.props.style.dimensions.depth}
-        color={this.props.style['axis-box-color']}
+        color={this.props.axisBox.color}
       />
-    } else {
-      box = <a-entity />
     }
 
     //Adding marks
     let marks;
-    if (this.props.mark.surface.style.fill.function)
-      marks = dataCoordinate.map((d, i) => <a-entity key={i} geometry={`primitive: planeFromVertices; vertices: ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}`} material={`color: ${colorScale(d[12])}; side: double; opacity: ${this.props.mark.surface.style.fill.opacity}`} />);
+    if (this.props.mark.style.fill.function)
+      marks = dataCoordinate.map((d, i) => <a-entity key={i} geometry={`primitive: planeFromVertices; vertices: ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}`} material={`color: ${colorScale(d[12])}; side: double; opacity: ${this.props.mark.style.fill.opacity}`} />);
     else
-      marks = dataCoordinate.map((d, i) => <a-entity key={i} geometry={`primitive: planeFromVertices; vertices: ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}`} material={`color: ${this.props.mark.surface.style.fill.color}; side: double; opacity: ${this.props.mark.surface.style.fill.opacity}`} />);
+      marks = dataCoordinate.map((d, i) => <a-entity key={i} geometry={`primitive: planeFromVertices; vertices: ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}`} material={`color: ${this.props.mark.style.fill.color}; side: double; opacity: ${this.props.mark.style.fill.opacity}`} />);
 
     let border;
-    if (this.props.mark.surface.style.stroke)
-      border = dataCoordinate.map((d, i) => <a-entity meshline={`lineWidth: ${this.props.mark.surface.style.stroke.width}; path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}; color:${this.props.mark.surface.style.stroke.color}`} />);
+    if (this.props.mark.style.stroke)
+      border = dataCoordinate.map((d, i) => <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}; color:${this.props.mark.style.stroke.color}`} />);
 
     return (
       <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} >

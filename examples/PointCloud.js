@@ -46,18 +46,15 @@ class App extends Component {
               },
               'style': {
                 'origin': [0, 0, 0],
-                'scale': 0.01,
+                'objectScale': 0.01,
               },
               'mark': {
-                'points': {
-                  'type': 'box',
-                  'style': {
-                    'radius': 0.1,
-                    'fill': {
-                      'scale': false,
-                      'opacity': 0.4,
-                      'color': 'green',
-                    },
+                'type': 'box',
+                'style': {
+                  'radius': 0.1,
+                  'fill': {
+                    'opacity': 0.4,
+                    'color': 'green',
                   },
                 },
               },

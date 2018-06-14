@@ -39,7 +39,7 @@ class App extends Component {
                 'color': '#ccc',
                 'texture': false,
                 'width': 100,
-                'height': 100,
+                'depth': 100,
               }
             }
           }
@@ -54,22 +54,24 @@ class App extends Component {
               },
               'style': {
                 'origin': [0, 0, 0],
-                'width': 50,
-                'length': 50,
+                'dimensions': {
+                  'width': 50,
+                  'depth': 50,
+                  'height': 5,
+                }
               },
               'mark': {
-                'squares': {
-                  'style': {
-                    'paddingInner': 0.5,
-                    'paddingOuter': 0.1,
-                    'height': {
-                      'field': 'size',
-                      'range': [1, 5],
-                    },
-                    'fill': {
-                      'color': ['red', 'blue', 'green', 'yellow', 'cyan', 'magenta'],
-                      'opacity': 1,
-                    },
+                'type': box,
+                'style': {
+                  'paddingInner': 0.5,
+                  'paddingOuter': 0.1,
+                  'extrusion': {
+                    'field': 'size',
+                    'startFromZero': true,
+                  },
+                  'fill': {
+                    'scaleType': 'ordinal',
+                    'opacity': 1,
                   },
                 },
               },

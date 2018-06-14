@@ -57,7 +57,6 @@ class App extends Component {
                       'value': 0.1,
                     },
                     'fill': {
-                      'scale': true,
                       'scaleType': 'ordinal',
                       'opacity': 1,
                       'field': 'group',
@@ -70,7 +69,6 @@ class App extends Component {
                   'type': 'line',
                   'style': {
                     'fill': {
-                      'scale': true,
                       'scaleType': 'ordinal',
                       'opacity': {
                         'scale': false,
@@ -87,7 +85,7 @@ class App extends Component {
                   'style': {
                     'color': 'black',
                     'opacity': 1,
-                    'size': 1,
+                    'fontSize': 1,
                     'padding': 0.1,
                   }
                 },

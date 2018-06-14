@@ -39,7 +39,7 @@ class App extends Component {
                 'color': '#ccc',
                 'texture': false,
                 'width': 100,
-                'height': 100,
+                'depth': 100,
               }
             }
           }
@@ -59,95 +59,97 @@ class App extends Component {
                   'width': 10,
                   'height': 10,
                   'depth': 10,
-                },
-                'axis-box': true,
-                'axis-box-color': 'black',
+                }
               },
               'mark': {
-                'curve': {
-                  'style': {
-                    'stroke': {
-                      'color': 'black',
-                      'width': 2,
-                    },
-                    'fill': {
-                      'color': 'red',
-                      'opacity': 0.5,
-                    }
+                'position': {
+                  'x': {
+                    'scaleType': 'linear',
+                    'field': 'Alpha',
+                  },
+                  'y': {
+                    'scaleType': 'linear',
+                  },
+                  'z': {
+                    'scaleType': 'ordinal',
+                    'domain': ['-10', '0', '10'],
                   }
                 },
+                'style': {
+                  'stroke': {
+                    'color': 'black',
+                    'width': 2,
+                  },
+                  'fill': {
+                    'color': 'red',
+                    'opacity': 0.5,
+                  }
+                }
               },
-              'x': {
-                'type': 'linear',
-                'field': 'Alpha',
-                'axis': {
-                  'axis': true,
+              'axis': {
+                'x-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',
-                    'font-size': 10,
+                    'fontSize': 10,
                     'color': 'black',
                     'opacity': 1,
                   },
                   'ticks': {
-                    'no-of-ticks': 10,
-                    'tick-size': 0.1,
-                    'tick-color': 'black',
-                    'tick-opacity': 1,
-                    'grid': true,
-                    'grid-color': 'black',
-                    'grid-opacity': 1,
-                    'font': 'Arial',
-                    'font-size': 10,
+                    'noOfTicks': 10,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
+                  },
+                  'grid': {
+                    'color': 'black',
+                    'opacity': 1,
                   }
                 },
-              },
-              'y': {
-                'type': 'linear',
-                'axis': {
-                  'axis': true,
+                'y-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',
-                    'font-size': 10,
+                    'fontSize': 10,
                     'color': 'black',
                     'opacity': 1,
                   },
                   'ticks': {
-                    'no-of-ticks': 10,
-                    'tick-size': 0.1,
-                    'tick-color': 'black',
-                    'tick-opacity': 1,
-                    'grid': true,
-                    'grid-color': 'black',
-                    'grid-opacity': 1,
-                    'font-size': 10,
+                    'noOfTicks': 10,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
+                  },
+                  'grid': {
+                    'color': 'black',
+                    'opacity': 1,
                   }
                 },
-              },
-              'z': {
-                'type': 'ordinal',
-                'domain': ['-10', '0', '10'],
-                'axis': {
-                  'axis': true,
+                'z-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',
-                    'font-size': 10,
+                    'fontSize': 10,
                     'color': 'black',
                     'opacity': 1,
                   },
                   'ticks': {
-                    'no-of-ticks': 10,
-                    'tick-size': 0.1,
-                    'tick-color': 'black',
-                    'tick-opacity': 1,
-                    'grid': true,
-                    'grid-color': 'black',
-                    'grid-opacity': 1,
-                    'font-size': 10,
+                    'noOfTicks': 10,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
+                  },
+                  'grid': {
+                    'color': 'black',
+                    'opacity': 1,
                   }
                 },
+                'axis-box': {
+                  'color': 'black',
+                }
               }
             }
           ]

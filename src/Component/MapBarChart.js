@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
 import * as THREE from 'three';
+import * as moment from 'moment';
 
 import GetDomain from '../Utils/GetDomain.js';
 import GetMapShape from '../Utils/GetMapShape';
 import GetMapCoordinates from '../Utils/GetMapCoordinates';
+import ReadPLY from '../Utils/ReadPLY.js';
 
 import { csv } from 'd3-request';
 import { json } from 'd3-request';
 import { text } from 'd3-request';
-import ReadPLY from './ReadPLY.js';
 
 class MapBarChart extends Component {
   constructor(props) {
@@ -91,6 +92,8 @@ class MapBarChart extends Component {
               for (let i = 0; i < this.props.data.fieldDesc.length; i++) {
                 if (this.props.data.fieldDesc[i][1] === 'number')
                   d[this.props.data.fieldDesc[i][0]] = +d[this.props.data.fieldDesc[i][0]]
+                if ((this.props.data.fieldDesc[i][1] === 'date') || (this.props.data.fieldDesc[i][1] === 'time'))
+                  d[this.props.data.fieldDesc[i][0]] = moment(d[this.props.data.fieldDesc[i][0]], this.props.data.fieldDesc[i][2])['_d']
               }
               return d
             })
@@ -124,14 +127,14 @@ class MapBarChart extends Component {
       let colorDomain, heightDomain;
 
       if (!this.props.mark.bars.style.height.domain) {
-        heightDomain = GetDomain(this.state.data, this.props.mark.bars.style.height.field, this.props.mark.bars.style.height.scaleType)
+        heightDomain = GetDomain(this.state.data, this.props.mark.bars.style.height.field, this.props.mark.bars.style.height.scaleType, this.props.mark.bars.style.height.startFromZero)
       } else
         heightDomain = this.props.mark.bars.style.height.domain
 
 
-      if (this.props.mark.bars.style.fill.scale) {
+      if (this.props.mark.bars.style.fill.scaleType) {
         if (!this.props.mark.bars.style.fill.domain) {
-          colorDomain = GetDomain(this.state.data, this.props.mark.bars.style.fill.field, this.props.mark.bars.style.fill.scaleType)
+          colorDomain = GetDomain(this.state.data, this.props.mark.bars.style.fill.field, this.props.mark.bars.style.fill.scaleType, this.props.mark.bars.style.fill.startFromZero)
         } else
           colorDomain = this.props.mark.bars.style.fill.domain
       }
@@ -144,20 +147,24 @@ class MapBarChart extends Component {
         .domain(heightDomain)
         .range(this.props.mark.bars.style.height.value)
 
-      if (this.props.mark.bars.style.fill.scale)
+      if (this.props.mark.bars.style.fill.scaleType) {
+        let colorRange = d3.schemeCategory10;
+        if (this.props.mark.bars.style.fill.color)
+          colorRange = this.props.mark.bars.style.fill.color
         if (this.props.mark.bars.style.fill.scaleType === 'ordinal')
           colorScale = d3.scaleOrdinal()
             .domain(colorDomain)
-            .range(this.props.mark.bars.style.fill.color)
+            .range(colorRange)
         else
           colorScale = d3.scaleLinear()
             .domain(colorDomain)
-            .range(this.props.mark.bars.style.fill.color)
+            .range(colorRange)
+      }
 
 
       //Drawing Map
 
-      let geoData = GetMapShape(this.props.mark.map.data, this.props.mark.map.projection, this.props.mark.map.style.scale, this.props.mark.map.style.position, this.props.mark.map.shapeIdentifier);
+      let geoData = GetMapShape(this.props.mark.map.data, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin, this.props.mark.map.shapeIdentifier);
 
       let shapes = geoData.map((d, i) => {
         let primitive = `primitive: map; vertices: ${d.vertices}; extrude: ${this.props.mark.map.style.extrusion.value}`;
@@ -177,8 +184,8 @@ class MapBarChart extends Component {
           {
             marks = this.state.data.map((d, i) => {
 
-              let position = GetMapCoordinates(d.longitude, d.latitude, this.props.mark.map.projection, this.props.mark.map.style.scale, this.props.mark.map.style.position);
-              if (this.props.mark.bars.style.fill.scale) {
+              let position = GetMapCoordinates(d.longitude, d.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
+              if (this.props.mark.bars.style.fill.scaleType) {
                 return <a-box key={i} color={`${colorScale(d[this.props.mark.bars.style.fill.field])}`} opacity={this.props.mark.bars.style.fill.opacity} height={`${this.props.mark.bars.style.depth}`} depth={`${heightScale(d[this.props.mark.bars.style.height.field])}`} width={`${this.props.mark.bars.style.width}`} position={`${position[0]} ${0 - position[1]} ${heightScale(d[this.props.mark.bars.style.height.field]) / 2}`} />
               } else
                 return <a-box key={i} color={`${this.props.mark.bars.style.fill.color}`} opacity={this.props.mark.bars.style.fill.opacity} height={`${this.props.mark.bars.style.depth}`} depth={`${heightScale(d[this.props.mark.bars.style.height.field])}`} width={`${this.props.mark.bars.style.width}`} position={`${position[0]} ${0 - position[1]} ${heightScale(d[this.props.mark.bars.style.height.field]) / 2}`} />
@@ -188,8 +195,8 @@ class MapBarChart extends Component {
         case 'cylinder':
           {
             marks = this.state.data.map((d, i) => {
-              let position = GetMapCoordinates(d.longitude, d.latitude, this.props.mark.map.projection, this.props.mark.map.style.scale, this.props.mark.map.style.position);
-              if (this.props.mark.bars.style.fill.scale)
+              let position = GetMapCoordinates(d.longitude, d.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
+              if (this.props.mark.bars.style.fill.scaleType)
                 return <a-cylinder key={i} opacity={this.props.style.fill.opacity} color={`${colorScale(d[this.props.mark.bars.style.fill.field])}`} height={`${heightScale(d[this.props.mark.bars.style.height.field])}`} radius={`${this.props.mark.bars.style.radius}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${position[0]} ${0 - position[1]} ${heightScale(d[this.props.mark.bars.style.height.field]) / 2}`} />
               else
                 return <a-cylinder key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${this.props.mark.bars.style.fill.color}`} height={`${heightScale(d[this.props.mark.bars.style.height.field])}`} radius={`${this.props.mark.bars.style.radius}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${position[0]} ${0 - position[1]} ${heightScale(d[this.props.mark.bars.style.height.field]) / 2}`} />
@@ -199,8 +206,8 @@ class MapBarChart extends Component {
         case 'cone':
           {
             marks = this.state.data.map((d, i) => {
-              let position = GetMapCoordinates(d.longitude, d.latitude, this.props.mark.map.projection, this.props.mark.map.style.scale, this.props.mark.map.style.position);
-              if (this.props.mark.bars.style.fill.scale)
+              let position = GetMapCoordinates(d.longitude, d.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
+              if (this.props.mark.bars.style.fill.scaleType)
                 return <a-cone key={i} opacity={this.props.style.fill.opacity} color={`${colorScale(d[this.props.mark.bars.style.fill.field])}`} height={`${heightScale(d[this.props.mark.bars.style.height.field])}`} radius-bottom={`${this.props.mark.bars.style.radiusBottom}`} radius-top={`${this.props.mark.bars.style.radiusTop}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${position[0]} ${0 - position[1]} ${heightScale(d[this.props.mark.bars.style.height.field]) / 2}`} />
               else
                 return <a-cone key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${this.props.mark.bars.style.fill.color}`} height={`${heightScale(d[this.props.mark.bars.style.height.field])}`} radius-bottom={`${this.props.mark.bars.style.radiusBottom}`} radius-top={`${this.props.mark.bars.style.radiusTop}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${position[0]} ${0 - position[1]} ${heightScale(d[this.props.mark.bars.style.height.field]) / 2}`} />
@@ -210,8 +217,8 @@ class MapBarChart extends Component {
         default:
           {
             marks = this.state.data.map((d, i) => {
-              let position = GetMapCoordinates(d.longitude, d.latitude, this.props.mark.map.projection, this.props.mark.map.style.scale, this.props.mark.map.style.position);
-              if (this.props.mark.bars.style.fill.scale)
+              let position = GetMapCoordinates(d.longitude, d.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
+              if (this.props.mark.bars.style.fill.scaleType)
                 return <a-box key={i} opacity={this.props.style.fill.opacity} color={`${colorScale(d[this.props.mark.bars.style.fill.field])}`} height={`${this.props.mark.bars.style.depth}`} depth={`${heightScale(d[this.props.mark.bars.style.height.field])}`} width={`${this.props.mark.bars.style.width}`} position={`${position[0]} ${0 - position[1]} ${heightScale(d[this.props.mark.bars.style.height.field]) / 2}`} />
               else
                 return <a-box key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${this.props.mark.bars.style.fill.color}`} height={`${this.props.mark.bars.style.depth}`} depth={`${heightScale(d[this.props.mark.bars.style.height.field])}`} width={`${this.props.mark.bars.style.width}`} position={`${position[0]} ${0 - position[1]} ${heightScale(d[this.props.mark.bars.style.height.field]) / 2}`} />
@@ -221,7 +228,7 @@ class MapBarChart extends Component {
       }
 
       return (
-        <a-entity rotation={this.props.mark.map.style.rotation} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
+        <a-entity rotation={this.props.mark.rotation} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
           {shapes}
           {border}
           {marks}

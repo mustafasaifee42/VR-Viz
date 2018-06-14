@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
+import * as moment from 'moment';
 
 import GetDomain from '../Utils/GetDomain.js';
+import ReadPLY from '../Utils/ReadPLY.js';
 
 import { csv } from 'd3-request';
 import { json } from 'd3-request';
 import { text } from 'd3-request';
-import ReadPLY from './ReadPLY.js';
 
 
 class ForceDirectedGraph extends Component {
@@ -42,6 +43,8 @@ class ForceDirectedGraph extends Component {
               for (let i = 0; i < this.props.data.fieldDesc.length; i++) {
                 if (this.props.data.fieldDesc[i][1] === 'number')
                   d[this.props.data.fieldDesc[i][0]] = +d[this.props.data.fieldDesc[i][0]]
+                if ((this.props.data.fieldDesc[i][1] === 'date') || (this.props.data.fieldDesc[i][1] === 'time'))
+                  d[this.props.data.fieldDesc[i][0]] = moment(d[this.props.data.fieldDesc[i][0]], this.props.data.fieldDesc[i][2])['_d']
               }
               return d
             })
@@ -119,14 +122,14 @@ class ForceDirectedGraph extends Component {
     }
     else {
 
-      let radiusValue = this.props.mark.nodes.style.radius.value, nodeColorValue = this.props.mark.nodes.style.fill.color, ifNodeColorScale = this.props.mark.nodes.style.fill.scale, ifLinkColorScale = this.props.mark.links.style.fill.scale, ifLinkOpacityScale = this.props.mark.links.style.fill.opacity.scale, ifRadiusScale = this.props.mark.nodes.style.radius.scale, linkColor = this.props.mark.links.style.fill.color, linkOpacity = ifLinkColorScale = this.props.mark.links.style.fill.opacity.value, ifLabel = this.props.mark.labels, labelWidth;
+      let radiusValue = this.props.mark.nodes.style.radius.value, nodeColorValue = this.props.mark.nodes.style.fill.color, ifNodeColorScale = this.props.mark.nodes.style.fill.scaleType, ifLinkColorScale = this.props.mark.links.style.fill.scaleType, ifLinkOpacityScale = this.props.mark.links.style.fill.opacity.scale, ifRadiusScale = this.props.mark.nodes.style.radius.scale, linkColor = this.props.mark.links.style.fill.color, linkOpacity = ifLinkColorScale = this.props.mark.links.style.fill.opacity.value, ifLabel = this.props.mark.labels, labelWidth;
 
       let nodeType = this.props.mark.nodes.type, labelPadding, scale = this.props.style.scale;
 
 
 
       if (ifLabel) {
-        labelWidth = this.props.mark.labels.style.size
+        labelWidth = this.props.mark.labels.style.fontSize
         labelPadding = this.props.mark.labels.style.padding
       }
 
@@ -134,30 +137,30 @@ class ForceDirectedGraph extends Component {
       // Adding Domain
       let nodeRadiusDomain, linkColorDomain, nodeColorDomain, linkOpacityDomain;
 
-      if (this.props.mark.nodes.style.radius.scale) {
+      if (this.props.mark.nodes.style.radius.scaleType) {
         if (!this.props.mark.nodes.style.radius.domain) {
-          nodeRadiusDomain = GetDomain(this.state.data.nodes, this.props.mark.nodes.style.radius.field, this.props.mark.nodes.style.radius.scaleType)
+          nodeRadiusDomain = GetDomain(this.state.data.nodes, this.props.mark.nodes.style.radius.field, this.props.mark.nodes.style.radius.scaleType, this.props.mark.nodes.style.radius.startFromZero)
         } else
           nodeRadiusDomain = this.props.mark.nodes.style.radius.domain
       }
 
-      if (this.props.mark.nodes.style.fill.scale) {
+      if (this.props.mark.nodes.style.fill.scaleType) {
         if (!this.props.mark.nodes.style.fill.domain) {
-          nodeColorDomain = GetDomain(this.state.data.nodes, this.props.mark.nodes.style.fill.field, this.props.mark.nodes.style.fill.scaleType)
+          nodeColorDomain = GetDomain(this.state.data.nodes, this.props.mark.nodes.style.fill.field, this.props.mark.nodes.style.fill.scaleType, this.props.mark.nodes.style.fill.startFromZero)
         } else
           nodeColorDomain = this.props.mark.nodes.style.fill.domain
       }
 
-      if (this.props.mark.links.style.fill.scale) {
+      if (this.props.mark.links.style.fill.scaleType) {
         if (!this.props.mark.links.style.fill.domain) {
-          linkColorDomain = GetDomain(this.state.data.link, this.props.mark.links.style.fill.field, this.props.mark.links.style.fill.scaleType)
+          linkColorDomain = GetDomain(this.state.data.link, this.props.mark.links.style.fill.field, this.props.mark.links.style.fill.scaleType, this.props.mark.links.style.fill.startFromZero)
         } else
           linkColorDomain = this.props.mark.links.style.fill.domain
       }
 
-      if (this.props.mark.links.style.fill.opacity.scale) {
+      if (this.props.mark.links.style.fill.opacity.scaleType) {
         if (!this.props.mark.links.style.fill.opacity.domain) {
-          linkOpacityDomain = GetDomain(this.state.data.link, this.props.mark.links.style.fill.opacity.field, this.props.mark.links.style.fill.opacity.scaleType)
+          linkOpacityDomain = GetDomain(this.state.data.link, this.props.mark.links.style.fill.opacity.field, this.props.mark.links.style.fill.opacity.scaleType, this.props.mark.links.style.fill.opacity.startFromZero)
         } else
           linkOpacityDomain = this.props.mark.links.style.fill.opacity.domain
       }
@@ -169,32 +172,40 @@ class ForceDirectedGraph extends Component {
 
       let nodeRadiusScale, nodeColorScale, linkColorScale, linkOpacityScale;
 
-      if (this.props.mark.nodes.style.radius.scale)
+      if (this.props.mark.nodes.style.radius.scaleType)
         nodeRadiusScale = d3.scaleLinear()
           .domain(nodeRadiusDomain)
           .range(this.props.mark.nodes.style.radius.value)
 
-      if (this.props.mark.nodes.style.fill)
+      if (this.props.mark.nodes.style.fill.scaleType) {
+        let nodeColorRange = d3.schemeCategory10;
+        if (this.props.mark.nodes.style.fill.color)
+          nodeColorRange = this.props.mark.nodes.style.fill.color
         if (this.props.mark.nodes.style.fill.scaleType === 'ordinal')
           nodeColorScale = d3.scaleOrdinal()
             .domain(nodeColorDomain)
-            .range(this.props.mark.nodes.style.fill.color)
+            .range(nodeColorRange)
         else
           nodeColorScale = d3.scaleLinear()
             .domain(nodeColorDomain)
-            .range(this.props.mark.nodes.style.fill.color)
+            .range(nodeColorRange)
+      }
 
-      if (this.props.mark.links.style.fill)
-        if (this.props.mark.links.style.fill.type === 'ordinal')
+      if (this.props.mark.links.style.fill.scaleType) {
+        let linkColorRange = d3.schemeCategory10;
+        if (this.props.mark.links.style.fill.color)
+          linkColorRange = this.props.mark.links.style.fill.color
+        if (this.props.mark.links.style.fill.scaleType === 'ordinal')
           linkColorScale = d3.scaleOrdinal()
             .domain(linkColorDomain)
-            .range(this.props.mark.links.style.fill.color);
+            .range(linkColorRange);
         else
           linkColorScale = d3.scaleLinear()
             .domain(linkColorDomain)
-            .range(this.props.mark.links.style.fill.color);
+            .range(linkColorRange);
+      }
 
-      if (this.props.mark.links.style.fill.opacity.scale)
+      if (this.props.mark.links.style.fill.opacity.scaleType)
         linkOpacityScale = d3.scaleLinear()
           .domain(linkOpacityDomain)
           .range(this.props.mark.links.style.fill.opacity.value)
@@ -211,11 +222,11 @@ class ForceDirectedGraph extends Component {
 
       for (let i = 0; i < this.state.data.nodes.length; i++) {
         let col, r, lab;
-        if (this.props.mark.nodes.style.radius.scale)
+        if (this.props.mark.nodes.style.radius.scaleType)
           r = nodeRadiusScale(this.state.data.nodes[i][this.props.mark.nodes.style.radius.field])
         else
           r = this.props.mark.nodes.style.radius.value
-        if (this.props.mark.nodes.style.fill.scale)
+        if (this.props.mark.nodes.style.fill.scaleType)
           col = nodeColorScale(this.state.data.nodes[i][this.props.mark.nodes.style.fill.field])
         else
           col = this.props.mark.nodes.style.fill.color
@@ -233,11 +244,11 @@ class ForceDirectedGraph extends Component {
 
       for (let i = 0; i < this.state.data.links.length; i++) {
         let col, op;
-        if (this.props.mark.links.style.fill.opacity.scale)
+        if (this.props.mark.links.style.fill.opacity.scaleType)
           op = linkOpacityScale(this.state.data.links[i][this.props.mark.links.style.fill.opacity.field])
         else
           op = this.props.mark.links.style.fill.opacity.value
-        if (this.props.mark.links.style.fill.scale)
+        if (this.props.mark.links.style.fill.scaleType)
           col = linkColorScale(this.state.data.links[i][this.props.mark.links.style.fill.field])
         else
           col = this.props.mark.links.style.fill.color

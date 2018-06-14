@@ -39,7 +39,7 @@ class App extends Component {
                 'color': '#ccc',
                 'texture': false,
                 'width': 100,
-                'height': 100,
+                'depth': 100,
               }
             }
           }
@@ -51,7 +51,7 @@ class App extends Component {
               'data': {
                 'dataFile': "data/TimeSeries.csv",
                 'fileType': 'csv',
-                'fieldDesc': [['Year', 'number'], ['Tornadoes', 'number'], ['Deaths', 'number']]
+                'fieldDesc': [['Year', 'date', 'YYYY'], ['Tornadoes', 'number'], ['Deaths', 'number']]
               },
               'style': {
                 'origin': [0, 0, 0],
@@ -59,74 +59,101 @@ class App extends Component {
                   'width': 10,
                   'height': 10,
                   'depth': 10,
-                },
-                'axis-box': true,
-                'axis-box-color': 'black',
-              },
-              'mark': {
-                'timeSeries': {
-                  'style': {
-                    'fill':{
-                      'color':'red',
-                      'opacity': 0.4,
-                    },
-                    'width': {
-                      'scaleType': 'linear',
-                      'field': 'Deaths',
-                      'range': [0,5],
-                    },
-                  }
                 }
               },
-              'x': {
-                'type': 'ordinal',
-                'field': 'Year',
-                'axis': {
-                  'axis': true,
+              'mark': {
+                'type': 'plane',
+                'position': {
+                  'x': {
+                    'scaleType': 'ordinal',
+                    'field': 'Year',
+                  },
+                  'y': {
+                    'scaleType': 'linear',
+                    'field': 'Tornadoes',
+                  },
+                  'z': {
+                    'scaleType': 'linear',
+                    'field': 'Deaths',
+                  }
+                },
+                'style': {
+                  'fill': {
+                    'color': 'red',
+                    'opacity': 0.4,
+                  },
+                  'stroke': {
+                    'width': 1,
+                    'color': 'black',
+                  },
+                }
+              },
+              'axis': {
+                'axis-box': {
+                  'color': 'black',
+                },
+                'x-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',
-                    'font-size': 10,
+                    'fontSize': 10,
                     'color': 'black',
                     'opacity': 1,
                   },
                   'ticks': {
-                    'no-of-ticks': 10,
-                    'tick-size': 0.1,
-                    'tick-color': 'black',
-                    'tick-opacity': 1,
-                    'grid': true,
-                    'grid-color': 'black',
-                    'grid-opacity': 1,
-                    'font': 'Arial',
-                    'font-size': 10,
+                    'noOfTicks': 4,
+                    'size': 0.1,
+                    'color': 'black',
+                    'format': 'YYYY',
+                    'opacity': 1,
+                    'fontSize': 10,
+                  },
+                  'grid': {
+                    'color': 'black',
+                    'opacity': 1,
                   }
                 },
-              },
-              'y': {
-                'type': 'linear',
-                'field': 'Tornadoes',
-                'axis': {
-                  'axis': true,
+                'y-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',
-                    'font-size': 10,
+                    'fontSize': 10,
                     'color': 'black',
                     'opacity': 1,
                   },
                   'ticks': {
-                    'no-of-ticks': 10,
-                    'tick-size': 0.1,
-                    'tick-color': 'black',
-                    'tick-opacity': 1,
-                    'grid': true,
-                    'grid-color': 'black',
-                    'grid-opacity': 1,
-                    'font-size': 10,
+                    'noOfTicks': 10,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
+                  },
+                  'grid': {
+                    'color': 'black',
+                    'opacity': 1,
                   }
                 },
-              },
+                'z-axis': {
+                  'orient': 'bottom-back',
+                  'title': {
+                    'text': '',
+                    'fontSize': 10,
+                    'color': 'black',
+                    'opacity': 1,
+                  },
+                  'ticks': {
+                    'noOfTicks': 10,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
+                  },
+                  'grid': {
+                    'color': 'black',
+                    'opacity': 1,
+                  }
+                }
+              }
             }
           ]
         }

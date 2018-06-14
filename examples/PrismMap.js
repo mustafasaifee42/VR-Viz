@@ -49,31 +49,27 @@ class App extends Component {
                 'origin': [0, 0, 0],
               },
               'mark': {
-                'map': {
-                  'data': mapData,
-                  'projection': 'Mercator',
-                  'shapeIdentifier': 'id',
-                  'style': {
-                    'scale': 20,
-                    'position': [5, 5],
-                    'rotation': '-45 0 0',
-                    'extrusion': {
-                      'scale': true,
-                      'scaleType': 'linear',
-                      'field': 'value',
-                      'value': [0, 5],
-                    },
-                    'fill': {
-                      'scale': true,
-                      'scaleType': 'ordinal',
-                      'opacity': 0.9,
-                      'field': 'colorValue',
-                      'color': ['green', 'blue', 'red', 'yellow', 'magenta', 'cyan'],
-                    },
-                    'stroke': {
-                      'width': 1,
-                      'color': 'black',
-                    },
+                'mapScale': 20,
+                'mapOrigin': [5, 5],
+                'rotation': '-45 0 0',
+                'data': mapData,
+                'projection': 'Mercator',
+                'shapeIdentifier': 'id',
+                'style': {
+                  'extrusion': {
+                    'scaleType': 'linear',
+                    'field': 'value',
+                    'value': [0, 5],
+                  },
+                  'fill': {
+                    'scaleType': 'ordinal',
+                    'opacity': 0.9,
+                    'field': 'colorValue',
+                    'color': ['green', 'blue', 'red', 'yellow', 'magenta', 'cyan'],
+                  },
+                  'stroke': {
+                    'width': 1,
+                    'color': 'black',
                   },
                 },
               },

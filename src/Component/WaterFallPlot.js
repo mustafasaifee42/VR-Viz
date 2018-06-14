@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
 import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
+import * as moment from 'moment';
 
 import GetDomain from '../Utils/GetDomain.js';
+import ReadPLY from '../Utils/ReadPLY.js';
 import Axis from './Axis.js';
 import AxisBox from './AxisBox.js';
 
 import { csv } from 'd3-request';
 import { json } from 'd3-request';
 import { text } from 'd3-request';
-import ReadPLY from './ReadPLY.js';
 import 'aframe-meshline-component';
 
-class BarGraph extends Component {
+class WaterFallPlot extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -43,6 +44,8 @@ class BarGraph extends Component {
               for (let i = 0; i < this.props.data.fieldDesc.length; i++) {
                 if (this.props.data.fieldDesc[i][1] === 'number')
                   d[this.props.data.fieldDesc[i][0]] = +d[this.props.data.fieldDesc[i][0]]
+                if ((this.props.data.fieldDesc[i][1] === 'date') || (this.props.data.fieldDesc[i][1] === 'time'))
+                  d[this.props.data.fieldDesc[i][0]] = moment(d[this.props.data.fieldDesc[i][0]], this.props.data.fieldDesc[i][2])['_d']
               }
               return d
             })
@@ -122,28 +125,28 @@ class BarGraph extends Component {
       // Getting domain for axis
       let xDomain, yDomain, zDomain, colorDomain;
 
-      if (this.props.x) {
-        if (!this.props.x.domain) {
-          xDomain = GetDomain(this.state.data, this.props.x.field, this.props.x.type)
+      if (this.props.mark.position.x) {
+        if (!this.props.mark.position.x.domain) {
+          xDomain = GetDomain(this.state.data, this.props.mark.position.x.field, this.props.mark.position.x.scaleType, this.props.mark.position.x.startFromZero)
         } else
-          xDomain = this.props.x.domain
+          xDomain = this.props.mark.position.x.domain
       }
 
-      if (this.props.z) {
-        if (!this.props.z.domain) {
+      if (this.props.mark.position.z) {
+        if (!this.props.mark.position.z.domain) {
           console.log(Object.keys(this.state.data[0]))
           zDomain = [];
           for (let k = 0; k < Object.keys(this.state.data[0]).length; k++)
-            if (Object.keys(this.state.data[0])[k] !== this.props.x.field)
+            if (Object.keys(this.state.data[0])[k] !== this.props.mark.position.x.field)
               zDomain.push(Object.keys(this.state.data[0])[k]);
         } else
-          zDomain = this.props.z.domain
+          zDomain = this.props.mark.position.z.domain
       }
 
 
 
-      if (this.props.y) {
-        if (!this.props.y.domain) {
+      if (this.props.mark.position.y) {
+        if (!this.props.mark.position.y.domain) {
           let min = 9999999999999999, max = -99999999999999999;
           for (let k = 0; k < zDomain.length; k++) {
             for (let i = 0; i < this.state.data.length; i++) {
@@ -154,12 +157,14 @@ class BarGraph extends Component {
                 max = this.state.data[i][zDomain[k]]
             }
           }
-          yDomain = [min, max]
+          if (this.props.mark.position.y.startFromZero)
+            yDomain = [0, max]
+          else
+            yDomain = [min, max]
         } else
-          yDomain = this.props.y.domain
+          yDomain = this.props.mark.position.y.domain
       }
 
-      console.log(xDomain, yDomain, zDomain)
 
       //Adding Scale
       let zRange = [];
@@ -173,7 +178,7 @@ class BarGraph extends Component {
 
       let xScale, yScale, zScale, colorScale;
 
-      if (this.props.x.type === 'ordinal')
+      if (this.props.mark.position.x.scaleType === 'ordinal')
         xScale = d3.scaleOrdinal()
           .range(xRange)
           .domain(xDomain);
@@ -182,16 +187,11 @@ class BarGraph extends Component {
           .range([0, this.props.style.dimensions.width])
           .domain(xDomain);
 
-      if (this.props.y.range)
-        yScale = d3.scaleLinear()
-          .domain(yDomain)
-          .range(this.props.y.range)
-      else
-        yScale = d3.scaleLinear()
-          .domain(yDomain)
-          .range([0, this.props.style.dimensions.height])
+      yScale = d3.scaleLinear()
+        .domain(yDomain)
+        .range([0, this.props.style.dimensions.height])
 
-      if (this.props.z.type === 'ordinal')
+      if (this.props.mark.position.z.scaleType === 'ordinal')
         zScale = d3.scaleOrdinal()
           .domain(zDomain)
           .range(zRange);
@@ -204,85 +204,82 @@ class BarGraph extends Component {
       //Axis
       let xAxis, yAxis, zAxis;
 
-      if (this.props.x.axis.axis) {
+      if (this.props.xAxis) {
         xAxis = <Axis
-          tickValues={xDomain}
-          tick={this.props.x.axis.ticks}
+          domain={xDomain}
+          tick={this.props.xAxis.ticks}
           scale={xScale}
           axis={'x'}
-          orient={this.props.x.axis.orient}
-          title={this.props.x.axis.title}
+          orient={this.props.xAxis.orient}
+          title={this.props.xAxis.title}
           dimensions={this.props.style.dimensions}
+          scaleType={this.props.mark.position.x.scaleType}
         />
-      } else
-        xAxis = <a-entity />
+      }
 
-      if (this.props.y.axis.axis) {
+      if (this.props.yAxis) {
         yAxis = <Axis
-          tickValues={yScale.ticks(this.props.y.axis.ticks['no-of-ticks'])}
-          tick={this.props.y.axis.ticks}
+          domain={yScale.ticks(this.props.yAxis.ticks['noOfTicks'])}
+          tick={this.props.yAxis.ticks}
           scale={yScale}
           axis={'y'}
-          orient={this.props.y.axis.orient}
-          title={this.props.y.axis.title}
+          orient={this.props.yAxis.orient}
+          title={this.props.yAxis.title}
           dimensions={this.props.style.dimensions}
+          scaleType={this.props.mark.position.y.scaleType}
         />
-      } else
-        yAxis = <a-entity />
+      }
 
-      if (this.props.z.axis.axis) {
+      if (this.props.zAxis) {
         zAxis = <Axis
-          tickValues={zDomain}
-          tick={this.props.z.axis.ticks}
+          domain={zDomain}
+          tick={this.props.zAxis.ticks}
           scale={zScale}
           axis={'z'}
-          orient={this.props.z.axis.orient}
-          title={this.props.z.axis.title}
+          orient={this.props.zAxis.orient}
+          title={this.props.zAxis.title}
           dimensions={this.props.style.dimensions}
+          scaleType={this.props.mark.position.z.scaleType}
         />
 
-      } else
-        zAxis = <a-entity />
-
+      }
 
       let box;
-      if (this.props.style['axis-box']) {
+      if (this.props.axisBox) {
         box = <AxisBox
           width={this.props.style.dimensions.width}
           height={this.props.style.dimensions.height}
           depth={this.props.style.dimensions.depth}
-          color={this.props.style['axis-box-color']}
+          color={this.props.axisBox.color}
         />
-      } else {
-        box = <a-entity />
       }
 
       //Adding marks
       let marks, line;
-      if (this.props.mark.curve.style.stroke)
+      if (this.props.mark.style.stroke)
         line = zDomain.map((d, i) => {
           let path = ''
           for (let j = 0; j < this.state.data.length; j++) {
             if (j !== this.state.data.length - 1)
-              path = path + ` ${xScale(this.state.data[j][this.props.x.field])} ${yScale(this.state.data[j][d])} ${zScale(d)},`
+              path = path + ` ${xScale(this.state.data[j][this.props.mark.position.x.field])} ${yScale(this.state.data[j][d])} ${zScale(d)},`
             else
-              path = path + ` ${xScale(this.state.data[j][this.props.x.field])} ${yScale(this.state.data[j][d])} ${zScale(d)}`
+              path = path + ` ${xScale(this.state.data[j][this.props.mark.position.x.field])} ${yScale(this.state.data[j][d])} ${zScale(d)}`
           }
-          return <a-entity meshline={`lineWidth: ${this.props.mark.curve.style.stroke.width}; path:${path}; color: ${this.props.mark.curve.style.stroke.color}`}></a-entity>
+          return <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${path}; color: ${this.props.mark.style.stroke.color}`}></a-entity>
         })
-      if (this.props.mark.curve.style.fill)
+      if (this.props.mark.style.fill)
         marks = zDomain.map((d, i) => {
           let path = `0 0 ${zScale(d)},`
           for (let j = 0; j < this.state.data.length; j++) {
             if (j !== this.state.data.length - 1)
-              path = path + ` ${xScale(this.state.data[j][this.props.x.field])} ${yScale(this.state.data[j][d])},`
+              path = path + ` ${xScale(this.state.data[j][this.props.mark.position.x.field])} ${yScale(this.state.data[j][d])},`
             else
-              path = path + ` ${xScale(this.state.data[j][this.props.x.field])} ${yScale(this.state.data[j][d])}`
+              path = path + ` ${xScale(this.state.data[j][this.props.mark.position.x.field])} ${yScale(this.state.data[j][d])}`
           }
-          path = path + `, ${xScale(this.state.data[this.state.data.length - 1][this.props.x.field])} 0`
+          path = path + `, ${xScale(this.state.data[this.state.data.length - 1][this.props.mark.position.x.field])} 0`
           let primitive = `primitive: map; vertices: ${path}; extrude: 0.00000001`;
           console.log(path)
-          return <a-entity key={i} position={`0 0 ${zScale(d)}`} geometry={primitive} material={`color: ${this.props.mark.curve.style.fill.color}; side: double; opacity:${this.props.mark.curve.style.fill.opacity}`} />
+          return <a-entity key={i} position={`0 0 ${zScale(d)}`} geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; side: double; opacity:${this.props.mark.style.fill.opacity}`} />
         })
       return (
         <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
@@ -297,4 +294,4 @@ class BarGraph extends Component {
     }
   }
 }
-export default BarGraph
+export default WaterFallPlot

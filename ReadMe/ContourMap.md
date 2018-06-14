@@ -1,38 +1,41 @@
-## ContourMap Component
+# ContourMap Component
 
 ![ContourMap](../imgs/ContourMap.png)
 
-#### [Example](../examples/ContourMap.js)
-
-#### Parameter required in `graph` variable
+## `mark` Object in Graph Props
 ```
-{
-  'type': 'ContourMap',
-  'data': {
-    'dataFile': "data/contourMapData.csv",
-    'fileType': 'text',
-  },
+'mark': {
+  'type': 'plane',
+  'heightThreshold': 100,
   'style': {
-    'origin': [0, 0, 0],
-  },
-  'mark': {
-    'style': {
+    'fill': {
+      'scaleType': 'linear',
       'opacity': 0.4,
-      'color': {
-        'scale': true,
-        'fill': ['green', 'blue'],
-      },
-      'scale':{
-        'ground':0.1,
-        'height':0.1,
-      }
+      'color': ['green', 'blue'],
     },
+    'stroke': {
+      'width': 1,
+      'color': 'black',
+    }
   },
-  'heightThreshold':100,
 }
 ```
 
-#### DataFile
+__Properties for `mark` for Contour Map__
+Property | Type | Description
+--- | --- | ---
+type | string | Defines type of plane that would be created. __Required.__ _Available values: plane._
+heightThreshold | float | Defines what height will be mapped to 0. __Not Required. Default value: 0.__
+style | object | Defines the style for the planes. __Required.__
+style.fill | object | Defines the fill for the planes. __Not Required. If not present the planes are not filled.__
+style.fill.opacity | float | Defines the opacity of the planes. __Required.__ _Value must be between 0 and 1._
+style.fill.scaleType | string | Defines the scale type for fill of the planes. __Not Required. If not present then a constant color that is defined is filled in the planes.__ _Available values: linear._
+style.fill.color | array or string | Defines the color for fill. __Required__ _If style.fill.scaleType is not present the this needs to be a string otherwise an array._
+style.stroke | object | Defines the stroke for the planes. __Not Required. If not present the planes are not stroked.__
+style.stroke.width | float | Defines the stroke of the planes. __Required.__
+style.stroke.color | string | Defines the stroke color for plane. __Required.__
+
+## The Data
 
 **Datafile**: `text`
 
@@ -46,12 +49,6 @@ The data file is without header. Rows corresponding to grid lines running east t
 102,102,103,103,103
 ```
 
-#### React Component
-```
-<ContourMap 
-  data = {d.data}
-  style = {d.style}
-  mark = {d.mark}
-  heightThreshold = {heightThreshold}
-/>
-```
+#### [Example](../examples/ContourMap.js)
+
+

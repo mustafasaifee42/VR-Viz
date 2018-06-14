@@ -1,114 +1,53 @@
-## ContourPlot Component
+# ContourPlot Component
 
 ![ContourPlot](../imgs/ContourPlot.png)
 
-#### [Example](../examples/ContourPlot.js)
-
-#### Parameter required in `graph` variable
+## `mark` Object in Graph Props
 ```
-{
-  'type': 'ContourPlot',
-  'style': {
-    'origin': [0, 0, 0],
-    'dimensions': {
-      'width': 10,
-      'height': 10,
-      'depth': 10,
+
+'mark': {
+  'type': 'line',
+  'position': {
+    'x': {
+      'scaleType': 'linear',
+      'function': (y) => Math.sin(y),
     },
-    'axis-box': true,
-    'axis-box-color': 'black',
-  },
-  'mark': {
-    'path':{
-      'type': 'line',
-      'style': {
-        'opacity': 0.4,
-        'color': 'red',
-      }
+    'y': {
+      'scaleType': 'linear',
+      'domain': [0, 6 * Math.PI],
+      'steps': 150,
+    },
+    'z': {
+      'scaleType': 'linear',
+      'function': (y) => Math.cos(y),
     }
   },
-  'x': {
-    'function': (y) => Math.sin(y),
-    'axis': {
-      'axis': true,
-      'orient': 1,
-      'title': {
-        'text': '',
-        'font-size': 10,
-        'color': 'black',
-        'opacity': 1,
-      },
-      'ticks': {
-        'no-of-ticks': 10,
-        'tick-size': 0.1,
-        'tick-color': 'black',
-        'tick-opacity': 1,
-        'grid': true,
-        'grid-color': 'black',
-        'grid-opacity': 1,
-        'font': 'Arial',
-        'font-size': 10,
-      }
-    },
-  },
-  'y': {
-    'domain': [0, 2 * Math.PI],       //'domain' is required for contour plot
-    'steps': 50,                      //'steps' defines granularity of the plot
-    'range': [0, 10],
-    'axis': {
-      'axis': true,
-      'orient': 1,
-      'title': {
-        'text': '',
-        'font-size': 10,
-        'color': 'black',
-        'opacity': 1,
-      },
-      'ticks': {
-        'no-of-ticks': 10,
-        'tick-size': 0.1,
-        'tick-color': 'black',
-        'tick-opacity': 1,
-        'grid': true,
-        'grid-color': 'black',
-        'grid-opacity': 1,
-        'font-size': 10,
-      }
-    },
-  },
-  'z': {
-    'function': (y) => Math.cos(y),
-    'axis': {
-      'axis': true,
-      'orient': 1,
-      'title': {
-        'text': '',
-        'font-size': 10,
-        'color': 'black',
-        'opacity': 1,
-      },
-      'ticks': {
-        'no-of-ticks': 10,
-        'tick-size': 0.1,
-        'tick-color': 'black',
-        'tick-opacity': 1,
-        'grid': true,
-        'grid-color': 'black',
-        'grid-opacity': 1,
-        'font-size': 10,
-      }
-    },
+  'style': {
+    'opacity': 1,
+    'color': 'red',
   }
-}
+},
 ```
 
-#### React Component
-```
-<ContourPlot 
-  style = {d.style}
-  mark = {d.mark}
-  x = {d.x}
-  y = {d.y}
-  z = {d.z}
-/>
-```
+__Properties for `mark` for Contour Plot__
+Property | Type | Description
+--- | --- | ---
+type | string | Defines type of contour that would be created. __Required. Default value: line__. _Available values: line._
+position | object | Defines the how the position of vertices for contour will be mapped. __Required__
+position.x | object | __Required.__
+position.x.scaleType | string | Defines the scale type for x position. __Required.__ _Available values: linear._
+position.x.domain | array | Defines the domain for x position. __Not Required.__ _If not present the domain is calculated from the provide data depending on the position.x.scaleType._
+position.x.function | function | Defines the function for x position. __Required.__
+position.y | object | __Required.__
+position.y.scaleType | string | Defines the scale type for y position. __Required.__ _Available values: linear._
+position.y.domain | array | Defines the domain for which the contour is plot. __Required.__
+position.y.steps | array | Defines the intervals at which the curve is calculated. __Required.__
+position.z | object | __Required.__
+position.z.scaleType | string | Defines the scale type for z position. __Required.__ _Available values: linear._
+position.z.domain | array | Defines the domain for z position. __Not Required.__ _If not present the domain is calculated from the provide data depending on the position.z.scaleType._
+position.z.function | function | Defines the function for z position. __Required.__
+style | object | Defines the style of the contour. __Required__
+style.opacity | float | Defines the opacity of the contour. __Required.__ _Value must be between 0 and 1._
+style.color | string | Defines the color for contour. __Required.__
+
+#### [Example](../examples/ContourPlot.js)

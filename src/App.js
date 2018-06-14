@@ -34,98 +34,56 @@ class App extends Component {
               'position': '0 0 10',
               'rotation': '0 0 0',
             },
-            'floor': {
-              'style': {
-                'color': '#ccc',
-                'texture': false,
-                'width': 100,
-                'height': 100,
-              }
-            }
           }
         }
         graph={
           [
             {
-              'type': 'TimeSeries',
+              'type': 'FlowMap',
               'data': {
-                'dataFile': "data/TimeSeries.csv",
+                'dataFile': "data/flowMap.csv",
                 'fileType': 'csv',
-                'fieldDesc': [['Year', 'number'], ['Tornadoes', 'number'], ['Deaths', 'number']]
+                'fieldDesc': [['source_latitude', 'number'], ['source_longitude', 'number'], ['target_latitude', 'number'], ['target_longitude', 'number'], ['value', 'number']]
               },
               'style': {
                 'origin': [0, 0, 0],
-                'dimensions': {
-                  'width': 10,
-                  'height': 10,
-                  'depth': 10,
-                },
-                'axis-box': true,
-                'axis-box-color': 'black',
               },
               'mark': {
-                'timeSeries': {
+                'mapScale': 20,
+                'mapOrigin': [5, 5],
+                'rotation': '-90 0 0',
+                'map': {
+                  'data': mapData,
+                  'projection': 'Mercator',
+                  'shapeIdentifier': 'id',
                   'style': {
-                    'fill':{
-                      'color':'red',
-                      'opacity': 0.4,
+                    'extrusion': {
+                      'value': 0.000001,
                     },
-                    'width': {
-                      'scaleType': 'linear',
-                      'field': 'Deaths',
-                      'range': [0,5],
+                    'fill': {
+                      'color': 'red',
+                      'opacity': 1,
                     },
+                    'stroke': {
+                      'width': 1,
+                      'color': 'black',
+                    },
+                  },
+                },
+                'flowlines': {
+                  'style': {
+                    'opacity': {
+                      'value': 0.4,
+                    },
+                    'stroke': {
+                      'color': 'red',
+                    },
+                  },
+                  'height': {
+                    'field': 'value',
+                    'scaleFactor': 1,
                   }
                 }
-              },
-              'x': {
-                'type': 'ordinal',
-                'field': 'Year',
-                'axis': {
-                  'axis': true,
-                  'orient': 'bottom-back',
-                  'title': {
-                    'text': '',
-                    'font-size': 10,
-                    'color': 'black',
-                    'opacity': 1,
-                  },
-                  'ticks': {
-                    'no-of-ticks': 10,
-                    'tick-size': 0.1,
-                    'tick-color': 'black',
-                    'tick-opacity': 1,
-                    'grid': true,
-                    'grid-color': 'black',
-                    'grid-opacity': 1,
-                    'font': 'Arial',
-                    'font-size': 10,
-                  }
-                },
-              },
-              'y': {
-                'type': 'linear',
-                'field': 'Tornadoes',
-                'axis': {
-                  'axis': true,
-                  'orient': 'bottom-back',
-                  'title': {
-                    'text': '',
-                    'font-size': 10,
-                    'color': 'black',
-                    'opacity': 1,
-                  },
-                  'ticks': {
-                    'no-of-ticks': 10,
-                    'tick-size': 0.1,
-                    'tick-color': 'black',
-                    'tick-opacity': 1,
-                    'grid': true,
-                    'grid-color': 'black',
-                    'grid-opacity': 1,
-                    'font-size': 10,
-                  }
-                },
               },
             }
           ]

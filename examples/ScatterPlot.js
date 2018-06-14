@@ -39,7 +39,7 @@ class App extends Component {
                 'color': '#ccc',
                 'texture': false,
                 'width': 100,
-                'height': 100,
+                'depth': 100,
               }
             }
           }
@@ -55,8 +55,6 @@ class App extends Component {
                   'height': 10,
                   'depth': 10,
                 },
-                'axis-box': true,
-                'axis-box-color': 'black',
               },
               'data': {
                 'dataFile': "data/scatterPlot.csv",
@@ -64,33 +62,41 @@ class App extends Component {
                 'fieldDesc': [['sepal_length', 'number'], ['sepal_width', 'number'], ['petal_length', 'number'], ['petal_width', 'number'], ['species', 'text']]
               },
               'mark': {
-                'points': {
-                  'type': 'sphere',
-                  'style': {
-                    'radius': {
-                      'scale': true,
-                      'scaleType': 'linear',
-                      'field': 'petal_width',
-                      'value': [0, 0.2],
-                    },
-                    'fill': {
-                      'scale': true,
-                      'scaleType': 'ordinal',
-                      'opacity': 0.4,
-                      'field': 'species',
-                      'color': ['red', 'green', 'blue'],
-                      'domain': ['setosa', 'versicolor', 'virginica'],
-                    },
+                'position': {
+                  'x': {
+                    'scaleType': 'linear',
+                    'field': 'sepal_length',
+                  },
+                  'y': {
+                    'scaleType': 'linear',
+                    'field': 'sepal_width',
+                  },
+                  'z': {
+                    'scaleType': 'linear',
+                    'field': 'petal_length',
                   }
                 },
+                'type': 'sphere',
+                'style': {
+                  'radius': {
+                    'scaleType': 'linear',
+                    'field': 'petal_width',
+                    'value': [0, 0.2],
+                  },
+                  'fill': {
+                    'scaleType': 'ordinal',
+                    'opacity': 0.4,
+                    'field': 'species',
+                    'color': ['red', 'green', 'blue'],
+                    'domain': ['setosa', 'versicolor', 'virginica'],
+                  },
+                },
                 'droplines': {
-                  'type': 'line',
                   'xz': true,
                   'yz': false,
                   'xy': false,
                   'style': {
                     'fill': {
-                      'scale': true,
                       'scaleType': 'ordinal',
                       'field': 'species',
                       'color': ['red', 'green', 'blue'],
@@ -100,13 +106,11 @@ class App extends Component {
                   }
                 },
                 'projections': {
-                  'type': 'circle',
                   'xz': false,
                   'yz': true,
                   'xy': true,
                   'style': {
                     'fill': {
-                      'scale': true,
                       'scaleType': 'ordinal',
                       'field': 'species',
                       'color': ['red', 'green', 'blue'],
@@ -114,7 +118,6 @@ class App extends Component {
                       'domain': ['setosa', 'versicolor', 'virginica'],
                     },
                     'radius': {
-                      'scale': true,
                       'scaleType': 'linear',
                       'field': 'petal_width',
                       'value': [0, 0.2],
@@ -122,79 +125,70 @@ class App extends Component {
                   }
                 }
               },
-              'x': {
-                'type': 'linear',
-                'field': 'sepal_length',
-                'axis': {
-                  'axis': true,
+              'axis': {
+                'axis-box': {
+                  'color': 'black',
+                },
+                'x-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',
-                    'font-size': 10,
+                    'fontSize': 10,
                     'color': 'black',
                     'opacity': 1,
                   },
                   'ticks': {
-                    'no-of-ticks': 10,
-                    'tick-size': 0.1,
-                    'tick-color': 'black',
-                    'tick-opacity': 1,
-                    'grid': true,
-                    'grid-color': 'black',
-                    'grid-opacity': 1,
-                    'font': 'Arial',
-                    'font-size': 10,
+                    'noOfTicks': 10,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
+                  },
+                  'grid': {
+                    'color': 'black',
+                    'opacity': 1,
                   }
                 },
-              },
-              'y': {
-                'type': 'linear',
-                'field': 'sepal_width',
-                'range': [0, 10],
-                'axis': {
-                  'axis': true,
+                'y-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',
-                    'font-size': 10,
+                    'fontSize': 10,
                     'color': 'black',
                     'opacity': 1,
                   },
                   'ticks': {
-                    'no-of-ticks': 10,
-                    'tick-size': 0.1,
-                    'tick-color': 'black',
-                    'tick-opacity': 1,
-                    'grid': true,
-                    'grid-color': 'black',
-                    'grid-opacity': 1,
-                    'font-size': 10,
+                    'noOfTicks': 10,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
+                  },
+                  'grid': {
+                    'color': 'black',
+                    'opacity': 1,
                   }
                 },
-              },
-              'z': {
-                'type': 'linear',
-                'field': 'petal_length',
-                'axis': {
-                  'axis': true,
+                'z-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',
-                    'font-size': 10,
+                    'fontSize': 10,
                     'color': 'black',
                     'opacity': 1,
                   },
                   'ticks': {
-                    'no-of-ticks': 10,
-                    'tick-size': 0.1,
-                    'tick-color': 'black',
-                    'tick-opacity': 1,
-                    'grid': true,
-                    'grid-color': 'black',
-                    'grid-opacity': 1,
-                    'font-size': 10,
+                    'noOfTicks': 10,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
+                  },
+                  'grid': {
+                    'color': 'black',
+                    'opacity': 1,
                   }
-                },
+                }
               }
             }
           ]

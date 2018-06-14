@@ -2,15 +2,16 @@ import React, { Component } from 'react';
 import * as AFRAME from 'aframe';
 import 'aframe-curve-component';
 import * as d3 from 'd3';
+import * as moment from 'moment';
 
 import GetDomain from '../Utils/GetDomain.js';
+import ReadPLY from '../Utils/ReadPLY.js';
 import Axis from './Axis.js';
 import AxisBox from './AxisBox.js';
 
 import { csv } from 'd3-request';
 import { json } from 'd3-request';
 import { text } from 'd3-request';
-import ReadPLY from './ReadPLY.js';
 
 
 class ConnectedScatterPlot extends Component {
@@ -43,6 +44,8 @@ class ConnectedScatterPlot extends Component {
               for (let i = 0; i < this.props.data.fieldDesc.length; i++) {
                 if (this.props.data.fieldDesc[i][1] === 'number')
                   d[this.props.data.fieldDesc[i][0]] = +d[this.props.data.fieldDesc[i][0]]
+                if ((this.props.data.fieldDesc[i][1] === 'date') || (this.props.data.fieldDesc[i][1] === 'time'))
+                  d[this.props.data.fieldDesc[i][0]] = moment(d[this.props.data.fieldDesc[i][0]], this.props.data.fieldDesc[i][2])['_d']
               }
               return d
             })
@@ -121,34 +124,34 @@ class ConnectedScatterPlot extends Component {
     else {
       let xDomain, yDomain, zDomain, colorDomain, radiusDomain;
 
-      if (!this.props.x.domain)
-        xDomain = GetDomain(this.state.data, this.props.x.field, this.props.x.type)
+      if (!this.props.mark.position.x.domain)
+        xDomain = GetDomain(this.state.data, this.props.mark.position.x.field, this.props.mark.position.x.scaleType, this.props.mark.position.x.startFromZero)
       else
-        xDomain = this.props.x.domain
+        xDomain = this.props.mark.position.x.domain
 
-      if (!this.props.y.domain)
-        yDomain = GetDomain(this.state.data, this.props.y.field, this.props.y.type)
+      if (!this.props.mark.position.y.domain)
+        yDomain = GetDomain(this.state.data, this.props.mark.position.y.field, this.props.mark.position.y.scaleType, this.props.mark.position.y.startFromZero)
       else
-        yDomain = this.props.y.domain
+        yDomain = this.props.mark.position.y.domain
 
-      if (!this.props.z.domain)
-        zDomain = GetDomain(this.state.data, this.props.z.field, this.props.z.type)
+      if (!this.props.mark.position.z.domain)
+        zDomain = GetDomain(this.state.data, this.props.mark.position.z.field, this.props.mark.position.z.scaleType, this.props.mark.position.z.startFromZero)
       else
-        zDomain = this.props.z.domain
+        zDomain = this.props.mark.position.z.domain
 
 
-      if (this.props.mark.points.style.fill.scale) {
+      if (this.props.mark.points.style.fill.scaleType) {
         if (!this.props.mark.points.style.fill.domain)
-          colorDomain = GetDomain(this.state.data, this.props.mark.points.style.fill.field, this.props.mark.points.style.fill.type)
+          colorDomain = GetDomain(this.state.data, this.props.mark.points.style.fill.field, this.props.mark.points.style.fill.scaleType, this.props.mark.points.style.fill.startFromZero)
         else
           colorDomain = this.props.mark.points.style.fill.domain
       }
 
-      if (this.props.mark.points.style.radius.scale) {
+      if (this.props.mark.points.style.radius.scaleType) {
         if (!this.props.mark.points.style.radius.domain) {
           radiusDomain = [d3.min(this.state.data, d => d[this.props.mark.points.style.radius.field]), d3.max(this.state.data, d => d[this.props.mark.points.style.radius.field])]
         } else
-          radiusDomain = this.props.mark.style.radius.domain
+          radiusDomain = this.props.mark.points.style.radius.domain
       }
 
 
@@ -156,48 +159,58 @@ class ConnectedScatterPlot extends Component {
 
       let xScale, yScale, zScale, colorScale, scale;
 
-      if (this.props.x.range)
+      if (this.props.mark.position.x.range)
         xScale = d3.scaleLinear()
           .domain(xDomain)
-          .range(this.props.x.range)
+          .range(this.props.mark.position.x.range)
       else
         xScale = d3.scaleLinear()
           .domain(xDomain)
           .range([0, this.props.style.dimensions.width])
 
-      if (this.props.y.range)
+      if (this.props.mark.position.y.range)
         yScale = d3.scaleLinear()
           .domain(yDomain)
-          .range(this.props.y.range)
+          .range(this.props.mark.position.y.range)
       else
         yScale = d3.scaleLinear()
           .domain(yDomain)
           .range([0, this.props.style.dimensions.height])
 
-      if (this.props.z.range)
+      if (this.props.mark.position.z.range)
         zScale = d3.scaleLinear()
           .domain(zDomain)
-          .range(this.props.z.range)
+          .range(this.props.mark.position.z.range)
       else
         zScale = d3.scaleLinear()
           .domain(zDomain)
           .range([0, this.props.style.dimensions.depth])
 
-      if (this.props.mark.points.style.fill.scale)
-        if (this.props.mark.points.style.fill.type === 'ordinal')
+      if (this.props.mark.points.style.fill.scaleType) {
+        let colorRange = d3.schemeCategory10;
+        if (this.props.mark.points.style.fill.color)
+          colorRange = this.props.mark.points.style.fill.color;
+        if (this.props.mark.points.style.fill.scaleType === 'ordinal')
           colorScale = d3.scaleOrdinal()
             .domain(colorDomain)
-            .range(this.props.mark.points.style.fill.color)
+            .range(colorRange)
         else
           colorScale = d3.scaleLinear()
             .domain(colorDomain)
-            .range(this.props.mark.points.style.fill.color)
+            .range(colorRange)
+      }
 
 
-      if (this.props.mark.points.style.radius.scale)
-        scale = d3.scaleLinear()
-          .domain(radiusDomain)
-          .range(this.props.mark.points.style.radius.value)
+      if (this.props.mark.points.style.radius.scaleType) {
+        if (this.props.mark.points.style.radius.scaleType === 'ordinal')
+          scale = d3.scaleOrdinal()
+            .domain(radiusDomain)
+            .range(this.props.mark.points.style.radius.value)
+        else
+          scale = d3.scaleLinear()
+            .domain(radiusDomain)
+            .range(this.props.mark.points.style.radius.value)
+      }
       else
         scale = d3.scaleLinear()
           .domain([0, 1])
@@ -206,57 +219,55 @@ class ConnectedScatterPlot extends Component {
       //Axis
       let xAxis, yAxis, zAxis;
 
-      if (this.props.x.axis.axis) {
+      if (this.props.xAxis) {
         xAxis = <Axis
-          tickValues={xScale.ticks(this.props.x.axis.ticks['no-of-ticks'])}
-          tick={this.props.x.axis.ticks}
+          domain={xDomain}
+          tick={this.props.xAxis.ticks}
           scale={xScale}
           axis={'x'}
-          orient={this.props.x.axis.orient}
-          title={this.props.x.axis.title}
+          orient={this.props.xAxis.orient}
+          title={this.props.xAxis.title}
           dimensions={this.props.style.dimensions}
+          scaleType={this.props.mark.position.x.scaleType}
         />
-      } else
-        xAxis = <a-entity />
+      }
 
-      if (this.props.y.axis.axis) {
+      if (this.props.yAxis) {
         yAxis = <Axis
-          tickValues={yScale.ticks(this.props.y.axis.ticks['no-of-ticks'])}
-          tick={this.props.y.axis.ticks}
+          domain={yDomain}
+          tick={this.props.yAxis.ticks}
           scale={yScale}
           axis={'y'}
-          orient={this.props.y.axis.orient}
-          title={this.props.y.axis.title}
+          orient={this.props.yAxis.orient}
+          title={this.props.yAxis.title}
           dimensions={this.props.style.dimensions}
+          scaleType={this.props.mark.position.y.scaleType}
         />
-      } else
-        yAxis = <a-entity />
+      }
 
-      if (this.props.z.axis.axis) {
+      if (this.props.zAxis) {
         zAxis = <Axis
-          tickValues={zScale.ticks(this.props.z.axis.ticks['no-of-ticks'])}
-          tick={this.props.z.axis.ticks}
+          domain={zDomain}
+          tick={this.props.zAxis.ticks}
           scale={zScale}
           axis={'z'}
-          orient={this.props.z.axis.orient}
-          title={this.props.z.axis.title}
+          orient={this.props.zAxis.orient}
+          title={this.props.zAxis.title}
           dimensions={this.props.style.dimensions}
+          scaleType={this.props.mark.position.z.scaleType}
         />
 
-      } else
-        zAxis = <a-entity />
+      }
 
 
       let box;
-      if (this.props.style['axis-box']) {
+      if (this.props.axisBox) {
         box = <AxisBox
           width={this.props.style.dimensions.width}
           height={this.props.style.dimensions.height}
           depth={this.props.style.dimensions.depth}
-          color={this.props.style['axis-box-color']}
+          color={this.props.axisBox.color}
         />
-      } else {
-        box = <a-entity />
       }
 
 
@@ -266,16 +277,16 @@ class ConnectedScatterPlot extends Component {
         case 'box':
           {
             marks = this.state.data.map((d, i) => {
-              if (this.props.mark.points.style.fill.scale) {
-                if (this.props.mark.points.style.radius.scale)
-                  return <a-box key={i} color={`${colorScale(d[this.props.mark.points.style.fill.field])}`} opacity={this.props.mark.points.style.opacity} depth={`${scale(d[this.props.mark.points.style.radius.field])}`} height={`${scale(d[this.props.mark.points.style.radius.field])}`} width={`${scale(d[this.props.mark.points.style.radius.field])}`} position={`${xScale(d[this.props.x.field])} ${yScale(d[this.props.y.field])} ${zScale(d[this.props.z.field])}`} />
+              if (this.props.mark.points.style.fill.scaleType) {
+                if (this.props.mark.points.style.radius.scaleType)
+                  return <a-box key={i} color={`${colorScale(d[this.props.mark.points.style.fill.field])}`} opacity={this.props.mark.points.style.fill.opacity} depth={`${scale(d[this.props.mark.points.style.radius.field])}`} height={`${scale(d[this.props.mark.points.style.radius.field])}`} width={`${scale(d[this.props.mark.points.style.radius.field])}`} position={`${xScale(d[this.props.mark.position.x.field])} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />
                 else
-                  return <a-box key={i} color={`${colorScale(d[this.props.mark.points.style.fill.field])}`} opacity={this.props.mark.points.style.opacity} depth={this.props.mark.points.style.radius.value} height={this.props.mark.points.style.radius.value} width={this.props.mark.points.style.radius.value} position={`${xScale(d[this.props.x.field])} ${yScale(d[this.props.y.field])} ${zScale(d[this.props.z.field])}`} />
+                  return <a-box key={i} color={`${colorScale(d[this.props.mark.points.style.fill.field])}`} opacity={this.props.mark.points.style.fill.opacity} depth={this.props.mark.points.style.radius.value} height={this.props.mark.points.style.radius.value} width={this.props.mark.points.style.radius.value} position={`${xScale(d[this.props.mark.position.x.field])} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />
               } else {
-                if (this.props.mark.points.style.radius.scale)
-                  return <a-box key={i} color={`${this.props.mark.points.style.fill.color}`} opacity={this.props.mark.points.style.opacity} depth={`${scale(d[this.props.mark.points.style.radius.field])}`} height={`${scale(d[this.props.mark.points.style.radius.field])}`} width={`${scale(d[this.props.mark.points.style.radius.field])}`} position={`${xScale(d[this.props.x.field])} ${yScale(d[this.props.y.field])} ${zScale(d[this.props.z.field])}`} />
+                if (this.props.mark.points.style.radius.scaleType)
+                  return <a-box key={i} color={`${this.props.mark.points.style.fill.color}`} opacity={this.props.mark.points.style.fill.opacity} depth={`${scale(d[this.props.mark.points.style.radius.field])}`} height={`${scale(d[this.props.mark.points.style.radius.field])}`} width={`${scale(d[this.props.mark.points.style.radius.field])}`} position={`${xScale(d[this.props.mark.position.x.field])} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />
                 else
-                  return <a-box key={i} color={`${this.props.mark.points.style.fill.color}`} opacity={this.props.mark.points.style.opacity} depth={this.props.mark.points.style.radius.value} height={this.props.mark.points.style.radius.value} width={this.props.mark.points.style.radius.value} position={`${xScale(d[this.props.x.field])} ${yScale(d[this.props.y.field])} ${zScale(d[this.props.z.field])}`} />
+                  return <a-box key={i} color={`${this.props.mark.points.style.fill.color}`} opacity={this.props.mark.points.style.fill.opacity} depth={this.props.mark.points.style.radius.value} height={this.props.mark.points.style.radius.value} width={this.props.mark.points.style.radius.value} position={`${xScale(d[this.props.mark.position.x.field])} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />
               }
             });
             break;
@@ -283,16 +294,16 @@ class ConnectedScatterPlot extends Component {
         case 'sphere':
           {
             marks = this.state.data.map((d, i) => {
-              if (this.props.mark.points.style.fill.scale) {
-                if (this.props.mark.points.style.radius.scale)
-                  return <a-sphere key={i} opacity={this.props.mark.points.style.opacity} color={`${colorScale(d[this.props.mark.points.style.fill.field])}`} radius={`${scale(d[this.props.mark.points.style.radius.field])}`} position={`${xScale(d[this.props.x.field])} ${yScale(d[this.props.y.field])} ${zScale(d[this.props.z.field])}`} />
+              if (this.props.mark.points.style.fill.scaleType) {
+                if (this.props.mark.points.style.radius.scaleType)
+                  return <a-sphere key={i} opacity={this.props.mark.points.style.fill.opacity} color={`${colorScale(d[this.props.mark.points.style.fill.field])}`} radius={`${scale(d[this.props.mark.points.style.radius.field])}`} position={`${xScale(d[this.props.mark.position.x.field])} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />
                 else
-                  return <a-sphere key={i} opacity={this.props.mark.points.style.opacity} color={`${colorScale(d[this.props.mark.points.style.fill.field])}`} radius={this.props.mark.points.style.radius.value} position={`${xScale(d[this.props.x.field])} ${yScale(d[this.props.y.field])} ${zScale(d[this.props.z.field])}`} />
+                  return <a-sphere key={i} opacity={this.props.mark.points.style.fill.opacity} color={`${colorScale(d[this.props.mark.points.style.fill.field])}`} radius={this.props.mark.points.style.radius.value} position={`${xScale(d[this.props.mark.position.x.field])} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />
               } else {
-                if (this.props.mark.points.style.radius.scale)
-                  return <a-sphere key={i} opacity={this.props.mark.points.style.opacity} color={`${this.props.mark.points.style.fill.color}`} radius={`${scale(d[this.props.mark.points.style.radius.field])}`} position={`${xScale(d[this.props.x.field])} ${yScale(d[this.props.y.field])} ${zScale(d[this.props.z.field])}`} />
+                if (this.props.mark.points.style.radius.scaleType)
+                  return <a-sphere key={i} opacity={this.props.mark.points.style.fill.opacity} color={`${this.props.mark.points.style.fill.color}`} radius={`${scale(d[this.props.mark.points.style.radius.field])}`} position={`${xScale(d[this.props.mark.position.x.field])} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />
                 else
-                  return <a-sphere key={i} opacity={this.props.mark.points.style.opacity} color={`${this.props.mark.points.style.fill.color}`} radius={this.props.mark.points.style.radius.value} position={`${xScale(d[this.props.x.field])} ${yScale(d[this.props.y.field])} ${zScale(d[this.props.z.field])}`} />
+                  return <a-sphere key={i} opacity={this.props.mark.points.style.fill.opacity} color={`${this.props.mark.points.style.fill.color}`} radius={this.props.mark.points.style.radius.value} position={`${xScale(d[this.props.mark.position.x.field])} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />
               }
             });
             break;
@@ -300,16 +311,16 @@ class ConnectedScatterPlot extends Component {
         default:
           {
             marks = this.state.data.map((d, i) => {
-              if (this.props.mark.points.style.fill.scale) {
-                if (this.props.mark.points.style.radius.scale)
-                  return <a-sphere key={i} opacity={this.props.mark.points.style.opacity} color={`${colorScale(d[this.props.mark.points.style.fill.field])}`} radius={`${scale(d[this.props.mark.points.style.radius.field])}`} position={`${xScale(d[this.props.x.field])} ${yScale(d[this.props.y.field])} ${zScale(d[this.props.z.field])}`} />
+              if (this.props.mark.points.style.fill.scaleType) {
+                if (this.props.mark.points.style.radius.scaleType)
+                  return <a-sphere key={i} opacity={this.props.mark.points.style.fill.opacity} color={`${colorScale(d[this.props.mark.points.style.fill.field])}`} radius={`${scale(d[this.props.mark.points.style.radius.field])}`} position={`${xScale(d[this.props.mark.position.x.field])} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />
                 else
-                  return <a-sphere key={i} opacity={this.props.mark.points.style.opacity} color={`${colorScale(d[this.props.mark.points.style.fill.field])}`} radius={this.props.mark.points.style.radius.value} position={`${xScale(d[this.props.x.field])} ${yScale(d[this.props.y.field])} ${zScale(d[this.props.z.field])}`} />
+                  return <a-sphere key={i} opacity={this.props.mark.points.style.fill.opacity} color={`${colorScale(d[this.props.mark.points.style.fill.field])}`} radius={this.props.mark.points.style.radius.value} position={`${xScale(d[this.props.mark.position.x.field])} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />
               } else {
-                if (this.props.mark.points.style.radius.scale)
-                  return <a-sphere key={i} opacity={this.props.mark.points.style.opacity} color={`${this.props.mark.points.style.fill.color}`} radius={`${scale(d[this.props.mark.points.style.radius.field])}`} position={`${xScale(d[this.props.x.field])} ${yScale(d[this.props.y.field])} ${zScale(d[this.props.z.field])}`} />
+                if (this.props.mark.points.style.radius.scaleType)
+                  return <a-sphere key={i} opacity={this.props.mark.points.style.fill.opacity} color={`${this.props.mark.points.style.fill.color}`} radius={`${scale(d[this.props.mark.points.style.radius.field])}`} position={`${xScale(d[this.props.mark.position.x.field])} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />
                 else
-                  return <a-sphere key={i} opacity={this.props.mark.points.style.opacity} color={`${this.props.mark.points.style.fill.color}`} radius={this.props.mark.points.style.radius.value} position={`${xScale(d[this.props.x.field])} ${yScale(d[this.props.y.field])} ${zScale(d[this.props.z.field])}`} />
+                  return <a-sphere key={i} opacity={this.props.mark.points.style.fill.opacity} color={`${this.props.mark.points.style.fill.color}`} radius={this.props.mark.points.style.radius.value} position={`${xScale(d[this.props.mark.position.x.field])} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />
               }
             });
             break;
@@ -318,13 +329,13 @@ class ConnectedScatterPlot extends Component {
 
       let labels;
       if (this.props.mark.label) {
-        if (this.props.mark.points.style.radius.scale)
-          labels = this.state.data.map((d, i) => <a-text key={i} opacity={this.props.mark.label.style.opacity} color={this.props.mark.label.style.color} width={this.props.mark.label.style.size} value={`${d[this.props.mark.label.field]}`} anchor='align' side='double' side='double' align='left' position={`${xScale(d[this.props.x.field]) + 0.05 + scale(d[this.props.mark.points.style.radius.field])} ${yScale(d[this.props.y.field])} ${zScale(d[this.props.z.field])}`} />);
+        if (this.props.mark.points.style.radius.scaleType)
+          labels = this.state.data.map((d, i) => <a-text key={i} opacity={this.props.mark.label.style.opacity} color={this.props.mark.label.style.color} width={this.props.mark.label.style.fontSize} value={`${d[this.props.mark.label.field]}`} anchor='align' side='double' side='double' align='left' position={`${xScale(d[this.props.mark.position.x.field]) + 0.05 + scale(d[this.props.mark.points.style.radius.field])} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />);
         else
-          labels = this.state.data.map((d, i) => <a-text key={i} opacity={this.props.mark.label.style.opacity} color={this.props.mark.label.style.color} width={this.props.mark.label.style.size} value={`${d[this.props.mark.label.field]}`} anchor='align' side='double' side='double' align='left' position={`${xScale(d[this.props.x.field]) + 0.05 + this.props.mark.points.style.radius.value} ${yScale(d[this.props.y.field])} ${zScale(d[this.props.z.field])}`} />);
+          labels = this.state.data.map((d, i) => <a-text key={i} opacity={this.props.mark.label.style.opacity} color={this.props.mark.label.style.color} width={this.props.mark.label.style.fontSize} value={`${d[this.props.mark.label.field]}`} anchor='align' side='double' side='double' align='left' position={`${xScale(d[this.props.mark.position.x.field]) + 0.05 + this.props.mark.points.style.radius.value} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />);
       }
 
-      let points = this.state.data.map((d, i) => <a-curve-point key={i} position={`${xScale(d[this.props.x.field])} ${yScale(d[this.props.y.field])} ${zScale(d[this.props.z.field])}`} />);
+      let points = this.state.data.map((d, i) => <a-curve-point key={i} position={`${xScale(d[this.props.mark.position.x.field])} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />);
 
       let curve = <a-curve id={'lineGraph'}>
         {points}
@@ -337,7 +348,7 @@ class ConnectedScatterPlot extends Component {
           <a-curve id={'lineGraph'}>
             {points}
           </a-curve>
-          <a-draw-curve curveref='#lineGraph' material={`shader: line; color: ${this.props.mark.line.style.stroke.color}; opacity: ${this.props.mark.line.style.opacity}`} />
+          <a-draw-curve curveref='#lineGraph' material={`shader: line; color: ${this.props.mark.line.style.stroke.color}; opacity: ${this.props.mark.line.style.stroke.opacity}`} />
           {xAxis}
           {yAxis}
           {zAxis}

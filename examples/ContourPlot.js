@@ -37,9 +37,9 @@ class App extends Component {
             'floor': {
               'style': {
                 'color': '#ccc',
-                'texture':false,
+                'texture': false,
                 'width': 100,
-                'height': 100,
+                'depth': 100,
               }
             }
           }
@@ -55,89 +55,94 @@ class App extends Component {
                   'height': 10,
                   'depth': 10,
                 },
-                'axis-box': true,
-                'axis-box-color': 'black',
               },
               'mark': {
-                'path':{
-                  'type': 'line',
-                  'style': {
-                    'opacity': 0.4,
-                    'color': 'red',
+                'type': 'line',
+                'position': {
+                  'x': {
+                    'scaleType': 'linear',
+                    'function': (y) => Math.sin(y),
+                  },
+                  'y': {
+                    'scaleType': 'linear',
+                    'domain': [0, 6 * Math.PI],
+                    'range': [0, 10],
+                    'steps': 150,
+                  },
+                  'z': {
+                    'scaleType': 'linear',
+                    'function': (y) => Math.cos(y),
                   }
+                },
+                'style': {
+                  'opacity': 1,
+                  'color': 'red',
                 }
               },
-              'x': {
-                'function': (y) => Math.sin(y),
-                'axis': {
-                  'axis': true,
+              'axis': {
+                'axis-box': {
+                  'color': 'black',
+                },
+                'x-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',
-                    'font-size': 10,
+                    'fontSize': 10,
                     'color': 'black',
                     'opacity': 1,
                   },
                   'ticks': {
-                    'no-of-ticks': 10,
-                    'tick-size': 0.1,
-                    'tick-color': 'black',
-                    'tick-opacity': 1,
-                    'grid': true,
-                    'grid-color': 'black',
-                    'grid-opacity': 1,
-                    'font': 'Arial',
-                    'font-size': 10,
+                    'noOfTicks': 10,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
+                  },
+                  'grid': {
+                    'color': 'black',
+                    'opacity': 1,
                   }
                 },
-              },
-              'y': {
-                'domain': [0, 6 * Math.PI],
-                'range': [0, 10],
-                'steps': 150,
-                'axis': {
-                  'axis': true,
+                'y-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',
-                    'font-size': 10,
+                    'fontSize': 10,
                     'color': 'black',
                     'opacity': 1,
                   },
                   'ticks': {
-                    'no-of-ticks': 10,
-                    'tick-size': 0.1,
-                    'tick-color': 'black',
-                    'tick-opacity': 1,
-                    'grid': true,
-                    'grid-color': 'black',
-                    'grid-opacity': 1,
-                    'font-size': 10,
+                    'noOfTicks': 10,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
+                  },
+                  'grid': {
+                    'color': 'black',
+                    'opacity': 1,
                   }
                 },
-              },
-              'z': {
-                'function': (y) => Math.cos(y),
-                'axis': {
-                  'axis': true,
+                'z-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',
-                    'font-size': 10,
+                    'fontSize': 10,
                     'color': 'black',
                     'opacity': 1,
                   },
                   'ticks': {
-                    'no-of-ticks': 10,
-                    'tick-size': 0.1,
-                    'tick-color': 'black',
-                    'tick-opacity': 1,
-                    'grid': true,
-                    'grid-color': 'black',
-                    'grid-opacity': 1,
-                    'font-size': 10,
+                    'noOfTicks': 10,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
+                  },
+                  'grid': {
+                    'color': 'black',
+                    'opacity': 1,
                   }
-                },
+                }
               }
             }
           ]

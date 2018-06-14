@@ -39,7 +39,7 @@ class App extends Component {
                 'color': '#ccc',
                 'texture': false,
                 'width': 100,
-                'height': 100,
+                'depth': 100,
               }
             }
           }
@@ -55,8 +55,6 @@ class App extends Component {
                   'height': 10,
                   'depth': 10,
                 },
-                'axis-box': true,
-                'axis-box-color': 'black',
               },
               'data': {
                 'dataFile': "data/stackedBarChart.csv",
@@ -64,94 +62,97 @@ class App extends Component {
                 'fieldDesc': [['Cars', 'number'], ['Trucks', 'number'], ['Bikes', 'number'], ['Countries', 'text'], ['Quarters', 'text']]
               },
               'mark': {
-                'bars': {
-                  'type': 'box',
-                  'style': {
-                    'depth': 0.2,
-                    'width': 0.2,
-                    'fill': {
-                      'scale': true,
-                      'scaleType': 'ordinal',
-                      'opacity': 0.4,
-                      'color': ['green', 'blue', 'red'],
-                      'field': ['Cars', 'Trucks', 'Bikes'],
-                    },
+                'position': {
+                  'x': {
+                    'scaleType': 'ordinal',
+                    'field': 'Quarters',
+                  },
+                  'z': {
+                    'scaleType': 'ordinal',
+                    'field': 'Countries',
                   }
+                },
+                'type': 'box',
+                'style': {
+                  'depth': 0.2,
+                  'width': 0.2,
+                  'height': {
+                    'scaleType': 'linear',
+                    'field': ['Cars', 'Trucks', 'Bikes'],
+                    'startFromZero': true,
+                  },
+                  'fill': {
+                    'scaleType': 'ordinal',
+                    'opacity': 0.4,
+                    'color': ['green', 'blue', 'red'],
+                    'field': ['Cars', 'Trucks', 'Bikes'],
+                  },
                 }
               },
-              'x': {
-                'type': 'ordinal',
-                'field': 'Quarters',
-                'axis': {
-                  'axis': true,
+              'axis': {
+                'axis-box': {
+                  'color': 'black',
+                },
+                'x-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',
-                    'font-size': 10,
+                    'fontSize': 10,
                     'color': 'black',
                     'opacity': 1,
                   },
                   'ticks': {
-                    'no-of-ticks': 10,
-                    'tick-size': 0.1,
-                    'tick-color': 'black',
-                    'tick-opacity': 1,
-                    'grid': true,
-                    'grid-color': 'black',
-                    'grid-opacity': 1,
-                    'font': 'Arial',
-                    'font-size': 10,
+                    'noOfTicks': 10,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
+                  },
+                  'grid': {
+                    'color': 'black',
+                    'opacity': 1,
                   }
                 },
-              },
-              'y': {
-                'type': 'linear',
-                'field': ['Cars', 'Trucks', 'Bikes'],
-                'range': [0, 10],
-                'axis': {
-                  'axis': true,
+                'y-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',
-                    'font-size': 10,
+                    'fontSize': 10,
                     'color': 'black',
                     'opacity': 1,
                   },
                   'ticks': {
-                    'no-of-ticks': 10,
-                    'tick-size': 0.1,
-                    'tick-color': 'black',
-                    'tick-opacity': 1,
-                    'grid': true,
-                    'grid-color': 'black',
-                    'grid-opacity': 1,
-                    'font-size': 10,
+                    'noOfTicks': 10,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
+                  },
+                  'grid': {
+                    'color': 'black',
+                    'opacity': 1,
                   }
                 },
-              },
-              'z': {
-                'type': 'ordinal',
-                'field': 'Countries',
-                'axis': {
-                  'axis': true,
+                'z-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',
-                    'font-size': 10,
+                    'fontSize': 10,
                     'color': 'black',
                     'opacity': 1,
                   },
                   'ticks': {
-                    'no-of-ticks': 10,
-                    'tick-size': 0.1,
-                    'tick-color': 'black',
-                    'tick-opacity': 1,
-                    'grid': true,
-                    'grid-color': 'black',
-                    'grid-opacity': 1,
-                    'font-size': 10,
+                    'noOfTicks': 10,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
+                  },
+                  'grid': {
+                    'color': 'black',
+                    'opacity': 1,
                   }
-                },
+                }
               }
             }
           ]

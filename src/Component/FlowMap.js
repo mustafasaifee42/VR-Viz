@@ -3,15 +3,16 @@ import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
 import * as THREE from 'three';
 import 'aframe-curve-component';
+import * as moment from 'moment';
 
 import GetDomain from '../Utils/GetDomain.js';
 import GetMapShape from '../Utils/GetMapShape';
 import GetMapCoordinates from '../Utils/GetMapCoordinates';
+import ReadPLY from '../Utils/ReadPLY.js';
 
 import { csv } from 'd3-request';
 import { json } from 'd3-request';
 import { text } from 'd3-request';
-import ReadPLY from './ReadPLY.js';
 
 class FlowMap extends Component {
   constructor(props) {
@@ -44,6 +45,8 @@ class FlowMap extends Component {
               for (let i = 0; i < this.props.data.fieldDesc.length; i++) {
                 if (this.props.data.fieldDesc[i][1] === 'number')
                   d[this.props.data.fieldDesc[i][0]] = +d[this.props.data.fieldDesc[i][0]]
+                if ((this.props.data.fieldDesc[i][1] === 'date') || (this.props.data.fieldDesc[i][1] === 'time'))
+                  d[this.props.data.fieldDesc[i][0]] = moment(d[this.props.data.fieldDesc[i][0]], this.props.data.fieldDesc[i][2])['_d']
               }
               return d
             })
@@ -125,46 +128,50 @@ class FlowMap extends Component {
 
       let colorDomain, opacityDomain;
 
-      if (this.props.mark.flowlines.style.opacity.scale) {
+      console.log(this.props.mark.flowlines.style.opacity.scaleType)
+
+      if (this.props.mark.flowlines.style.opacity.scaleType) {
         if (!this.props.mark.flowlines.style.opacity.domain) {
-          opacityDomain = GetDomain(this.state.data, this.props.mark.flowlines.style.opacity.field, this.props.mark.flowlines.style.opacity.type)
+          opacityDomain = GetDomain(this.state.data, this.props.mark.flowlines.style.opacity.field, this.props.mark.flowlines.style.opacity.scaleType, this.props.mark.flowlines.style.opacity.startFromZero)
         } else
           opacityDomain = this.props.mark.flowlines.style.opacity.domain
       }
 
-      if (this.props.mark.flowlines.style.color.scale) {
-        if (!this.props.mark.flowlines.style.color.domain) {
-          colorDomain = GetDomain(this.state.data, this.props.mark.flowlines.style.color.field, this.props.mark.flowlines.style.color.type)
+      if (this.props.mark.flowlines.style.stroke.scaleType) {
+        if (!this.props.mark.flowlines.style.stroke.color) {
+          colorDomain = GetDomain(this.state.data, this.props.mark.flowlines.style.stroke.field, this.props.mark.flowlines.style.stroke.scaleType, this.props.mark.flowlines.style.stroke.startFromZero)
         } else
-          colorDomain = this.props.mark.flowlines.style.color.fill
+          colorDomain = this.props.mark.flowlines.style.stroke.color
       }
 
       //Adding scales
 
       let colorScale, opacityScale;
-
-      if (this.props.mark.flowlines.style.opacity.scale)
+      if (this.props.mark.flowlines.style.opacity.scaleType)
         opacityScale = d3.scaleLinear()
           .domain(opacityDomain)
           .range(this.props.mark.flowlines.style.opacity.value)
 
-      if (this.props.mark.flowlines.style.color.scale)
-        if (this.props.mark.flowlines.style.color.scaleType === 'ordinal')
+      if (this.props.mark.flowlines.style.stroke.scaleType) {
+        let colorRange = d3.schemeCategory10;
+        if (this.props.mark.flowlines.style.stroke.color)
+          colorRange = this.props.mark.flowlines.style.stroke.color;
+        if (this.props.mark.flowlines.style.stroke.scaleType === 'ordinal')
           colorScale = d3.scaleOrdinal()
             .domain(colorDomain)
-            .range(this.props.mark.flowlines.style.color.fill)
+            .range(colorRange)
         else
           colorScale = d3.scaleLinear()
             .domain(colorDomain)
-            .range(this.props.mark.flowlines.style.color.fill)
+            .range(colorRange)
+      }
 
 
       //Drawing Map
 
-      let geoData = GetMapShape(this.props.mark.map.data, this.props.mark.map.projection, this.props.mark.map.style.scale, this.props.mark.map.style.position, this.props.mark.map.shapeIdentifier);
+      let geoData = GetMapShape(this.props.mark.map.data, this.props.mark.map.projection, this.props.mark.mapScale, this.props.mark.mapOrigin, this.props.mark.map.shapeIdentifier);
 
       let shapes = geoData.map((d, i) => {
-        console.log(d.vertices)
         let primitive = `primitive: map; vertices: ${d.vertices}; extrude: ${this.props.mark.map.style.extrusion.value}`;
         return (<a-entity geometry={primitive} material={`color: ${this.props.mark.map.style.fill.color}; metalness: 0.2; opacity:${this.props.mark.map.style.fill.opacity}`} />)
       })
@@ -177,19 +184,19 @@ class FlowMap extends Component {
 
       let curves = this.state.data.map((d, i) => {
 
-        let source_position = GetMapCoordinates(d.source_longitude, d.source_latitude, this.props.mark.map.projection, this.props.mark.map.style.scale, this.props.mark.map.style.position);
+        let source_position = GetMapCoordinates(d.source_longitude, d.source_latitude, this.props.mark.map.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
 
         source_position[1] = -1 * source_position[1];
         source_position.push(0)
 
-        let target_position = GetMapCoordinates(d.target_longitude, d.target_latitude, this.props.mark.map.projection, this.props.mark.map.style.scale, this.props.mark.map.style.position);
+        let target_position = GetMapCoordinates(d.target_longitude, d.target_latitude, this.props.mark.map.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
 
         target_position[1] = -1 * target_position[1];
         target_position.push(0)
 
         let middle_point
         if (this.props.height)
-          middle_point = [(target_position[0] + source_position[0]) / 2, (target_position[1] + source_position[1]) / 2, d[this.props.height.field] * this.props.height.scale]
+          middle_point = [(target_position[0] + source_position[0]) / 2, (target_position[1] + source_position[1]) / 2, d[this.props.height.field] * this.props.height.scaleFactor]
         else {
           let distance = Math.sqrt((target_position[0] - source_position[0]) * (target_position[0] - source_position[0]) + (target_position[1] - source_position[1]) * (target_position[1] - source_position[1]))
           middle_point = [(target_position[0] + source_position[0]) / 2, (target_position[1] + source_position[1]) / 2, distance / 4]
@@ -208,13 +215,13 @@ class FlowMap extends Component {
 
       let flowLines = this.state.data.map((d, i) => {
         let opacity = this.props.mark.flowlines.style.opacity.value;
-        if (this.props.mark.flowlines.style.opacity.scale) {
+        if (this.props.mark.flowlines.style.opacity.scaleType) {
           opacity = opacityScale(d[this.props.mark.flowlines.style.opacity.field])
         }
 
-        let color = this.props.mark.flowlines.style.color.fill;
-        if (this.props.mark.flowlines.style.color.scale) {
-          color = colorScale(d[this.props.mark.flowlines.style.color.field])
+        let color = this.props.mark.flowlines.style.stroke.color;
+        if (this.props.mark.flowlines.style.stroke.scaleType) {
+          color = colorScale(d[this.props.mark.flowlines.style.stroke.field])
         }
 
         let flowLine = <a-draw-curve curveref={`#lineGraph${i}`} material={`shader: line; color: ${color}; opacity: ${opacity}`} />
@@ -223,7 +230,7 @@ class FlowMap extends Component {
       })
 
       return (
-        <a-entity rotation={this.props.mark.map.style.rotation} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
+        <a-entity rotation={this.props.mark.rotation} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
           {shapes}
           {curves}
           {border}

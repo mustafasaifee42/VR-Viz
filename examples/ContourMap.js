@@ -46,25 +46,27 @@ class App extends Component {
               },
               'style': {
                 'origin': [0, 0, 0],
+                'objectScale': {
+                  'ground': 0.1,
+                  'height': 0.1,
+                }
               },
               'mark': {
+                'type': 'plane',
+                'heightThreshold': 100,
                 'style': {
-                  'opacity': 0.4,
                   'fill': {
-                    'scale': true,
+                    'scaleType': 'linear',
+                    'opacity': 0.4,
                     'color': ['green', 'blue'],
                   },
                   'stroke': {
                     'width': 1,
+                    'opacity': 0.4,
                     'color': 'black',
-                  },
-                  'scale': {
-                    'ground': 0.1,
-                    'height': 0.1,
                   }
                 },
               },
-              'heightThreshold': 100,
             }
           ]
         }

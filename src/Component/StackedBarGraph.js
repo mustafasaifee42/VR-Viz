@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
+import * as moment from 'moment';
 
 import GetDomain from '../Utils/GetDomain.js';
+import ReadPLY from '../Utils/ReadPLY.js';
 import Axis from './Axis.js';
 import AxisBox from './AxisBox.js';
 
 import { csv } from 'd3-request';
 import { json } from 'd3-request';
 import { text } from 'd3-request';
-import ReadPLY from './ReadPLY.js';
 
 class StackedBarGraph extends Component {
   constructor(props) {
@@ -42,6 +43,8 @@ class StackedBarGraph extends Component {
               for (let i = 0; i < this.props.data.fieldDesc.length; i++) {
                 if (this.props.data.fieldDesc[i][1] === 'number')
                   d[this.props.data.fieldDesc[i][0]] = +d[this.props.data.fieldDesc[i][0]]
+                if ((this.props.data.fieldDesc[i][1] === 'date') || (this.props.data.fieldDesc[i][1] === 'time'))
+                  d[this.props.data.fieldDesc[i][0]] = moment(d[this.props.data.fieldDesc[i][0]], this.props.data.fieldDesc[i][2])['_d']
               }
               return d
             })
@@ -121,122 +124,133 @@ class StackedBarGraph extends Component {
 
       // Data manipulation
 
-      let data = d3.stack().keys(this.props.mark.bars.style.fill.field)(this.state.data), max = 0;
+      let data = d3.stack().keys(this.props.mark.style.fill.field)(this.state.data), max = 0, min = 99999999999999;
       let dataset = []
       for (let i = 0; i < data.length; i++) {
         for (let j = 0; j < data[i].length; j++) {
           dataset.push(data[i][j])
         }
       }
-      console.log(data)
       for (let i = 0; i < dataset.length; i++) {
         if (max < dataset[i][1]) {
           max = dataset[i][1]
         }
+        if (min > dataset[i][1]) {
+          min = dataset[i][1]
+        }
       }
       console.log(dataset)
       // Getting domain for axis
-      let xDomain, yDomain, zDomain, colorDomain = this.props.mark.bars.style.fill.field;
+      let xDomain, yDomain, zDomain, colorDomain = this.props.mark.style.fill.field;
 
-      if (!this.props.x.domain)
-        xDomain = GetDomain(this.state.data, this.props.x.field, this.props.x.type)
+      if (!this.props.mark.position.x.domain)
+        xDomain = GetDomain(this.state.data, this.props.mark.position.x.field, this.props.mark.position.x.scaleType, this.props.mark.position.x.startFromZero)
       else
-        xDomain = this.props.x.domain
+        xDomain = this.props.mark.position.x.domain
 
-
-      if (!this.props.y.domain)
-        yDomain = [0, max]
+      console.log(d3.min(dataset, d => d[1]))
+      if (!this.props.mark.style.height.domain)
+        yDomain = [0, d3.max(dataset, d => d[1])]
       else
-        yDomain = this.props.y.domain
+        yDomain = this.props.mark.style.height.domain
 
 
-      if (!this.props.z.domain)
-        zDomain = GetDomain(this.state.data, this.props.z.field, this.props.z.type)
+      if (!this.props.mark.position.z.domain)
+        zDomain = GetDomain(this.state.data, this.props.mark.position.z.field, this.props.mark.position.z.scaleType, this.props.mark.position.z.startFromZero)
       else
-        zDomain = this.props.z.domain
+        zDomain = this.props.mark.position.z.domain
 
 
       //Adding Scale
       let xScale, yScale, zScale, colorScale;
 
-      if (this.props.x)
+
+      if (this.props.mark.position.x.scaleType === 'ordinal')
         xScale = d3.scaleBand()
-          .range([this.props.mark.bars.style.width / 2, this.props.style.dimensions.width])
+          .range([this.props.mark.style.width / 2, this.props.style.dimensions.width])
+          .domain(xDomain);
+      else
+        xScale = d3.scaleLinear()
+          .range([0, this.props.style.dimensions.width])
           .domain(xDomain);
 
-      if (this.props.y)
-        if (this.props.y.range)
+      if (this.props.mark.style.height)
+        if (this.props.mark.style.height.range)
           yScale = d3.scaleLinear()
             .domain(yDomain)
-            .range(this.props.y.range)
+            .range(this.props.mark.style.height.range)
         else
           yScale = d3.scaleLinear()
             .domain(yDomain)
             .range([0, this.props.style.dimensions.height])
 
-      if (this.props.z)
+      if (this.props.mark.position.z.scaleType === 'ordinal')
         zScale = d3.scaleBand()
           .domain(zDomain)
-          .range([this.props.mark.bars.style.depth / 2, this.props.style.dimensions.depth]);
+          .range([this.props.mark.style.depth / 2, this.props.style.dimensions.depth]);
+      else
+        xScale = d3.scaleLinear()
+          .range([0, this.props.style.dimensions.depth])
+          .domain(zDomain);
 
+      let colorRange = d3.schemeCategory10;
+      if (this.props.mark.style.fill.color)
+        colorRange = this.props.mark.style.fill.color;
       colorScale = d3.scaleOrdinal()
         .domain(colorDomain)
-        .range(this.props.mark.bars.style.fill.color)
+        .range(colorRange)
 
       //Axis
       let xAxis, yAxis, zAxis;
 
-      if (this.props.x.axis.axis) {
+      if (this.props.xAxis) {
         xAxis = <Axis
-          tickValues={xDomain}
-          tick={this.props.x.axis.ticks}
+          domain={xDomain}
+          tick={this.props.xAxis.ticks}
           scale={xScale}
           axis={'x'}
-          orient={this.props.x.axis.orient}
-          title={this.props.x.axis.title}
+          orient={this.props.xAxis.orient}
+          title={this.props.xAxis.title}
           dimensions={this.props.style.dimensions}
+          scaleType={this.props.mark.position.x.scaleType}
         />
-      } else
-        xAxis = <a-entity />
+      }
 
-      if (this.props.y.axis.axis) {
+      if (this.props.yAxis) {
         yAxis = <Axis
-          tickValues={yScale.ticks(this.props.y.axis.ticks['no-of-ticks'])}
-          tick={this.props.y.axis.ticks}
+          domain={yDomain}
+          tick={this.props.yAxis.ticks}
           scale={yScale}
           axis={'y'}
-          orient={this.props.y.axis.orient}
-          title={this.props.y.axis.title}
+          orient={this.props.yAxis.orient}
+          title={this.props.yAxis.title}
           dimensions={this.props.style.dimensions}
+          scaleType={this.props.mark.style.height.scaleType}
         />
-      } else
-        yAxis = <a-entity />
+      }
 
-      if (this.props.z.axis.axis) {
+      if (this.props.zAxis) {
         zAxis = <Axis
-          tickValues={zDomain}
-          tick={this.props.z.axis.ticks}
+          domain={zDomain}
+          tick={this.props.zAxis.ticks}
           scale={zScale}
           axis={'z'}
-          orient={this.props.z.axis.orient}
-          title={this.props.z.axis.title}
+          orient={this.props.zAxis.orient}
+          title={this.props.zAxis.title}
           dimensions={this.props.style.dimensions}
+          scaleType={this.props.mark.position.z.scaleType}
         />
 
-      } else
-        zAxis = <a-entity />
-
+      }
 
       let box;
-      if (this.props.style['axis-box']) {
+      if (this.props.axisBox) {
         box = <AxisBox
           width={this.props.style.dimensions.width}
           height={this.props.style.dimensions.height}
           depth={this.props.style.dimensions.depth}
-          color={this.props.style['axis-box-color']}
+          color={this.props.axisBox.color}
         />
-      } else {
-        box = <a-entity />
       }
 
       //Adding marks
@@ -247,7 +261,7 @@ class StackedBarGraph extends Component {
           {
             marks = data.map((d, i) => {
               let markTemp = d.map((d1, j) => {
-                return <a-box key={i} color={`${this.props.mark.bars.style.fill.color[i]}`} opacity={this.props.mark.bars.style.fill.opacity} depth={`${this.props.mark.bars.style.depth}`} height={`${yScale(d1[1] - d1[0])}`} width={`${this.props.mark.bars.style.width}`} position={`${xScale(d1.data[this.props.x.field])} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2} ${zScale(d1.data[this.props.z.field])}`} />
+                return <a-box key={i} color={`${this.props.mark.style.fill.color[i]}`} opacity={this.props.mark.style.fill.opacity} depth={`${this.props.mark.style.depth}`} height={`${yScale(d1[1] - d1[0])}`} width={`${this.props.mark.style.width}`} position={`${xScale(d1.data[this.props.mark.position.x.field])} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2} ${zScale(d1.data[this.props.mark.position.z.field])}`} />
               })
               return markTemp
             });
@@ -257,7 +271,7 @@ class StackedBarGraph extends Component {
           {
             marks = data.map((d, i) => {
               let markTemp = d.map((d1, j) => {
-                return <a-cylinder key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${this.props.mark.bars.style.fill.color[i]}`} height={`${yScale(d1[1] - d1[0])}`} radius={`${this.props.mark.bars.style.radius}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${xScale(d1.data[this.props.x.field])} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2} ${zScale(d1.data[this.props.z.field])}`} />
+                return <a-cylinder key={i} opacity={this.props.mark.style.fill.opacity} color={`${this.props.mark.style.fill.color[i]}`} height={`${yScale(d1[1] - d1[0])}`} radius={`${this.props.mark.style.radius}`} segments-radial={`${this.props.mark.style.segments}`} position={`${xScale(d1.data[this.props.mark.position.x.field])} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2} ${zScale(d1.data[this.props.mark.position.z.field])}`} />
               })
               return markTemp
             });
@@ -267,7 +281,7 @@ class StackedBarGraph extends Component {
           {
             marks = data.map((d, i) => {
               let markTemp = d.map((d1, j) => {
-                return <a-box key={i} color={`${this.props.mark.bars.style.fill.color[i]}`} opacity={this.props.mark.bars.style.fill.opacity} depth={`${this.props.mark.bars.style.depth}`} height={`${yScale(d1[1] - d1[0])}`} width={`${this.props.mark.bars.style.width}`} position={`${xScale(d1.data[this.props.x.field])} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2} ${zScale(d1.data[this.props.z.field])}`} />
+                return <a-box key={i} color={`${this.props.mark.style.fill.color[i]}`} opacity={this.props.mark.style.fill.opacity} depth={`${this.props.mark.style.depth}`} height={`${yScale(d1[1] - d1[0])}`} width={`${this.props.mark.style.width}`} position={`${xScale(d1.data[this.props.mark.position.x.field])} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2} ${zScale(d1.data[this.props.mark.position.z.field])}`} />
               })
               return markTemp
             });

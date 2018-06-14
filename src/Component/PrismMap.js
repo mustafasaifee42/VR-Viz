@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
 import * as THREE from 'three';
+import * as moment from 'moment';
 
 import GetDomain from '../Utils/GetDomain.js';
 import GetMapShape from '../Utils/GetMapShape';
+import ReadPLY from '../Utils/ReadPLY.js';
 
 import { csv } from 'd3-request';
 import { json } from 'd3-request';
 import { text } from 'd3-request';
-import ReadPLY from './ReadPLY.js';
 
 AFRAME.registerGeometry('map', {
   schema: {
@@ -76,6 +77,8 @@ class PrismMap extends Component {
               for (let i = 0; i < this.props.data.fieldDesc.length; i++) {
                 if (this.props.data.fieldDesc[i][1] === 'number')
                   d[this.props.data.fieldDesc[i][0]] = +d[this.props.data.fieldDesc[i][0]]
+                if ((this.props.data.fieldDesc[i][1] === 'date') || (this.props.data.fieldDesc[i][1] === 'time'))
+                  d[this.props.data.fieldDesc[i][0]] = moment(d[this.props.data.fieldDesc[i][0]], this.props.data.fieldDesc[i][2])['_d']
               }
               return d
             })
@@ -157,27 +160,27 @@ class PrismMap extends Component {
 
       let data = {}
       for (let i = 0; i < this.state.data.length; i++) {
-        if (this.props.mark.map.style.fill.scale)
-          data[this.state.data[i][this.props.mark.map.shapeIdentifier]] = { 'value': this.state.data[i][this.props.mark.map.style.extrusion.field], 'colorField': this.state.data[i][this.props.mark.map.style.fill.field] }
+        if (this.props.mark.style.fill.scaleType)
+          data[this.state.data[i][this.props.mark.shapeIdentifier]] = { 'value': this.state.data[i][this.props.mark.style.extrusion.field], 'colorField': this.state.data[i][this.props.mark.style.fill.field] }
         else
-          data[this.state.data[i][this.props.mark.map.shapeIdentifier]] = { 'value': this.state.data[i][this.props.mark.map.style.extrusion.field], 'colorField': 'NA' }
+          data[this.state.data[i][this.props.mark.shapeIdentifier]] = { 'value': this.state.data[i][this.props.mark.style.extrusion.field], 'colorField': 'NA' }
       }
 
       // Getting domain
       let colorDomain, extrusionDomain;
 
-      if (this.props.mark.map.style.extrusion.scale) {
-        if (!this.props.mark.map.style.extrusion.domain) {
-          extrusionDomain = GetDomain(this.state.data, this.props.mark.map.style.extrusion.field, this.props.mark.map.style.extrusion.scaleType)
+      if (this.props.mark.style.extrusion.scaleType) {
+        if (!this.props.mark.style.extrusion.domain) {
+          extrusionDomain = GetDomain(this.state.data, this.props.mark.style.extrusion.field, this.props.mark.style.extrusion.scaleType, this.props.mark.style.extrusion.startFromZero)
         } else
-          extrusionDomain = this.props.mark.map.style.extrusion.domain
+          extrusionDomain = this.props.mark.style.extrusion.domain
       }
 
-      if (this.props.mark.map.style.fill.scale) {
-        if (!this.props.mark.map.style.fill.domain) {
-          colorDomain = GetDomain(this.state.data, this.props.mark.map.style.fill.field, this.props.mark.map.style.fill.scaleType)
+      if (this.props.mark.style.fill.scaleType) {
+        if (!this.props.mark.style.fill.domain) {
+          colorDomain = GetDomain(this.state.data, this.props.mark.style.fill.field, this.props.mark.style.fill.scaleType, this.props.mark.style.fill.startFromZero)
         } else
-          colorDomain = this.props.mark.map.style.fill.domain
+          colorDomain = this.props.mark.style.fill.domain
       }
 
       //Adding scales
@@ -186,36 +189,40 @@ class PrismMap extends Component {
 
       extrusionScale = d3.scaleLinear()
         .domain(extrusionDomain)
-        .range(this.props.mark.map.style.extrusion.value)
+        .range(this.props.mark.style.extrusion.value)
 
-      if (this.props.mark.map.style.fill.scale)
-        if (this.props.mark.map.style.fill.scaleType === 'ordinal')
+      if (this.props.mark.style.fill.scaleType) {
+        let colorRange = d3.schemeCategory10;
+        if (this.props.mark.style.fill.color)
+          colorRange = this.props.mark.style.fill.color;
+        if (this.props.mark.style.fill.scaleType === 'ordinal')
           colorScale = d3.scaleOrdinal()
             .domain(colorDomain)
-            .range(this.props.mark.map.style.fill.color)
+            .range(colorRange)
         else
           colorScale = d3.scaleLinear()
             .domain(colorDomain)
-            .range(this.props.mark.map.style.fill.color)
+            .range(colorRange)
+      }
 
       //Adding marks
 
-      let geoData = GetMapShape(this.props.mark.map.data, this.props.mark.map.projection, this.props.mark.map.style.scale, this.props.mark.map.style.position, this.props.mark.map.shapeIdentifier);
+      let geoData = GetMapShape(this.props.mark.data, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin, this.props.mark.shapeIdentifier);
 
       let shapes = geoData.map((d, i) => {
         let primitive = `primitive: map; vertices: ${d.vertices}; extrude: ${extrusionScale(data[d['code']]['value'])}`
-        if (this.props.mark.map.style.fill.scale)
-          return (<a-entity geometry={primitive} material={`color: ${colorScale(data[d['code']]['colorField'])}; metalness: 0.2; opacity:${this.props.mark.map.style.fill.opacity}`} />)
+        if (this.props.mark.style.fill.scaleType)
+          return (<a-entity geometry={primitive} material={`color: ${colorScale(data[d['code']]['colorField'])}; metalness: 0.2; opacity:${this.props.mark.style.fill.opacity}`} />)
         else
-          return (<a-entity geometry={primitive} material={`color: ${this.props.mark.map.style.fill.color}; metalness: 0.2; opacity:${this.props.mark.map.style.fill.opacity}`} />)
+          return (<a-entity geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; metalness: 0.2; opacity:${this.props.mark.style.fill.opacity}`} />)
       })
 
       let border;
-      if (this.props.mark.map.style.stroke)
-        border = geoData.map((d, i) => <a-entity meshline={`lineWidth: ${this.props.mark.map.style.stroke.width}; path:${`${d.vertices.replace(/,/g, ` ${extrusionScale(data[d['code']]['value'])},`)} ${extrusionScale(data[d['code']]['value'])}`}; color:${this.props.mark.map.style.stroke.color}`} />);
+      if (this.props.mark.style.stroke)
+        border = geoData.map((d, i) => <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${`${d.vertices.replace(/,/g, ` ${extrusionScale(data[d['code']]['value'])},`)} ${extrusionScale(data[d['code']]['value'])}`}; color:${this.props.mark.style.stroke.color}`} />);
 
       return (
-        <a-entity rotation={this.props.mark.map.style.rotation} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
+        <a-entity rotation={this.props.mark.rotation} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
           {shapes}
           {border}
         </a-entity>
