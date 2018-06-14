@@ -172,6 +172,7 @@ rotation|string|Rotation of the camera. __Required. Format is "90 0 0".__ Note t
 Floor has property called `style` in which the visual properties of floor is defined.
 
 __Style Properties for Floor__
+
 Property|Type|Description
 ---|---|---
 color|string|Color of the floor. __Not Required if `texture` is true.__
