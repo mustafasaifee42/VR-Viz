@@ -62,7 +62,7 @@ class App extends Component {
                 },
               },
               'mark': {
-                'type': 'box',
+                'type': 'cone',
                 'position': {
                   'x': {
                     'scaleType': 'ordinal',
@@ -75,8 +75,10 @@ class App extends Component {
                   }
                 },
                 'style': {
-                  'depth': 0.2,
-                  'width': 0.2,
+                  'padding': {
+                    'x': 0.1,
+                    'z': 0.1,
+                  },
                   'height': {
                     'scaleType': 'linear',
                     'startFromZero': true,

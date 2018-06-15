@@ -162,36 +162,33 @@ class StackedBarGraph extends Component {
 
 
       //Adding Scale
-      let xScale, yScale, zScale, colorScale;
+
+      let xScale, yScale, zScale, colorScale, width, depth;
 
 
-      if (this.props.mark.position.x.scaleType === 'ordinal')
+      if (this.props.mark.position.x.scaleType === 'ordinal'){
         xScale = d3.scaleBand()
-          .range([this.props.mark.style.width / 2, this.props.style.dimensions.width])
-          .domain(xDomain);
-      else
-        xScale = d3.scaleLinear()
           .range([0, this.props.style.dimensions.width])
-          .domain(xDomain);
+          .domain(xDomain)
+          .paddingInner(this.props.mark.style.padding.x);
+        width = xScale.bandwidth();
+      }
+      
+      yScale = d3.scaleLinear()
+        .domain(yDomain)
+        .range([0, this.props.style.dimensions.height])
 
-      if (this.props.mark.style.height)
-        if (this.props.mark.style.height.range)
-          yScale = d3.scaleLinear()
-            .domain(yDomain)
-            .range(this.props.mark.style.height.range)
-        else
-          yScale = d3.scaleLinear()
-            .domain(yDomain)
-            .range([0, this.props.style.dimensions.height])
-
-      if (this.props.mark.position.z.scaleType === 'ordinal')
+      if (this.props.mark.position.z.scaleType === 'ordinal') {
         zScale = d3.scaleBand()
           .domain(zDomain)
-          .range([this.props.mark.style.depth / 2, this.props.style.dimensions.depth]);
-      else
-        xScale = d3.scaleLinear()
           .range([0, this.props.style.dimensions.depth])
-          .domain(zDomain);
+          .paddingInner(this.props.mark.style.padding.z);
+        depth = zScale.bandwidth();
+      }
+
+      let radius = depth / 2;
+      if (depth > width)
+        radius = width / 2;
 
       let colorRange = d3.schemeCategory10;
       if (this.props.mark.style.fill.color)
@@ -204,21 +201,35 @@ class StackedBarGraph extends Component {
       let xAxis, yAxis, zAxis;
 
       if (this.props.xAxis) {
-        xAxis = <Axis
-          domain={xDomain}
-          tick={this.props.xAxis.ticks}
-          scale={xScale}
-          axis={'x'}
-          orient={this.props.xAxis.orient}
-          title={this.props.xAxis.title}
-          dimensions={this.props.style.dimensions}
-          scaleType={this.props.mark.position.x.scaleType}
-        />
+        if ((this.props.mark.type == 'cylinder') || (this.props.mark.type == 'cone'))
+          xAxis = <Axis
+            domain={xDomain}
+            tick={this.props.xAxis.ticks}
+            scale={xScale}
+            axis={'x'}
+            orient={this.props.xAxis.orient}
+            title={this.props.xAxis.title}
+            dimensions={this.props.style.dimensions}
+            scaleType={this.props.mark.position.x.scaleType}
+            padding={radius * 2}
+          />
+        else
+          xAxis = <Axis
+            domain={xDomain}
+            tick={this.props.xAxis.ticks}
+            scale={xScale}
+            axis={'x'}
+            orient={this.props.xAxis.orient}
+            title={this.props.xAxis.title}
+            dimensions={this.props.style.dimensions}
+            scaleType={this.props.mark.position.x.scaleType}
+            padding={width}
+          />
       }
 
       if (this.props.yAxis) {
         yAxis = <Axis
-          domain={yDomain}
+          domain={yScale.ticks(this.props.yAxis.ticks['noOfTicks'])}
           tick={this.props.yAxis.ticks}
           scale={yScale}
           axis={'y'}
@@ -230,16 +241,30 @@ class StackedBarGraph extends Component {
       }
 
       if (this.props.zAxis) {
-        zAxis = <Axis
-          domain={zDomain}
-          tick={this.props.zAxis.ticks}
-          scale={zScale}
-          axis={'z'}
-          orient={this.props.zAxis.orient}
-          title={this.props.zAxis.title}
-          dimensions={this.props.style.dimensions}
-          scaleType={this.props.mark.position.z.scaleType}
-        />
+        if ((this.props.mark.type == 'cylinder') || (this.props.mark.type == 'cone'))
+          zAxis = <Axis
+            domain={zDomain}
+            tick={this.props.zAxis.ticks}
+            scale={zScale}
+            axis={'z'}
+            orient={this.props.zAxis.orient}
+            title={this.props.zAxis.title}
+            dimensions={this.props.style.dimensions}
+            scaleType={this.props.mark.position.z.scaleType}
+            padding={radius * 2}
+          />
+        else
+          zAxis = <Axis
+            domain={zDomain}
+            tick={this.props.zAxis.ticks}
+            scale={zScale}
+            axis={'z'}
+            orient={this.props.zAxis.orient}
+            title={this.props.zAxis.title}
+            dimensions={this.props.style.dimensions}
+            scaleType={this.props.mark.position.z.scaleType}
+            padding={depth}
+          />
 
       }
 
@@ -261,7 +286,7 @@ class StackedBarGraph extends Component {
           {
             marks = data.map((d, i) => {
               let markTemp = d.map((d1, j) => {
-                return <a-box key={i} color={`${this.props.mark.style.fill.color[i]}`} opacity={this.props.mark.style.fill.opacity} depth={`${this.props.mark.style.depth}`} height={`${yScale(d1[1] - d1[0])}`} width={`${this.props.mark.style.width}`} position={`${xScale(d1.data[this.props.mark.position.x.field])} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2} ${zScale(d1.data[this.props.mark.position.z.field])}`} />
+                return <a-box key={i} color={`${this.props.mark.style.fill.color[i]}`} opacity={this.props.mark.style.fill.opacity} depth={`${depth}`} height={`${yScale(d1[1] - d1[0])}`} width={`${width}`} position={`${xScale(d1.data[this.props.mark.position.x.field]) + width / 2} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2} ${zScale(d1.data[this.props.mark.position.z.field]) + depth / 2}`} />
               })
               return markTemp
             });
@@ -271,7 +296,7 @@ class StackedBarGraph extends Component {
           {
             marks = data.map((d, i) => {
               let markTemp = d.map((d1, j) => {
-                return <a-cylinder key={i} opacity={this.props.mark.style.fill.opacity} color={`${this.props.mark.style.fill.color[i]}`} height={`${yScale(d1[1] - d1[0])}`} radius={`${this.props.mark.style.radius}`} segments-radial={`${this.props.mark.style.segments}`} position={`${xScale(d1.data[this.props.mark.position.x.field])} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2} ${zScale(d1.data[this.props.mark.position.z.field])}`} />
+                return <a-cylinder key={i} opacity={this.props.mark.style.fill.opacity} color={`${this.props.mark.style.fill.color[i]}`} height={`${yScale(d1[1] - d1[0])}`} radius={`${radius}`} segments-radial={`${this.props.mark.style.segments}`} position={`${xScale(d1.data[this.props.mark.position.x.field]) + radius} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2} ${zScale(d1.data[this.props.mark.position.z.field]) + radius}`} />
               })
               return markTemp
             });
@@ -281,7 +306,7 @@ class StackedBarGraph extends Component {
           {
             marks = data.map((d, i) => {
               let markTemp = d.map((d1, j) => {
-                return <a-box key={i} color={`${this.props.mark.style.fill.color[i]}`} opacity={this.props.mark.style.fill.opacity} depth={`${this.props.mark.style.depth}`} height={`${yScale(d1[1] - d1[0])}`} width={`${this.props.mark.style.width}`} position={`${xScale(d1.data[this.props.mark.position.x.field])} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2} ${zScale(d1.data[this.props.mark.position.z.field])}`} />
+                return <a-box key={i} color={`${this.props.mark.style.fill.color[i]}`} opacity={this.props.mark.style.fill.opacity} depth={`${depth}`} height={`${yScale(d1[1] - d1[0])}`} width={`${width}`} position={`${xScale(d1.data[this.props.mark.position.x.field]) + width / 2} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2} ${zScale(d1.data[this.props.mark.position.z.field]) + depth / 2}`} />
               })
               return markTemp
             });

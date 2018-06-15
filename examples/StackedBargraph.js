@@ -74,8 +74,10 @@ class App extends Component {
                 },
                 'type': 'box',
                 'style': {
-                  'depth': 0.2,
-                  'width': 0.2,
+                  'padding': {
+                    'x': 0.1,
+                    'z': 0.1,
+                  },
                   'height': {
                     'scaleType': 'linear',
                     'field': ['Cars', 'Trucks', 'Bikes'],
