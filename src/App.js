@@ -96,7 +96,7 @@ class App extends Component {
                   'color': 'black',
                 },
                 'x-axis': {
-                  'orient': 'bottom-back',
+                  'orient': 'front-bottom',
                   'title': {
                     'text': '',
                     'fontSize': 10,
@@ -109,6 +109,8 @@ class App extends Component {
                     'color': 'black',
                     'opacity': 1,
                     'fontSize': 10,
+                    'rotation': '-90 0 0',
+                    'align':'center'
                   },
                   'grid': {
                     'color': 'black',
@@ -116,7 +118,7 @@ class App extends Component {
                   }
                 },
                 'y-axis': {
-                  'orient': 'bottom-back',
+                  'orient': 'back-right',
                   'title': {
                     'text': '',
                     'fontSize': 10,
@@ -129,6 +131,8 @@ class App extends Component {
                     'color': 'black',
                     'opacity': 1,
                     'fontSize': 10,
+                    'rotation': '-90 0 0',
+                    'align':'center'
                   },
                   'grid': {
                     'color': 'black',
@@ -136,7 +140,7 @@ class App extends Component {
                   }
                 },
                 'z-axis': {
-                  'orient': 'bottom-back',
+                  'orient': 'bottom-right',
                   'title': {
                     'text': '',
                     'fontSize': 10,
@@ -149,6 +153,8 @@ class App extends Component {
                     'color': 'black',
                     'opacity': 1,
                     'fontSize': 10,
+                    'rotation': '-90 0 0',
+                    'align':'center'
                   },
                   'grid': {
                     'color': 'black',

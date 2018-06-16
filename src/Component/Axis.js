@@ -14,7 +14,7 @@ class Axis extends Component {
   render() {
 
     //Adding Axis
-    let ticks, tickText, axis, tickValues;
+    let ticks, tickText, axis, tickValues,rotation,align;
 
     if (this.props.scaleType == 'ordinal') {
       tickValues = this.props.domain
@@ -29,13 +29,23 @@ class Axis extends Component {
     switch (this.props.axis) {
       case 'x':
         {
+          if(!this.props.tick.rotation)
+            rotation = '-90 0 0'
+          else
+            rotation = this.props.tick.rotation
+          
+          if(!this.props.tick.align)
+            align = 'center'
+          else
+            align = this.props.tick.align
+
           switch (this.props.orient) {
-            case 1:
+            case 'front-top':
               {
                 if (!this.props.tick.format) {
                   axis = <a-entity line={`start:0, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} ${this.props.dimensions.height} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} ${this.props.dimensions.height} ${this.props.dimensions.depth + this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
-                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' side='double' align='center' rotation='-90 0 0' position={`${this.props.scale(d) + padding} ${this.props.dimensions.height} ${this.props.dimensions.depth + this.props.tick['size'] + 0.05}`} />);
+                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${this.props.scale(d) + padding} ${this.props.dimensions.height} ${this.props.dimensions.depth + this.props.tick['size'] + 0.05}`} />);
                   break;
                 }
                 else {
@@ -43,17 +53,17 @@ class Axis extends Component {
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} ${this.props.dimensions.height} ${this.props.dimensions.depth + this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
-                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' side='double' align='center' rotation='-90 0 0' position={`${this.props.scale(d) + padding} ${this.props.dimensions.height} ${this.props.dimensions.depth + this.props.tick['size'] + 0.05}`} />
+                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double'align={align} rotation={rotation} position={`${this.props.scale(d) + padding} ${this.props.dimensions.height} ${this.props.dimensions.depth + this.props.tick['size'] + 0.05}`} />
                   });
                   break;
                 }
               }
-            case 2:
+            case 'back-bottom':
               {
                 if (!this.props.tick.format) {
                   axis = <a-entity line={`start:0, 0.001, 0; end:${this.props.dimensions.width} 0.001 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, 0.001, 0; end:${this.props.scale(d) + padding} 0.001 ${0 - this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
-                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' side='double' align='center' rotation='-90 0 0' position={`${this.props.scale(d) + padding} 0.001 ${0 - this.props.tick['size'] - 0.05}`} />);
+                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${this.props.scale(d) + padding} 0.001 ${0 - this.props.tick['size'] - 0.05}`} />);
                   break;
                 }
                 else {
@@ -61,17 +71,17 @@ class Axis extends Component {
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, 0.001, 0; end:${this.props.scale(d) + padding} 0.001 ${0 - this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
-                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' side='double' align='center' rotation='-90 0 0' position={`${this.props.scale(d) + padding} 0.001 ${0 - this.props.tick['size'] - 0.05}`} />
+                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${this.props.scale(d) + padding} 0.001 ${0 - this.props.tick['size'] - 0.05}`} />
                   });
                   break;
                 }
               }
-            case 3:
+            case 'back-top':
               {
                 if (!this.props.tick.format) {
                   axis = <a-entity line={`start:0, ${this.props.dimensions.height}, 0; end:${this.props.dimensions.width} ${this.props.dimensions.height} 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, ${this.props.dimensions.height}, 0; end:${this.props.scale(d) + padding} ${this.props.dimensions.height} ${0 - this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
-                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' side='double' align='center' rotation='-90 0 0' position={`${this.props.scale(d) + padding} ${this.props.dimensions.height} ${0 - this.props.tick['size'] - 0.05}`} />);
+                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${this.props.scale(d) + padding} ${this.props.dimensions.height} ${0 - this.props.tick['size'] - 0.05}`} />);
                   break;
                 }
                 else {
@@ -79,17 +89,17 @@ class Axis extends Component {
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, ${this.props.dimensions.height}, 0; end:${this.props.scale(d) + padding} ${this.props.dimensions.height} ${0 - this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
-                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' side='double' align='center' rotation='-90 0 0' position={`${this.props.scale(d) + padding} ${this.props.dimensions.height} ${0 - this.props.tick['size'] - 0.05}`} />
+                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${this.props.scale(d) + padding} ${this.props.dimensions.height} ${0 - this.props.tick['size'] - 0.05}`} />
                   });
                   break;
                 }
               }
-            case 4:
+            case 'front-bottom':
               {
                 if (!this.props.tick.format) {
                   axis = <a-entity line={`start:0, 0.001, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, 0.001, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} 0.001 ${this.props.dimensions.depth + this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
-                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' side='double' align='center' rotation='-90 0 0' position={`${this.props.scale(d) + padding} 0.001 ${this.props.dimensions.depth + this.props.tick['size'] + 0.05}`} />);
+                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${this.props.scale(d) + padding} 0.001 ${this.props.dimensions.depth + this.props.tick['size'] + 0.05}`} />);
                   break;
                 }
                 else {
@@ -97,7 +107,7 @@ class Axis extends Component {
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, 0.001, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} 0.001 ${this.props.dimensions.depth + this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
-                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' side='double' align='center' rotation='-90 0 0' position={`${this.props.scale(d) + padding} 0.001 ${this.props.dimensions.depth + this.props.tick['size'] + 0.05}`} />
+                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${this.props.scale(d) + padding} 0.001 ${this.props.dimensions.depth + this.props.tick['size'] + 0.05}`} />
                   });
                   break;
                 }
@@ -105,17 +115,17 @@ class Axis extends Component {
             default:
               {
                 if (!this.props.tick.format) {
-                  axis = <a-entity line={`start:0, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} ${this.props.dimensions.height} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} ${this.props.dimensions.height} ${this.props.dimensions.depth + this.props.tick['size']} opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
-                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' side='double' align='center' rotation='-90 0 0' position={`${this.props.scale(d) + padding} ${this.props.dimensions.height} ${this.props.dimensions.depth + this.props.tick['size'] - 0.05}`} />);
+                  axis = <a-entity line={`start:0, 0.001, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
+                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, 0.001, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} 0.001 ${this.props.dimensions.depth + this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
+                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${this.props.scale(d) + padding} 0.001 ${this.props.dimensions.depth + this.props.tick['size'] + 0.05}`} />);
                   break;
                 }
                 else {
-                  axis = <a-entity line={`start:0, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} ${this.props.dimensions.height} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} ${this.props.dimensions.height} ${this.props.dimensions.depth + this.props.tick['size']} opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
+                  axis = <a-entity line={`start:0, 0.001, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
+                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, 0.001, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} 0.001 ${this.props.dimensions.depth + this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
-                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' side='double' align='center' rotation='-90 0 0' position={`${this.props.scale(d) + padding} ${this.props.dimensions.height} ${this.props.dimensions.depth + this.props.tick['size'] - 0.05}`} />
+                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${this.props.scale(d) + padding} 0.001 ${this.props.dimensions.depth + this.props.tick['size'] + 0.05}`} />
                   });
                   break;
                 }
@@ -125,13 +135,23 @@ class Axis extends Component {
         }
       case 'y':
         {
+          if(!this.props.tick.rotation)
+            rotation = '0 0 0'
+          else
+            rotation = this.props.tick.rotation
+          
+          if(!this.props.tick.align)
+            align = 'right'
+          else
+            align = this.props.tick.align
+
           switch (this.props.orient) {
-            case 1:
+            case 'front-left':
               {
                 if (!this.props.tick.format) {
                   axis = <a-entity line={`start:0, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:0 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, ${this.props.scale(d) + padding}, ${this.props.dimensions.depth}; end:${0 - this.props.tick['size']} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
-                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' side='double' align='right' rotation='0 0 0' position={`${0 - this.props.tick['size'] - 0.05} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}`} />);
+                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}`} />);
                   break;
                 }
                 else {
@@ -139,17 +159,17 @@ class Axis extends Component {
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, ${this.props.scale(d) + padding}, ${this.props.dimensions.depth}; end:${0 - this.props.tick['size']} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
-                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' side='double' align='right' rotation='0 0 0' position={`${0 - this.props.tick['size'] - 0.05} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}`} />
+                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}`} />
                   });
                   break;
                 }
               }
-            case 2:
+            case 'back-left':
               {
                 if (!this.props.tick.format) {
                   axis = <a-entity line={`start:0, ${this.props.dimensions.height}, 0; end:0 0.001 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, ${this.props.scale(d) + padding}, 0; end:${0 - this.props.tick['size']} ${this.props.scale(d) + padding} 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
-                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' side='double' align='right' rotation='0 0 0' position={`${0 - this.props.tick['size'] - 0.05} ${this.props.scale(d) + padding} 0`} />);
+                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} ${this.props.scale(d) + padding} 0`} />);
                   break;
                 }
                 else {
@@ -157,17 +177,17 @@ class Axis extends Component {
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, ${this.props.scale(d) + padding}, 0; end:${0 - this.props.tick['size']} ${this.props.scale(d) + padding} 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
-                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' side='double' align='right' rotation='0 0 0' position={`${0 - this.props.tick['size'] - 0.05} ${this.props.scale(d) + padding} 0`} />
+                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} ${this.props.scale(d) + padding} 0`} />
                   });
                   break;
                 }
               }
-            case 3:
+            case 'front-right':
               {
                 if (!this.props.tick.format) {
                   axis = <a-entity line={`start:${this.props.dimensions.width}, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.dimensions.width}, ${this.props.scale(d) + padding}, ${this.props.dimensions.depth}; end:${this.props.dimensions.width + this.props.tick['size']} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
-                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' side='double' align='left' rotation='0 0 0' position={`${this.props.dimensions.width + this.props.tick['size'] + 0.05} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}`} />);
+                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' align='left' rotation={rotation} position={`${this.props.dimensions.width + this.props.tick['size'] + 0.05} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}`} />);
                   break;
                 }
                 else {
@@ -175,17 +195,17 @@ class Axis extends Component {
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.dimensions.width}, ${this.props.scale(d) + padding}, ${this.props.dimensions.depth}; end:${this.props.dimensions.width + this.props.tick['size']} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
-                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' side='double' align='left' rotation='0 0 0' position={`${this.props.dimensions.width + this.props.tick['size'] + 0.05} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}`} />
+                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' align='left' rotation={rotation} position={`${this.props.dimensions.width + this.props.tick['size'] + 0.05} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}`} />
                   });
                   break;
                 }
               }
-            case 4:
+            case 'back-right':
               {
                 if (!this.props.tick.format) {
                   axis = <a-entity line={`start:${this.props.dimensions.width}, ${this.props.dimensions.height}, 0; end:${this.props.dimensions.width} 0.001 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.dimensions.width}, ${this.props.scale(d) + padding}, 0; end:${this.props.dimensions.width + this.props.tick['size']} ${this.props.scale(d) + padding} 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
-                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' side='double' align='left' rotation='0 0 0' position={`${this.props.dimensions.width + this.props.tick['size'] + 0.05} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}`} />);
+                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' align='left' rotation={rotation} position={`${this.props.dimensions.width + this.props.tick['size'] + 0.05} ${this.props.scale(d) + padding} 0`} />);
                   break;
                 }
                 else {
@@ -193,7 +213,7 @@ class Axis extends Component {
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.dimensions.width}, ${this.props.scale(d) + padding}, 0; end:${this.props.dimensions.width + this.props.tick['size']} ${this.props.scale(d) + padding} 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
-                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' side='double' align='left' rotation='0 0 0' position={`${this.props.dimensions.width + this.props.tick['size'] + 0.05} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}`} />
+                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' align='left' rotation={rotation} position={`${this.props.dimensions.width + this.props.tick['size'] + 0.05} ${this.props.scale(d) + padding} 0`} />
                   });
                   break;
                 }
@@ -203,7 +223,7 @@ class Axis extends Component {
                 if (!this.props.tick.format) {
                   axis = <a-entity line={`start:0, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:0 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, ${this.props.scale(d) + padding}, ${this.props.dimensions.depth}; end:${0 - this.props.tick['size']} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
-                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' side='double' align='right' rotation='0 0 0' position={`${0 - this.props.tick['size'] - 0.05} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}`} />);
+                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}`} />);
                   break;
                 }
                 else {
@@ -211,7 +231,7 @@ class Axis extends Component {
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, ${this.props.scale(d) + padding}, ${this.props.dimensions.depth}; end:${0 - this.props.tick['size']} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
-                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' side='double' align='right' rotation='0 0 0' position={`${0 - this.props.tick['size'] - 0.05} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}`} />
+                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}`} />
                   });
                   break;
                 }
@@ -221,13 +241,23 @@ class Axis extends Component {
         }
       case 'z':
         {
+          if(!this.props.tick.rotation)
+            rotation = '-90 0 0'
+          else
+            rotation = this.props.tick.rotation
+          
+          if(!this.props.tick.align)
+            align = 'right'
+          else
+            align = this.props.tick.align
+
           switch (this.props.orient) {
-            case 1:
+            case 'bottom-left':
               {
                 if (!this.props.tick.format) {
                   axis = <a-entity line={`start:0, 0.001, 0; end:0 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, 0.001, ${this.props.scale(d) + padding}; end:${0 - this.props.tick['size']} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
-                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' side='double' align='right' rotation='-90 0 0' position={`${0 - this.props.tick['size'] - 0.05} 0.001 ${this.props.scale(d) + padding}`} />);
+                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} 0.001 ${this.props.scale(d) + padding}`} />);
                   break;
                 }
                 else {
@@ -235,17 +265,17 @@ class Axis extends Component {
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, 0.001, ${this.props.scale(d) + padding}; end:${0 - this.props.tick['size']} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
-                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' side='double' align='right' rotation='-90 0 0' position={`${0 - this.props.tick['size'] - 0.05} 0.001 ${this.props.scale(d) + padding}`} />
+                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} 0.001 ${this.props.scale(d) + padding}`} />
                   });
                   break;
                 }
               }
-            case 2:
+            case 'top-left':
               {
                 if (!this.props.tick.format) {
                   axis = <a-entity line={`start:0, ${this.props.dimensions.height}, 0; end:0 ${this.props.dimensions.height} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, ${this.props.dimensions.height}, ${this.props.scale(d) + padding}; end:${0 - this.props.tick['size']} ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
-                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' side='double' align='right' rotation='0 0 0' position={`${0 - this.props.tick['size'] - 0.05} ${this.props.dimensions.height} ${this.props.scale(d) + padding}`} />);
+                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} ${this.props.dimensions.height} ${this.props.scale(d) + padding}`} />);
                   break;
                 }
                 else {
@@ -253,17 +283,17 @@ class Axis extends Component {
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, 0.001, ${this.props.scale(d) + padding}; end:${0 - this.props.tick['size']} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
-                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' side='double' align='right' rotation='-90 0 0' position={`${0 - this.props.tick['size'] - 0.05} 0.001 ${this.props.scale(d) + padding}`} />
+                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} 0.001 ${this.props.scale(d) + padding}`} />
                   });
                   break;
                 }
               }
-            case 3:
+            case 'top-right':
               {
                 if (!this.props.tick.format) {
                   axis = <a-entity line={`start:${this.props.dimensions.width}, 0.001, 0; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.dimensions.width}, ${this.props.dimensions.height}, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width + this.props.tick['size']} ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
-                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' side='double' align='left' rotation='-90 0 0' position={`${this.props.dimensions.width + this.props.tick['size'] + 0.05} 0.001 ${this.props.scale(d) + padding}`} />);
+                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' align='left' rotation={rotation} position={`${this.props.dimensions.width + this.props.tick['size'] + 0.05} ${this.props.dimensions.height} ${this.props.scale(d) + padding}`} />);
                   break;
                 }
                 else {
@@ -271,25 +301,25 @@ class Axis extends Component {
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, 0.001, ${this.props.scale(d) + padding}; end:${0 - this.props.tick['size']} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
-                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' side='double' align='right' rotation='-90 0 0' position={`${0 - this.props.tick['size'] - 0.05} 0.001 ${this.props.scale(d) + padding}`} />
+                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} ${this.props.dimensions.height} ${this.props.scale(d) + padding}`} />
                   });
                   break;
                 }
               }
-            case 4:
+            case 'bottom-right':
               {
                 if (!this.props.tick.format) {
-                  axis = <a-entity line={`start:${this.props.dimensions.width}, ${this.props.dimensions.height}, 0; end:${this.props.dimensions.width} ${this.props.dimensions.height} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.dimensions.width}, ${this.props.dimensions.height}, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width + this.props.tick['size']} ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
-                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' side='double' align='left' rotation='0 0 0' position={`${this.props.dimensions.width + this.props.tick['size'] + 0.05} ${this.props.dimensions.height} ${this.props.scale(d) + padding}`} />);
+                  axis = <a-entity line={`start:${this.props.dimensions.width}, 0.001, 0; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
+                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.dimensions.width}, 0.001, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width + this.props.tick['size']} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
+                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' align='left' rotation={rotation} position={`${this.props.dimensions.width + this.props.tick['size'] + 0.05} 0.001 ${this.props.scale(d) + padding}`} />);
                   break;
                 }
                 else {
-                  axis = <a-entity line={`start:0, 0.001, 0; end:0 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, 0.001, ${this.props.scale(d) + padding}; end:${0 - this.props.tick['size']} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
+                  axis = <a-entity line={`start:${this.props.dimensions.width}, 0.001, 0; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
+                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.dimensions.width}, 0.001, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width + this.props.tick['size']} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
-                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' side='double' align='right' rotation='-90 0 0' position={`${0 - this.props.tick['size'] - 0.05} 0.001 ${this.props.scale(d) + padding}`} />
+                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} 0.001 ${this.props.scale(d) + padding}`} />
                   });
                   break;
                 }
@@ -299,7 +329,7 @@ class Axis extends Component {
                 if (!this.props.tick.format) {
                   axis = <a-entity line={`start:0, 0.001, 0; end:0 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, 0.001, ${this.props.scale(d) + padding}; end:${0 - this.props.tick['size']} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
-                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' side='double' align='right' rotation='-90 0 0' position={`${0 - this.props.tick['size'] - 0.05} 0.001 ${this.props.scale(d) + padding}`} />);
+                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} 0.001 ${this.props.scale(d) + padding}`} />);
                   break;
                 }
                 else {
@@ -307,7 +337,7 @@ class Axis extends Component {
                   ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, 0.001, ${this.props.scale(d) + padding}; end:${0 - this.props.tick['size']} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
-                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' side='double' align='right' rotation='-90 0 0' position={`${0 - this.props.tick['size'] - 0.05} 0.001 ${this.props.scale(d) + padding}`} />
+                    return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['text-size']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} 0.001 ${this.props.scale(d) + padding}`} />
                   });
                   break;
                 }

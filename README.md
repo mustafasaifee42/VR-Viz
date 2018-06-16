@@ -294,6 +294,8 @@ __Example__
       'color': 'black',
       'opacity': 1,
       'fontSize': 10,
+      'rotation': '-90 0 0',
+      'align':'center'
     },
     'grid': {
       'color': 'black',
@@ -314,6 +316,8 @@ __Example__
       'color': 'black',
       'opacity': 1,
       'fontSize': 10,
+      'rotation': '-90 0 0',
+      'align':'center'
     },
     'grid': {
       'color': 'black',
@@ -334,6 +338,8 @@ __Example__
       'color': 'black',
       'opacity': 1,
       'fontSize': 10,
+      'rotation': '-90 0 0',
+      'align':'center'
     },
     'grid': {
       'color': 'black',
@@ -366,7 +372,7 @@ __Properties for x-axis, y-axis, z-axis__
 
 Property|Type|Description
 ---|---|---
-orient|int|Defines where the ticks are displayed. __Not Required. Default value: 1__. _Available values: 1, 2, 3 or 4_
+orient|string|Defines where the ticks are displayed. __Not Required. Default value for x-axis: front-top. Default value for x-axis: front-left. Default value for x-axis: bottom-left.__. _Available values for x-axis: front-top, back-bottom, back-top or front-bottom. Available values for y-axis: front-left, back-left, front-right or back-right. Available values for z-axis: bottom-left, top-left, top-right or bottom-right._
 title|object|Defined the style of title for the axis. __Not Required.__ _Currently this feature is not available._
 title.text|string|Defined the text for title for the axis. __Required.__ _Currently this feature is not available._
 title.fontSize|int|Defined the font size for title for the axis. __Required.__ _Currently this feature is not available._
@@ -378,6 +384,8 @@ tick.size|float|Defined the font size for ticks for the axis. __Required.__
 tick.fontSize|int|Defined the font size for text for tick for the axis. __Required.__ 
 tick.color|string|Defined the color for ticks and text for tick for the axis. __Required.__ 
 tick.opacity|float|Defined the opacity for title for the axis. __Required.__ _Value must be between 0 and 1._
+tick.rotation|string| Defines the alignment of the text for ticks. __Not Required. Default value for x-axis: "-90 0 0". Default value for y-axis: "0 0 0". Default value for z-axis: "-90 0 0". Format is "0 0 0"__.
+tick.align|string| Defines the alignment of the text for ticks. __Not Required. Default value for x-axis: center. Default value for y-axis: right. Default value for z-axis: right.__. _Available values: left, center, right._
 grid|object|Defined the style of grid for the axis. __Not Required.__ _Currently this feature is not available._
 grid.color|string|Defined the color for grid for the axis. __Required.__ _Currently this feature is not available._
 grid.opacity|float|Defined the opacity for grid for the axis. __Required.__ _Value must be between 0 and 1. Currently this feature is not available._
