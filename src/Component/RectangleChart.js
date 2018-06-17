@@ -160,23 +160,13 @@ class RectangleChart extends Component {
         .domain(xDomain)
         .paddingInner(this.props.mark.style.padding.x);
 
-      if (this.props.mark.style.height.range)
-        yScale = d3.scaleLinear()
-          .domain(yDomain)
-          .range(this.props.mark.style.height.range)
-      else
-        yScale = d3.scaleLinear()
-          .domain(yDomain)
-          .range([0, this.props.style.dimensions.height])
-
-      if (this.props.mark.style.depth.range)
-        zScale = d3.scaleLinear()
-          .domain(zDomain)
-          .range(this.props.mark.style.depth.range);
-      else
-        zScale = d3.scaleLinear()
-          .domain(zDomain)
-          .range([0, this.props.style.dimensions.depth])
+      yScale = d3.scaleLinear()
+        .domain(yDomain)
+        .range([0, this.props.style.dimensions.height])
+      console.log(yScale(10000))
+      zScale = d3.scaleLinear()
+        .domain(zDomain)
+        .range([0, this.props.style.dimensions.depth])
 
 
       if (this.props.mark.style.fill.scaleType) {
@@ -249,7 +239,7 @@ class RectangleChart extends Component {
 
       //Adding marks
       let marks = this.state.data.map((d, i) => {
-        let hght = yScale(d[this.props.mark.style.height.field]), dpth = hght = zScale(d[this.props.mark.style.depth.field]);
+        let hght = yScale(d[this.props.mark.style.height.field]), dpth = zScale(d[this.props.mark.style.depth.field]);
         if (yScale(d[this.props.mark.style.height.field]) === 0) {
           hght = 0.000000000001;
         }
