@@ -156,8 +156,9 @@ class RectangleChart extends Component {
 
       let xScale, yScale, zScale, colorScale;
       xScale = d3.scaleBand()
-        .range([this.props.mark.style.width / 2, this.props.style.dimensions.width])
-        .domain(xDomain);
+        .range([0, this.props.style.dimensions.width])
+        .domain(xDomain)
+        .paddingInner(this.props.mark.style.padding.x);
 
       if (this.props.mark.style.height.range)
         yScale = d3.scaleLinear()
@@ -205,6 +206,7 @@ class RectangleChart extends Component {
           title={this.props.xAxis.title}
           dimensions={this.props.style.dimensions}
           scaleType={this.props.mark.position.x.scaleType}
+          padding={xScale.bandwidth()}
         />
       }
 
@@ -255,9 +257,9 @@ class RectangleChart extends Component {
           dpth = 0.000000000001;
         }
         if (this.props.mark.style.fill.scaleType) {
-          return <a-box key={i} color={`${colorScale(d[this.props.mark.style.fill.field])}`} opacity={this.props.mark.style.fill.opacity} depth={`${dpth}`} height={`${hght}`} width={`${this.props.mark.style.width}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${dpth / 2}`} />
+          return <a-box key={i} color={`${colorScale(d[this.props.mark.style.fill.field])}`} opacity={this.props.mark.style.fill.opacity} depth={`${dpth}`} height={`${hght}`} width={`${xScale.bandwidth()}`} position={`${xScale(d[this.props.mark.position.x.field]) + xScale.bandwidth() / 2} ${hght / 2} ${dpth / 2}`} />
         } else
-          return <a-box key={i} color={`${this.props.mark.style.fill.color}`} opacity={this.props.mark.style.fill.opacity} depth={`${dpth}`} height={`${hght}`} width={`${this.props.mark.style.width}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${dpth / 2}`} />
+          return <a-box key={i} color={`${this.props.mark.style.fill.color}`} opacity={this.props.mark.style.fill.opacity} depth={`${dpth}`} height={`${hght}`} width={`${xScale.bandwidth()}`} position={`${xScale(d[this.props.mark.position.x.field]) + xScale.bandwidth() / 2} ${hght / 2} ${dpth / 2}`} />
       });
 
       return (

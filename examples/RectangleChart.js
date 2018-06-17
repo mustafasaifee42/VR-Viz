@@ -70,7 +70,9 @@ class App extends Component {
                 },
                 'type': 'box',
                 'style': {
-                  'width': 0.2,
+                  'padding': {
+                    'x': 0.1,
+                  },
                   'depth': {
                     'scaleType': 'linear',
                     'field': 'Deaths',

@@ -43,7 +43,7 @@ Property|Type|Description
 type|string|Defines type of bar that would be created. __Not Required. Default value: box__. _Available values: box, cylinder._
 position|object|Defines the how the position of bars will be mapped. __Required__
 position.x|object|__Required.__
-position.x.scaleType|int|Defines the scale type for x position of the bar. __Required.__ _Available values: ordinal._
+position.x.scaleType|float|Defines the scale type for x position of the bar. __Required.__ _Available values: ordinal._
 position.x.field|string|Defines the field in the data that will be mapped as x position of the bar. __Required.__
 position.x.domain|float|Defines the domain for x position. __Not Required.__ _If not present the domain is calculated from the provide data depending on the position.x.scaleType._
 position.z|object|__Required.__

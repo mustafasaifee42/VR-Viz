@@ -39,11 +39,13 @@ Property|Type|Description
 type|string|Defines type of bar that would be created. __Not Required. Default value: box__. _Available values: box._
 position|object|Defines the how the position of bars will be mapped. __Required__
 position.x|object|__Required.__
-position.x.scaleType|int|Defines the scale type for x position of the bar. __Required.__ _Available values: linear or ordinal._
+position.x.scaleType|float|Defines the scale type for x position of the bar. __Required.__ _Available values: ordinal._
 position.x.field|string|Defines the field in the data that will be mapped as x position of the bar. __Required.__
 position.x.domain|float|Defines the domain for x position. __Not Required.__ _If not present the domain is calculated from the provide data depending on the position.x.scaleType._
 position.x.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if position.x.domain is not given and position.x.scaleType is `linear`._
 style|object|Defines the style for the bar. __Required.__
+style.padding|object|Defines the spacing between the bar. __Required.__ 
+style.padding.x|object|Defines the spacing between the bar along x axis. __Required.__ _Value must be between 0 and 1._
 style.width|float|Defines the width of the bar. __Required if `type` is `box`.__ 
 style.depth|object|Defines the depth of the bar.  __Required if `type` is `box`.__ 
 style.depth.scaleType|string|Defines the scale type for depth of the bar. __Required.__ _Available values: linear or ordinal._
@@ -62,6 +64,8 @@ style.fill.field|string|Defines the field in the data that will be mapped as fil
 style.fill.domain|array|Defines the domain for fill. __Not Required.__ _If not present the domain is calculated from the provide data depending on the style.fill.scaleType_
 style.fill.color|array or string|Defines the color for fill. __Not Required if style.fill.scaleType is present, else required. Default value: d3.schemeCategory10__ _If style.fill.scaleType is not present the this needs to be a string otherwise an array._
 style.fill.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if style.fill.color is not given and style.fill.scaleType is `linear`._
+
+_Note: The width of the bar is calculated depending upon the dimensions of the graph and padding in between the bars._
 
 ### [Example JS of the Visualization](../examples/RectangleChart.js)
 

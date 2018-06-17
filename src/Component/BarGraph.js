@@ -331,10 +331,10 @@ class BarGraph extends Component {
               if (yScale(d[this.props.mark.style.height.field]) === 0) {
                 hght = 0.000000000001;
               }
-              if (this.props.mark.style.fill.scaleType)
-                return <a-box key={i} opacity={this.props.mark.style.fill.opacity} color={`${colorScale(d[this.props.mark.style.fill.field])}`} depth={`${this.props.mark.style.depth}`} height={`${hght}`} width={`${this.props.mark.style.width}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
-              else
-                return <a-box key={i} opacity={this.props.mark.style.fill.opacity} color={`${this.props.mark.style.fill.color}`} depth={`${this.props.mark.style.depth}`} height={`${hght}`} width={`${this.props.mark.style.width}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
+              if (this.props.mark.style.fill.scaleType) {
+                return <a-box key={i} color={`${colorScale(d[this.props.mark.style.fill.field])}`} opacity={this.props.mark.style.fill.opacity} depth={`${depth}`} height={`${hght}`} width={`${width}`} position={`${xScale(d[this.props.mark.position.x.field]) + width / 2} ${hght / 2} ${zScale(d[this.props.mark.position.z.field]) + depth / 2}`} />
+              } else
+                return <a-box key={i} color={`${this.props.mark.style.fill.color}`} opacity={this.props.mark.style.fill.opacity} depth={`${depth}`} height={`${hght}`} width={`${width}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
             });
             break;
           }
