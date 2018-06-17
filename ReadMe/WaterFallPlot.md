@@ -1,6 +1,6 @@
 # WaterfallPlot Component
 
-![WaterfallPlot](../imgs/WaterfallPlot.png)
+![WaterfallPlot](../imgs/WaterFallPlot.png)
 
 ## `mark` Object in Graph Props
 ```
