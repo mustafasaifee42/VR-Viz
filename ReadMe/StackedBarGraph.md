@@ -52,8 +52,8 @@ position.z.field|string|Defines the field in the data that will be mapped as z p
 position.z.domain|array|Defines the domain for z position. __Not Required.__ _If not present the domain is calculated from the provide data depending on the position.z.scaleType._
 style|object|Defines the style for the bar. __Required.__
 style.padding|object|Defines the spacing between the bar. __Required.__ 
-style.padding.x|object|Defines the spacing between the bar along x axis. __Required.__ 
-style.padding.z|object|Defines the spacing between the bar along z axis. __Required.__ 
+style.padding.x|object|Defines the spacing between the bar along x axis. __Required.__ _Value must be between 0 and 1._
+style.padding.z|object|Defines the spacing between the bar along z axis. __Required.__ _Value must be between 0 and 1._
 style.segments|int|Defines the no. of segments in bar, if the bar is a cylinder or cone. __Required if `type` is `cylinder`.__ 
 style.height|object|Defines the height of the bar. __Required.__
 style.height.scaleType|string|Defines the scale type for height of the bar. __Required.__ _Available values: linear or ordinal._
