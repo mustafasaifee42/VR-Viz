@@ -78,11 +78,14 @@ class App extends Component {
                   }
                 },
                 'style': {
-                  'height': 0.2,
+                  'padding': {
+                    'x': 0.1,
+                    'y': 0.1,
+                  },
+                  'height': 0.5,
                   'radius': {
                     'field': 'Years',
                     'scaleType': 'linear',
-                    'value': [0.1, 0.5],
                   },
                   'fill': {
                     'field': 'Color',
@@ -96,7 +99,7 @@ class App extends Component {
                 'axis-box': {
                   'color': 'black',
                 },
-                'x': {
+                'x-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',
@@ -116,7 +119,7 @@ class App extends Component {
                     'opacity': 1,
                   }
                 },
-                'y': {
+                'y-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',
@@ -136,7 +139,7 @@ class App extends Component {
                     'opacity': 1,
                   }
                 },
-                'z': {
+                'z-axis': {
                   'orient': 'bottom-back',
                   'title': {
                     'text': '',

@@ -132,12 +132,17 @@ class TimeBars extends Component {
       }
 
       yDomain = Object.keys(this.state.data[0][this.props.mark.position.y.field])
+      console.log(yDomain)
       yDomain = yDomain.map((d, i) => {
         if (this.props.mark.position.y.format) {
-          return moment(d, this.props.mark.position.y.field)['_d']
+          return moment(d, this.props.mark.position.y.format)['_d']
         }
       })
-
+      console.log(yDomain)
+      let hght = this.props.style.dimensions.height / yDomain.length;
+      if (this.props.mark.style.height) {
+        hght = this.props.mark.style.height
+      }
       if (this.props.mark.position.z) {
         if (!this.props.mark.position.z.domain) {
           zDomain = GetDomain(this.state.data, this.props.mark.position.z.field, this.props.mark.position.z.scaleType, this.props.mark.position.z.srartFromZero)
@@ -173,22 +178,18 @@ class TimeBars extends Component {
 
       let xScale, yScale, zScale, colorScale, radiusScale;
 
-      if (this.props.mark.position.x.scaleType === 'ordinal')
-        xScale = d3.scaleBand()
-          .range([this.props.mark.style.radius.value[1] / 2, this.props.style.dimensions.width])
-          .domain(xDomain);
-      else
-        xScale = d3.scaleLinear()
-          .range([0, this.props.style.dimensions.width])
-          .domain(xDomain);
+      xScale = d3.scaleBand()
+        .range([0, this.props.style.dimensions.width])
+        .domain(xDomain)
+        .paddingInner(this.props.mark.style.padding.x);
 
       zScale = d3.scaleBand()
         .domain(zDomain)
-        .range([this.props.mark.style.radius.value[1] / 2, this.props.style.dimensions.depth]);
+        .range([xScale.bandwidth() / 2, this.props.style.dimensions.depth]);
 
       radiusScale = d3.scaleLinear()
         .domain(radiusDomain)
-        .range(this.props.mark.style.radius.value)
+        .range([0, xScale.bandwidth() / 2])
 
       if (this.props.mark.style.fill.scaleType) {
         let colorRange = d3.schemeCategory10;
@@ -217,21 +218,10 @@ class TimeBars extends Component {
           title={this.props.xAxis.title}
           dimensions={this.props.style.dimensions}
           scaleType={this.props.mark.position.x.scaleType}
+          padding={xScale.bandwidth()}
         />
       }
 
-      if (this.props.yAxis) {
-        yAxis = <Axis
-          domain={yDomain}
-          tick={this.props.yAxis.ticks}
-          scale={yScale}
-          axis={'y'}
-          orient={this.props.yAxis.orient}
-          title={this.props.yAxis.title}
-          dimensions={this.props.style.dimensions}
-          scaleType={this.props.mark.position.y.scaleType}
-        />
-      }
 
       if (this.props.zAxis) {
         zAxis = <Axis
@@ -244,7 +234,6 @@ class TimeBars extends Component {
           dimensions={this.props.style.dimensions}
           scaleType={this.props.mark.position.z.scaleType}
         />
-
       }
 
       let box;
@@ -263,22 +252,21 @@ class TimeBars extends Component {
         let units = yDomain.map((d1, j) => {
           if (this.props.mark.position.y.format) {
             let s = moment(d1).format(this.props.mark.position.y.format)
-            console.log(d[this.props.mark.style.radius.field], d1)
             if (this.props.mark.style.fill.scaleType) {
-              return <a-cylinder key={i} color={`${colorScale(d[this.props.mark.style.fill.field][s])}`} opacity={this.props.mark.style.fill.opacity} height={`${this.props.mark.style.height}`} radius={`${radiusScale(d[this.props.mark.style.radius.field][s])}`} position={`${xScale(d[this.props.mark.position.x.field])} ${j * this.props.mark.style.height + this.props.mark.style.height / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
+              return <a-cylinder key={i} color={`${colorScale(d[this.props.mark.style.fill.field][s])}`} opacity={this.props.mark.style.fill.opacity} height={`${hght}`} radius={`${radiusScale(d[this.props.mark.style.radius.field][s])}`} position={`${xScale(d[this.props.mark.position.x.field]) + xScale.bandwidth() / 2} ${j * hght + hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
             } else
-              return <a-cylinder key={i} color={`${this.props.mark.style.fill.color}`} opacity={this.props.mark.style.fill.opacity} height={`${this.props.mark.style.height}`} radius={`${radiusScale(d[this.props.mark.style.radius.field][s])}`} position={`${xScale(d[this.props.mark.position.x.field])} ${j * this.props.mark.style.height + this.props.mark.style.height / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
+              return <a-cylinder key={i} color={`${this.props.mark.style.fill.color}`} opacity={this.props.mark.style.fill.opacity} height={`${hght}`} radius={`${radiusScale(d[this.props.mark.style.radius.field][s])}`} position={`${xScale(d[this.props.mark.position.x.field]) + xScale.bandwidth() / 2} ${j * hght + hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
           }
           else {
             if (this.props.mark.style.fill.scaleType) {
-              return <a-cylinder key={i} color={`${colorScale(d[this.props.mark.style.fill.field][d1])}`} opacity={this.props.mark.style.fill.opacity} height={`${this.props.mark.style.height}`} radius={`${radiusScale(d[this.props.mark.style.radius.field][d1])}`} position={`${xScale(d[this.props.mark.position.x.field])} ${j * this.props.mark.style.height + this.props.mark.style.height / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
+              return <a-cylinder key={i} color={`${colorScale(d[this.props.mark.style.fill.field][d1])}`} opacity={this.props.mark.style.fill.opacity} height={`${hght}`} radius={`${radiusScale(d[this.props.mark.style.radius.field][d1])}`} position={`${xScale(d[this.props.mark.position.x.field]) + xScale.bandwidth() / 2} ${j * hght + hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
             } else
-              return <a-cylinder key={i} color={`${this.props.mark.style.fill.color}`} opacity={this.props.mark.style.fill.opacity} height={`${this.props.mark.style.height}`} radius={`${radiusScale(d[this.props.mark.style.radius.field][d1])}`} position={`${xScale(d[this.props.mark.position.x.field])} ${j * this.props.mark.style.height + this.props.mark.style.height / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
+              return <a-cylinder key={i} color={`${this.props.mark.style.fill.color}`} opacity={this.props.mark.style.fill.opacity} height={`${hght}`} radius={`${radiusScale(d[this.props.mark.style.radius.field][d1])}`} position={`${xScale(d[this.props.mark.position.x.field]) + xScale.bandwidth() / 2} ${j * hght + hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
           }
         })
         return units
       })
-      console.log(marks)
+      console.log(this.props.xAxis)
       return (
         <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
           {marks}
