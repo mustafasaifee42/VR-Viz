@@ -2,7 +2,7 @@
 
 ![TreeMap](../imgs/TreeMap.png)
 
-__Note: The `height` attribute in the `style` object in the graph component defines the range for the heights of teh boxes.__
+__Note: The `height` attribute in the `style` object in the graph component defines the range for the heights of the boxes.__
 
 ## `mark` Object in Graph Props
 ```
