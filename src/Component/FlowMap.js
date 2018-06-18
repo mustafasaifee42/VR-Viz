@@ -172,6 +172,7 @@ class FlowMap extends Component {
       let geoData = GetMapShape(this.props.mark.map.data, this.props.mark.map.projection, this.props.mark.mapScale, this.props.mark.mapOrigin, this.props.mark.map.shapeIdentifier);
 
       let shapes = geoData.map((d, i) => {
+        console.log(d.vertices)
         let primitive = `primitive: map; vertices: ${d.vertices}; extrude: ${this.props.mark.map.style.extrusion.value}`;
         return (<a-entity geometry={primitive} material={`color: ${this.props.mark.map.style.fill.color}; metalness: 0.2; opacity:${this.props.mark.map.style.fill.opacity}`} />)
       })
@@ -181,6 +182,56 @@ class FlowMap extends Component {
         border = geoData.map((d, i) => <a-entity meshline={`lineWidth: ${this.props.mark.map.style.stroke.width}; path:${`${d.vertices.replace(/,/g, " 0,")} 0`}; color:${this.props.mark.map.style.stroke.color}`} />);
 
       //Adding Bars
+      let sourceNode, targetNode;
+
+      if (this.props.mark.nodes) {
+        if (this.props.mark.nodes.source) {
+          sourceNode = this.state.data.map((d, i) => {
+
+            let source_position = GetMapCoordinates(d.source_longitude, d.source_latitude, this.props.mark.map.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
+
+            source_position[1] = -1 * source_position[1];
+            switch (this.props.mark.nodes.source.type) {
+              case 'sphere':
+                {
+                  return <a-sphere key={i} opacity={this.props.mark.nodes.source.style.fill.opacity} color={this.props.mark.nodes.source.style.fill.color} radius={this.props.mark.nodes.source.style.radius.value} position={`${source_position[0]} ${source_position[1]} 0`} />
+                }
+              case 'box':
+                {
+                  return <a-box key={i} opacity={this.props.mark.nodes.source.style.fill.opacity} color={this.props.mark.nodes.source.style.fill.color} width={this.props.mark.nodes.source.style.radius.value} height={this.props.mark.nodes.source.style.radius.value} depth={this.props.mark.nodes.source.style.radius.value} position={`${source_position[0]} ${source_position[1]} 0`} />
+                }
+              default:
+                {
+                  return <a-sphere key={i} opacity={this.props.mark.nodes.source.style.fill.opacity} color={this.props.mark.nodes.source.style.fill.color} radius={this.props.mark.nodes.source.style.radius.value} position={`${source_position[0]} ${source_position[1]} 0`} />
+                }
+            }
+          })
+        }
+
+        if (this.props.mark.nodes.target) {
+          targetNode = this.state.data.map((d, i) => {
+
+            let target_position = GetMapCoordinates(d.target_longitude, d.target_latitude, this.props.mark.map.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
+
+            target_position[1] = -1 * target_position[1];
+
+            switch (this.props.mark.nodes.target.type) {
+              case 'sphere':
+                {
+                  return <a-sphere key={i} opacity={this.props.mark.nodes.target.style.fill.opacity} color={this.props.mark.nodes.target.style.fill.color} radius={this.props.mark.nodes.target.style.radius.value} position={`${target_position[0]} ${target_position[1]} 0`} />
+                }
+              case 'box':
+                {
+                  return <a-box key={i} opacity={this.props.mark.nodes.target.style.fill.opacity} color={this.props.mark.nodes.target.style.fill.color} width={this.props.mark.nodes.target.style.radius.value} height={this.props.mark.nodes.target.style.radius.value} depth={this.props.mark.nodes.target.style.radius.value} position={`${target_position[0]} ${target_position[1]} 0`} />
+                }
+              default:
+                {
+                  return <a-sphere key={i} opacity={this.props.mark.nodes.target.style.fill.opacity} color={this.props.mark.nodes.target.style.fill.color} radius={this.props.mark.nodes.target.style.radius.value} position={`${target_position[0]} ${target_position[1]} 0`} />
+                }
+            }
+          })
+        }
+      }
 
       let curves = this.state.data.map((d, i) => {
 
@@ -234,6 +285,8 @@ class FlowMap extends Component {
           {shapes}
           {curves}
           {border}
+          {sourceNode}
+          {targetNode}
           {flowLines}
         </a-entity>
       )
