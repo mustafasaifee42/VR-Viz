@@ -62,7 +62,7 @@ class App extends Component {
                     },
                     'fill': {
                       'color': 'red',
-                      'opacity': 1,
+                      'opacity': 0,
                     },
                     'stroke': {
                       'width': 1,
@@ -83,7 +83,33 @@ class App extends Component {
                     'field': 'value',
                     'scaleFactor': 1,
                   }
-                }
+                },
+                'nodes': {
+                  'source': {
+                    'type': 'sphere',
+                    'style': {
+                      'radius': {
+                        'value': 0.1,
+                      },
+                      'fill': {
+                        'color': 'blue',
+                        'opacity': 1,
+                      },
+                    }
+                  },
+                  'target': {
+                    'type': 'sphere',
+                    'style': {
+                      'radius': {
+                        'value': 0.1,
+                      },
+                      'fill': {
+                        'color': 'green',
+                        'opacity': 1,
+                      },
+                    }
+                  }
+                },
               },
             }
           ]

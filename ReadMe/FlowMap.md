@@ -81,6 +81,23 @@ flowlines.style.stroke.color|string or array of string|Defines the stroke of the
 flowline.height|object|Defines the peak height which flowlines can achieve. __Not Required. If not present the height is calculated depending upon the distance between the source and target.__
 flowline.height.field|string|Defines the field in the data that will be mapped as height of the flowline. __Required.__
 flowline.height.scaleFactor|float|Defines the factor with which the height is scaled. __Required.__
+nodes|object|Defines style of the source and target nodes. __Not Required. If not defined the nodes are not drawn.__
+nodes.source|object|Defines style of the source nodes. __Not Required. If not defined the source nodes are not drawn.__
+nodes.source.type|string|Defines shape of the source nodes. __Not Required. Default value: sphere__. _Available values: box, sphere._
+nodes.source.style|object|Defines the style of source node. __Required.__
+nodes.source.style.radius|object|Defines the radius or width, depth and height of the node. __Required.__
+nodes.source.style.radius.value|float|Defines the radius or width, depth and height of the node. __Required.__
+nodes.source.style.fill|object|Defines the fill of the source node. __Required.__
+nodes.source.style.color|string|Defines the color of the source node. __Required.__
+nodes.source.style.fill.opacity|float|Defines the opacity of the source node. __Required.__ _Value must be between 0 and 1._
+nodes.target|object|Defines style of the target nodes. __Not Required. If not defined the target nodes are not drawn.__
+nodes.target.type|string|Defines shape of the target nodes. __Not Required. Default value: sphere__. _Available values: box, sphere._
+nodes.target.style|object|Defines the style of target node. __Required.__
+nodes.target.style.radius|object|Defines the radius or width, depth and height of the node. __Required.__
+nodes.target.style.radius.value|float|Defines the radius or width, depth and height of the node. __Required.__
+nodes.target.style.fill|object|Defines the fill of the target node. __Required.__
+nodes.target.style.color|string|Defines the color of the target node. __Required.__
+nodes.target.style.fill.opacity|float|Defines the opacity of the target node. __Required.__ _Value must be between 0 and 1._
 
 ### [Example JS of the Visualization](../examples/FlowMap.js)
 

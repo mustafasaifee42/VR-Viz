@@ -74,7 +74,7 @@ __Properties for `mark` for Prism Map__
 
 Property|Type|Description
 ---|---|---
-type|string|Defines type of bar that would be created. __Not Required. Default value: sphere__. _Available values: box, sphere._
+type|string|Defines type of point that would be created. __Not Required. Default value: sphere__. _Available values: box, sphere._
 position|object|Defines the how the position of points will be mapped. __Required.__
 position.x|object|__Required.__
 position.x.scaleType|string|Defines the scale type for x position of the points. __Required.__ _Available values: linear or ordinal._
