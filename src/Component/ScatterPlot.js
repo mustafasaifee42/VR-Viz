@@ -370,7 +370,7 @@ class ScatterPlot extends Component {
       }
 
       return (
-        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
+        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation}>
           {mark}
           {droplines_xy}
           {droplines_xz}

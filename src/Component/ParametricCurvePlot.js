@@ -129,7 +129,7 @@ class ParametricCurvePlot extends Component {
     </a-curve>
 
     return (
-      <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
+      <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation}>
         {xAxis}
         {yAxis}
         {zAxis}

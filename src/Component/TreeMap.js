@@ -185,7 +185,7 @@ class TreeMap extends Component {
           return <a-box id={`width${width}posX${posX}dx${d.x0}`} key={i} color={`${this.props.mark.style.fill.color}`} opacity={this.props.mark.style.fill.opacity} depth={`${depth}`} height={`${height}`} width={`${width}`} position={`${posX} ${height / 2} ${posZ}`} />
       });
       return (
-        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
+        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation}>
           {marks}
         </a-entity>
       )

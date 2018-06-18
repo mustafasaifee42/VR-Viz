@@ -282,7 +282,7 @@ class WaterFallPlot extends Component {
           return <a-entity key={i} position={`0 0 ${zScale(d)}`} geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; side: double; opacity:${this.props.mark.style.fill.opacity}`} />
         })
       return (
-        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
+        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation}>
           {xAxis}
           {yAxis}
           {zAxis}

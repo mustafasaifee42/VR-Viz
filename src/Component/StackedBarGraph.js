@@ -166,14 +166,14 @@ class StackedBarGraph extends Component {
       let xScale, yScale, zScale, colorScale, width, depth;
 
 
-      if (this.props.mark.position.x.scaleType === 'ordinal'){
+      if (this.props.mark.position.x.scaleType === 'ordinal') {
         xScale = d3.scaleBand()
           .range([0, this.props.style.dimensions.width])
           .domain(xDomain)
           .paddingInner(this.props.mark.style.padding.x);
         width = xScale.bandwidth();
       }
-      
+
       yScale = d3.scaleLinear()
         .domain(yDomain)
         .range([0, this.props.style.dimensions.height])
@@ -314,7 +314,7 @@ class StackedBarGraph extends Component {
           }
       }
       return (
-        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
+        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation}>
           {marks}
           {xAxis}
           {yAxis}
