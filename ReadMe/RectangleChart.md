@@ -1,4 +1,4 @@
-# Bargraph Component
+# Rectangle Chart Component
 
 ![RectangleChart](../imgs/RectangleChart.png)
 
