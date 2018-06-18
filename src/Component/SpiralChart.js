@@ -125,7 +125,7 @@ class SpiralChart extends Component {
     else {
 
       // Getting domain
-      let colorDomain;
+      let colorDomain, fillColorDomain;
 
       if (this.props.mark.style.stroke.scaleType) {
         if (!this.props.mark.style.stroke.domain) {
@@ -134,9 +134,16 @@ class SpiralChart extends Component {
           colorDomain = this.props.mark.style.stroke.domain
       }
 
+      if (this.props.mark.style.fill.scaleType) {
+        if (!this.props.mark.style.fill.domain) {
+          fillColorDomain = GetDomain(this.state.data, this.props.mark.style.fill.field, this.props.mark.style.fill.type, this.props.mark.style.fill.startFromZero)
+        } else
+          fillColorDomain = this.props.mark.style.fill.domain
+      }
+
       //Adding scales
 
-      let colorScale;
+      let colorScale, fillColorScale;
 
       let scales;
 
@@ -169,9 +176,24 @@ class SpiralChart extends Component {
       }
 
 
+      if (this.props.mark.style.fill.scaleType) {
+        let fillColorRange = d3.schemeCategory10;
+        if (this.props.mark.style.fill.color)
+          fillColorRange = this.props.mark.style.fill.color;
+        if (this.props.mark.style.fill.scaleType === 'ordinal')
+          fillColorScale = d3.scaleOrdinal()
+            .domain(fillColorDomain)
+            .range(fillColorRange)
+        else
+          fillColorScale = d3.scaleLinear()
+            .domain(fillColorDomain)
+            .range(fillColorRange)
+        console.log(fillColorScale(3))
+      }
+
       //Drawing SpiralCoordinates
 
-      let spiralCoordinates;
+      let spiralCoordinates, shapeCoordinates;
 
       let yPos = this.props.style.height / this.state.data.length;
 
@@ -184,22 +206,40 @@ class SpiralChart extends Component {
         coordinates = coordinates + ` ${scales[0](d[this.props.mark.vertices[0].title]) * Math.sin(0)} ${i * yPos} ${0 - scales[0](d[this.props.mark.vertices[0].title]) * Math.cos(0)}`
         return coordinates;
       })
+      shapeCoordinates = this.state.data.map((d, i) => {
+        let coordinates = ''
+        let angle = Math.PI * 2 / scales.length;
+        scales.map((d1, j) => {
+          coordinates = coordinates + `${d1(d[this.props.mark.vertices[j].title]) * Math.sin(j * angle)} ${0 - d1(d[this.props.mark.vertices[j].title]) * Math.cos(j * angle)},`
+        })
+        coordinates = coordinates + `${scales[0](d[this.props.mark.vertices[0].title]) * Math.sin(0)} ${0 - scales[0](d[this.props.mark.vertices[0].title]) * Math.cos(0)}`
+
+        return coordinates;
+      })
 
       //Adding curves
 
-      let spiral;
+      let spiral, shapes;
+      if (this.props.mark.style.stroke)
+        spiral = this.state.data.map((d, i) => {
+          if (this.props.mark.style.stroke.scaleType)
+            return <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; lineWidthStyler: 1; path:${spiralCoordinates[i]}; color: ${colorScale(d[this.props.mark.style.stroke.field])}`}></a-entity>
+          else
+            return <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; lineWidthStyler: 1; path:${spiralCoordinates[i]}; color: ${this.props.mark.style.stroke.color}`}></a-entity>
+        })
 
-      spiral = this.state.data.map((d, i) => {
-        if (this.props.mark.style.stroke.scaleType)
-          return <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; lineWidthStyler: 1; path:${spiralCoordinates[i]}; color: ${colorScale(d[this.props.mark.style.stroke.field])}`}></a-entity>
-        else
-          return <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; lineWidthStyler: 1; path:${spiralCoordinates[i]}; color: ${this.props.mark.style.stroke.color}`}></a-entity>
-      })
-
-
+      if (this.props.mark.style.fill)
+        shapes = this.state.data.map((d, i) => {
+          let primitive = `primitive: map; vertices: ${shapeCoordinates[i]}; extrude: ${0.00001}`;
+          if (this.props.mark.style.fill.scaleType)
+            return (<a-entity geometry={primitive} material={`color: ${fillColorScale(d[this.props.mark.style.fill.field])}; metalness: 0.2; opacity:${this.props.mark.style.fill.opacity}`} position={`0 ${i * yPos} 0`} rotation={`90 0 0`} />)
+          else
+            return (<a-entity geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; metalness: 0.2; opacity:${this.props.mark.style.fill.opacity}`} position={`0 ${i * yPos} 0`} rotation={`90 0 0`} />)
+        })
       return (
         <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
           {spiral}
+          {shapes}
         </a-entity>
       )
     }

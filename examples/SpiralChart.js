@@ -87,9 +87,13 @@ class App extends Component {
                   }
                 ],
                 'style': {
+                  'fill': {
+                    'opacity': 0.6,
+                    'color': '#2196F3',
+                  },
                   'stroke': {
-                    'width': 10,
-                    'color': 'black',
+                    'width': 1,
+                    'color': '#fff',
                   },
                 },
               },

@@ -58,6 +58,12 @@ style.stroke.field|string|Defines the field in the data that will be mapped as c
 style.stroke.domain|array|Defines the domain for color of stroke. __Not Required.__ _If not present the domain is calculated from the provide data depending on the style.stroke.scaleType._
 style.stroke.color|array of string or string|Defines the range for color of stroke. __Required.__ _If `style.stroke.scaleType` is not present the `style.stroke.value` is string or else its an array of string._
 style.stroke.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if style.stroke.domain is not given and style.stroke.scaleType is `linear`._
+style.fill|object|Defines the fill of the spiral. __Required.__
+style.fill.scaleType|string|Defines the scale type for color of fill of the spiral. __Not Required. If not present then a constant fill that is defined is used.__ _Available values: linear or ordinal._
+style.fill.field|string|Defines the field in the data that will be mapped as color of fill of the spiral. __Required if `style.fill.scaleType` is present.__
+style.fill.domain|array|Defines the domain for color of fill. __Not Required.__ _If not present the domain is calculated from the provide data depending on the style.fill.scaleType._
+style.fill.color|array of string or string|Defines the range for color of fill. __Required.__ _If `style.fill.scaleType` is not present the `style.fill.value` is string or else its an array of string._
+style.fill.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if style.fill.domain is not given and style.fill.scaleType is `linear`._
 
 ## `axis` Object in Graph Props (currently this feature is not available for spiral chart)
 
