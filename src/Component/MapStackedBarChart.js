@@ -182,7 +182,7 @@ class MapStackedBarChart extends Component {
 
       //Drawing Map
 
-      let geoData = GetMapShape(this.props.mark.map.data, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin, this.props.mark.map.shapeIdentifier);
+      let geoData = GetMapShape(this.props.mark.map.data, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin, this.props.mark.map.shapeIdentifier, this.props.mark.map.shapeKey);
 
       let shapes = geoData.map((d, i) => {
         let primitive = `primitive: map; vertices: ${d.vertices}; extrude: ${this.props.mark.map.style.extrusion.value}`;
@@ -197,7 +197,7 @@ class MapStackedBarChart extends Component {
 
       let marks;
 
-      switch (this.props.mark.type) {
+      switch (this.props.mark.bars.type) {
         case 'box':
           {
             marks = data.map((d, i) => {
@@ -214,7 +214,7 @@ class MapStackedBarChart extends Component {
             marks = data.map((d, i) => {
               let markTemp = d.map((d1, j) => {
                 let position = GetMapCoordinates(d1.data.longitude, d1.data.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
-                return <a-cylinder key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${this.props.mark.bars.style.fill.color[i]}`} height={`${yScale(d1[1] - d1[0])}`} radius={`${this.props.mark.bars.style.radius}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${position[0]} ${0 - position[1]} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2}`} />
+                return <a-cylinder key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${this.props.mark.bars.style.fill.color[i]}`} height={`${yScale(d1[1] - d1[0])}`} radius={`${this.props.mark.bars.style.radius}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${position[0]} ${0 - position[1]} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2}`} rotation={'90 0 0'} />
               })
               return markTemp
             });

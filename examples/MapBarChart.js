@@ -56,6 +56,7 @@ class App extends Component {
                   'data': mapData,
                   'projection': 'Mercator',
                   'shapeIdentifier': 'id',
+                  'shapeKey': 'countries',
                   'style': {
                     'extrusion': {
                       'value': 0.0000001,

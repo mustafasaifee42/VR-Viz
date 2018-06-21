@@ -169,7 +169,7 @@ class FlowMap extends Component {
 
       //Drawing Map
 
-      let geoData = GetMapShape(this.props.mark.map.data, this.props.mark.map.projection, this.props.mark.mapScale, this.props.mark.mapOrigin, this.props.mark.map.shapeIdentifier);
+      let geoData = GetMapShape(this.props.mark.map.data, this.props.mark.map.projection, this.props.mark.mapScale, this.props.mark.mapOrigin, this.props.mark.map.shapeIdentifier, this.props.mark.map.shapeKey);
 
       let shapes = geoData.map((d, i) => {
         console.log(d.vertices)

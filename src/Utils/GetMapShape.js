@@ -4,7 +4,7 @@ import * as d3GeoProjection from 'd3-geo-projection';
 import { csv } from 'd3-request';
 import * as d3 from 'd3';
 
-export default function (mapData, proj, scale, position, identifier) {
+export default function (mapData, proj, scale, position, identifier, shapeKey) {
   let projection;
   console.log(mapData)
   switch (proj) {
@@ -16,7 +16,7 @@ export default function (mapData, proj, scale, position, identifier) {
     case ('Natural Earth1'): projection = d3.geoNaturalEarth1(); break;
     default: projection = d3GeoProjection.geoRobinson(); break;
   }
-  let features = topojson.feature(mapData, mapData.objects.countries).features;
+  let features = topojson.feature(mapData, mapData.objects[shapeKey]).features;
   let countries = features.map((d, i) => d[identifier])
   let projection_scale = projection
     .scale(scale)

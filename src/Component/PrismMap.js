@@ -207,7 +207,7 @@ class PrismMap extends Component {
 
       //Adding marks
 
-      let geoData = GetMapShape(this.props.mark.data, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin, this.props.mark.shapeIdentifier);
+      let geoData = GetMapShape(this.props.mark.data, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin, this.props.mark.shapeIdentifier, this.props.mark.shapeKey);
 
       let shapes = geoData.map((d, i) => {
         let primitive = `primitive: map; vertices: ${d.vertices}; extrude: ${extrusionScale(data[d['code']]['value'])}`
