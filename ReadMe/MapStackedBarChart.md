@@ -12,6 +12,7 @@
     'data': mapData,
     'projection': 'Mercator',
     'shapeIdentifier': 'id',
+    'shapeKey': 'countries',
     'style': {
       'extrusion': {
         'value': 0.0000001,
@@ -55,9 +56,10 @@ mapScale|int|Defines scale of the map. __Required.__
 mapOrigin|array of 2 ints|Defines the origin for the planes. __Required.__ _Format example: [0,0]_
 rotation|string|Defines the rotation. __Required.__ _Format example: '-90 0 0'_
 map|object|Defines style of the maps. __Required__
-map.data|geoJson|Defines the geoJson file that would be used to draw the map. __Required.__
+map.data|TopoJson|Defines the TopoJson file that would be used to draw the map. __Required.__
 map.projection|string|Defines the projection of the map. __Not Required. Default value: Robinson__ _Available values: Mercator, Robinson, Gall-Peter, Winkel-Tripel, Equirectangular, Natural Earth1._
-map.shapeIdentifier|string|Defines the field in the geoJson file of the map which can be used to indentify the different geoJson shapes. __Required.__
+map.shapeIdentifier|string|Defines the field in the TopoJson file of the map which can be used to indentify the different TopoJson shapes. __Required.__
+map.shapeKey|string|Defines the field in the TopoJson which defines the array of the different TopoJson shapes. __Required.__
 map.style|object|Defines the style for the planes. __Required.__
 map.style.extrusion|object|Defines the height of the map. __Required.__
 map.style.extrusion.value|float|Defines the height of the map. __Required.__ _Value must always be greater that 0. It should be not be 0._
