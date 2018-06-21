@@ -23,7 +23,8 @@ class AxisBox extends Component {
         line__9={`start: 0, ${this.props.height}, 0; end: 0 ${this.props.height} ${this.props.depth}; color: ${this.props.color}`}
         line__10={`start: 0, ${this.props.height}, 0; end: ${this.props.width} ${this.props.height} 0; color: ${this.props.color}`}
         line__11={`start: 0, 0, ${this.props.depth}; end: 0 ${this.props.height} ${this.props.depth}; color: ${this.props.color}`}
-        line__12={`start: ${this.props.width}, 0, 0; end: ${this.props.width} ${this.props.height} 0; color: ${this.props.color}`} />
+        line__12={`start: ${this.props.width}, 0, 0; end: ${this.props.width} ${this.props.height} 0; color: ${this.props.color}`} 
+       />
     )
   }
 }
