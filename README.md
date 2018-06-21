@@ -196,7 +196,7 @@ objectFile|string|Path of the 3D object. __Required__
 id|string|ID of the 3D object which is later used to identify this object. There should not be any space or special character except _ and must not start with a number. __Required__
 
 ### Graph Object
-Graph object help the developer to  define the visualization. Although Different visualization requires the developer to define different parameter, their are some features which are same for most or all visualization type. This is a mandatory prop in the component. The prop must be defined as an array which gives flexibility to add multiple visualizations in the same scene to either design a dashboard in VR (just by changing the position of their origin) or overlap multiple visualization on each other.
+Graph object help the developer to  define the visualization. Although different visualizations requires the developer to define different parameters, there are some features which are same for most or all visualization type. This is a mandatory prop in the component. The prop must be defined as an array which gives flexibility to add multiple visualizations in the same scene to either design a dashboard in VR (just by changing the position of their origin) or overlap multiple visualization on each other.
 
 Main features / properties of the scene objects are:
 * type
@@ -273,10 +273,10 @@ rotation|string|Defines the rotation of the chart. __Not Required. Default value
 dimension|object|Defines the dimension of the graph. Keys in the object are `width`, `depth` and `height`. The value for all these keys are float type. __Required.__
 
 #### mark
-`mark` is used to define the style and encoding for graphics in different visualization. Different visualizations have different `mark` properties and key. These are discussed further in the documentation of individual visualization.
+`mark` is used to define the style and encoding for graphics in different visualizations. Different visualizations have different `mark` properties and key. These are discussed further in the documentation of individual visualizations.
 
 #### axis
-`axis` is used to define and draw the x, y and z axis. This object is not compulsary. If this object is not present none of the axes are drawn. 
+`axis` is used to define and draw the x, y and z axis. This object is not compulsory. If this object is not present none of the axes are drawn. 
 
 __Example__
 ```
