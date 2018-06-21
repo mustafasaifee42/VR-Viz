@@ -200,6 +200,46 @@ class WaterFallPlot extends Component {
           .domain(zDomain)
           .range(zRange);
 
+      let strokeColorScale, strokeColorDomain = this.props.mark.position.z.field, strokeColorRange;
+
+
+      if (this.props.mark.style.stroke.scaleType) {
+        let strokeColorRange = d3.schemeCategory10;
+        if (this.props.mark.style.stroke.color)
+          strokeColorRange = this.props.mark.style.stroke.color;
+        if (this.props.mark.style.stroke.scaleType === 'ordinal')
+          strokeColorScale = d3.scaleOrdinal()
+            .domain(strokeColorDomain)
+            .range(strokeColorRange)
+        else {
+          let domain_temp = zDomain.map((d, i) => parseFloat(d))
+          strokeColorDomain = [Math.min(...domain_temp), Math.max(...domain_temp)]
+          strokeColorScale = d3.scaleLinear()
+            .domain(strokeColorDomain)
+            .range(strokeColorRange)
+        }
+      }
+
+      let fillColorScale, fillColorDomain = this.props.mark.position.z.field, fillColorRange;
+
+
+      if (this.props.mark.style.fill.scaleType) {
+        let fillColorRange = d3.schemeCategory10;
+        if (this.props.mark.style.fill.color)
+          fillColorRange = this.props.mark.style.fill.color;
+        if (this.props.mark.style.fill.scaleType === 'ordinal')
+          fillColorScale = d3.scaleOrdinal()
+            .domain(fillColorDomain)
+            .range(fillColorRange)
+        else {
+          let domain_temp = zDomain.map((d, i) => parseFloat(d))
+          console.log(domain_temp);
+          fillColorDomain = [Math.min(...domain_temp), Math.max(...domain_temp)]
+          fillColorScale = d3.scaleLinear()
+            .domain(fillColorDomain)
+            .range(fillColorRange)
+        }
+      }
 
       //Axis
       let xAxis, yAxis, zAxis;
@@ -265,7 +305,14 @@ class WaterFallPlot extends Component {
             else
               path = path + ` ${xScale(this.state.data[j][this.props.mark.position.x.field])} ${yScale(this.state.data[j][d])} ${zScale(d)}`
           }
-          return <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${path}; color: ${this.props.mark.style.stroke.color}`}></a-entity>
+          switch (this.props.mark.style.stroke.scaleType) {
+            case 'ordinal':
+              return <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${path}; color: ${strokeColorScale(d)}`}></a-entity>
+            case 'linear':
+              return <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${path}; color: ${strokeColorScale(parseFloat(d))}`}></a-entity>
+            default:
+              return <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${path}; color: ${this.props.mark.style.stroke.color}`}></a-entity>
+          }
         })
       if (this.props.mark.style.fill)
         marks = zDomain.map((d, i) => {
@@ -278,8 +325,14 @@ class WaterFallPlot extends Component {
           }
           path = path + `, ${xScale(this.state.data[this.state.data.length - 1][this.props.mark.position.x.field])} 0`
           let primitive = `primitive: map; vertices: ${path}; extrude: 0.00000001`;
-          console.log(path)
-          return <a-entity key={i} position={`0 0 ${zScale(d)}`} geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; side: double; opacity:${this.props.mark.style.fill.opacity}`} />
+          switch (this.props.mark.style.fill.scaleType) {
+            case 'ordinal':
+              return <a-entity key={i} position={`0 0 ${zScale(d)}`} geometry={primitive} material={`color: ${fillColorScale(d)}; side: double; opacity:${this.props.mark.style.fill.opacity}`} />
+            case 'linear':
+              return <a-entity key={i} position={`0 0 ${zScale(d)}`} geometry={primitive} material={`color: ${fillColorScale(parseFloat(d))}; side: double; opacity:${this.props.mark.style.fill.opacity}`} />
+            default:
+              return <a-entity key={i} position={`0 0 ${zScale(d)}`} geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; side: double; opacity:${this.props.mark.style.fill.opacity}`} />
+          }
         })
       return (
         <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation}>
