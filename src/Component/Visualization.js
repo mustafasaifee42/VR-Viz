@@ -12,6 +12,7 @@ import ForceDirectedGraph from './ForceDirectedGraph.js';
 import PrismMap from './PrismMap.js';
 import MapBarChart from './MapBarChart.js';
 import MapStackedBarChart from './MapStackedBarChart.js';
+import MapContourLines from './MapContourLines.js';
 import FlowMap from './FlowMap.js';
 import ContourMap from './ContourMap.js';
 import ParametricCurvePlot from './ParametricCurvePlot.js';
@@ -21,7 +22,7 @@ import WaterFallPlot from './WaterFallPlot.js';
 import MeshPlot from './MeshPlot.js';
 import RectangleChart from './RectangleChart.js';
 import TimeSeries from './TimeSeries.js';
-import TimeBars from './TimeBars.js';
+import MapTimeBars from './MapTimeBars.js';
 import SpiralChart from './SpiralChart.js';
 
 
@@ -462,21 +463,34 @@ class Visualization extends Component {
               mark={d.mark}
             />)
         }
-        case 'TimeBars': {
+        case 'MapTimeBars': {
           if ((!d.data) || (!d.style) || (!d.mark))
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
           if (d.axis)
-            return (<TimeBars
+            return (<MapTimeBars
               data={d.data}
               style={d.style}
               mark={d.mark}
-              xAxis={d.axis['x-axis']}
-              yAxis={d.axis['y-axis']}
-              zAxis={d.axis['z-axis']}
               axisBox={d.axis['axis-box']}
             />)
           else
-            return (<TimeBars
+            return (<MapTimeBars
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+            />)
+        }
+        case 'MapContourLines': {
+          if ((!d.data) || (!d.style) || (!d.mark))
+            console.log(`Error: Some necessary attributes missing for ${d.type}`)
+          if (d.axis)
+            return (<MapContourLines
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+            />)
+          else
+            return (<MapContourLines
               data={d.data}
               style={d.style}
               mark={d.mark}

@@ -20,6 +20,7 @@ class MapBarChart extends Component {
     }
   }
 
+
   componentWillMount() {
     if (this.props.data) {
       switch (this.props.data.fileType) {
@@ -44,6 +45,10 @@ class MapBarChart extends Component {
               for (let i = 0; i < this.props.data.fieldDesc.length; i++) {
                 if (this.props.data.fieldDesc[i][1] === 'number')
                   d[this.props.data.fieldDesc[i][0]] = +d[this.props.data.fieldDesc[i][0]]
+                if ((this.props.data.fieldDesc[i][1] === 'date') || (this.props.data.fieldDesc[i][1] === 'time'))
+                  d[this.props.data.fieldDesc[i][0]] = moment(d[this.props.data.fieldDesc[i][0]], this.props.data.fieldDesc[i][2])['_d']
+                if (this.props.data.fieldDesc[i][1] === 'jsonObject')
+                  d[this.props.data.fieldDesc[i][0]] = JSON.parse(d[this.props.data.fieldDesc[i][0]])
               }
               return d
             })
@@ -94,6 +99,8 @@ class MapBarChart extends Component {
                   d[this.props.data.fieldDesc[i][0]] = +d[this.props.data.fieldDesc[i][0]]
                 if ((this.props.data.fieldDesc[i][1] === 'date') || (this.props.data.fieldDesc[i][1] === 'time'))
                   d[this.props.data.fieldDesc[i][0]] = moment(d[this.props.data.fieldDesc[i][0]], this.props.data.fieldDesc[i][2])['_d']
+                if (this.props.data.fieldDesc[i][1] === 'jsonObject')
+                  d[this.props.data.fieldDesc[i][0]] = JSON.parse(d[this.props.data.fieldDesc[i][0]])
               }
               return d
             })
@@ -185,10 +192,14 @@ class MapBarChart extends Component {
             marks = this.state.data.map((d, i) => {
 
               let position = GetMapCoordinates(d.longitude, d.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
+              let hght = heightScale(d[this.props.mark.bars.style.height.field])
+              if (hght == 0) {
+                hght = 0.000000000001;
+              }
               if (this.props.mark.bars.style.fill.scaleType) {
-                return <a-box key={i} color={`${colorScale(d[this.props.mark.bars.style.fill.field])}`} opacity={this.props.mark.bars.style.fill.opacity} height={`${this.props.mark.bars.style.depth}`} depth={`${heightScale(d[this.props.mark.bars.style.height.field])}`} width={`${this.props.mark.bars.style.width}`} position={`${position[0]} ${0 - position[1]} ${heightScale(d[this.props.mark.bars.style.height.field]) / 2}`} />
+                return <a-box key={i} color={`${colorScale(d[this.props.mark.bars.style.fill.field])}`} opacity={this.props.mark.bars.style.fill.opacity} height={`${this.props.mark.bars.style.depth}`} depth={`${hght}`} width={`${this.props.mark.bars.style.width}`} position={`${position[0]} ${0 - position[1]} ${hght / 2}`} />
               } else
-                return <a-box key={i} color={`${this.props.mark.bars.style.fill.color}`} opacity={this.props.mark.bars.style.fill.opacity} height={`${this.props.mark.bars.style.depth}`} depth={`${heightScale(d[this.props.mark.bars.style.height.field])}`} width={`${this.props.mark.bars.style.width}`} position={`${position[0]} ${0 - position[1]} ${heightScale(d[this.props.mark.bars.style.height.field]) / 2}`} />
+                return <a-box key={i} color={`${this.props.mark.bars.style.fill.color}`} opacity={this.props.mark.bars.style.fill.opacity} height={`${this.props.mark.bars.style.depth}`} depth={`${hght}`} width={`${this.props.mark.bars.style.width}`} position={`${position[0]} ${0 - position[1]} ${hght / 2}`} />
             });
             break;
           }
@@ -196,10 +207,14 @@ class MapBarChart extends Component {
           {
             marks = this.state.data.map((d, i) => {
               let position = GetMapCoordinates(d.longitude, d.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
+              let hght = heightScale(d[this.props.mark.bars.style.height.field])
+              if (hght == 0) {
+                hght = 0.000000000001;
+              }
               if (this.props.mark.bars.style.fill.scaleType)
-                return <a-cylinder key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${colorScale(d[this.props.mark.bars.style.fill.field])}`} height={`${heightScale(d[this.props.mark.bars.style.height.field])}`} radius={`${this.props.mark.bars.style.radius}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${position[0]} ${0 - position[1]} ${heightScale(d[this.props.mark.bars.style.height.field]) / 2}`} rotation={'90 0 0'} />
+                return <a-cylinder key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${colorScale(d[this.props.mark.bars.style.fill.field])}`} height={`${hght}`} radius={`${this.props.mark.bars.style.radius}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${position[0]} ${0 - position[1]} ${hght / 2}`} rotation={'90 0 0'} />
               else
-                return <a-cylinder key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${this.props.mark.bars.style.fill.color}`} height={`${heightScale(d[this.props.mark.bars.style.height.field])}`} radius={`${this.props.mark.bars.style.radius}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${position[0]} ${0 - position[1]} ${heightScale(d[this.props.mark.bars.style.height.field]) / 2}`} rotation={'90 0 0'} />
+                return <a-cylinder key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${this.props.mark.bars.style.fill.color}`} height={`${hght}`} radius={`${this.props.mark.bars.style.radius}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${position[0]} ${0 - position[1]} ${hght / 2}`} rotation={'90 0 0'} />
             });
             break;
           }
@@ -207,10 +222,14 @@ class MapBarChart extends Component {
           {
             marks = this.state.data.map((d, i) => {
               let position = GetMapCoordinates(d.longitude, d.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
+              let hght = heightScale(d[this.props.mark.bars.style.height.field])
+              if (hght == 0) {
+                hght = 0.000000000001;
+              }
               if (this.props.mark.bars.style.fill.scaleType)
-                return <a-cone key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${colorScale(d[this.props.mark.bars.style.fill.field])}`} height={`${heightScale(d[this.props.mark.bars.style.height.field])}`} radius-bottom={`${this.props.mark.bars.style.radiusBottom}`} radius-top={`${this.props.mark.bars.style.radiusTop}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${position[0]} ${0 - position[1]} ${heightScale(d[this.props.mark.bars.style.height.field]) / 2}`} rotation={'90 0 0'} />
+                return <a-cone key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${colorScale(d[this.props.mark.bars.style.fill.field])}`} height={`${hght}`} radius-bottom={`${this.props.mark.bars.style.radiusBottom}`} radius-top={`${this.props.mark.bars.style.radiusTop}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${position[0]} ${0 - position[1]} ${hght / 2}`} rotation={'90 0 0'} />
               else
-                return <a-cone key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${this.props.mark.bars.style.fill.color}`} height={`${heightScale(d[this.props.mark.bars.style.height.field])}`} radius-bottom={`${this.props.mark.bars.style.radiusBottom}`} radius-top={`${this.props.mark.bars.style.radiusTop}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${position[0]} ${0 - position[1]} ${heightScale(d[this.props.mark.bars.style.height.field]) / 2}`} rotation={'90 0 0'} />
+                return <a-cone key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${this.props.mark.bars.style.fill.color}`} height={`${hght}`} radius-bottom={`${this.props.mark.bars.style.radiusBottom}`} radius-top={`${this.props.mark.bars.style.radiusTop}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${position[0]} ${0 - position[1]} ${hght / 2}`} rotation={'90 0 0'} />
             });
             break;
           }
@@ -218,10 +237,14 @@ class MapBarChart extends Component {
           {
             marks = this.state.data.map((d, i) => {
               let position = GetMapCoordinates(d.longitude, d.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
+              let hght = heightScale(d[this.props.mark.bars.style.height.field])
+              if (hght == 0) {
+                hght = 0.000000000001;
+              }
               if (this.props.mark.bars.style.fill.scaleType)
-                return <a-box key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${colorScale(d[this.props.mark.bars.style.fill.field])}`} height={`${this.props.mark.bars.style.depth}`} depth={`${heightScale(d[this.props.mark.bars.style.height.field])}`} width={`${this.props.mark.bars.style.width}`} position={`${position[0]} ${0 - position[1]} ${heightScale(d[this.props.mark.bars.style.height.field]) / 2}`} />
+                return <a-box key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${colorScale(d[this.props.mark.bars.style.fill.field])}`} height={`${this.props.mark.bars.style.depth}`} depth={`${hght}`} width={`${this.props.mark.bars.style.width}`} position={`${position[0]} ${0 - position[1]} ${hght / 2}`} />
               else
-                return <a-box key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${this.props.mark.bars.style.fill.color}`} height={`${this.props.mark.bars.style.depth}`} depth={`${heightScale(d[this.props.mark.bars.style.height.field])}`} width={`${this.props.mark.bars.style.width}`} position={`${position[0]} ${0 - position[1]} ${heightScale(d[this.props.mark.bars.style.height.field]) / 2}`} />
+                return <a-box key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${this.props.mark.bars.style.fill.color}`} height={`${this.props.mark.bars.style.depth}`} depth={`${hght}`} width={`${this.props.mark.bars.style.width}`} position={`${position[0]} ${0 - position[1]} ${hght / 2}`} />
             });
             break;
           }

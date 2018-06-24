@@ -225,6 +225,8 @@ type is used to define what kind of visualization is needed. The availabe values
 * `PrismMap` for 3D Prism Map
 * `MapBarGraph` for 3D Map Bar Graph
 * `MapStackedBarGraph` for 3D Map Stacked Bar Graph
+* `MapTimeBars` for Time Series on Map
+* `MapContourLines` for 3D Map with Iso Line
 * `FlowMap` for 3D Flow Map
 * `TreeMap` for 3D TreeMap
 * `SpiralPlot` for 3D Spiral Plot
@@ -248,6 +250,8 @@ __Supported Visualizations__
 * [3D Prism Map](/ReadMe/PrismMap.md)
 * [3D Map Bar Graph](/ReadMe/MapBarChart.md)
 * [3D Map Stacked Bar Graph](/ReadMe/MapStackedBarChart.md)
+* [MapTimeBars](/ReadMe/MapTimeBars.md)
+* [MapContourLines](/ReadMe/MapContourLines.md)
 * [3D Flow Map](/ReadMe/FlowMap.md)
 * [3D TreeMap](/ReadMe/TreeMap.md)
 * [3D Spiral Plot](/ReadMe/SpiralPlot.md)

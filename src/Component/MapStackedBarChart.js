@@ -20,6 +20,7 @@ class MapStackedBarChart extends Component {
     }
   }
 
+
   componentWillMount() {
     if (this.props.data) {
       switch (this.props.data.fileType) {
@@ -44,6 +45,10 @@ class MapStackedBarChart extends Component {
               for (let i = 0; i < this.props.data.fieldDesc.length; i++) {
                 if (this.props.data.fieldDesc[i][1] === 'number')
                   d[this.props.data.fieldDesc[i][0]] = +d[this.props.data.fieldDesc[i][0]]
+                if ((this.props.data.fieldDesc[i][1] === 'date') || (this.props.data.fieldDesc[i][1] === 'time'))
+                  d[this.props.data.fieldDesc[i][0]] = moment(d[this.props.data.fieldDesc[i][0]], this.props.data.fieldDesc[i][2])['_d']
+                if (this.props.data.fieldDesc[i][1] === 'jsonObject')
+                  d[this.props.data.fieldDesc[i][0]] = JSON.parse(d[this.props.data.fieldDesc[i][0]])
               }
               return d
             })
@@ -94,6 +99,8 @@ class MapStackedBarChart extends Component {
                   d[this.props.data.fieldDesc[i][0]] = +d[this.props.data.fieldDesc[i][0]]
                 if ((this.props.data.fieldDesc[i][1] === 'date') || (this.props.data.fieldDesc[i][1] === 'time'))
                   d[this.props.data.fieldDesc[i][0]] = moment(d[this.props.data.fieldDesc[i][0]], this.props.data.fieldDesc[i][2])['_d']
+                if (this.props.data.fieldDesc[i][1] === 'jsonObject')
+                  d[this.props.data.fieldDesc[i][0]] = JSON.parse(d[this.props.data.fieldDesc[i][0]])
               }
               return d
             })
@@ -203,7 +210,11 @@ class MapStackedBarChart extends Component {
             marks = data.map((d, i) => {
               let markTemp = d.map((d1, j) => {
                 let position = GetMapCoordinates(d1.data.longitude, d1.data.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
-                return <a-box key={i} color={`${this.props.mark.bars.style.fill.color[i]}`} opacity={this.props.mark.bars.style.fill.opacity} height={`${this.props.mark.bars.style.depth}`} depth={`${yScale(d1[1] - d1[0])}`} width={`${this.props.mark.bars.style.width}`} position={`${position[0]} ${0 - position[1]} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2}`} />
+                let hght = yScale(d1[1] - d1[0]);
+                if (hght == 0) {
+                  hght = 0.000000000001;
+                }
+                return <a-box key={i} color={`${this.props.mark.bars.style.fill.color[i]}`} opacity={this.props.mark.bars.style.fill.opacity} height={`${this.props.mark.bars.style.depth}`} depth={`${hght}`} width={`${this.props.mark.bars.style.width}`} position={`${position[0]} ${0 - position[1]} ${yScale(d1[0]) + hght / 2}`} />
               })
               return markTemp
             });
@@ -214,7 +225,11 @@ class MapStackedBarChart extends Component {
             marks = data.map((d, i) => {
               let markTemp = d.map((d1, j) => {
                 let position = GetMapCoordinates(d1.data.longitude, d1.data.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
-                return <a-cylinder key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${this.props.mark.bars.style.fill.color[i]}`} height={`${yScale(d1[1] - d1[0])}`} radius={`${this.props.mark.bars.style.radius}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${position[0]} ${0 - position[1]} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2}`} rotation={'90 0 0'} />
+                let hght = yScale(d1[1] - d1[0]);
+                if (hght == 0) {
+                  hght = 0.000000000001;
+                }
+                return <a-cylinder key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${this.props.mark.bars.style.fill.color[i]}`} height={`${hght}`} radius={`${this.props.mark.bars.style.radius}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${position[0]} ${0 - position[1]} ${yScale(d1[0]) + hght / 2}`} rotation={'90 0 0'} />
               })
               return markTemp
             });
@@ -225,7 +240,11 @@ class MapStackedBarChart extends Component {
             marks = data.map((d, i) => {
               let markTemp = d.map((d1, j) => {
                 let position = GetMapCoordinates(d1.data.longitude, d1.data.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
-                return <a-box key={i} color={`${this.props.mark.bars.style.fill.color[i]}`} opacity={this.props.mark.bars.style.fill.opacity} height={`${this.props.mark.bars.style.depth}`} depth={`${yScale(d1[1] - d1[0])}`} width={`${this.props.mark.bars.style.width}`} position={`${position[0]} ${0 - position[1]} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2}`} />
+                let hght = yScale(d1[1] - d1[0]);
+                if (hght == 0) {
+                  hght = 0.000000000001;
+                }
+                return <a-box key={i} color={`${this.props.mark.bars.style.fill.color[i]}`} opacity={this.props.mark.bars.style.fill.opacity} height={`${this.props.mark.bars.style.depth}`} depth={`${hght}`} width={`${this.props.mark.bars.style.width}`} position={`${position[0]} ${0 - position[1]} ${yScale(d1[0]) + hght / 2}`} />
               })
               return markTemp
             });

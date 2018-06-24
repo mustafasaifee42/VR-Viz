@@ -53,6 +53,7 @@ class PrismMap extends Component {
     }
   }
 
+
   componentWillMount() {
     if (this.props.data) {
       switch (this.props.data.fileType) {
@@ -79,6 +80,8 @@ class PrismMap extends Component {
                   d[this.props.data.fieldDesc[i][0]] = +d[this.props.data.fieldDesc[i][0]]
                 if ((this.props.data.fieldDesc[i][1] === 'date') || (this.props.data.fieldDesc[i][1] === 'time'))
                   d[this.props.data.fieldDesc[i][0]] = moment(d[this.props.data.fieldDesc[i][0]], this.props.data.fieldDesc[i][2])['_d']
+                if (this.props.data.fieldDesc[i][1] === 'jsonObject')
+                  d[this.props.data.fieldDesc[i][0]] = JSON.parse(d[this.props.data.fieldDesc[i][0]])
               }
               return d
             })
@@ -127,6 +130,10 @@ class PrismMap extends Component {
               for (let i = 0; i < this.props.data.fieldDesc.length; i++) {
                 if (this.props.data.fieldDesc[i][1] === 'number')
                   d[this.props.data.fieldDesc[i][0]] = +d[this.props.data.fieldDesc[i][0]]
+                if ((this.props.data.fieldDesc[i][1] === 'date') || (this.props.data.fieldDesc[i][1] === 'time'))
+                  d[this.props.data.fieldDesc[i][0]] = moment(d[this.props.data.fieldDesc[i][0]], this.props.data.fieldDesc[i][2])['_d']
+                if (this.props.data.fieldDesc[i][1] === 'jsonObject')
+                  d[this.props.data.fieldDesc[i][0]] = JSON.parse(d[this.props.data.fieldDesc[i][0]])
               }
               return d
             })
@@ -210,7 +217,10 @@ class PrismMap extends Component {
       let geoData = GetMapShape(this.props.mark.data, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin, this.props.mark.shapeIdentifier, this.props.mark.shapeKey);
 
       let shapes = geoData.map((d, i) => {
-        let primitive = `primitive: map; vertices: ${d.vertices}; extrude: ${extrusionScale(data[d['code']]['value'])}`
+        let extrusionHeight = extrusionScale(data[d['code']]['value'])
+        if (extrusionHeight == 0)
+          extrusionHeight = 0.000000000001;
+        let primitive = `primitive: map; vertices: ${d.vertices}; extrude: ${extrusionHeight}`
         if (this.props.mark.style.fill.scaleType)
           return (<a-entity geometry={primitive} material={`color: ${colorScale(data[d['code']]['colorField'])}; metalness: 0.2; opacity:${this.props.mark.style.fill.opacity}`} />)
         else

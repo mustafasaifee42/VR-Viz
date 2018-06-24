@@ -19,6 +19,7 @@ class StackedBarGraph extends Component {
     }
   }
 
+
   componentWillMount() {
     if (this.props.data) {
       switch (this.props.data.fileType) {
@@ -45,6 +46,8 @@ class StackedBarGraph extends Component {
                   d[this.props.data.fieldDesc[i][0]] = +d[this.props.data.fieldDesc[i][0]]
                 if ((this.props.data.fieldDesc[i][1] === 'date') || (this.props.data.fieldDesc[i][1] === 'time'))
                   d[this.props.data.fieldDesc[i][0]] = moment(d[this.props.data.fieldDesc[i][0]], this.props.data.fieldDesc[i][2])['_d']
+                if (this.props.data.fieldDesc[i][1] === 'jsonObject')
+                  d[this.props.data.fieldDesc[i][0]] = JSON.parse(d[this.props.data.fieldDesc[i][0]])
               }
               return d
             })
@@ -93,6 +96,10 @@ class StackedBarGraph extends Component {
               for (let i = 0; i < this.props.data.fieldDesc.length; i++) {
                 if (this.props.data.fieldDesc[i][1] === 'number')
                   d[this.props.data.fieldDesc[i][0]] = +d[this.props.data.fieldDesc[i][0]]
+                if ((this.props.data.fieldDesc[i][1] === 'date') || (this.props.data.fieldDesc[i][1] === 'time'))
+                  d[this.props.data.fieldDesc[i][0]] = moment(d[this.props.data.fieldDesc[i][0]], this.props.data.fieldDesc[i][2])['_d']
+                if (this.props.data.fieldDesc[i][1] === 'jsonObject')
+                  d[this.props.data.fieldDesc[i][0]] = JSON.parse(d[this.props.data.fieldDesc[i][0]])
               }
               return d
             })
@@ -148,7 +155,7 @@ class StackedBarGraph extends Component {
       else
         xDomain = this.props.mark.position.x.domain
 
-      console.log(d3.min(dataset, d => d[1]))
+
       if (!this.props.mark.style.height.domain)
         yDomain = [0, d3.max(dataset, d => d[1])]
       else
@@ -286,7 +293,11 @@ class StackedBarGraph extends Component {
           {
             marks = data.map((d, i) => {
               let markTemp = d.map((d1, j) => {
-                return <a-box key={i} color={`${this.props.mark.style.fill.color[i]}`} opacity={this.props.mark.style.fill.opacity} depth={`${depth}`} height={`${yScale(d1[1] - d1[0])}`} width={`${width}`} position={`${xScale(d1.data[this.props.mark.position.x.field]) + width / 2} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2} ${zScale(d1.data[this.props.mark.position.z.field]) + depth / 2}`} />
+                let hght = yScale(d1[1] - d1[0]);
+                if (hght == 0) {
+                  hght = 0.000000000001;
+                }
+                return <a-box key={i} color={`${this.props.mark.style.fill.color[i]}`} opacity={this.props.mark.style.fill.opacity} depth={`${depth}`} height={`${hght}`} width={`${width}`} position={`${xScale(d1.data[this.props.mark.position.x.field]) + width / 2} ${yScale(d1[0]) + hght / 2} ${zScale(d1.data[this.props.mark.position.z.field]) + depth / 2}`} />
               })
               return markTemp
             });
@@ -296,7 +307,11 @@ class StackedBarGraph extends Component {
           {
             marks = data.map((d, i) => {
               let markTemp = d.map((d1, j) => {
-                return <a-cylinder key={i} opacity={this.props.mark.style.fill.opacity} color={`${this.props.mark.style.fill.color[i]}`} height={`${yScale(d1[1] - d1[0])}`} radius={`${radius}`} segments-radial={`${this.props.mark.style.segments}`} position={`${xScale(d1.data[this.props.mark.position.x.field]) + radius} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2} ${zScale(d1.data[this.props.mark.position.z.field]) + radius}`} />
+                let hght = yScale(d1[1] - d1[0]);
+                if (hght == 0) {
+                  hght = 0.000000000001;
+                }
+                return <a-cylinder key={i} opacity={this.props.mark.style.fill.opacity} color={`${this.props.mark.style.fill.color[i]}`} height={`${hght}`} radius={`${radius}`} segments-radial={`${this.props.mark.style.segments}`} position={`${xScale(d1.data[this.props.mark.position.x.field]) + radius} ${yScale(d1[0]) + hght / 2} ${zScale(d1.data[this.props.mark.position.z.field]) + radius}`} />
               })
               return markTemp
             });
@@ -306,7 +321,11 @@ class StackedBarGraph extends Component {
           {
             marks = data.map((d, i) => {
               let markTemp = d.map((d1, j) => {
-                return <a-box key={i} color={`${this.props.mark.style.fill.color[i]}`} opacity={this.props.mark.style.fill.opacity} depth={`${depth}`} height={`${yScale(d1[1] - d1[0])}`} width={`${width}`} position={`${xScale(d1.data[this.props.mark.position.x.field]) + width / 2} ${yScale(d1[0]) + yScale(d1[1] - d1[0]) / 2} ${zScale(d1.data[this.props.mark.position.z.field]) + depth / 2}`} />
+                let hght = yScale(d1[1] - d1[0]);
+                if (hght == 0) {
+                  hght = 0.000000000001;
+                }
+                return <a-box key={i} color={`${this.props.mark.style.fill.color[i]}`} opacity={this.props.mark.style.fill.opacity} depth={`${depth}`} height={`${hght}`} width={`${width}`} position={`${xScale(d1.data[this.props.mark.position.x.field]) + width / 2} ${yScale(d1[0]) + hght / 2} ${zScale(d1.data[this.props.mark.position.z.field]) + depth / 2}`} />
               })
               return markTemp
             });
