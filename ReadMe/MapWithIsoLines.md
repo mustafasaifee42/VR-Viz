@@ -1,4 +1,4 @@
-# MapTimeBars Component
+# MapIsoLines Component
 
 ![MapIsoLines](../imgs/MapIsoLines.png)
 
