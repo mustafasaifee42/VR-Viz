@@ -5,8 +5,7 @@ import * as moment from 'moment';
 
 import GetDomain from '../Utils/GetDomain.js';
 import ReadPLY from '../Utils/ReadPLY.js';
-import Axis from './Axis.js';
-import AxisBox from './AxisBox.js';
+import Shape from './Shape.js';
 import GetMapShape from '../Utils/GetMapShape';
 import GetMapCoordinates from '../Utils/GetMapCoordinates';
 
@@ -195,58 +194,43 @@ class MapTimeBars extends Component {
 
       //Adding marks
 
-      let marks;
 
+      let marks = this.state.data.map((d, i) => {
+        let markTemp = this.props.mark.timeLayers.position.y.domain.map((d1, j) => {
+          let color = this.props.mark.timeLayers.style.fill.color
+          if (this.props.mark.timeLayers.style.fill.scaleType)
+            color = colorScale(d[d1])
+          let coordinates = GetMapCoordinates(d[this.props.mark.timeLayers.position.x.field], d[this.props.mark.timeLayers.position.z.field], this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
+          let position = `${coordinates[0]} ${0 - coordinates[1]} ${(j + 1 / 2) * this.props.mark.timeLayers.style.height + j * this.props.mark.timeLayers.style.padding}`
+          let radius = radiusScale(d[d1])
 
-
-      switch (this.props.mark.timeLayers.type) {
-        case 'box':
-          {
-            marks = this.state.data.map((d, i) => {
-              let markTemp = this.props.mark.timeLayers.position.y.domain.map((d1, j) => {
-                let position = GetMapCoordinates(d[this.props.mark.timeLayers.position.x.field], d[this.props.mark.timeLayers.position.z.field], this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
-                if (this.props.mark.timeLayers.style.fill.scaleType)
-                  return <a-box key={i} color={`${colorScale(d[d1])}`} opacity={this.props.mark.timeLayers.style.fill.opacity} height={`${radiusScale(d[d1])}`} depth={`${this.props.mark.timeLayers.style.height}`} width={`${radiusScale(d[d1])}`} position={`${position[0]} ${0 - position[1]} ${(j + 1 / 2) * this.props.mark.timeLayers.style.height + j * this.props.mark.timeLayers.style.padding}`} />
-                else
-                  return <a-box key={i} color={`${this.props.mark.timeLayers.style.fill.color}`} opacity={this.props.mark.timeLayers.style.fill.opacity} height={`${radiusScale(d[d1])}`} depth={`${this.props.mark.timeLayers.style.height}`} width={`${radiusScale(d[d1])}`} position={`${position[0]} ${0 - position[1]} ${(j + 1 / 2) * this.props.mark.timeLayers.style.height + j * this.props.mark.timeLayers.style.padding}`} />
-              })
-              return markTemp
-            });
-            break;
+          let hover, hoverText
+          if (this.props.mark.timeLayers.mouseOver) {
+            if (this.props.mark.timeLayers.mouseOver.label)
+              hoverText = this.props.mark.timeLayers.mouseOver.label.value(d).replace('Label', `${d1}`).replace('LabelValue', `${d[d1]}`)
           }
-        case 'cylinder':
-          {
-            marks = this.state.data.map((d, i) => {
-              console.log(d)
-              let markTemp = this.props.mark.timeLayers.position.y.domain.map((d1, j) => {
-                let position = GetMapCoordinates(d[this.props.mark.timeLayers.position.x.field], d[this.props.mark.timeLayers.position.z.field], this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
-                if (this.props.mark.timeLayers.style.fill.scaleType)
-                  return <a-cylinder key={i} opacity={this.props.mark.timeLayers.style.fill.opacity} color={`${colorScale(d[d1])}`} height={`${this.props.mark.timeLayers.style.height}`} radius={`${radiusScale(d[d1])}`} segments-radial={`${this.props.mark.timeLayers.style.segments}`} position={`${position[0]} ${0 - position[1]} ${(j + 1 / 2) * this.props.mark.timeLayers.style.height + j * this.props.mark.timeLayers.style.padding}`} rotation={'90 0 0'} />
-                else
-                  return <a-cylinder key={i} opacity={this.props.mark.timeLayers.style.fill.opacity} color={`${this.props.mark.timeLayers.style.fill.color}`} height={`${this.props.mark.timeLayers.style.height}`} radius={`${radiusScale(d[d1])}`} segments-radial={`${this.props.mark.timeLayers.style.segments}`} position={`${position[0]} ${0 - position[1]} ${(j + 1 / 2) * this.props.mark.timeLayers.style.height + j * this.props.mark.timeLayers.style.padding}`} rotation={'90 0 0'} />
-              })
-              return markTemp
-            });
-            break;
-          }
-        default:
-          {
-            marks = this.state.data.map((d, i) => {
-              let markTemp = this.props.mark.timeLayers.position.y.domain.map((d1, j) => {
-                let position = GetMapCoordinates(d[this.props.mark.timeLayers.position.x.field], d[this.props.mark.timeLayers.position.z.field], this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
-                if (this.props.mark.timeLayers.style.fill.scaleType)
-                  return <a-box key={i} color={`${colorScale(d[d1])}`} opacity={this.props.mark.timeLayers.style.fill.opacity} height={`${radiusScale(d[d1])}`} depth={`${this.props.mark.timeLayers.style.height}`} width={`${radiusScale(d[d1])}`} position={`${position[0]} ${0 - position[1]} ${(j + 1 / 2) * this.props.mark.timeLayers.style.height + j * this.props.mark.timeLayers.style.padding}`} />
-                else
-                  return <a-box key={i} color={`${this.props.mark.timeLayers.style.fill.color}`} opacity={this.props.mark.timeLayers.style.fill.opacity} height={`${radiusScale(d[d1])}`} depth={`${this.props.mark.timeLayers.style.height}`} width={`${radiusScale(d[d1])}`} position={`${position[0]} ${0 - position[1]} ${(j + 1 / 2) * this.props.mark.timeLayers.style.height + j * this.props.mark.timeLayers.style.padding}`} />
-              })
-              return markTemp
-            });
-            break;
-          }
-      }
+          return <Shape
+            key={i}
+            type={this.props.mark.timeLayers.type}
+            color={`${color}`}
+            opacity={this.props.mark.timeLayers.style.fill.opacity}
+            depth={`${radius}`}
+            height={`${this.props.mark.timeLayers.style.height}`}
+            width={`${radius}`}
+            radius={`${radius}`}
+            segments={`${this.props.mark.timeLayers.style.segments}`}
+            position={position}
+            hover={this.props.mark.timeLayers.mouseOver}
+            hoverText={hoverText}
+            graphID={this.props.index}
+            rotation={'90 0 0'}
+          />
+        });
+        return markTemp
+      })
 
       return (
-        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.mark.rotation}>
+        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.mark.rotation} id={this.props.index}>
           {shapes}
           {border}
           {marks}

@@ -5,6 +5,7 @@ import * as moment from 'moment';
 
 import GetDomain from '../Utils/GetDomain.js';
 import ReadPLY from '../Utils/ReadPLY.js';
+import Shape from './Shape.js';
 
 import { csv } from 'd3-request';
 import { json } from 'd3-request';
@@ -158,28 +159,47 @@ class PointCloud extends Component {
 
 
       //Adding marks
-      let marks
-      if ((!this.state.data[0].r) || (!this.state.data[0].g) || (!this.state.data[0].r)) {
-        if (this.props.mark.type === 'sphere') {
-          if (!this.props.mark.style.fill.scaleType)
-            marks = this.state.data.map((d, i) => <a-sphere key={i} opacity={this.props.mark.style.fill.opacity} color={`${this.props.mark.style.fill.color}`} radius={this.props.mark.style.radius} position={`${d.x * this.props.style.objectScale} ${d.y * this.props.style.objectScale} ${d.z * this.props.style.objectScale}`} />)
-          else
-            marks = this.state.data.map((d, i) => <a-sphere key={i} opacity={this.props.mark.style.fill.opacity} color={`${colorScale(d[this.props.mark.style.fill.field])}`} radius={this.props.mark.style.radius} position={`${d.x * this.props.style.objectScale} ${d.y * this.props.style.objectScale} ${d.z * this.props.style.objectScale}`} />)
-        } else {
-          if (!this.props.mark.style.fill.scaleType)
-            marks = this.state.data.map((d, i) => <a-box key={i} opacity={this.props.mark.style.fill.opacity} color={`${this.props.mark.style.fill.color}`} width={this.props.mark.style.radius} height={this.props.mark.style.radius} depth={this.props.mark.style.radius} position={`${d.x * this.props.style.objectScale} ${d.y * this.props.style.objectScale} ${d.z * this.props.style.objectScale}`} />)
-          else
-            marks = this.state.data.map((d, i) => <a-box key={i} opacity={this.props.mark.style.fill.opacity} color={`${colorScale(d[this.props.mark.style.fill.field])}`} width={this.props.mark.style.radius} height={this.props.mark.style.radius} depth={this.props.mark.style.radius} position={`${d.x * this.props.style.objectScale} ${d.y * this.props.style.objectScale} ${d.z * this.props.style.objectScale}`} />)
+      let marks = this.state.data.map((d, i) => {
+        let color = this.props.mark.style.fill.color
+        if ((!d.r) || (!d.g) || (!d.b)) {
+          if (this.props.mark.style.fill.scaleType)
+            color = colorScale(d[this.props.mark.style.fill.field])
         }
-      } else {
-        if (this.props.mark.type === 'sphere')
-          marks = this.state.data.map((d, i) => <a-sphere key={i} opacity={this.props.mark.style.fill.opacity} color={`rgb(${d.r},${d.g},${d.b})`} radius={this.props.mark.style.radius} position={`${d.x * this.props.style.objectScale} ${d.y * this.props.style.objectScale} ${d.z * this.props.style.objectScale}`} />)
         else
-          marks = this.state.data.map((d, i) => <a-box key={i} opacity={this.props.mark.style.fill.opacity} color={`rgb(${d.r},${d.g},${d.b})`} width={this.props.mark.style.radius} height={this.props.mark.style.radius} depth={this.props.mark.style.radius} position={`${d.x * this.props.style.objectScale} ${d.y * this.props.style.objectScale} ${d.z * this.props.style.objectScale}`} />)
-      }
+          color = `rgb(${d.r},${d.g},${d.b})`
+
+        let position = `${d.x * this.props.style.objectScale} ${d.y * this.props.style.objectScale} ${d.z * this.props.style.objectScale}`
+        let shape;
+        if (this.props.mark.type)
+          shape = this.props.mark.type
+        else
+          shape = 'sphere'
+
+        let radius = this.props.mark.style.radius;
+
+        let hover, hoverText
+        if (this.props.mark.mouseOver) {
+          if (this.props.mark.mouseOver.label)
+            hoverText = this.props.mark.mouseOver.label.value(d)
+        }
+        return <Shape
+          key={i}
+          type={shape}
+          color={`${color}`}
+          opacity={this.props.mark.style.fill.opacity}
+          depth={`${radius}`}
+          height={`${radius}`}
+          width={`${radius}`}
+          radius={`${radius}`}
+          position={position}
+          hover={this.props.mark.mouseOver}
+          hoverText={hoverText}
+          graphID={this.props.index}
+        />
+      });
 
       return (
-        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation}>
+        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
           {marks}
         </a-entity>
       )

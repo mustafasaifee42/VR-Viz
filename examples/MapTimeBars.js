@@ -11,7 +11,7 @@ class App extends Component {
           {
             'sky': {
               'style': {
-                'color': '#ccc',
+                'color': '#333',
                 'texture': false,
               }
             },
@@ -31,35 +31,19 @@ class App extends Component {
               }
             ],
             'camera': {
-              'position': '0 0 10',
+              'position': '0 0 0',
               'rotation': '0 0 0',
             },
-            'floor': {
-              'style': {
-                'color': '#ccc',
-                'texture': false,
-                'width': 100,
-                'depth': 100,
-              }
-            },
-            '3D-objects': [
-              {
-                'objectFile': '/path/to/tree.obj',
-                'materialFile': '/path/to/tree.mtl',
-                'objectId': 'tree-obj',
-                'materialId': 'tree-mtl',
-              },
-            ]
           }
         }
         graph={
           [
             {
-              'type': 'MapStackedBarChart',
+              'type': 'MapTimeBars',
               'data': {
-                'dataFile': "data/mapStackedBarChart.csv",
+                'dataFile': "data/mapTimeBars.csv",
                 'fileType': 'csv',
-                'fieldDesc': [['latitude', 'number'], ['longitude', 'number'], ['value', 'number'], ['value1', 'number']]
+                'fieldDesc': [['latitude', 'number'], ['longitude', 'number'], ['2000', 'number'], ['2001', 'number'], ['2002', 'number'], ['2003', 'number'], ['2004', 'number'], ['2005', 'number'], ['2006', 'number'], ['2007', 'number'], ['2008', 'number'], ['2009', 'number'], ['2010', 'number']]
               },
               'style': {
                 'origin': [0, 0, 0],
@@ -67,7 +51,7 @@ class App extends Component {
               'mark': {
                 'mapScale': 20,
                 'mapOrigin': [5, 5],
-                'rotation': '-90 0 0',
+                'rotation': '-45 0 0',
                 'map': {
                   'data': mapData,
                   'projection': 'Mercator',
@@ -78,48 +62,41 @@ class App extends Component {
                       'value': 0.0000001,
                     },
                     'fill': {
+                      'color': '#111',
                       'opacity': 1,
-                      'color': 'red',
                     },
                     'stroke': {
                       'width': 1,
-                      'color': 'black',
+                      'color': '#555',
                     },
                   },
                 },
-                'bars': {
-                  'type': 'box',
-                  'style': {
-                    'depth': 0.2,
-                    'width': 0.2,
-                    'height': {
-                      'scaleType': 'linear',
-                      'field': ['value', 'value1'],
-                      'value': [0, 5],
+                'timeLayers': {
+                  'type': 'cylinder',
+                  'position': {
+                    'x': {
+                      'field': 'longitude',
                     },
-                    'fill': {
-                      'opacity': 0.9,
-                      'scaleType': 'ordinal',
-                      'color': ['green', 'blue'],
-                      'field': ['value', 'value1'],
+                    'y': {
+                      'domain': ['2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010'],
                     },
-                  },
-                  'mouseOver': {
-                    'focusedObject': {
-                      'opacity': 1,
-                      'fill': '#333',
-                    },
-                    'nonFocusedObject': {
-                      'opacity': 0.1,
-                    },
-                    'label': {
-                      'value': (d) => `Label:LabelValue`,
-                      'align': 'center',
-                      'fontSize': 1,
-                      'backgroundColor': '#333',
-                      'backgroundOpacity': 1,
-                      'fontColor': '#fff',
+                    'z': {
+                      'field': 'latitude',
                     }
+                  },
+                  'style': {
+                    'radius': {
+                      'scaleType': 'linear',
+                      'value': [0, 1],
+                      'startFromZero': true,
+                    },
+                    'height': 0.2,
+                    'padding': 0,
+                    'fill': {
+                      'opacity': 1,
+                      'scaleType': 'linear',
+                      'color': ['#ea4335', '#34a853'],
+                    },
                   }
                 },
               },

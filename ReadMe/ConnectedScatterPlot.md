@@ -54,8 +54,8 @@ __Properties for `mark` for Connected Scatter Plot__
 
 Property|Type|Description
 ---|---|---
-type|string|Defines type of bar that would be created. __Not Required. Default value: box__. _Available values: box, cone or cylinder._
-position|object|Defines the how the position of bars will be mapped. __Required__
+type|string|Defines type of point that would be created. __Not Required. Default value: box__. _Available values: box, cone or cylinder._
+position|object|Defines the how the position of points will be mapped. __Required__
 position.x|object|__Required.__
 position.x.scaleType|string|Defines the scale type for x position. __Required.__ _Available values: linear or ordinal._
 position.x.field|string|Defines the field in the data that will be mapped as x position. __Required.__
@@ -86,6 +86,24 @@ points.style.fill.field|string|Defines the field in the data that will be mapped
 points.style.fill.domain|array|Defines the domain for fill. __Not Required.__ _If not present the domain is calculated from the provide data depending on the points.style.fill.scaleType_
 points.style.fill.color|array or string|Defines the color for fill. __Not Required if points.style.fill.scaleType is present, else required. Default value: d3.schemeCategory10__ _If points.style.fill.scaleType is not present the this needs to be a string otherwise an array._
 points.style.fill.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if points.style.fill.color is not given and points.style.fill.scaleType is `linear`._
+points.mouseOver|Object|Defines the mouseOver effect on the points. __Not Required.__ _If not present no mouse over effect happens._
+points.mouseOver.focusedObject|object|Defines the style for the mouseOver effect on the point. __Required.__
+points.mouseOver.focusedObject.opacity|float|Defines the opacity of point when mouse hovers on it. __Required.__
+points.mouseOver.focusedObject.fill|string|Defines the color of point when mouse hovers on it. __Required.__
+points.mouseOver.nonFocusedObject|object|Defines the style for the point not in focus. __Required.__
+points.mouseOver.nonFocusedObject.opacity|float|Defines the opacity of point which are not in focus when mouse hovers on a particular point. __Required.__
+points.mouseOver.label|object|Defines the value and style of the mouse over text. __Not Required.__ _If not present the label is not shown._
+points.mouseOver.label.value|function|Returns the value of the text that is to be shown in the label. __Required.__ _\n can be used for new line._
+points.mouseOver.label.align|string|Defines the alignment of the text in the label. __Required.__ _Available values: center, left or right._
+points.mouseOver.label.fontColor|string|Defines the color of the text in the label. __Required.__
+points.mouseOver.label.lineHeight|float|Defines the line height of the text in the label. __Not Required.__
+points.mouseOver.label.wrapCount|int|Defines the wrap count of the text in the label. __Not Required.__
+points.mouseOver.label.backgroundColor|string|Defines the color of the background of the label. __Required.__
+points.mouseOver.label.backgroundOpacity|string|Defines the color of the background of the label. __Required.__
+points.mouseOver.label.position|string|Defines the position of the label w.r.t the cursor. __Not Required. Format is "0 0 0".__
+points.mouseOver.label.rotation|string|Defines the rotation of the label w.r.t the cursor. __Not Required. Format is "90 0 0".__
+points.mouseOver.label.width|float|Defines the width of the label. __Not Required.__
+points.mouseOver.label.height|float|Defines the height of the label. __Not Required.__
 line|object|Defines the style of the connecting line in connected scatter plot. __Required.__
 line.style|object|Defines the style of the line. __Required.__ 
 line.style.stroke.color|string|Defines the color for line. __Required.__

@@ -7,6 +7,7 @@ import GetDomain from '../Utils/GetDomain.js';
 import ReadPLY from '../Utils/ReadPLY.js';
 import Axis from './Axis.js';
 import AxisBox from './AxisBox.js';
+import Shape from './Shape.js';
 
 import { csv } from 'd3-request';
 import { json } from 'd3-request';
@@ -246,21 +247,43 @@ class RectangleChart extends Component {
 
       //Adding marks
       let marks = this.state.data.map((d, i) => {
-        let hght = yScale(d[this.props.mark.style.height.field]), dpth = zScale(d[this.props.mark.style.depth.field]);
-        if (yScale(d[this.props.mark.style.height.field]) === 0) {
+        let hght = yScale(d[this.props.mark.style.height.field]), depth = zScale(d[this.props.mark.style.depth.field]);
+        let width = xScale.bandwidth();
+        if (hght === 0) {
           hght = 0.000000000001;
         }
-        if (zScale(d[this.props.mark.style.depth.field]) === 0) {
-          dpth = 0.000000000001;
+        if (depth === 0) {
+          depth = 0.000000000001;
         }
+        let color = this.props.mark.style.fill.color
         if (this.props.mark.style.fill.scaleType) {
-          return <a-box key={i} color={`${colorScale(d[this.props.mark.style.fill.field])}`} opacity={this.props.mark.style.fill.opacity} depth={`${dpth}`} height={`${hght}`} width={`${xScale.bandwidth()}`} position={`${xScale(d[this.props.mark.position.x.field]) + xScale.bandwidth() / 2} ${hght / 2} ${dpth / 2}`} />
-        } else
-          return <a-box key={i} color={`${this.props.mark.style.fill.color}`} opacity={this.props.mark.style.fill.opacity} depth={`${dpth}`} height={`${hght}`} width={`${xScale.bandwidth()}`} position={`${xScale(d[this.props.mark.position.x.field]) + xScale.bandwidth() / 2} ${hght / 2} ${dpth / 2}`} />
+          color = colorScale(d[this.props.mark.style.fill.field])
+        }
+        let position = `${xScale(d[this.props.mark.position.x.field]) + width / 2} ${hght / 2} ${depth / 2}`
+
+        let hover, hoverText
+        if (this.props.mark.mouseOver) {
+          if (this.props.mark.mouseOver.label)
+            hoverText = this.props.mark.mouseOver.label.value(d)
+        }
+        return <Shape
+          key={i}
+          type={'box'}
+          color={`${color}`}
+          opacity={this.props.mark.style.fill.opacity}
+          depth={`${depth}`}
+          height={`${hght}`}
+          width={`${width}`}
+          segments={`${this.props.mark.style.segments}`}
+          position={position}
+          hover={this.props.mark.mouseOver}
+          hoverText={hoverText}
+          graphID={this.props.index}
+        />
       });
 
       return (
-        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation}>
+        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
           {marks}
           {xAxis}
           {yAxis}

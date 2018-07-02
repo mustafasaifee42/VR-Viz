@@ -89,6 +89,23 @@ class App extends Component {
                     'color': ['green', 'blue', 'red'],
                     'field': ['Cars', 'Trucks', 'Bikes'],
                   },
+                },
+                'mouseOver': {
+                  'focusedObject': {
+                    'opacity': 1,
+                    'fill': '#333',
+                  },
+                  'nonFocusedObject': {
+                    'opacity': 0.1,
+                  },
+                  'label': {
+                    'value': (d) => `Label:LabelValue\nCountry:${d.Countries}\nQuarter:${d.Quarters}`,
+                    'align': 'center',
+                    'fontSize': 1,
+                    'backgroundColor': '#333',
+                    'backgroundOpacity': 1,
+                    'fontColor': '#fff',
+                  }
                 }
               },
               'axis': {

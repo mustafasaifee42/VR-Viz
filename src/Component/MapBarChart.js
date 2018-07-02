@@ -8,6 +8,7 @@ import GetDomain from '../Utils/GetDomain.js';
 import GetMapShape from '../Utils/GetMapShape';
 import GetMapCoordinates from '../Utils/GetMapCoordinates';
 import ReadPLY from '../Utils/ReadPLY.js';
+import Shape from './Shape.js';
 
 import { csv } from 'd3-request';
 import { json } from 'd3-request';
@@ -184,74 +185,43 @@ class MapBarChart extends Component {
 
 
       //Adding Bars
+      let marks = this.state.data.map((d, i) => {
+        let hght = heightScale(d[this.props.mark.bars.style.height.field])
+        if (hght == 0) {
+          hght = 0.000000000001;
+        }
+        let color = this.props.mark.bars.style.fill.color
+        if (this.props.mark.bars.style.fill.scaleType) {
+          color = colorScale(d[this.props.mark.bars.style.fill.field])
+        }
+        let coordinates = GetMapCoordinates(d.longitude, d.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
+        let position = `${coordinates[0]} ${0 - coordinates[1]} ${hght / 2}`
 
-      let marks;
-      switch (this.props.mark.bars.type) {
-        case 'box':
-          {
-            marks = this.state.data.map((d, i) => {
-
-              let position = GetMapCoordinates(d.longitude, d.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
-              let hght = heightScale(d[this.props.mark.bars.style.height.field])
-              if (hght == 0) {
-                hght = 0.000000000001;
-              }
-              if (this.props.mark.bars.style.fill.scaleType) {
-                return <a-box key={i} color={`${colorScale(d[this.props.mark.bars.style.fill.field])}`} opacity={this.props.mark.bars.style.fill.opacity} height={`${this.props.mark.bars.style.depth}`} depth={`${hght}`} width={`${this.props.mark.bars.style.width}`} position={`${position[0]} ${0 - position[1]} ${hght / 2}`} />
-              } else
-                return <a-box key={i} color={`${this.props.mark.bars.style.fill.color}`} opacity={this.props.mark.bars.style.fill.opacity} height={`${this.props.mark.bars.style.depth}`} depth={`${hght}`} width={`${this.props.mark.bars.style.width}`} position={`${position[0]} ${0 - position[1]} ${hght / 2}`} />
-            });
-            break;
-          }
-        case 'cylinder':
-          {
-            marks = this.state.data.map((d, i) => {
-              let position = GetMapCoordinates(d.longitude, d.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
-              let hght = heightScale(d[this.props.mark.bars.style.height.field])
-              if (hght == 0) {
-                hght = 0.000000000001;
-              }
-              if (this.props.mark.bars.style.fill.scaleType)
-                return <a-cylinder key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${colorScale(d[this.props.mark.bars.style.fill.field])}`} height={`${hght}`} radius={`${this.props.mark.bars.style.radius}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${position[0]} ${0 - position[1]} ${hght / 2}`} rotation={'90 0 0'} />
-              else
-                return <a-cylinder key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${this.props.mark.bars.style.fill.color}`} height={`${hght}`} radius={`${this.props.mark.bars.style.radius}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${position[0]} ${0 - position[1]} ${hght / 2}`} rotation={'90 0 0'} />
-            });
-            break;
-          }
-        case 'cone':
-          {
-            marks = this.state.data.map((d, i) => {
-              let position = GetMapCoordinates(d.longitude, d.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
-              let hght = heightScale(d[this.props.mark.bars.style.height.field])
-              if (hght == 0) {
-                hght = 0.000000000001;
-              }
-              if (this.props.mark.bars.style.fill.scaleType)
-                return <a-cone key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${colorScale(d[this.props.mark.bars.style.fill.field])}`} height={`${hght}`} radius-bottom={`${this.props.mark.bars.style.radiusBottom}`} radius-top={`${this.props.mark.bars.style.radiusTop}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${position[0]} ${0 - position[1]} ${hght / 2}`} rotation={'90 0 0'} />
-              else
-                return <a-cone key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${this.props.mark.bars.style.fill.color}`} height={`${hght}`} radius-bottom={`${this.props.mark.bars.style.radiusBottom}`} radius-top={`${this.props.mark.bars.style.radiusTop}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${position[0]} ${0 - position[1]} ${hght / 2}`} rotation={'90 0 0'} />
-            });
-            break;
-          }
-        default:
-          {
-            marks = this.state.data.map((d, i) => {
-              let position = GetMapCoordinates(d.longitude, d.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
-              let hght = heightScale(d[this.props.mark.bars.style.height.field])
-              if (hght == 0) {
-                hght = 0.000000000001;
-              }
-              if (this.props.mark.bars.style.fill.scaleType)
-                return <a-box key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${colorScale(d[this.props.mark.bars.style.fill.field])}`} height={`${this.props.mark.bars.style.depth}`} depth={`${hght}`} width={`${this.props.mark.bars.style.width}`} position={`${position[0]} ${0 - position[1]} ${hght / 2}`} />
-              else
-                return <a-box key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${this.props.mark.bars.style.fill.color}`} height={`${this.props.mark.bars.style.depth}`} depth={`${hght}`} width={`${this.props.mark.bars.style.width}`} position={`${position[0]} ${0 - position[1]} ${hght / 2}`} />
-            });
-            break;
-          }
-      }
+        let hover, hoverText
+        if (this.props.mark.bars.mouseOver) {
+          if (this.props.mark.bars.mouseOver.label)
+            hoverText = this.props.mark.bars.mouseOver.label.value(d)
+        }
+        return <Shape
+          key={i}
+          type={this.props.mark.bars.type}
+          color={`${color}`}
+          opacity={this.props.mark.bars.style.fill.opacity}
+          depth={`${this.props.mark.bars.style.depth}`}
+          height={`${hght}`}
+          width={`${this.props.mark.bars.style.width}`}
+          radius={`${this.props.mark.bars.style.radius}`}
+          segments={`${this.props.mark.bars.style.segments}`}
+          position={position}
+          hover={this.props.mark.bars.mouseOver}
+          hoverText={hoverText}
+          graphID={this.props.index}
+          rotation={'90 0 0'}
+        />
+      });
 
       return (
-        <a-entity rotation={this.props.mark.rotation} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
+        <a-entity rotation={this.props.mark.rotation} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} id={this.props.index}>
           {shapes}
           {border}
           {marks}

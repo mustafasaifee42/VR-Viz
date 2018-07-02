@@ -87,6 +87,23 @@ class App extends Component {
                       'color': 'red',
                     },
                   },
+                  'mouseOver': {
+                    'focusedObject': {
+                      'opacity': 1,
+                      'fill': '#333',
+                    },
+                    'nonFocusedObject': {
+                      'opacity': 0.1,
+                    },
+                    'label': {
+                      'value': (d) => `Year:${d.Year}\nCars:${d.Cars}\nTrucks:${d.Trucks}\nBikes:${d.Bikes}`,
+                      'align': 'center',
+                      'fontSize': 1,
+                      'backgroundColor': '#333',
+                      'backgroundOpacity': 1,
+                      'fontColor': '#fff',
+                    }
+                  }
                 },
                 'line': {
                   'style': {

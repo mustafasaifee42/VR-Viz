@@ -202,7 +202,7 @@ class MapBarChart extends Component {
           return <a-entity meshline={`lineWidth: ${this.props.mark.isoLines.style.stroke.width}; path:${path}; color: ${this.props.mark.isoLines.style.stroke.color}`}></a-entity>
       })
       return (
-        <a-entity rotation={this.props.mark.rotation} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
+        <a-entity rotation={this.props.mark.rotation} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} id={this.props.index}>
           {shapes}
           {border}
           {marks}

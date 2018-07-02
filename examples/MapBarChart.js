@@ -87,6 +87,23 @@ class App extends Component {
                       'field': 'value',
                       'color': ['green', 'blue'],
                     },
+                  },
+                  'mouseOver': {
+                    'focusedObject': {
+                      'opacity': 1,
+                      'fill': '#333',
+                    },
+                    'nonFocusedObject': {
+                      'opacity': 0,
+                    },
+                    'label': {
+                      'value': (d) => `value:${d.value}`,
+                      'align': 'center',
+                      'fontSize': 1,
+                      'backgroundColor': '#333',
+                      'backgroundOpacity': 1,
+                      'fontColor': '#fff',
+                    }
                   }
                 },
               },

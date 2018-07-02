@@ -91,6 +91,23 @@ class App extends Component {
                     'domain': ['setosa', 'versicolor', 'virginica'],
                   },
                 },
+                'mouseOver': {
+                  'focusedObject': {
+                    'opacity': 1,
+                    'fill': '#333',
+                  },
+                  'nonFocusedObject': {
+                    'opacity': 0,
+                  },
+                  'label': {
+                    'value': (d) => `sepal_length:${d.sepal_length}\nsepal_width:${d.sepal_width}\npetal_length:${d.petal_length}\npetal_width:${d.petal_width}\nspecies:${d.species}`,
+                    'align': 'center',
+                    'fontSize': 1,
+                    'backgroundColor': '#333',
+                    'backgroundOpacity': 1,
+                    'fontColor': '#fff',
+                  }
+                },
                 'droplines': {
                   'xz': true,
                   'yz': false,

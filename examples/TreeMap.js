@@ -74,6 +74,23 @@ class App extends Component {
                     'opacity': 1,
                   },
                 },
+                'mouseOver': {
+                  'focusedObject': {
+                    'opacity': 1,
+                    'fill': '#333',
+                  },
+                  'nonFocusedObject': {
+                    'opacity': 0,
+                  },
+                  'label': {
+                    'value': (d) => `name:${d.name}\nsize:${d.size}`,
+                    'align': 'center',
+                    'fontSize': 1,
+                    'backgroundColor': '#333',
+                    'backgroundOpacity': 1,
+                    'fontColor': '#fff',
+                  }
+                }
               },
             }
           ]

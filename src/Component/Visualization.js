@@ -37,8 +37,15 @@ class Visualization extends Component {
     if (this.props.scene) {
       //Light system
       light = this.props.scene.lights.map((item, i) => {
-        let intensity = item.intensity === null ? 1 : item.intensity;
-        let decay = item.decay === null ? 1 : item.decay;
+        let intensity, decay
+        if (!item.intensity)
+          intensity = 1
+        else
+          intensity = item.intensity;
+        if (!item.decay)
+          decay = 1
+        else
+          decay = item.decay;
         if (item.type === 'ambient')
           return <a-entity light={`type:${item.type}; color: ${item.color}; intensity: ${intensity}; decay: ${decay}`} key={i} />
         else
@@ -46,15 +53,39 @@ class Visualization extends Component {
       })
 
       //Camera Rig and Camera
-      let fov = this.props.scene.camera.fov === null ? 80 : this.props.scene.camera.fov;
-      camera = <a-entity id="#rig" position={this.props.scene.camera.position} rotation={this.props.scene.camera.rotation}>
-        <a-camera fov={this.props.scene.camera.fov}>
-          <a-cursor />
-        </a-camera>
+      let fov
+      if (!this.props.scene.camera.fov)
+        fov = 80
+      else
+        fov = this.props.scene.camera.fov;
+      let nearClipping
+      if (!this.props.scene.camera.nearClipping)
+        nearClipping = 0.005
+      else
+        nearClipping = this.props.scene.camera.nearClipping;
+      let cameraSettings = `active: true;near:${nearClipping};fov:${fov}`
+      camera = <a-entity id="#cameraRig" position={this.props.scene.camera.position} rotation={this.props.scene.camera.rotation} wasd-controls="camera: #head">
+        <a-entity id="head" camera={cameraSettings} position="0 1.6 0" look-controls >
+          <a-entity cursor="fuse: true; fuseTimeout: 50"
+            position="0 0 -1"
+            geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+            material="color: black; shader: flat"
+            raycaster="far: 1000; interval: 100;objects: .clickable;showLine: true;" />
+          <a-entity
+            id="hover"
+            geometry="primitive: plane; height: auto; width: auto"
+            material="color: #000; opacity: 1"
+            position="0 -0.1 -5"
+            rotation='0 0 0'
+            text="align: center; color: #fff; anchor: center; value: "
+            visible={false} />
+        </a-entity>
+        <a-entity teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;"></a-entity>
+        <a-entity teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;"></a-entity>
       </a-entity>
 
       //Sky
-      sky = this.props.scene.sky.style.texture === false ? <a-sky color={this.props.scene.sky.style.color} /> : <a-sky src={this.props.scene.sky.style.img} />;
+      sky = this.props.scene.sky.style.texture === false ? <a-sky id="bg" color={this.props.scene.sky.style.color} /> : <a-sky id="bg" src={this.props.scene.sky.style.img} />;
 
       //Floor
       if (this.props.scene.floor) {
@@ -96,12 +127,14 @@ class Visualization extends Component {
               yAxis={d.axis['y-axis']}
               zAxis={d.axis['z-axis']}
               axisBox={d.axis['axis-box']}
+              index={`Graph${i}`}
             />)
           else
             return (<BarGraph
               data={d.data}
               style={d.style}
               mark={d.mark}
+              index={`Graph${i}`}
             />)
         }
         case 'ConnectedScatterPlot': {
@@ -116,12 +149,14 @@ class Visualization extends Component {
               yAxis={d.axis['y-axis']}
               zAxis={d.axis['z-axis']}
               axisBox={d.axis['axis-box']}
+              index={`Graph${i}`}
             />)
           else
             return (<ConnectedScatterPlot
               data={d.data}
               style={d.style}
               mark={d.mark}
+              index={`Graph${i}`}
             />)
         }
         case 'ContourMap': {
@@ -139,6 +174,7 @@ class Visualization extends Component {
               mark={d.mark}
               heightThreshold={heightThreshold}
               axisBox={d.axis['axis-box']}
+              index={`Graph${i}`}
             />)
           else
             return (<ContourMap
@@ -146,6 +182,7 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               heightThreshold={heightThreshold}
+              index={`Graph${i}`}
             />)
         }
         case 'ContourPlot': {
@@ -159,11 +196,13 @@ class Visualization extends Component {
               yAxis={d.axis['y-axis']}
               zAxis={d.axis['z-axis']}
               axisBox={d.axis['axis-box']}
+              index={`Graph${i}`}
             />)
           else
             return (<ContourPlot
               style={d.style}
               mark={d.mark}
+              index={`Graph${i}`}
             />)
         }
         case 'FlowMap': {
@@ -175,12 +214,14 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               axisBox={d.axis['axis-box']}
+              index={`Graph${i}`}
             />)
           else
             return (<FlowMap
               data={d.data}
               style={d.style}
               mark={d.mark}
+              index={`Graph${i}`}
             />)
         }
         case 'ForceDirectedGraph': {
@@ -192,12 +233,14 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               axisBox={d.axis['axis-box']}
+              index={`Graph${i}`}
             />)
           else
             return (<ForceDirectedGraph
               data={d.data}
               style={d.style}
               mark={d.mark}
+              index={`Graph${i}`}
             />)
         }
         case 'MapBarChart': {
@@ -209,12 +252,14 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               axisBox={d.axis['axis-box']}
+              index={`Graph${i}`}
             />)
           else
             return (<MapBarChart
               data={d.data}
               style={d.style}
               mark={d.mark}
+              index={`Graph${i}`}
             />)
         }
         case 'MapStackedBarChart': {
@@ -226,12 +271,14 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               axisBox={d.axis['axis-box']}
+              index={`Graph${i}`}
             />)
           else
             return (<MapStackedBarChart
               data={d.data}
               style={d.style}
               mark={d.mark}
+              index={`Graph${i}`}
             />)
         }
         case 'ParametricCurvePlot': {
@@ -246,12 +293,14 @@ class Visualization extends Component {
               zAxis={d.axis['z-axis']}
               parameter={d.parameter}
               axisBox={d.axis['axis-box']}
+              index={`Graph${i}`}
             />)
           else
             return (<ParametricCurvePlot
               style={d.style}
               mark={d.mark}
               parameter={d.parameter}
+              index={`Graph${i}`}
             />)
         }
         case 'ParametricSurfacePlot': {
@@ -266,12 +315,14 @@ class Visualization extends Component {
               zAxis={d.axis['z-axis']}
               parameter={d.parameter}
               axisBox={d.axis['axis-box']}
+              index={`Graph${i}`}
             />)
           else
             return (<ParametricSurfacePlot
               style={d.style}
               mark={d.mark}
               parameter={d.parameter}
+              index={`Graph${i}`}
             />)
         }
         case 'PointCloud': {
@@ -283,12 +334,14 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               axisBox={d.axis['axis-box']}
+              index={`Graph${i}`}
             />)
           else
             return (<PointCloud
               data={d.data}
               style={d.style}
               mark={d.mark}
+              index={`Graph${i}`}
             />)
         }
         case 'PrismMap': {
@@ -300,12 +353,14 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               axisBox={d.axis['axis-box']}
+              index={`Graph${i}`}
             />)
           else
             return (<PrismMap
               data={d.data}
               style={d.style}
               mark={d.mark}
+              index={`Graph${i}`}
             />)
         }
         case 'ScatterPlot': {
@@ -320,12 +375,14 @@ class Visualization extends Component {
               yAxis={d.axis['y-axis']}
               zAxis={d.axis['z-axis']}
               axisBox={d.axis['axis-box']}
+              index={`Graph${i}`}
             />)
           else
             return (<ScatterPlot
               data={d.data}
               style={d.style}
               mark={d.mark}
+              index={`Graph${i}`}
             />)
         }
         case 'StackedBarGraph': {
@@ -340,12 +397,14 @@ class Visualization extends Component {
               yAxis={d.axis['y-axis']}
               zAxis={d.axis['z-axis']}
               axisBox={d.axis['axis-box']}
+              index={`Graph${i}`}
             />)
           else
             return (<StackedBarGraph
               data={d.data}
               style={d.style}
               mark={d.mark}
+              index={`Graph${i}`}
             />)
         }
         case 'SurfacePlot': {
@@ -359,11 +418,13 @@ class Visualization extends Component {
               yAxis={d.axis['y-axis']}
               zAxis={d.axis['z-axis']}
               axisBox={d.axis['axis-box']}
+              index={`Graph${i}`}
             />)
           else
             return (<SurfacePlot
               style={d.style}
               mark={d.mark}
+              index={`Graph${i}`}
             />)
         }
         case 'TreeMap': {
@@ -375,12 +436,14 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               axisBox={d.axis['axis-box']}
+              index={`Graph${i}`}
             />)
           else
             return (<TreeMap
               data={d.data}
               style={d.style}
               mark={d.mark}
+              index={`Graph${i}`}
             />)
         }
         case 'WaterFallPlot': {
@@ -395,12 +458,14 @@ class Visualization extends Component {
               yAxis={d.axis['y-axis']}
               zAxis={d.axis['z-axis']}
               axisBox={d.axis['axis-box']}
+              index={`Graph${i}`}
             />)
           else
             return (<WaterFallPlot
               data={d.data}
               style={d.style}
               mark={d.mark}
+              index={`Graph${i}`}
             />)
         }
         case 'MeshPlot': {
@@ -415,12 +480,14 @@ class Visualization extends Component {
               yAxis={d.axis['y-axis']}
               zAxis={d.axis['z-axis']}
               axisBox={d.axis['axis-box']}
+              index={`Graph${i}`}
             />)
           else
             return (<MeshPlot
               data={d.data}
               style={d.style}
               mark={d.mark}
+              index={`Graph${i}`}
             />)
         }
         case 'RectangleChart': {
@@ -435,12 +502,14 @@ class Visualization extends Component {
               yAxis={d.axis['y-axis']}
               zAxis={d.axis['z-axis']}
               axisBox={d.axis['axis-box']}
+              index={`Graph${i}`}
             />)
           else
             return (<RectangleChart
               data={d.data}
               style={d.style}
               mark={d.mark}
+              index={`Graph${i}`}
             />)
         }
         case 'TimeSeries': {
@@ -455,12 +524,14 @@ class Visualization extends Component {
               yAxis={d.axis['y-axis']}
               zAxis={d.axis['z-axis']}
               axisBox={d.axis['axis-box']}
+              index={`Graph${i}`}
             />)
           else
             return (<TimeSeries
               data={d.data}
               style={d.style}
               mark={d.mark}
+              index={`Graph${i}`}
             />)
         }
         case 'MapTimeBars': {
@@ -472,12 +543,14 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               axisBox={d.axis['axis-box']}
+              index={`Graph${i}`}
             />)
           else
             return (<MapTimeBars
               data={d.data}
               style={d.style}
               mark={d.mark}
+              index={`Graph${i}`}
             />)
         }
         case 'MapContourLines': {
@@ -488,12 +561,14 @@ class Visualization extends Component {
               data={d.data}
               style={d.style}
               mark={d.mark}
+              index={`Graph${i}`}
             />)
           else
             return (<MapContourLines
               data={d.data}
               style={d.style}
               mark={d.mark}
+              index={`Graph${i}`}
             />)
         }
         case 'SpiralChart': {
@@ -505,11 +580,13 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               axis={d.axis}
+              index={`Graph${i}`}
             />)
           else
             return (<SpiralChart
               data={d.data}
               style={d.style}
+              index={`Graph${i}`}
             />)
         }
         default: {

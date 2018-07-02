@@ -64,6 +64,23 @@ class App extends Component {
                       'domain': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                     },
                   },
+                  'mouseOver': {
+                    'focusedObject': {
+                      'opacity': 1,
+                      'fill': '#333',
+                    },
+                    'nonFocusedObject': {
+                      'opacity': 0.1,
+                    },
+                    'label': {
+                      'value': (d) => `id:${d.id}\ngroup:${d.group}`,
+                      'align': 'center',
+                      'fontSize': 1,
+                      'backgroundColor': '#333',
+                      'backgroundOpacity': 1,
+                      'fontColor': '#fff',
+                    }
+                  }
                 },
                 'links': {
                   'type': 'line',

@@ -5,6 +5,7 @@ import * as moment from 'moment';
 
 import GetDomain from '../Utils/GetDomain.js';
 import ReadPLY from '../Utils/ReadPLY.js';
+import Shape from './Shape.js';
 
 import { csv } from 'd3-request';
 import { json } from 'd3-request';
@@ -243,7 +244,8 @@ class ForceDirectedGraph extends Component {
         g.addNode(this.state.data.nodes[i].id, {
           color: col,
           radius: r,
-          text: lab
+          text: lab,
+          data: this.state.data.nodes[i]
         })
       }
 
@@ -272,10 +274,28 @@ class ForceDirectedGraph extends Component {
       }
       let sphere = [], lines = [], label = []
       g.forEachNode((node) => {
-        if (nodeType === 'box')
-          sphere.push(<a-box color={node.data.color} width={node.data.radius} height={node.data.radius} depth={node.data.radius} position={`${layout.getNodePosition(node.id).x * scale} ${layout.getNodePosition(node.id).y * scale} ${layout.getNodePosition(node.id).z * scale}`} />)
-        else
-          sphere.push(<a-sphere color={node.data.color} radius={node.data.radius} position={`${layout.getNodePosition(node.id).x * scale} ${layout.getNodePosition(node.id).y * scale} ${layout.getNodePosition(node.id).z * scale}`} />)
+        let hover, hoverText
+        if (this.props.mark.nodes.mouseOver) {
+          if (this.props.mark.nodes.mouseOver.label)
+            hoverText = this.props.mark.nodes.mouseOver.label.value(node.data.data)
+        }
+        console.log(node)
+        sphere.push(
+          <Shape
+            type={nodeType}
+            color={`${node.data.color}`}
+            opacity={1}
+            depth={`${node.data.radius}`}
+            height={`${node.data.radius}`}
+            width={`${node.data.radius}`}
+            radius={`${node.data.radius}`}
+            segments={`${this.props.mark.nodes.style.segments}`}
+            position={`${layout.getNodePosition(node.id).x * scale} ${layout.getNodePosition(node.id).y * scale} ${layout.getNodePosition(node.id).z * scale}`}
+            hover={this.props.mark.nodes.mouseOver}
+            hoverText={hoverText}
+            graphID={this.props.index}
+          />
+        )
         if (ifLabel)
           label.push(<a-text color={node.data.color} width={labelWidth} value={node.data.text} anchor='align' side='double' side='double' align='left' position={`${layout.getNodePosition(node.id).x * scale + node.data.radius / 2 + labelPadding} ${layout.getNodePosition(node.id).y * scale} ${layout.getNodePosition(node.id).z * scale}`} />)
       });
@@ -283,7 +303,7 @@ class ForceDirectedGraph extends Component {
         lines.push(<a-entity line={`start: ${layout.getLinkPosition(link.id).from.x * scale}, ${layout.getLinkPosition(link.id).from.y * scale}, ${layout.getLinkPosition(link.id).from.z * scale}; end: ${layout.getLinkPosition(link.id).to.x * scale} ${layout.getLinkPosition(link.id).to.y * scale} ${layout.getLinkPosition(link.id).to.z * scale}; color: ${link.data.color}; opacity: ${link.data.opacity}`} />)
       })
       return (
-        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation}>
+        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
           {sphere}
           {lines}
           {label}

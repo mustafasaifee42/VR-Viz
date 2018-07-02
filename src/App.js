@@ -31,7 +31,7 @@ class App extends Component {
               }
             ],
             'camera': {
-              'position': '0 0 10',
+              'position': '10.5 5.5 11',
               'rotation': '0 0 0',
             },
           }
@@ -49,7 +49,7 @@ class App extends Component {
                 'origin': [0, 0, 0],
                 'rotation': '0 0 0',
                 'dimensions': {
-                  'width': 20,
+                  'width': 10,
                   'height': 5,
                   'depth': 10,
                 },
@@ -155,7 +155,7 @@ class App extends Component {
               'style': {
                 'origin': [0, 6, 0],
                 'dimensions': {
-                  'width': 20,
+                  'width': 10,
                   'height': 5,
                   'depth': 10,
                 },
@@ -256,9 +256,9 @@ class App extends Component {
             {
               'type': 'ScatterPlot',
               'style': {
-                'origin': [21, 0, 0],
+                'origin': [11, 0, 0],
                 'dimensions': {
-                  'width': 20,
+                  'width': 10,
                   'height': 11,
                   'depth': 10,
                 },
@@ -404,4 +404,3 @@ class App extends Component {
 }
 
 export default App;
-

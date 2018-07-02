@@ -209,7 +209,7 @@ class ContourMap extends Component {
         border = dataFormatted.map((d, i) => <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${d[0] * this.props.style.objectScale.ground} ${(d[1] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[2] * this.props.style.objectScale.ground}, ${d[3] * this.props.style.objectScale.ground} ${(d[4] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[5] * this.props.style.objectScale.ground}, ${d[6] * this.props.style.objectScale.ground} ${(d[7] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[8] * this.props.style.objectScale.ground}, ${d[9] * this.props.style.objectScale.ground} ${(d[10] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[11] * this.props.style.objectScale.ground}; color:${this.props.mark.style.stroke.color}`} />);
 
       return (
-        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation}>
+        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
           {shapes}
           {border}
         </a-entity>

@@ -398,15 +398,15 @@ grid|object|Defined the style of grid for the axis. __Not Required.__ _Currently
 grid.color|string|Defined the color for grid for the axis. __Required.__ _Currently this feature is not available._
 grid.opacity|float|Defined the opacity for grid for the axis. __Required.__ _Value must be between 0 and 1. Currently this feature is not available._
 
-
 ## To Do
-
 * Add Legends
-* Add interactivity using [A-Frame Super Hand Controls](https://github.com/wmurphyrd/aframe-super-hands-component)
 * Add collaboration using [A-Frame Networked](https://haydenlee.io/networked-aframe/)
 
-## Installation
+## Known Issues
+* Grid in the axes doesnt work right now
+* Titles of the axes doesnt work right now
 
+## Installation
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 This project uses yarn. Install it as described here [https://yarnpkg.com/lang/en/](https://yarnpkg.com/lang/en/) if you haven't already.
@@ -419,7 +419,3 @@ In the project directory, you can run:
 yarn start
 ```
 Runs the app in the development mode.
-
-## Known Issues
-* Grid in the axes doesnt work right now
-* Titles of the axes doesnt work right now

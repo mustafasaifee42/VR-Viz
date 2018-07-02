@@ -5,8 +5,7 @@ import * as moment from 'moment';
 
 import GetDomain from '../Utils/GetDomain.js';
 import ReadPLY from '../Utils/ReadPLY.js';
-import Axis from './Axis.js';
-import AxisBox from './AxisBox.js';
+import Shape from './Shape.js';
 
 import { csv } from 'd3-request';
 import { json } from 'd3-request';
@@ -179,20 +178,39 @@ class TreeMap extends Component {
           .range(colorRange)
       }
 
-
       let marks = tree.leaves().map((d, i) => {
         let width = (d.x1 - d.x0).toFixed(3);
         let posX = (d.x0 + (d.x1 - d.x0) / 2).toFixed(3);
         let depth = (d.y1 - d.y0).toFixed(3);
         let posZ = (d.y0 + (d.y1 - d.y0) / 2).toFixed(3);
-        let height = (heightScale(d.data[this.props.mark.style.extrusion.field])).toFixed(3);
+        let hght = (heightScale(d.data[this.props.mark.style.extrusion.field])).toFixed(3);
+        let position = `${posX} ${hght / 2} ${posZ}`
+        let color = `${this.props.mark.style.fill.color}`
         if (this.props.mark.style.fill.scaleType)
-          return <a-box id={`width${width}posX${posX}dx${d.x0}`} key={i} color={`${colorScale(d.parent.data.name)}`} opacity={this.props.mark.style.fill.opacity} depth={`${depth}`} height={`${height}`} width={`${width}`} position={`${posX} ${height / 2} ${posZ}`} />
-        else
-          return <a-box id={`width${width}posX${posX}dx${d.x0}`} key={i} color={`${this.props.mark.style.fill.color}`} opacity={this.props.mark.style.fill.opacity} depth={`${depth}`} height={`${height}`} width={`${width}`} position={`${posX} ${height / 2} ${posZ}`} />
+          color = colorScale(d.parent.data.name)
+        let hover, hoverText
+        if (this.props.mark.mouseOver) {
+          if (this.props.mark.mouseOver.label)
+            hoverText = this.props.mark.mouseOver.label.value(d.data)
+        }
+        console.log(d.data)
+        return <Shape
+          key={i}
+          type={'box'}
+          color={`${color}`}
+          opacity={this.props.mark.style.fill.opacity}
+          depth={`${depth}`}
+          height={`${hght}`}
+          width={`${width}`}
+          segments={`${this.props.mark.style.segments}`}
+          position={position}
+          hover={this.props.mark.mouseOver}
+          hoverText={hoverText}
+          graphID={this.props.index}
+        />
       });
       return (
-        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation}>
+        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
           {marks}
         </a-entity>
       )

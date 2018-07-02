@@ -7,10 +7,39 @@ import GetDomain from '../Utils/GetDomain.js';
 import ReadPLY from '../Utils/ReadPLY.js';
 import Axis from './Axis.js';
 import AxisBox from './AxisBox.js';
+import Shape from './Shape.js';
 
 import { csv } from 'd3-request';
 import { json } from 'd3-request';
 import { text } from 'd3-request';
+
+AFRAME.registerComponent('cursor-listener', {
+  schema: {
+    on: { type: 'string' },
+    target: { type: 'selector' },
+    text: { type: 'string' },
+  },
+
+  init: function (data) {
+    console.log(data);
+    this.el.addEventListener('mouseenter', function (evt) {
+      console.log(evt)
+      d3.selectAll('#mouseHover')
+        .append('a-entity')
+        .attr('class', 'hover')
+        .attr('position', '-2.5 1 0')
+        .attr('geometry', 'primitive: plane; width: 3; height: auto')
+        .attr('material', 'color: blue')
+        .attr('text', 'anchor: center; width: 1.5; color: white; value: \n[CENTER ANCHOR]\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam')
+    });
+    this.el.addEventListener('mouseleave', function (evt) {
+      d3.selectAll('.hover')
+        .remove();
+    });
+  }
+
+
+});
 
 class BarGraph extends Component {
   constructor(props) {
@@ -18,6 +47,7 @@ class BarGraph extends Component {
     this.state = {
     }
   }
+
 
   componentWillMount() {
     if (this.props.data) {
@@ -287,68 +317,44 @@ class BarGraph extends Component {
       console.log(yScale(4))
 
       //Adding marks
-      let marks;
-      switch (this.props.mark.type) {
-        case 'box':
-          {
-            marks = this.state.data.map((d, i) => {
-              let hght = yScale(d[this.props.mark.style.height.field]);
-              if (yScale(d[this.props.mark.style.height.field]) === 0) {
-                hght = 0.000000000001;
-              }
-              if (this.props.mark.style.fill.scaleType) {
-                return <a-box key={i} color={`${colorScale(d[this.props.mark.style.fill.field])}`} opacity={this.props.mark.style.fill.opacity} depth={`${depth}`} height={`${hght}`} width={`${width}`} position={`${xScale(d[this.props.mark.position.x.field]) + width / 2} ${hght / 2} ${zScale(d[this.props.mark.position.z.field]) + depth / 2}`} />
-              } else
-                return <a-box key={i} color={`${this.props.mark.style.fill.color}`} opacity={this.props.mark.style.fill.opacity} depth={`${depth}`} height={`${hght}`} width={`${width}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
-            });
-            break;
-          }
-        case 'cylinder':
-          {
-            marks = this.state.data.map((d, i) => {
-              let hght = yScale(d[this.props.mark.style.height.field]);
-              if (yScale(d[this.props.mark.style.height.field]) === 0) {
-                hght = 0.000000000001;
-              }
-              if (this.props.mark.style.fill.scaleType)
-                return <a-cylinder key={i} opacity={this.props.mark.style.fill.opacity} color={`${colorScale(d[this.props.mark.style.fill.field])}`} height={`${hght}`} radius={`${radius}`} segments-radial={`${this.props.mark.style.segments}`} position={`${xScale(d[this.props.mark.position.x.field]) + radius} ${hght / 2} ${zScale(d[this.props.mark.position.z.field]) + radius}`} />
-              else
-                return <a-cylinder key={i} opacity={this.props.mark.style.fill.opacity} color={`${this.props.mark.style.fill.color}`} height={`${hght}`} radius={`${radius}`} segments-radial={`${this.props.mark.style.segments}`} position={`${xScale(d[this.props.mark.position.x.field]) + radius} ${hght / 2} ${zScale(d[this.props.mark.position.z.field]) + radius}`} />
-            });
-            break;
-          }
-        case 'cone':
-          {
-            marks = this.state.data.map((d, i) => {
-              let hght = yScale(d[this.props.mark.style.height.field]);
-              if (yScale(d[this.props.mark.style.height.field]) === 0) {
-                hght = 0.000000000001;
-              }
-              if (this.props.mark.style.fill.scaleType)
-                return <a-cone key={i} opacity={this.props.mark.style.fill.opacity} color={`${colorScale(d[this.props.mark.style.fill.field])}`} height={`${hght}`} radius-bottom={`${radius}`} radius-top={0} segments-radial={`${this.props.mark.style.segments}`} position={`${xScale(d[this.props.mark.position.x.field]) + radius} ${hght / 2} ${zScale(d[this.props.mark.position.z.field]) + radius}`} />
-              else
-                return <a-cone key={i} opacity={this.props.mark.style.fill.opacity} color={`${this.props.mark.style.fill.color}`} height={`${hght}`} radius-bottom={`${radius}`} radius-top={0} segments-radial={`${this.props.mark.style.segments}`} position={`${xScale(d[this.props.mark.position.x.field]) + radius} ${hght / 2} ${zScale(d[this.props.mark.position.z.field]) + radius}`} />
-            });
-            break;
-          }
-        default:
-          {
-            marks = this.state.data.map((d, i) => {
-              let hght = yScale(d[this.props.mark.style.height.field]);
-              if (yScale(d[this.props.mark.style.height.field]) === 0) {
-                hght = 0.000000000001;
-              }
-              if (this.props.mark.style.fill.scaleType) {
-                return <a-box key={i} color={`${colorScale(d[this.props.mark.style.fill.field])}`} opacity={this.props.mark.style.fill.opacity} depth={`${depth}`} height={`${hght}`} width={`${width}`} position={`${xScale(d[this.props.mark.position.x.field]) + width / 2} ${hght / 2} ${zScale(d[this.props.mark.position.z.field]) + depth / 2}`} />
-              } else
-                return <a-box key={i} color={`${this.props.mark.style.fill.color}`} opacity={this.props.mark.style.fill.opacity} depth={`${depth}`} height={`${hght}`} width={`${width}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
-            });
-            break;
-          }
-      }
+      let marks = this.state.data.map((d, i) => {
+        let hght = yScale(d[this.props.mark.style.height.field]);
+        if (yScale(d[this.props.mark.style.height.field]) === 0) {
+          hght = 0.000000000001;
+        }
+        let color = this.props.mark.style.fill.color
+        if (this.props.mark.style.fill.scaleType) {
+          color = colorScale(d[this.props.mark.style.fill.field])
+        }
+        let position = `${xScale(d[this.props.mark.position.x.field]) + width / 2} ${hght / 2} ${zScale(d[this.props.mark.position.z.field]) + depth / 2}`
 
+        if ((this.props.mark.type == 'cone') || (this.props.mark.type == 'cylinder'))
+          position = `${xScale(d[this.props.mark.position.x.field]) + radius} ${hght / 2} ${zScale(d[this.props.mark.position.z.field]) + radius}`
+
+        let hover, hoverText
+        if (this.props.mark.mouseOver) {
+          if (this.props.mark.mouseOver.label)
+            hoverText = this.props.mark.mouseOver.label.value(d)
+        }
+        return <Shape
+          key={i}
+          type={this.props.mark.type}
+          color={`${color}`}
+          opacity={this.props.mark.style.fill.opacity}
+          depth={`${depth}`}
+          height={`${hght}`}
+          width={`${width}`}
+          radius={`${radius}`}
+          segments={`${this.props.mark.style.segments}`}
+          position={position}
+          hover={this.props.mark.mouseOver}
+          hoverText={hoverText}
+          graphID={this.props.index}
+        />
+      });
+      console.log(this.props.mark.mouseOver)
       return (
-        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation}>
+        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
           {marks}
           {xAxis}
           {yAxis}

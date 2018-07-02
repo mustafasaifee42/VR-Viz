@@ -8,6 +8,7 @@ import GetDomain from '../Utils/GetDomain.js';
 import GetMapShape from '../Utils/GetMapShape';
 import GetMapCoordinates from '../Utils/GetMapCoordinates';
 import ReadPLY from '../Utils/ReadPLY.js';
+import Shape from './Shape.js';
 
 import { csv } from 'd3-request';
 import { json } from 'd3-request';
@@ -202,58 +203,43 @@ class MapStackedBarChart extends Component {
 
       //Adding Bars
 
-      let marks;
+      let marks = data.map((d, i) => {
+        let markTemp = d.map((d1, j) => {
+          let hght = yScale(d1[1] - d1[0]);
+          if (hght == 0) {
+            hght = 0.000000000001;
+          }
+          let color = this.props.mark.bars.style.fill.color[i]
+          let coordinates = GetMapCoordinates(d1.data.longitude, d1.data.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
+          let position = `${coordinates[0]} ${0 - coordinates[1]} ${yScale(d1[0]) + hght / 2}`
 
-      switch (this.props.mark.bars.type) {
-        case 'box':
-          {
-            marks = data.map((d, i) => {
-              let markTemp = d.map((d1, j) => {
-                let position = GetMapCoordinates(d1.data.longitude, d1.data.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
-                let hght = yScale(d1[1] - d1[0]);
-                if (hght == 0) {
-                  hght = 0.000000000001;
-                }
-                return <a-box key={i} color={`${this.props.mark.bars.style.fill.color[i]}`} opacity={this.props.mark.bars.style.fill.opacity} height={`${this.props.mark.bars.style.depth}`} depth={`${hght}`} width={`${this.props.mark.bars.style.width}`} position={`${position[0]} ${0 - position[1]} ${yScale(d1[0]) + hght / 2}`} />
-              })
-              return markTemp
-            });
-            break;
+          let hover, hoverText
+          if (this.props.mark.bars.mouseOver) {
+            if (this.props.mark.bars.mouseOver.label)
+              hoverText = this.props.mark.bars.mouseOver.label.value(d1.data).replace('Label', `${d.key}`).replace('LabelValue', `${d1.data[d.key]}`)
           }
-        case 'cylinder':
-          {
-            marks = data.map((d, i) => {
-              let markTemp = d.map((d1, j) => {
-                let position = GetMapCoordinates(d1.data.longitude, d1.data.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
-                let hght = yScale(d1[1] - d1[0]);
-                if (hght == 0) {
-                  hght = 0.000000000001;
-                }
-                return <a-cylinder key={i} opacity={this.props.mark.bars.style.fill.opacity} color={`${this.props.mark.bars.style.fill.color[i]}`} height={`${hght}`} radius={`${this.props.mark.bars.style.radius}`} segments-radial={`${this.props.mark.bars.style.segments}`} position={`${position[0]} ${0 - position[1]} ${yScale(d1[0]) + hght / 2}`} rotation={'90 0 0'} />
-              })
-              return markTemp
-            });
-            break;
-          }
-        default:
-          {
-            marks = data.map((d, i) => {
-              let markTemp = d.map((d1, j) => {
-                let position = GetMapCoordinates(d1.data.longitude, d1.data.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
-                let hght = yScale(d1[1] - d1[0]);
-                if (hght == 0) {
-                  hght = 0.000000000001;
-                }
-                return <a-box key={i} color={`${this.props.mark.bars.style.fill.color[i]}`} opacity={this.props.mark.bars.style.fill.opacity} height={`${this.props.mark.bars.style.depth}`} depth={`${hght}`} width={`${this.props.mark.bars.style.width}`} position={`${position[0]} ${0 - position[1]} ${yScale(d1[0]) + hght / 2}`} />
-              })
-              return markTemp
-            });
-            break;
-          }
-      }
+          return <Shape
+            key={i}
+            type={this.props.mark.bars.type}
+            color={`${color}`}
+            opacity={this.props.mark.bars.style.fill.opacity}
+            depth={`${this.props.mark.bars.style.depth}`}
+            height={`${hght}`}
+            width={`${this.props.mark.bars.style.width}`}
+            radius={`${this.props.mark.bars.style.radius}`}
+            segments={`${this.props.mark.bars.style.segments}`}
+            position={position}
+            hover={this.props.mark.bars.mouseOver}
+            hoverText={hoverText}
+            graphID={this.props.index}
+            rotation={'90 0 0'}
+          />
+        });
+        return markTemp
+      })
 
       return (
-        <a-entity rotation={this.props.mark.rotation} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`}>
+        <a-entity rotation={this.props.mark.rotation} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} id={this.props.index}>
           {shapes}
           {border}
           {marks}

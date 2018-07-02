@@ -7,6 +7,7 @@ import GetDomain from '../Utils/GetDomain.js';
 import ReadPLY from '../Utils/ReadPLY.js';
 import Axis from './Axis.js';
 import AxisBox from './AxisBox.js';
+import Shape from './Shape.js';
 
 import { csv } from 'd3-request';
 import { json } from 'd3-request';
@@ -286,54 +287,45 @@ class StackedBarGraph extends Component {
       }
 
       //Adding marks
-      let marks;
+      let marks = data.map((d, i) => {
+        let markTemp = d.map((d1, j) => {
+          let hght = yScale(d1[1] - d1[0]);
+          if (hght == 0) {
+            hght = 0.000000000001;
+          }
+          let color = this.props.mark.style.fill.color[i]
+          let position = `${xScale(d1.data[this.props.mark.position.x.field]) + width / 2} ${yScale(d1[0]) + hght / 2} ${zScale(d1.data[this.props.mark.position.z.field]) + depth / 2}`
 
-      switch (this.props.mark.type) {
-        case 'box':
-          {
-            marks = data.map((d, i) => {
-              let markTemp = d.map((d1, j) => {
-                let hght = yScale(d1[1] - d1[0]);
-                if (hght == 0) {
-                  hght = 0.000000000001;
-                }
-                return <a-box key={i} color={`${this.props.mark.style.fill.color[i]}`} opacity={this.props.mark.style.fill.opacity} depth={`${depth}`} height={`${hght}`} width={`${width}`} position={`${xScale(d1.data[this.props.mark.position.x.field]) + width / 2} ${yScale(d1[0]) + hght / 2} ${zScale(d1.data[this.props.mark.position.z.field]) + depth / 2}`} />
-              })
-              return markTemp
-            });
-            break;
+          if (this.props.mark.type == 'cylinder')
+            position = `${xScale(d1.data[this.props.mark.position.x.field]) + radius} ${yScale(d1[0]) + hght / 2} ${zScale(d1.data[this.props.mark.position.z.field]) + radius}`
+
+          let hover, hoverText
+          if (this.props.mark.mouseOver) {
+            if (this.props.mark.mouseOver.label)
+              hoverText = this.props.mark.mouseOver.label.value(d1.data).replace('Label', `${d.key}`).replace('LabelValue', `${d1.data[d.key]}`)
           }
-        case 'cylinder':
-          {
-            marks = data.map((d, i) => {
-              let markTemp = d.map((d1, j) => {
-                let hght = yScale(d1[1] - d1[0]);
-                if (hght == 0) {
-                  hght = 0.000000000001;
-                }
-                return <a-cylinder key={i} opacity={this.props.mark.style.fill.opacity} color={`${this.props.mark.style.fill.color[i]}`} height={`${hght}`} radius={`${radius}`} segments-radial={`${this.props.mark.style.segments}`} position={`${xScale(d1.data[this.props.mark.position.x.field]) + radius} ${yScale(d1[0]) + hght / 2} ${zScale(d1.data[this.props.mark.position.z.field]) + radius}`} />
-              })
-              return markTemp
-            });
-            break;
-          }
-        default:
-          {
-            marks = data.map((d, i) => {
-              let markTemp = d.map((d1, j) => {
-                let hght = yScale(d1[1] - d1[0]);
-                if (hght == 0) {
-                  hght = 0.000000000001;
-                }
-                return <a-box key={i} color={`${this.props.mark.style.fill.color[i]}`} opacity={this.props.mark.style.fill.opacity} depth={`${depth}`} height={`${hght}`} width={`${width}`} position={`${xScale(d1.data[this.props.mark.position.x.field]) + width / 2} ${yScale(d1[0]) + hght / 2} ${zScale(d1.data[this.props.mark.position.z.field]) + depth / 2}`} />
-              })
-              return markTemp
-            });
-            break;
-          }
-      }
+          console.log(d1)
+          return <Shape
+            key={i}
+            type={this.props.mark.type}
+            color={`${color}`}
+            opacity={this.props.mark.style.fill.opacity}
+            depth={`${depth}`}
+            height={`${hght}`}
+            width={`${width}`}
+            radius={`${radius}`}
+            segments={`${this.props.mark.style.segments}`}
+            position={position}
+            hover={this.props.mark.mouseOver}
+            hoverText={hoverText}
+            graphID={this.props.index}
+          />
+        });
+        return markTemp
+      })
+
       return (
-        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation}>
+        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
           {marks}
           {xAxis}
           {yAxis}

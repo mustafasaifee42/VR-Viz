@@ -87,6 +87,24 @@ bars.style.fill.opacity|float|Defines the opacity of the bar. __Required.__ _Val
 bars.style.fill.scaleType|string|Defines the scale type for fill of the bar. __Required.__ _Available values: ordinal._
 bars.style.fill.field|array of string|Defines the field in the data that will be mapped as fill of the bar. __Required if `bars.style.fill.scaleType` is present.__
 bars.style.fill.color|array| Defines the color for fill. __Not Required if bars.style.fill.scaleType is present, else required. Default value: d3.schemeCategory10__ _If bars.style.fill.scaleType is not present the this needs to be a string otherwise an array._
+bars.mouseOver|Object|Defines the mouseOver effect on the bars. __Not Required.__ _If not present no mouse over effect happens._
+bars.mouseOver.focusedObject|object|Defines the style for the mouseOver effect on the bar. __Required.__
+bars.mouseOver.focusedObject.opacity|float|Defines the opacity of bar when mouse hovers on it. __Required.__
+bars.mouseOver.focusedObject.fill|string|Defines the color of bar when mouse hovers on it. __Required.__
+bars.mouseOver.nonFocusedObject|object|Defines the style for the bar not in focus. __Required.__
+bars.mouseOver.nonFocusedObject.opacity|float|Defines the opacity of bar which are not in focus when mouse hovers on a particular bar. __Required.__
+bars.mouseOver.label|object|Defines the value and style of the mouse over text. __Not Required.__ _If not present the label is not shown._
+bars.mouseOver.label.value|function|Returns the value of the text that is to be shown in the label. __Required.__ _\n can be used for new line._
+bars.mouseOver.label.align|string|Defines the alignment of the text in the label. __Required.__ _Available values: center, left or right._
+bars.mouseOver.label.fontColor|string|Defines the color of the text in the label. __Required.__
+bars.mouseOver.label.lineHeight|float|Defines the line height of the text in the label. __Not Required.__
+bars.mouseOver.label.wrapCount|int|Defines the wrap count of the text in the label. __Not Required.__
+bars.mouseOver.label.backgroundColor|string|Defines the color of the background of the label. __Required.__
+bars.mouseOver.label.backgroundOpacity|string|Defines the color of the background of the label. __Required.__
+bars.mouseOver.label.position|string|Defines the position of the label w.r.t the cursor. __Not Required. Format is "0 0 0".__
+bars.mouseOver.label.rotation|string|Defines the rotation of the label w.r.t the cursor. __Not Required. Format is "90 0 0".__
+bars.mouseOver.label.width|float|Defines the width of the label. __Not Required.__
+bars.mouseOver.label.height|float|Defines the height of the label. __Not Required.__
 
 ### [Example JS of the Visualization](../examples/MapStackedBarChart.js)
 

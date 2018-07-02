@@ -31,8 +31,10 @@ class App extends Component {
               }
             ],
             'camera': {
-              'position': '0 0 10',
+              'position': '0 5 10',
               'rotation': '0 0 0',
+              'nearClipping': 0.5,
+              'fov': 80,
             },
             'floor': {
               'style': {
@@ -90,6 +92,23 @@ class App extends Component {
                     'field': 'Deaths',
                     'color': ['red', 'green'],
                   },
+                },
+                'mouseOver': {
+                  'focusedObject': {
+                    'opacity': 1,
+                    'fill': '#333',
+                  },
+                  'nonFocusedObject': {
+                    'opacity': 0,
+                  },
+                  'label': {
+                    'value': (d) => `Year:${d.Year}\nMonth:${d.Month}\nDeaths:${d.Deaths}\nTornadoes:${d.Tornadoes}\n`,
+                    'align': 'center',
+                    'fontSize': 1,
+                    'backgroundColor': '#333',
+                    'backgroundOpacity': 1,
+                    'fontColor': '#fff',
+                  }
                 }
               },
               'axis': {

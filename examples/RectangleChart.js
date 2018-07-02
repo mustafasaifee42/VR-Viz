@@ -87,6 +87,23 @@ class App extends Component {
                     'field': 'Type',
                     'color': ['red', 'green'],
                   },
+                },
+                'mouseOver': {
+                  'focusedObject': {
+                    'opacity': 1,
+                    'fill': '#333',
+                  },
+                  'nonFocusedObject': {
+                    'opacity': 0,
+                  },
+                  'label': {
+                    'value': (d) => `Year:${d.Year}\nType:${d.Type}\nDeaths:${d.Deaths}\nTornadoes:${d.Tornadoes}\n`,
+                    'align': 'center',
+                    'fontSize': 1,
+                    'backgroundColor': '#333',
+                    'backgroundOpacity': 1,
+                    'fontColor': '#fff',
+                  }
                 }
               },
               'axis': {
