@@ -74,9 +74,7 @@ bars.type|string|Defines type of bar that would be created. __Not Required. Defa
 bars.style|object|Defines the style for the bar. __Required.__
 bars.style.width|float|Defines the width of the bar. __Required if `type` is `box`.__ 
 bars.style.depth|float|Defines the depth of the bar.  __Required if `type` is `box`.__ 
-bars.style.bottomRadius|float|Defines the bottom radius of the bar, if the bar is a cone. __Required if `type` is `cone`.__ 
-bars.style.topRadius|float|Defines the top radius of the bar, if the bar is a cone. __Required if `type` is `cone`.__ 
-bars.style.radius|float|Defines the radius of the bar, if the bar is a cylinder. __Required if `type` is `cylinder`.__ 
+bars.style.radius|float|Defines the radius of the bar, if the bar is a cylinder. __Required if `type` is `cylinder` or `cone`.__ 
 bars.style.segments|int|Defines the no. of segments in bar, if the bar is a cylinder or cone. __Required if `type` is `cylinder` or `cone`.__ 
 bars.style.height|object|Defines the height of the bar. __Required.__
 bars.style.height.scaleType|string|Defines the scale type for height of the bar. __Required.__ _Available values: linear or ordinal._

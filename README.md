@@ -264,7 +264,7 @@ Property|Type|Description
 ---|---|---
 dataFile|string|Path to location where the data file is located. __Required for most visualization type except for _curve plot_, _surface plot_, _parametric curve plot_ and _parametric surface plot_.__
 fileType|string|Type of value. __Available values: `csv`, `json`, `ply`, `text`. Default value 'csv'.__ `csv` fletype must have header; `text` is used for csv without header.
-desc|array|Description of the header. __Required only if the `fileType` is csv.__ _Example: [['Year', 'date','YYYY'], ['Month', 'text'], ['Tornadoes', 'number'], ['Deaths', 'number']]_. If the data type for a particular header is date or time then the format is also required. Available formats can be seen [here](http://momentjs.com/docs/#/parsing/). _Moment.js is used to parse dates and time._
+desc|array|Description of the header. __Required only if the `fileType` is csv.__ _Example: [['Year', 'date','YYYY'], ['geoJson', 'jsonObject'], ['Tornadoes', 'text'], ['Deaths', 'number']]_. If the data type for a particular header is date or time then the format is also required. Available formats can be seen [here](http://momentjs.com/docs/#/parsing/). _Moment.js is used to parse dates and time._
 
 #### style
 
