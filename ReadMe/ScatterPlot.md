@@ -105,7 +105,6 @@ style.fill.field|string|Defines the field in the data that will be mapped as fil
 style.fill.domain|array|Defines the domain for fill. __Not Required.__ _If not present the domain is calculated from the provide data depending on the style.fill.scaleType_
 style.fill.color|array or string|Defines the color for fill. __Not Required if style.fill.scaleType is present, else required. Default value: d3.schemeCategory10__ _If style.fill.scaleType is not present the this needs to be a string otherwise an array._
 style.fill.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if style.fill.color is not given and style.fill.scaleType is `linear`._
-
 mouseOver.focusedObject|object|Defines the style for the mouseOver effect on the point. __Required.__
 mouseOver.focusedObject.opacity|float|Defines the opacity of point when mouse hovers on it. __Required.__
 mouseOver.focusedObject.fill|string|Defines the color of point when mouse hovers on it. __Required.__
