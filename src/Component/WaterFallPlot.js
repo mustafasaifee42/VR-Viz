@@ -130,38 +130,38 @@ class WaterFallPlot extends Component {
     }
     else {
       // Getting domain for axis
-      let xDomain, yDomain, zDomain, colorDomain;
-
+      let xDomain, yDomain, zDomain, colorDomain, xDomainTemp;
+      xDomain = this.props.mark.position.x.field;
+      xDomainTemp = this.props.mark.position.x.field;
       if (this.props.mark.position.x) {
-        if (!this.props.mark.position.x.domain) {
-          xDomain = GetDomain(this.state.data, this.props.mark.position.x.field, this.props.mark.position.x.scaleType, this.props.mark.position.x.startFromZero)
-        } else
-          xDomain = this.props.mark.position.x.domain
+        if (this.props.mark.position.x.scaleType === 'linear')
+          if (!this.props.mark.position.x.domain) {
+            xDomainTemp = this.props.mark.position.x.field.map((d, i) => parseFloat(d));
+            console.log(xDomainTemp)
+            xDomain = [Math.min(...xDomainTemp), Math.max(...xDomainTemp)];
+          } else {
+            xDomain = this.props.mark.position.x.domain;
+            xDomainTemp = this.props.mark.position.x.domain;
+          }
       }
 
       if (this.props.mark.position.z) {
         if (!this.props.mark.position.z.domain) {
-          console.log(Object.keys(this.state.data[0]))
-          zDomain = [];
-          for (let k = 0; k < Object.keys(this.state.data[0]).length; k++)
-            if (Object.keys(this.state.data[0])[k] !== this.props.mark.position.x.field)
-              zDomain.push(Object.keys(this.state.data[0])[k]);
+          zDomain = GetDomain(this.state.data, this.props.mark.position.z.field, this.props.mark.position.z.scaleType, this.props.mark.position.z.startFromZero)
         } else
           zDomain = this.props.mark.position.z.domain
       }
 
-
-
       if (this.props.mark.position.y) {
         if (!this.props.mark.position.y.domain) {
           let min = 9999999999999999, max = -99999999999999999;
-          for (let k = 0; k < zDomain.length; k++) {
+          for (let k = 0; k < xDomain.length; k++) {
             for (let i = 0; i < this.state.data.length; i++) {
-              if (min > this.state.data[i][zDomain[k]]) {
-                min = this.state.data[i][zDomain[k]]
+              if (min > this.state.data[i][xDomain[k]]) {
+                min = this.state.data[i][xDomain[k]]
               }
-              if (max < this.state.data[i][zDomain[k]])
-                max = this.state.data[i][zDomain[k]]
+              if (max < this.state.data[i][xDomain[k]])
+                max = this.state.data[i][xDomain[k]]
             }
           }
           if (this.props.mark.position.y.startFromZero)
@@ -193,7 +193,7 @@ class WaterFallPlot extends Component {
         xScale = d3.scaleLinear()
           .range([0, this.props.style.dimensions.width])
           .domain(xDomain);
-
+      console.log(xDomain);
       yScale = d3.scaleLinear()
         .domain(yDomain)
         .range([0, this.props.style.dimensions.height])
@@ -205,48 +205,52 @@ class WaterFallPlot extends Component {
       else
         zScale = d3.scaleLinear()
           .domain(zDomain)
-          .range(zRange);
+          .range([0, this.props.style.dimensions.depth]);
 
       let strokeColorScale, strokeColorDomain = this.props.mark.position.z.field, strokeColorRange;
 
-
-      if (this.props.mark.style.stroke.scaleType) {
-        let strokeColorRange = d3.schemeCategory10;
-        if (this.props.mark.style.stroke.color)
-          strokeColorRange = this.props.mark.style.stroke.color;
-        if (this.props.mark.style.stroke.scaleType === 'ordinal')
-          strokeColorScale = d3.scaleOrdinal()
-            .domain(strokeColorDomain)
-            .range(strokeColorRange)
-        else {
-          let domain_temp = zDomain.map((d, i) => parseFloat(d))
-          strokeColorDomain = [Math.min(...domain_temp), Math.max(...domain_temp)]
-          strokeColorScale = d3.scaleLinear()
-            .domain(strokeColorDomain)
-            .range(strokeColorRange)
+      if (this.props.mark.style.stroke)
+        if (this.props.mark.style.stroke.scaleType) {
+          if (!this.props.mark.style.stroke.domain) {
+            strokeColorDomain = GetDomain(this.state.data, this.props.mark.style.stroke.field, this.props.mark.style.stroke.scaleType, this.props.mark.style.stroke.startFromZero)
+          } else
+            strokeColorDomain = this.props.mark.style.stroke.domain
+          let strokeColorRange = d3.schemeCategory10;
+          if (this.props.mark.style.stroke.color)
+            strokeColorRange = this.props.mark.style.stroke.color;
+          if (this.props.mark.style.stroke.scaleType === 'ordinal')
+            strokeColorScale = d3.scaleOrdinal()
+              .domain(strokeColorDomain)
+              .range(strokeColorRange)
+          else {
+            strokeColorScale = d3.scaleLinear()
+              .domain(strokeColorDomain)
+              .range(strokeColorRange)
+          }
         }
-      }
+
 
       let fillColorScale, fillColorDomain = this.props.mark.position.z.field, fillColorRange;
 
-
-      if (this.props.mark.style.fill.scaleType) {
-        let fillColorRange = d3.schemeCategory10;
-        if (this.props.mark.style.fill.color)
-          fillColorRange = this.props.mark.style.fill.color;
-        if (this.props.mark.style.fill.scaleType === 'ordinal')
-          fillColorScale = d3.scaleOrdinal()
-            .domain(fillColorDomain)
-            .range(fillColorRange)
-        else {
-          let domain_temp = zDomain.map((d, i) => parseFloat(d))
-          console.log(domain_temp);
-          fillColorDomain = [Math.min(...domain_temp), Math.max(...domain_temp)]
-          fillColorScale = d3.scaleLinear()
-            .domain(fillColorDomain)
-            .range(fillColorRange)
+      if (this.props.mark.style.fill)
+        if (this.props.mark.style.fill.scaleType) {
+          if (!this.props.mark.style.fill.domain) {
+            fillColorDomain = GetDomain(this.state.data, this.props.mark.style.fill.field, this.props.mark.style.fill.scaleType, this.props.mark.style.fill.startFromZero)
+          } else
+            fillColorDomain = this.props.mark.style.fill.domain
+          let fillColorRange = d3.schemeCategory10;
+          if (this.props.mark.style.fill.color)
+            fillColorRange = this.props.mark.style.fill.color;
+          if (this.props.mark.style.fill.scaleType === 'ordinal')
+            fillColorScale = d3.scaleOrdinal()
+              .domain(fillColorDomain)
+              .range(fillColorRange)
+          else {
+            fillColorScale = d3.scaleLinear()
+              .domain(fillColorDomain)
+              .range(fillColorRange)
+          }
         }
-      }
 
       //Axis
       let xAxis, yAxis, zAxis;
@@ -304,45 +308,47 @@ class WaterFallPlot extends Component {
       //Adding marks
       let marks, line;
       if (this.props.mark.style.stroke)
-        line = zDomain.map((d, i) => {
+        line = this.state.data.map((d, i) => {
           let path = ''
-          for (let j = 0; j < this.state.data.length; j++) {
-            if (j !== this.state.data.length - 1)
-              path = path + ` ${xScale(this.state.data[j][this.props.mark.position.x.field])} ${yScale(this.state.data[j][d])} ${zScale(d)},`
+          for (let j = 0; j < xDomainTemp.length; j++) {
+            if (j !== xDomainTemp.length - 1)
+              path = path + ` ${xScale(xDomainTemp[j])} ${yScale(d[xDomainTemp[j].toString()])} ${zScale(d[this.props.mark.position.z.field])},`
             else
-              path = path + ` ${xScale(this.state.data[j][this.props.mark.position.x.field])} ${yScale(this.state.data[j][d])} ${zScale(d)}`
+              path = path + ` ${xScale(xDomainTemp[j])} ${yScale(d[xDomainTemp[j].toString()])} ${zScale(d[this.props.mark.position.z.field])}`
           }
+          console.log(path)
           switch (this.props.mark.style.stroke.scaleType) {
             case 'ordinal':
-              return <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${path}; color: ${strokeColorScale(d)}`}></a-entity>
+              return <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${path}; color: ${strokeColorScale(d[this.props.mark.style.stroke.field])}`}></a-entity>
             case 'linear':
-              return <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${path}; color: ${strokeColorScale(parseFloat(d))}`}></a-entity>
+              return <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${path}; color: ${strokeColorScale(d[this.props.mark.style.stroke.field])}`}></a-entity>
             default:
               return <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${path}; color: ${this.props.mark.style.stroke.color}`}></a-entity>
           }
         })
+
       if (this.props.mark.style.fill)
-        marks = zDomain.map((d, i) => {
-          let path = `0 0 ${zScale(d)},`
-          for (let j = 0; j < this.state.data.length; j++) {
-            if (j !== this.state.data.length - 1)
-              path = path + ` ${xScale(this.state.data[j][this.props.mark.position.x.field])} ${yScale(this.state.data[j][d])},`
+        marks = this.state.data.map((d, i) => {
+          let path = `0 0,`
+          for (let j = 0; j < xDomainTemp.length; j++) {
+            if (j !== xDomainTemp.length - 1)
+              path = path + ` ${xScale(xDomainTemp[j])} ${yScale(d[xDomainTemp[j].toString()])},`
             else
-              path = path + ` ${xScale(this.state.data[j][this.props.mark.position.x.field])} ${yScale(this.state.data[j][d])}`
+              path = path + ` ${xScale(xDomainTemp[j])} ${yScale(d[xDomainTemp[j].toString()])}`
           }
-          path = path + `, ${xScale(this.state.data[this.state.data.length - 1][this.props.mark.position.x.field])} 0`
+          path = path + `, ${xScale(xDomainTemp[xDomainTemp.length - 1])} 0`
           let primitive = `primitive: map; vertices: ${path}; extrude: 0.00000001`;
           switch (this.props.mark.style.fill.scaleType) {
             case 'ordinal':
-              return <a-entity key={i} position={`0 0 ${zScale(d)}`} geometry={primitive} material={`color: ${fillColorScale(d)}; side: double; opacity:${this.props.mark.style.fill.opacity}`} />
+              return <a-entity key={i} position={`0 0 ${zScale(d[this.props.mark.position.z.field])}`} geometry={primitive} material={`color: ${fillColorScale(d[this.props.mark.style.fill.field])}; side: double; opacity: ${this.props.mark.style.fill.opacity} `} />
             case 'linear':
-              return <a-entity key={i} position={`0 0 ${zScale(d)}`} geometry={primitive} material={`color: ${fillColorScale(parseFloat(d))}; side: double; opacity:${this.props.mark.style.fill.opacity}`} />
+              return <a-entity key={i} position={`0 0 ${zScale(d[this.props.mark.position.z.field])} `} geometry={primitive} material={`color: ${fillColorScale(d[this.props.mark.style.fill.field])}; side: double; opacity: ${this.props.mark.style.fill.opacity} `} />
             default:
-              return <a-entity key={i} position={`0 0 ${zScale(d)}`} geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; side: double; opacity:${this.props.mark.style.fill.opacity}`} />
+              return <a-entity key={i} position={`0 0 ${zScale(d[this.props.mark.position.z.field])} `} geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; side: double; opacity: ${this.props.mark.style.fill.opacity} `} />
           }
         })
       return (
-        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
+        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]} `} rotation={this.props.style.rotation} id={this.props.index}>
           {xAxis}
           {yAxis}
           {zAxis}

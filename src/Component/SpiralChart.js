@@ -134,19 +134,21 @@ class SpiralChart extends Component {
       // Getting domain
       let colorDomain, fillColorDomain;
 
-      if (this.props.mark.style.stroke.scaleType) {
-        if (!this.props.mark.style.stroke.domain) {
-          colorDomain = GetDomain(this.state.data, this.props.mark.style.stroke.field, this.props.mark.style.stroke.type, this.props.mark.style.stroke.startFromZero)
-        } else
-          colorDomain = this.props.mark.style.stroke.domain
-      }
+      if (this.props.mark.style.stroke)
+        if (this.props.mark.style.stroke.scaleType) {
+          if (!this.props.mark.style.stroke.domain) {
+            colorDomain = GetDomain(this.state.data, this.props.mark.style.stroke.field, this.props.mark.style.stroke.type, this.props.mark.style.stroke.startFromZero)
+          } else
+            colorDomain = this.props.mark.style.stroke.domain
+        }
 
-      if (this.props.mark.style.fill.scaleType) {
-        if (!this.props.mark.style.fill.domain) {
-          fillColorDomain = GetDomain(this.state.data, this.props.mark.style.fill.field, this.props.mark.style.fill.type, this.props.mark.style.fill.startFromZero)
-        } else
-          fillColorDomain = this.props.mark.style.fill.domain
-      }
+      if (this.props.mark.style.fill)
+        if (this.props.mark.style.fill.scaleType) {
+          if (!this.props.mark.style.fill.domain) {
+            fillColorDomain = GetDomain(this.state.data, this.props.mark.style.fill.field, this.props.mark.style.fill.type, this.props.mark.style.fill.startFromZero)
+          } else
+            fillColorDomain = this.props.mark.style.fill.domain
+        }
 
       //Adding scales
 
@@ -168,35 +170,36 @@ class SpiralChart extends Component {
       })
 
 
-      if (this.props.mark.style.stroke.scaleType) {
-        let colorRange = d3.schemeCategory10;
-        if (this.props.mark.style.stroke.color)
-          colorRange = this.props.mark.style.stroke.color;
-        if (this.props.mark.style.stroke.scaleType === 'ordinal')
-          colorScale = d3.scaleOrdinal()
-            .domain(colorDomain)
-            .range(colorRange)
-        else
-          colorScale = d3.scaleLinear()
-            .domain(colorDomain)
-            .range(colorRange)
-      }
+      if (this.props.mark.style.stroke)
+        if (this.props.mark.style.stroke.scaleType) {
+          let colorRange = d3.schemeCategory10;
+          if (this.props.mark.style.stroke.color)
+            colorRange = this.props.mark.style.stroke.color;
+          if (this.props.mark.style.stroke.scaleType === 'ordinal')
+            colorScale = d3.scaleOrdinal()
+              .domain(colorDomain)
+              .range(colorRange)
+          else
+            colorScale = d3.scaleLinear()
+              .domain(colorDomain)
+              .range(colorRange)
+        }
 
-
-      if (this.props.mark.style.fill.scaleType) {
-        let fillColorRange = d3.schemeCategory10;
-        if (this.props.mark.style.fill.color)
-          fillColorRange = this.props.mark.style.fill.color;
-        if (this.props.mark.style.fill.scaleType === 'ordinal')
-          fillColorScale = d3.scaleOrdinal()
-            .domain(fillColorDomain)
-            .range(fillColorRange)
-        else
-          fillColorScale = d3.scaleLinear()
-            .domain(fillColorDomain)
-            .range(fillColorRange)
-        console.log(fillColorScale(3))
-      }
+      if (this.props.mark.style.fill)
+        if (this.props.mark.style.fill.scaleType) {
+          let fillColorRange = d3.schemeCategory10;
+          if (this.props.mark.style.fill.color)
+            fillColorRange = this.props.mark.style.fill.color;
+          if (this.props.mark.style.fill.scaleType === 'ordinal')
+            fillColorScale = d3.scaleOrdinal()
+              .domain(fillColorDomain)
+              .range(fillColorRange)
+          else
+            fillColorScale = d3.scaleLinear()
+              .domain(fillColorDomain)
+              .range(fillColorRange)
+          console.log(fillColorScale(3))
+        }
 
       //Drawing SpiralCoordinates
 

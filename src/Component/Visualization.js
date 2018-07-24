@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import 'aframe';
-
 import BarGraph from './BarGraph.js';
 import ScatterPlot from './ScatterPlot.js';
 import StackedBarGraph from './StackedBarGraph.js';
@@ -25,6 +24,8 @@ import TimeSeries from './TimeSeries.js';
 import MapTimeBars from './MapTimeBars.js';
 import SpiralChart from './SpiralChart.js';
 
+
+require('aframe-teleport-controls');
 
 class Visualization extends Component {
   constructor(props) {
@@ -64,10 +65,14 @@ class Visualization extends Component {
       else
         nearClipping = this.props.scene.camera.nearClipping;
       let cameraSettings = `active: true;near:${nearClipping};fov:${fov}`
-      camera = <a-entity id="#cameraRig" position={this.props.scene.camera.position} rotation={this.props.scene.camera.rotation} wasd-controls="camera: #head">
+      camera = <a-entity id="cameraRig" position={this.props.scene.camera.position} rotation={this.props.scene.camera.rotation} wasd-controls="camera: #head">
         <a-entity id="head" camera={cameraSettings} position="0 1.6 0" look-controls >
+        </a-entity>
+        <a-entity id="left-hand" windows-motion-controls="hand: left" vive-controls="hand: left" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;">
+        </a-entity>
+        <a-entity id="right-hand" windows-motion-controls="hand: right" vive-controls="hand: right" gearvr-controls daydream-controls teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;">
           <a-entity cursor="fuse: true; fuseTimeout: 50"
-            position="0 0 -1"
+            position="0 0 -0.1"
             geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
             material="color: black; shader: flat"
             raycaster="far: 1000; interval: 100;objects: .clickable;showLine: true;" />
@@ -75,13 +80,11 @@ class Visualization extends Component {
             id="hover"
             geometry="primitive: plane; height: auto; width: auto"
             material="color: #000; opacity: 1"
-            position="0 -0.1 -5"
+            position="3 -0.1 -5"
             rotation='0 0 0'
             text="align: center; color: #fff; anchor: center; value: "
             visible={false} />
         </a-entity>
-        <a-entity teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;"></a-entity>
-        <a-entity teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;"></a-entity>
       </a-entity>
 
       //Sky

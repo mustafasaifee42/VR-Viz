@@ -75,6 +75,10 @@ aframe-mouse-cursor-component@^0.5.2:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/aframe-mouse-cursor-component/-/aframe-mouse-cursor-component-0.5.2.tgz#6ce6926a3718691fba3be7561d853de33ba5cce4"
 
+aframe-teleport-controls@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/aframe-teleport-controls/-/aframe-teleport-controls-0.3.1.tgz#7d7ef206f483ea92425a6333b0f8fb26c9596d1c"
+
 aframe@^0.8.2:
   version "0.8.2"
   resolved "https://registry.yarnpkg.com/aframe/-/aframe-0.8.2.tgz#435dd7c7d2f059316af87f4a9783427b0617e11f"

@@ -8,6 +8,7 @@
     "aframe-event-set-component": "^4.1.1",
     "aframe-faceset-component": "^0.4.1",
     "aframe-meshline-component": "^0.2.1",
+    "aframe-teleport-controls": "^0.3.1",
     "d3": "^5.1.0",
     "d3-geo-projection": "^2.4.0",
     "d3-request": "^1.0.6",

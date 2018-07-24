@@ -179,7 +179,6 @@ class FlowMap extends Component {
       let geoData = GetMapShape(this.props.mark.map.data, this.props.mark.map.projection, this.props.mark.mapScale, this.props.mark.mapOrigin, this.props.mark.map.shapeIdentifier, this.props.mark.map.shapeKey);
 
       let shapes = geoData.map((d, i) => {
-        console.log(d.vertices)
         let primitive = `primitive: map; vertices: ${d.vertices}; extrude: ${this.props.mark.map.style.extrusion.value}`;
         return (<a-entity geometry={primitive} material={`color: ${this.props.mark.map.style.fill.color}; metalness: 0.2; opacity:${this.props.mark.map.style.fill.opacity}`} />)
       })
@@ -251,10 +250,10 @@ class FlowMap extends Component {
 
         target_position[1] = -1 * target_position[1];
         target_position.push(0)
-
         let middle_point
-        if (this.props.height)
-          middle_point = [(target_position[0] + source_position[0]) / 2, (target_position[1] + source_position[1]) / 2, d[this.props.height.field] * this.props.height.scaleFactor]
+        if (this.props.mark.flowlines.style.height) {
+          middle_point = [(target_position[0] + source_position[0]) / 2, (target_position[1] + source_position[1]) / 2, d[this.props.mark.flowlines.style.height.field] * this.props.mark.flowlines.style.height.scaleFactor]
+        }
         else {
           let distance = Math.sqrt((target_position[0] - source_position[0]) * (target_position[0] - source_position[0]) + (target_position[1] - source_position[1]) * (target_position[1] - source_position[1]))
           middle_point = [(target_position[0] + source_position[0]) / 2, (target_position[1] + source_position[1]) / 2, distance / 4]
