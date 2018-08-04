@@ -6,7 +6,6 @@ import * as d3 from 'd3';
 
 export default function (mapData, proj, scale, position, identifier, shapeKey) {
   let projection;
-  console.log(mapData)
   switch (proj) {
     case ('Mercator'): projection = d3.geoMercator(); break;
     case ('Robinson'): projection = d3GeoProjection.geoRobinson(); break;
@@ -14,18 +13,28 @@ export default function (mapData, proj, scale, position, identifier, shapeKey) {
     case ('Winkel-Tripel'): projection = d3GeoProjection.geoWinkel3(); break;
     case ('Equirectangular'): projection = d3.geoEquirectangular(); break;
     case ('Natural Earth1'): projection = d3.geoNaturalEarth1(); break;
+    case ('AlbersUSA'): projection = d3.geoAlbersUsa(); break;
     default: projection = d3GeoProjection.geoRobinson(); break;
   }
   let features = topojson.feature(mapData, mapData.objects[shapeKey]).features;
-  let countries = features.map((d, i) => d[identifier])
   let projection_scale = projection
     .scale(scale)
     .translate([position[0], position[1]]);
   let path = d3.geoPath().projection(projection_scale);
-  let coords = features.map((d, i) => {
-    let coordInd = path(d).split("M");
-    coordInd.shift();
-    return coordInd
+  let featureNew = [];
+  let print = features.map((d, i) => {
+    if (!path(d))
+      console.log(d)
+    else
+      featureNew.push(d)
+  })
+  let countries = featureNew.map((d, i) => d[identifier])
+  let coords = featureNew.map((d, i) => {
+    if (path(d)) {
+      let coordInd = path(d).split("M");
+      coordInd.shift();
+      return coordInd
+    }
   })
   let coords1 = coords.map((d, i) => {
     let coordsTemp = d.map((c, j) => {

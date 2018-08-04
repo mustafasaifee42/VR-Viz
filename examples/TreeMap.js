@@ -11,7 +11,7 @@ class App extends Component {
           {
             'sky': {
               'style': {
-                'color': '#ccc',
+                'color': '#333',
                 'texture': false,
               }
             },
@@ -31,17 +31,9 @@ class App extends Component {
               }
             ],
             'camera': {
-              'position': '0 0 10',
+              'position': '0 0 0',
               'rotation': '0 0 0',
             },
-            'floor': {
-              'style': {
-                'color': '#ccc',
-                'texture': false,
-                'width': 100,
-                'depth': 100,
-              }
-            }
           }
         }
         graph={
@@ -55,16 +47,16 @@ class App extends Component {
               'style': {
                 'origin': [0, 0, 0],
                 'dimensions': {
-                  'width': 50,
-                  'depth': 50,
-                  'height': 5,
+                  'width': 5,
+                  'depth': 5,
+                  'height': 1.5,
                 }
               },
               'mark': {
                 'type': 'box',
                 'style': {
-                  'paddingInner': 0.5,
-                  'paddingOuter': 0.1,
+                  'paddingInner': 0.01,
+                  'paddingOuter': 0.005,
                   'extrusion': {
                     'field': 'size',
                     'startFromZero': true,
@@ -74,23 +66,6 @@ class App extends Component {
                     'opacity': 1,
                   },
                 },
-                'mouseOver': {
-                  'focusedObject': {
-                    'opacity': 1,
-                    'fill': '#333',
-                  },
-                  'nonFocusedObject': {
-                    'opacity': 0,
-                  },
-                  'label': {
-                    'value': (d) => `name:${d.name}\nsize:${d.size}`,
-                    'align': 'center',
-                    'fontSize': 1,
-                    'backgroundColor': '#333',
-                    'backgroundOpacity': 1,
-                    'fontColor': '#fff',
-                  }
-                }
               },
             }
           ]
