@@ -406,7 +406,7 @@ grid.opacity|float|Defined the opacity for grid for the axis. __Required.__ _Val
 
 ## Known Issues
 * Grid in the axes doesnt work right now
-* Titles of the axes doesnt work right now
+* ~~Titles of the axes doesnt work right now~~
 
 ## Installation
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
