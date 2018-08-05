@@ -205,6 +205,7 @@ class RectangleChart extends Component {
           dimensions={this.props.style.dimensions}
           scaleType={this.props.mark.position.x.scaleType}
           padding={xScale.bandwidth()}
+          grid={this.props.xAxis.grid}
         />
       }
 
@@ -218,6 +219,7 @@ class RectangleChart extends Component {
           title={this.props.yAxis.title}
           dimensions={this.props.style.dimensions}
           scaleType={this.props.mark.style.height.scaleType}
+          grid={this.props.yAxis.grid}
         />
       }
 
@@ -231,6 +233,7 @@ class RectangleChart extends Component {
           title={this.props.zAxis.title}
           dimensions={this.props.style.dimensions}
           scaleType={this.props.mark.style.depth.scaleType}
+          grid={this.props.zAxis.grid}
         />
 
       }

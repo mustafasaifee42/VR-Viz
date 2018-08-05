@@ -247,6 +247,7 @@ class BarGraph extends Component {
             dimensions={this.props.style.dimensions}
             scaleType={this.props.mark.position.x.scaleType}
             padding={radius * 2}
+            grid={this.props.xAxis.grid}
           />
         else
           xAxis = <Axis
@@ -259,6 +260,7 @@ class BarGraph extends Component {
             dimensions={this.props.style.dimensions}
             scaleType={this.props.mark.position.x.scaleType}
             padding={width}
+            grid={this.props.xAxis.grid}
           />
       }
 
@@ -272,6 +274,7 @@ class BarGraph extends Component {
           title={this.props.yAxis.title}
           dimensions={this.props.style.dimensions}
           scaleType={this.props.mark.style.height.scaleType}
+          grid={this.props.yAxis.grid}
         />
       }
 
@@ -287,6 +290,7 @@ class BarGraph extends Component {
             dimensions={this.props.style.dimensions}
             scaleType={this.props.mark.position.z.scaleType}
             padding={radius * 2}
+            grid={this.props.zAxis.grid}
           />
         else
           zAxis = <Axis
@@ -299,6 +303,7 @@ class BarGraph extends Component {
             dimensions={this.props.style.dimensions}
             scaleType={this.props.mark.position.z.scaleType}
             padding={depth}
+            grid={this.props.zAxis.grid}
           />
 
       }
