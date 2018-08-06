@@ -192,6 +192,7 @@ class TimeSeries extends Component {
           title={this.props.xAxis.title}
           dimensions={this.props.style.dimensions}
           scaleType={this.props.mark.position.x.scaleType}
+          grid={this.props.xAxis.grid}
         />
       }
 
@@ -205,6 +206,7 @@ class TimeSeries extends Component {
           title={this.props.yAxis.title}
           dimensions={this.props.style.dimensions}
           scaleType={this.props.mark.position.y.scaleType}
+          grid={this.props.yAxis.grid}
         />
       }
 
@@ -218,6 +220,7 @@ class TimeSeries extends Component {
           title={this.props.zAxis.title}
           dimensions={this.props.style.dimensions}
           scaleType={this.props.mark.position.z.scaleType}
+          grid={this.props.zAxis.grid}
         />
 
       }
