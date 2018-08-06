@@ -229,10 +229,16 @@ class MapTimeBars extends Component {
         return markTemp
       })
 
+
+      let graphTitle
+      if (this.props.title) {
+        graphTitle = <a-text color={this.props.title.color} wrapCount={this.props.title.wrapCount} lineHeight={this.props.title.lineHeight} width={this.props.title.width} value={this.props.title.value} anchor='align' side='double' align={this.props.title.align} position={this.props.title.position} rotation={this.props.title.rotation} />
+      }
       return (
         <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.mark.rotation} id={this.props.index}>
           {shapes}
           {border}
+          {graphTitle}
           {marks}
         </a-entity>
       )

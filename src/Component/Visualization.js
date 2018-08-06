@@ -131,6 +131,7 @@ class Visualization extends Component {
               zAxis={d.axis['z-axis']}
               axisBox={d.axis['axis-box']}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<BarGraph
@@ -138,6 +139,7 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         case 'ConnectedScatterPlot': {
@@ -153,6 +155,7 @@ class Visualization extends Component {
               zAxis={d.axis['z-axis']}
               axisBox={d.axis['axis-box']}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<ConnectedScatterPlot
@@ -160,6 +163,7 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         case 'ContourMap': {
@@ -178,6 +182,7 @@ class Visualization extends Component {
               heightThreshold={heightThreshold}
               axisBox={d.axis['axis-box']}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<ContourMap
@@ -186,6 +191,7 @@ class Visualization extends Component {
               mark={d.mark}
               heightThreshold={heightThreshold}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         case 'ContourPlot': {
@@ -200,12 +206,14 @@ class Visualization extends Component {
               zAxis={d.axis['z-axis']}
               axisBox={d.axis['axis-box']}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<ContourPlot
               style={d.style}
               mark={d.mark}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         case 'FlowMap': {
@@ -218,6 +226,7 @@ class Visualization extends Component {
               mark={d.mark}
               axisBox={d.axis['axis-box']}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<FlowMap
@@ -225,6 +234,7 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         case 'ForceDirectedGraph': {
@@ -237,6 +247,7 @@ class Visualization extends Component {
               mark={d.mark}
               axisBox={d.axis['axis-box']}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<ForceDirectedGraph
@@ -244,6 +255,7 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         case 'MapBarChart': {
@@ -256,6 +268,7 @@ class Visualization extends Component {
               mark={d.mark}
               axisBox={d.axis['axis-box']}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<MapBarChart
@@ -263,6 +276,7 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         case 'MapStackedBarChart': {
@@ -275,6 +289,7 @@ class Visualization extends Component {
               mark={d.mark}
               axisBox={d.axis['axis-box']}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<MapStackedBarChart
@@ -282,6 +297,7 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         case 'ParametricCurvePlot': {
@@ -297,6 +313,7 @@ class Visualization extends Component {
               parameter={d.parameter}
               axisBox={d.axis['axis-box']}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<ParametricCurvePlot
@@ -304,6 +321,7 @@ class Visualization extends Component {
               mark={d.mark}
               parameter={d.parameter}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         case 'ParametricSurfacePlot': {
@@ -319,6 +337,7 @@ class Visualization extends Component {
               parameter={d.parameter}
               axisBox={d.axis['axis-box']}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<ParametricSurfacePlot
@@ -326,6 +345,7 @@ class Visualization extends Component {
               mark={d.mark}
               parameter={d.parameter}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         case 'PointCloud': {
@@ -338,6 +358,7 @@ class Visualization extends Component {
               mark={d.mark}
               axisBox={d.axis['axis-box']}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<PointCloud
@@ -345,6 +366,7 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         case 'PrismMap': {
@@ -357,6 +379,7 @@ class Visualization extends Component {
               mark={d.mark}
               axisBox={d.axis['axis-box']}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<PrismMap
@@ -364,6 +387,7 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         case 'ScatterPlot': {
@@ -379,6 +403,7 @@ class Visualization extends Component {
               zAxis={d.axis['z-axis']}
               axisBox={d.axis['axis-box']}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<ScatterPlot
@@ -386,6 +411,7 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         case 'StackedBarGraph': {
@@ -401,6 +427,7 @@ class Visualization extends Component {
               zAxis={d.axis['z-axis']}
               axisBox={d.axis['axis-box']}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<StackedBarGraph
@@ -408,6 +435,7 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         case 'SurfacePlot': {
@@ -422,12 +450,14 @@ class Visualization extends Component {
               zAxis={d.axis['z-axis']}
               axisBox={d.axis['axis-box']}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<SurfacePlot
               style={d.style}
               mark={d.mark}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         case 'TreeMap': {
@@ -440,6 +470,7 @@ class Visualization extends Component {
               mark={d.mark}
               axisBox={d.axis['axis-box']}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<TreeMap
@@ -447,6 +478,7 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         case 'WaterFallPlot': {
@@ -462,6 +494,7 @@ class Visualization extends Component {
               zAxis={d.axis['z-axis']}
               axisBox={d.axis['axis-box']}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<WaterFallPlot
@@ -469,6 +502,7 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         case 'MeshPlot': {
@@ -484,6 +518,7 @@ class Visualization extends Component {
               zAxis={d.axis['z-axis']}
               axisBox={d.axis['axis-box']}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<MeshPlot
@@ -491,6 +526,7 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         case 'RectangleChart': {
@@ -506,6 +542,7 @@ class Visualization extends Component {
               zAxis={d.axis['z-axis']}
               axisBox={d.axis['axis-box']}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<RectangleChart
@@ -513,6 +550,7 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         case 'TimeSeries': {
@@ -528,6 +566,7 @@ class Visualization extends Component {
               zAxis={d.axis['z-axis']}
               axisBox={d.axis['axis-box']}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<TimeSeries
@@ -535,6 +574,7 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         case 'MapTimeBars': {
@@ -547,6 +587,7 @@ class Visualization extends Component {
               mark={d.mark}
               axisBox={d.axis['axis-box']}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<MapTimeBars
@@ -554,6 +595,7 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         case 'MapContourLines': {
@@ -565,6 +607,7 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<MapContourLines
@@ -572,6 +615,7 @@ class Visualization extends Component {
               style={d.style}
               mark={d.mark}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         case 'SpiralChart': {
@@ -584,12 +628,14 @@ class Visualization extends Component {
               mark={d.mark}
               axis={d.axis}
               index={`Graph${i}`}
+              title={d.title}
             />)
           else
             return (<SpiralChart
               data={d.data}
               style={d.style}
               index={`Graph${i}`}
+              title={d.title}
             />)
         }
         default: {

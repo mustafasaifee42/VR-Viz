@@ -350,12 +350,18 @@ class WaterFallPlot extends Component {
               return <a-entity key={i} position={`0 0 ${zScale(d[this.props.mark.position.z.field])} `} geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; side: double; opacity: ${this.props.mark.style.fill.opacity} `} />
           }
         })
+
+      let graphTitle
+      if (this.props.title) {
+        graphTitle = <a-text color={this.props.title.color} wrapCount={this.props.title.wrapCount} lineHeight={this.props.title.lineHeight} width={this.props.title.width} value={this.props.title.value} anchor='align' side='double' align={this.props.title.align} position={this.props.title.position} rotation={this.props.title.rotation} />
+      }
       return (
         <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]} `} rotation={this.props.style.rotation} id={this.props.index}>
           {xAxis}
           {yAxis}
           {zAxis}
           {box}
+          {graphTitle}
           {marks}
           {line}
         </a-entity>

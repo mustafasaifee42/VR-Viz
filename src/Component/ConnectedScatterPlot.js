@@ -267,6 +267,11 @@ class ConnectedScatterPlot extends Component {
       }
 
 
+
+      let graphTitle
+      if (this.props.title) {
+        graphTitle = <a-text color={this.props.title.color} wrapCount={this.props.title.wrapCount} lineHeight={this.props.title.lineHeight} width={this.props.title.width} value={this.props.title.value} anchor='align' side='double' align={this.props.title.align} position={this.props.title.position} rotation={this.props.title.rotation} />
+      }
       let box;
       if (this.props.axisBox) {
         box = <AxisBox
@@ -340,6 +345,7 @@ class ConnectedScatterPlot extends Component {
           <a-draw-curve curveref='#lineGraph' material={`shader: line; color: ${this.props.mark.line.style.stroke.color}; opacity: ${this.props.mark.line.style.stroke.opacity}`} />
           {marks}
           {labels}
+          {graphTitle}
           {xAxis}
           {yAxis}
           {zAxis}
