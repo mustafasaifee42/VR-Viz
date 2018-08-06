@@ -405,7 +405,7 @@ grid.opacity|float|Defined the opacity for grid for the axis. __Required.__ _Val
 * Add collaboration using [A-Frame Networked](https://haydenlee.io/networked-aframe/)
 
 ## Known Issues
-* Grid in the axes doesnt work right now
+* ~~Grid in the axes doesnt work right now~~
 * ~~Titles of the axes doesnt work right now~~
 
 ## Installation
