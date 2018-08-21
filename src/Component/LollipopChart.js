@@ -13,35 +13,8 @@ import { csv } from 'd3-request';
 import { json } from 'd3-request';
 import { text } from 'd3-request';
 
-AFRAME.registerComponent('cursor-listener', {
-  schema: {
-    on: { type: 'string' },
-    target: { type: 'selector' },
-    text: { type: 'string' },
-  },
 
-  init: function (data) {
-    console.log(data);
-    this.el.addEventListener('mouseenter', function (evt) {
-      console.log(evt)
-      d3.selectAll('#mouseHover')
-        .append('a-entity')
-        .attr('class', 'hover')
-        .attr('position', '-2.5 1 0')
-        .attr('geometry', 'primitive: plane; width: 3; height: auto')
-        .attr('material', 'color: blue')
-        .attr('text', 'anchor: center; width: 1.5; color: white; value: \n[CENTER ANCHOR]\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam')
-    });
-    this.el.addEventListener('mouseleave', function (evt) {
-      d3.selectAll('.hover')
-        .remove();
-    });
-  }
-
-
-});
-
-class BarGraph extends Component {
+class LollipopChart extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -159,7 +132,7 @@ class BarGraph extends Component {
     }
     else {
       // Getting domain for axis
-      let xDomain, yDomain, zDomain, colorDomain;
+      let xDomain, yDomain, zDomain, colorDomain, stemColorDomain, radiusDomain;
 
       if (this.props.mark.position.x) {
         if (!this.props.mark.position.x.domain) {
@@ -168,11 +141,11 @@ class BarGraph extends Component {
           xDomain = this.props.mark.position.x.domain
       }
 
-      if (this.props.mark.style.height) {
-        if (!this.props.mark.style.height.domain) {
-          yDomain = GetDomain(this.state.data, this.props.mark.style.height.field, this.props.mark.style.height.scaleType, this.props.mark.style.height.startFromZero)
+      if (this.props.mark.position.y) {
+        if (!this.props.mark.position.y.domain) {
+          yDomain = GetDomain(this.state.data, this.props.mark.position.y.field, this.props.mark.position.y.scaleType, this.props.mark.position.y.startFromZero)
         } else
-          yDomain = this.props.mark.style.height.domain
+          yDomain = this.props.mark.position.y.domain
       }
 
       if (this.props.mark.position.z) {
@@ -182,17 +155,35 @@ class BarGraph extends Component {
           zDomain = this.props.mark.position.z.domain
       }
 
+
+      if (this.props.mark.style.radius) {
+        if (this.props.mark.style.radius.scaleType) {
+          if (!this.props.mark.style.radius.domain) {
+            radiusDomain = GetDomain(this.state.data, this.props.mark.style.radius.field, this.props.mark.style.radius.scaleType, this.props.mark.style.radius.startFromZero)
+          } else
+            radiusDomain = this.props.mark.style.radius.domain
+        }
+      }
+
       if (this.props.mark.style.fill) {
-        if (this.props.mark.style.fill.scaleType) 
+        if(this.props.mark.style.fill.scaleType)
           if (!this.props.mark.style.fill.domain) {
             colorDomain = GetDomain(this.state.data, this.props.mark.style.fill.field, this.props.mark.style.fill.scaleType, this.props.mark.style.fill.startFromZero)
           } else
             colorDomain = this.props.mark.style.fill.domain
       }
 
+      if (this.props.mark.droplines.style.fill) {
+        if(this.props.mark.droplines.style.fill.scaleType)
+          if (!this.props.mark.droplines.style.fill.domain) {
+            stemColorDomain = GetDomain(this.state.data, this.props.mark.droplines.style.fill.field, this.props.mark.droplines.style.fill.scaleType, this.props.mark.droplines.style.fill.startFromZero)
+          } else
+            stemColorDomain = this.props.mark.droplines.style.fill.domain
+      }
+
       //Adding Scale
 
-      let xScale, yScale, zScale, colorScale, width, depth;
+      let xScale, yScale, zScale, colorScale, stemColorScale, radiusScale, width, depth;
 
       if (this.props.mark.position.x.scaleType === 'ordinal') {
         xScale = d3.scaleBand()
@@ -201,7 +192,6 @@ class BarGraph extends Component {
           .paddingInner(this.props.mark.style.padding.x);
         width = xScale.bandwidth();
       }
-
       yScale = d3.scaleLinear()
         .domain(yDomain)
         .range([0, this.props.style.dimensions.height])
@@ -218,6 +208,16 @@ class BarGraph extends Component {
       if (depth > width)
         radius = width / 2;
 
+      if (this.props.mark.style.radius.scaleType) {
+        if (this.props.mark.style.radius.scaleType === 'ordinal')
+          radiusScale = d3.scaleOrdinal()
+            .domain(radiusDomain)
+            .range(this.props.mark.style.radius.value)
+        else
+          radiusScale = d3.scaleLinear()
+            .domain(radiusDomain)
+            .range(this.props.mark.style.radius.value)
+      }
 
       if (this.props.mark.style.fill.scaleType) {
         let colorRange = d3.schemeCategory10;
@@ -230,6 +230,20 @@ class BarGraph extends Component {
         else
           colorScale = d3.scaleLinear()
             .domain(colorDomain)
+            .range(colorRange)
+      }
+
+      if (this.props.mark.droplines.style.fill.scaleType) {
+        let colorRange = d3.schemeCategory10;
+        if (this.props.mark.droplines.style.fill.color)
+          colorRange = this.props.mark.droplines.style.fill.color;
+        if (this.props.mark.droplines.style.fill.scaleType === 'ordinal')
+          stemColorScale = d3.scaleOrdinal()
+            .domain(stemColorDomain)
+            .range(colorRange)
+        else
+          stemColorScale = d3.scaleLinear()
+            .domain(stemColorDomain)
             .range(colorRange)
       }
 
@@ -274,7 +288,7 @@ class BarGraph extends Component {
           orient={this.props.yAxis.orient}
           title={this.props.yAxis.title}
           dimensions={this.props.style.dimensions}
-          scaleType={this.props.mark.style.height.scaleType}
+          scaleType={this.props.mark.position.y.scaleType}
           grid={this.props.yAxis.grid}
         />
       }
@@ -328,33 +342,32 @@ class BarGraph extends Component {
 
       //Adding marks
       let marks = this.state.data.map((d, i) => {
-        let hght = yScale(d[this.props.mark.style.height.field]);
-        if (yScale(d[this.props.mark.style.height.field]) === 0) {
-          hght = 0.000000000001;
-        }
         let color = this.props.mark.style.fill.color
         if (this.props.mark.style.fill.scaleType) {
           color = colorScale(d[this.props.mark.style.fill.field])
         }
-        let position = `${xScale(d[this.props.mark.position.x.field]) + width / 2} ${hght / 2} ${zScale(d[this.props.mark.position.z.field]) + depth / 2}`
-
-        if ((this.props.mark.type == 'cone') || (this.props.mark.type == 'cylinder'))
-          position = `${xScale(d[this.props.mark.position.x.field]) + radius} ${hght / 2} ${zScale(d[this.props.mark.position.z.field]) + radius}`
+        let position = `${xScale(d[this.props.mark.position.x.field]) + width / 2} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field]) + depth / 2}`
 
         let hover, hoverText
         if (this.props.mark.mouseOver) {
           if (this.props.mark.mouseOver.label)
             hoverText = this.props.mark.mouseOver.label.value(d)
         }
+        let radiusValue;
+        if (this.props.mark.style.radius.scaleType) {
+          radiusValue = radiusScale(d[this.props.mark.style.radius.field])
+        }
+        else
+          radiusValue = this.props.mark.style.radius.value
         return <Shape
           key={i}
           type={this.props.mark.type}
           color={`${color}`}
           opacity={this.props.mark.style.fill.opacity}
-          depth={`${depth}`}
-          height={`${hght}`}
-          width={`${width}`}
-          radius={`${radius}`}
+          depth={`${radiusValue}`}
+          height={`${radiusValue}`}
+          width={`${radiusValue}`}
+          radius={`${radiusValue}`}
           segments={`${this.props.mark.style.segments}`}
           position={position}
           hover={this.props.mark.mouseOver}
@@ -362,9 +375,33 @@ class BarGraph extends Component {
           graphID={this.props.index}
         />
       });
+      let stem = this.state.data.map((d, i) => {
+        let color = this.props.mark.droplines.style.fill.color
+        if (this.props.mark.droplines.style.fill.scaleType) {
+          color = stemColorScale(d[this.props.mark.droplines.style.fill.field])
+        }
+        let position = `${xScale(d[this.props.mark.position.x.field]) + width / 2} ${yScale(d[this.props.mark.position.y.field]) / 2} ${zScale(d[this.props.mark.position.z.field]) + depth / 2}`
+        
+        return <Shape
+          key={i}
+          type={'cylinder'}
+          color={`${color}`}
+          opacity={this.props.mark.droplines.style.fill.opacity}
+          depth={`${this.props.mark.droplines.style.radius}`}
+          height={`${yScale(d[this.props.mark.position.y.field])}`}
+          width={`${this.props.mark.droplines.style.radius}`}
+          radius={this.props.mark.droplines.style.radius}
+          segments={`${this.props.mark.style.segments}`}
+          position={position}
+          hover={false}
+          hoverText={''}
+          graphID={this.props.index}
+        />
+      });
       console.log(this.props.mark.mouseOver)
       return (
         <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
+          {stem}
           {marks}
           {xAxis}
           {yAxis}
@@ -376,4 +413,4 @@ class BarGraph extends Component {
     }
   }
 }
-export default BarGraph
+export default LollipopChart

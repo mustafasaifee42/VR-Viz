@@ -23,6 +23,7 @@ import RectangleChart from './RectangleChart.js';
 import TimeSeries from './TimeSeries.js';
 import MapTimeBars from './MapTimeBars.js';
 import SpiralChart from './SpiralChart.js';
+import LollipopChart from './LollipopChart.js';
 
 
 require('aframe-teleport-controls');
@@ -546,6 +547,30 @@ class Visualization extends Component {
             />)
           else
             return (<RectangleChart
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+              index={`Graph${i}`}
+              title={d.title}
+            />)
+        }
+        case 'LollipopChart': {
+          if ((!d.data) || (!d.style) || (!d.mark))
+            console.log(`Error: Some necessary attributes missing for ${d.type}`)
+          if (d.axis)
+            return (<LollipopChart
+              data={d.data}
+              style={d.style}
+              mark={d.mark}
+              xAxis={d.axis['x-axis']}
+              yAxis={d.axis['y-axis']}
+              zAxis={d.axis['z-axis']}
+              axisBox={d.axis['axis-box']}
+              index={`Graph${i}`}
+              title={d.title}
+            />)
+          else
+            return (<LollipopChart
               data={d.data}
               style={d.style}
               mark={d.mark}
