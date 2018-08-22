@@ -211,6 +211,7 @@ Main features / properties of the scene objects are:
 type is used to define what kind of visualization is needed. The availabe values for type are :
 * `BarGraph` for 3D Bar Graph
 * `StackedBarGraph` for 3D Stacked Bar Graph
+* `LollipopChart` for 3D Lollipop Chart
 * `RectangleChart` for 3D Rectangle Chart
 * `ScatterPlot` for 3D Scatter Plot / 3D Bubble Chat
 * `ConnectedScatterPlot` for 3D Connected Scatter Plot
@@ -236,6 +237,7 @@ type is used to define what kind of visualization is needed. The availabe values
 __Supported Visualizations__
 * [3D Bar Graph](/ReadMe/BarGraph.md)
 * [3D Stacked Bar Graph](/ReadMe/StackedBarGraph.md)
+* [3D Lollipop Chart](/ReadMe/LollipopChart.md)
 * [3D Rectangle Chart](/ReadMe/RectangleChart.md)
 * [3D Scatter Plot / 3D Bubble Chat](/ReadMe/ScatterPlot.md)
 * [3D Connected Scatter Plot](/ReadMe/ConnectedScatterPlot.md)
@@ -396,9 +398,9 @@ tick.color|string|Defined the color for ticks and text for tick for the axis. __
 tick.opacity|float|Defined the opacity for title for the axis. __Required.__ _Value must be between 0 and 1._
 tick.rotation|string| Defines the alignment of the text for ticks. __Not Required. Default value for x-axis: "-90 0 0". Default value for y-axis: "0 0 0". Default value for z-axis: "-90 0 0". Format is "0 0 0"__.
 tick.align|string| Defines the alignment of the text for ticks. __Not Required. Default value for x-axis: center. Default value for y-axis: right. Default value for z-axis: right.__. _Available values: left, center, right._
-grid|object|Defined the style of grid for the axis. __Not Required.__ _Currently this feature is not available._
-grid.color|string|Defined the color for grid for the axis. __Required.__ _Currently this feature is not available._
-grid.opacity|float|Defined the opacity for grid for the axis. __Required.__ _Value must be between 0 and 1. Currently this feature is not available._
+grid|object|Defined the style of grid for the axis. __Not Required.__
+grid.color|string|Defined the color for grid for the axis. __Required.__
+grid.opacity|float|Defined the opacity for grid for the axis. __Required.__ _Value must be between 0 and 1._
 
 ## To Do
 * Add Legends
