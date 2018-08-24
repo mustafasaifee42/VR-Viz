@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import 'aframe';
+import AFRAME from 'aframe';
 import BarGraph from './BarGraph.js';
 import ScatterPlot from './ScatterPlot.js';
 import StackedBarGraph from './StackedBarGraph.js';
@@ -66,28 +66,47 @@ class Visualization extends Component {
       else
         nearClipping = this.props.scene.camera.nearClipping;
       let cameraSettings = `active: true;near:${nearClipping};fov:${fov}`
-      camera = <a-entity id="cameraRig" position={this.props.scene.camera.position} rotation={this.props.scene.camera.rotation} wasd-controls="camera: #head">
-        <a-entity id="head" camera={cameraSettings} position="0 1.6 0" look-controls >
+      if(AFRAME.utils.device.checkHeadsetConnected ())
+        camera = <a-entity id="cameraRig" position={this.props.scene.camera.position} rotation={this.props.scene.camera.rotation} wasd-controls="camera: #head">
+          <a-entity id="head" camera={cameraSettings} position="0 1.6 0" look-controls >
+          </a-entity>
+          <a-entity id="left-hand" windows-motion-controls="hand: left" vive-controls="hand: left" oculus-touch-controls="hand: left" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;">
+          </a-entity>
+          <a-entity id="right-hand" windows-motion-controls="hand: right" oculus-go-controls vive-controls="hand: right" oculus-touch-controls="hand: right" gearvr-controls daydream-controls teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;">
+            <a-entity cursor="fuse: true; fuseTimeout: 50"
+              position="0 0 -0.1"
+              geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+              material="color: black; shader: flat"
+              raycaster="far: 1000; interval: 100;objects: .clickable;showLine: true;" />
+            <a-entity
+              id="hover"
+              geometry="primitive: plane; height: auto; width: auto"
+              material="color: #000; opacity: 1"
+              position="3 -0.1 -5"
+              rotation='0 0 0'
+              text="align: center; color: #fff; anchor: center; value: "
+              visible={false} />
+          </a-entity>
         </a-entity>
-        <a-entity id="left-hand" windows-motion-controls="hand: left" vive-controls="hand: left" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;">
+      else
+        camera = <a-entity id="cameraRig" position={this.props.scene.camera.position} rotation={this.props.scene.camera.rotation} wasd-controls="camera: #head">
+          <a-entity id="head" camera={cameraSettings} position="0 1.6 0" look-controls >
+            <a-entity cursor="fuse: true; fuseTimeout: 50"
+              position="0 0 -0.1"
+              geometry="primitive: ring; radiusInner: 0.002; radiusOuter: 0.003"
+              material="color: black; shader: flat"
+              raycaster="far: 1000; interval: 100;objects: .clickable;showLine: true;" />
+            <a-entity
+              id="hover"
+              geometry="primitive: plane; height: auto; width: auto"
+              material="color: #000; opacity: 1"
+              position="3 -0.1 -5"
+              rotation='0 0 0'
+              text="align: center; color: #fff; anchor: center; value: "
+              visible={false} />
+          </a-entity>
         </a-entity>
-        <a-entity id="right-hand" windows-motion-controls="hand: right" vive-controls="hand: right" gearvr-controls daydream-controls teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;">
-          <a-entity cursor="fuse: true; fuseTimeout: 50"
-            position="0 0 -0.1"
-            geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
-            material="color: black; shader: flat"
-            raycaster="far: 1000; interval: 100;objects: .clickable;showLine: true;" />
-          <a-entity
-            id="hover"
-            geometry="primitive: plane; height: auto; width: auto"
-            material="color: #000; opacity: 1"
-            position="3 -0.1 -5"
-            rotation='0 0 0'
-            text="align: center; color: #fff; anchor: center; value: "
-            visible={false} />
-        </a-entity>
-      </a-entity>
-
+      console.log('hello', AFRAME.utils.device.checkHeadsetConnected ())
       //Sky
       sky = this.props.scene.sky.style.texture === false ? <a-sky id="bg" color={this.props.scene.sky.style.color} /> : <a-sky id="bg" src={this.props.scene.sky.style.img} />;
 
