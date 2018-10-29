@@ -4,7 +4,7 @@
 
 VR-Viz provide a high-level react components to generate 3D visualization in webVR. It combines A-Frame with React (for DOM manipulation) and D3 (for data visualizations) to generate visualization in VR. It provides a JSON syntax for generating visualizations (the concept is inspired from Vega-Lite)
 
-#### Interactive examples can be seen and explored [here.](http://mustafasaifee.com/vr-viz/)
+#### Interactive examples can be seen and explored [here.](https://vr-viz.netlify.com)
 
 The react component used to generate visualizations is `Visualization` with 2 props:
 * __scene__
