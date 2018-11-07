@@ -25,10 +25,9 @@ import MapTimeBars from './MapTimeBars.js';
 import SpiralChart from './SpiralChart.js';
 import LollipopChart from './LollipopChart.js';
 
-
 require('aframe-teleport-controls');
 
-class Visualization extends Component {
+class VRViz extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -707,4 +706,4 @@ class Visualization extends Component {
       )
   }
 }
-export default Visualization
+export default VRViz

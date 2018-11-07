@@ -7,7 +7,7 @@ import sfMapData from './mapData/sfMapData.json'
 class App extends Component {
   render() {
     return (
-      <Visualization
+      <VRViz
         scene={
           {
             'sky': {

@@ -1,8 +1,7 @@
-
+import * as fs from 'fs'
 function loadFile(file) {
   let data;
   if (typeof window === 'undefined') {
-    let fs = require("fs");
     data = fs.readFileSync(file) + '';
   } else {
     data = loadFileAJAX(file);

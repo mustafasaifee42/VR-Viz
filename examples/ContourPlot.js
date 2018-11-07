@@ -6,7 +6,7 @@ import mapData from './mapData/mapData.json'
 class App extends Component {
   render() {
     return (
-      <Visualization
+      <VRViz
         scene={
           {
             'sky': {
