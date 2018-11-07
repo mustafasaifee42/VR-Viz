@@ -14,6 +14,22 @@ __scene__ defines the property of the A-Frame scene that will be generated in wh
 
 __graph__ is the prop where the visualization is defined. Different visualization requires the developer to define different parameter. This is a mandatory prop in the component. The prop must be defined as an array which gives flexibility to add multiple visualizations in the same scene to either design a dashboard in VR (just by changing the position of their origin) or overlap multiple visualization on each other.
 
+## If using NPM
+
+#### NPM Package can be found [here](https://www.npmjs.com/package/vr-viz)
+
+__Installation__
+
+`npm install --save vr-viz`
+
+__How To Use__
+
+First import this component where you want to use it
+
+`import VRViz from "vr-viz"`
+
+Then just renders it
+
 ## Example of Visualization Component
 ```
 <Visualization
