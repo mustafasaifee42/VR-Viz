@@ -4,7 +4,7 @@
 
 VR-Viz provide a high-level react components to generate 3D visualization in webVR. It combines A-Frame with React (for DOM manipulation) and D3 (for data visualizations) to generate visualization in VR. It provides a JSON syntax for generating visualizations (the concept is inspired from Vega-Lite)
 
-#### Interactive examples can be seen and explored [here.](https://vr-viz.netlify.com)
+## Interactive examples can be seen and explored [here.](https://vr-viz.netlify.com)
 
 The react component used to generate visualizations is `VRViz` with 2 props:
 * __scene__
@@ -15,6 +15,8 @@ __scene__ defines the property of the A-Frame scene that will be generated in wh
 __graph__ is the prop where the visualization is defined. Different visualization requires the developer to define different parameter. This is a mandatory prop in the component. The prop must be defined as an array which gives flexibility to add multiple visualizations in the same scene to either design a dashboard in VR (just by changing the position of their origin) or overlap multiple visualization on each other.
 
 ## If using NPM
+
+Package link: [https://www.npmjs.com/package/vr-viz](https://www.npmjs.com/package/vr-viz)
 
 __Installation__
 
