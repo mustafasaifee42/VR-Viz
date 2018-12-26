@@ -120,27 +120,9 @@ class BarGraph extends Component {
           break;
         }
         default: {
-          csv(this.props.data.dataFile, (error, data) => {
-            data = data.map(d => {
-              for (let i = 0; i < this.props.data.fieldDesc.length; i++) {
-                if (this.props.data.fieldDesc[i][1] === 'number')
-                  d[this.props.data.fieldDesc[i][0]] = +d[this.props.data.fieldDesc[i][0]]
-                if ((this.props.data.fieldDesc[i][1] === 'date') || (this.props.data.fieldDesc[i][1] === 'time'))
-                  d[this.props.data.fieldDesc[i][0]] = moment(d[this.props.data.fieldDesc[i][0]], this.props.data.fieldDesc[i][2])['_d']
-                if (this.props.data.fieldDesc[i][1] === 'jsonObject')
-                  d[this.props.data.fieldDesc[i][0]] = JSON.parse(d[this.props.data.fieldDesc[i][0]])
-              }
-              return d
-            })
-            if (error) {
-              this.setState({
-                error: true,
-              });
-            } else {
-              this.setState({
-                data: data,
-              });
-            }
+          let data = this.props.data.dataFile
+          this.setState({
+            data: data,
           });
           break;
         }
@@ -158,8 +140,10 @@ class BarGraph extends Component {
       return <a-entity />
     }
     else {
+
       // Getting domain for axis
       let xDomain, yDomain, zDomain, colorDomain;
+
 
       if (this.props.mark.position.x) {
         if (!this.props.mark.position.x.domain) {
@@ -362,7 +346,6 @@ class BarGraph extends Component {
           graphID={this.props.index}
         />
       });
-      console.log(this.props.mark.mouseOver)
       return (
         <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
           {marks}
