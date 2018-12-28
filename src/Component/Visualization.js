@@ -702,7 +702,9 @@ class VRViz extends Component {
       )
     else
       return (
-        { visualization }
+        <a-entity>
+          { visualization }
+        </a-entity>
       )
   }
 }
