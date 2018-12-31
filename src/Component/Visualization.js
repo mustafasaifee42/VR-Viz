@@ -24,6 +24,7 @@ import TimeSeries from './TimeSeries.js';
 import MapTimeBars from './MapTimeBars.js';
 import SpiralChart from './SpiralChart.js';
 import LollipopChart from './LollipopChart.js';
+import CrossSectionView from './CrossSectionView.js';
 
 require('aframe-teleport-controls');
 
@@ -678,6 +679,24 @@ class VRViz extends Component {
               data={d.data}
               style={d.style}
               index={`Graph${i}`}
+              title={d.title}
+            />)
+        }
+        case 'CrossSectionView': {
+          if ((!d.object) || (!d.style))
+            console.log(`Error: Some necessary attributes missing for ${d.type}`)
+          if (d.axis)
+            return (<CrossSectionView
+              object={d.object}
+              style={d.style}
+              highlights={d.highlights}
+              title={d.title}
+            />)
+          else
+            return (<CrossSectionView
+              object={d.object}
+              style={d.style}
+              highlights={d.highlights}
               title={d.title}
             />)
         }
