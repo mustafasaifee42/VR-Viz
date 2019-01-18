@@ -6,6 +6,8 @@ VR-Viz provide a high-level react components to generate 3D visualization in web
 
 ## Interactive examples can be seen and explored [here.](https://vr-viz.netlify.com)
 
+## Boilerplate for using VR-Viz can be found [here](https://github.com/mustafasaifee42/vr-viz-boilerplate). 
+
 The react component used to generate visualizations is `VRViz` with 2 props:
 * __scene__
 * __graph__
