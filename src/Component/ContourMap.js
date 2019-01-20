@@ -37,6 +37,23 @@ class ContourMap extends Component {
     }
   }
 
+  startAnimation = () => {
+      console.log('hello')
+      d3.select(`#${this.props.index}`)
+        .transition()
+        .duration(this.props.animateRotation.duration)
+        .ease(d3.easeLinear)
+        .attrTween("rotation", () => d3.interpolate(`${this.props.animateRotation.initialAngles[0]} ${this.props.animateRotation.initialAngles[1]} ${this.props.animateRotation.initialAngles[2]}`, `${this.props.animateRotation.finalAngles[0]} ${this.props.animateRotation.finalAngles[1]} ${this.props.animateRotation.finalAngles[2]}`));
+  }
+  componentDidUpdate(){
+    if(this.state.data){
+      if(this.props.animateRotation) {
+        this.startAnimation();
+        window.setInterval(this.startAnimation, this.props.animateRotation.duration);
+      }
+    }
+  }
+
   componentWillMount() {
     if (this.props.data) {
       switch (this.props.data.fileType) {
@@ -195,8 +212,13 @@ class ContourMap extends Component {
       if (this.props.mark.style.stroke)
         border = dataFormatted.map((d, i) => <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${d[0] * this.props.style.objectScale.ground} ${(d[1] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[2] * this.props.style.objectScale.ground}, ${d[3] * this.props.style.objectScale.ground} ${(d[4] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[5] * this.props.style.objectScale.ground}, ${d[6] * this.props.style.objectScale.ground} ${(d[7] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[8] * this.props.style.objectScale.ground}, ${d[9] * this.props.style.objectScale.ground} ${(d[10] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[11] * this.props.style.objectScale.ground}; color:${this.props.mark.style.stroke.color}`} />);
 
+      let pivot
+      if(this.props.style.pivot)
+        pivot = this.props.style.pivot;
+      else
+        pivot = `${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`
       return (
-        <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
+        <a-entity pivot={pivot} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
           {shapes}
           {border}
           {graphTitle}

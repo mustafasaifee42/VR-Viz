@@ -10,6 +10,21 @@ class ParametricSurfacePlot extends Component {
     this.state = {
     }
   }
+  startAnimation = () => {
+      console.log('hello')
+      d3.select(`#${this.props.index}`)
+        .transition()
+        .duration(this.props.animateRotation.duration)
+        .ease(d3.easeLinear)
+        .attrTween("rotation", () => d3.interpolate(`${this.props.animateRotation.initialAngles[0]} ${this.props.animateRotation.initialAngles[1]} ${this.props.animateRotation.initialAngles[2]}`, `${this.props.animateRotation.finalAngles[0]} ${this.props.animateRotation.finalAngles[1]} ${this.props.animateRotation.finalAngles[2]}`));
+  }
+  componentWillMount(){
+    if(this.props.animateRotation) {
+      this.startAnimation();
+      window.setInterval(this.startAnimation, this.props.animateRotation.duration);
+    }
+  }
+
 
   render() {
 
@@ -177,8 +192,13 @@ class ParametricSurfacePlot extends Component {
     if (this.props.title) {
       graphTitle = <a-text color={this.props.title.color} wrapCount={this.props.title.wrapCount} lineHeight={this.props.title.lineHeight} width={this.props.title.width} value={this.props.title.value} anchor='align' side='double' align={this.props.title.align} position={this.props.title.position} rotation={this.props.title.rotation} />
     }
+    let pivot
+    if(this.props.style.pivot)
+      pivot = this.props.style.pivot;
+    else
+      pivot = `${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`
     return (
-      <a-entity position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
+      <a-entity pivot={pivot} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
         {marks}
         {border}
         {xAxis}
