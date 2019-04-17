@@ -21,6 +21,7 @@ class TimeSeries extends Component {
 
 
   startAnimation = () => {
+      console.log('hello')
       d3.select(`#${this.props.index}`)
         .transition()
         .duration(this.props.animateRotation.duration)
@@ -137,6 +138,7 @@ class TimeSeries extends Component {
           xDomain = this.props.mark.position.x.domain
       }
 
+      console.log(xDomain)
 
       if (this.props.mark.position.y) {
         if (!this.props.mark.position.y.domain) {

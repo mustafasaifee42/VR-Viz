@@ -32,6 +32,7 @@ AFRAME.registerComponent('modify-materials', {
       obj.traverse(node => {
         if(node.material) {
           if(node.type === 'Mesh') {    
+            console.log(node)
             node.material = new THREE.MeshLambertMaterial({
               opacity: opacity,
               color:color,
@@ -83,6 +84,7 @@ class CrossSectionView extends Component {
   }
 
   startAnimation = () => {
+    console.log('hello')
     d3.select(`#${this.props.index}`)
       .transition()
       .duration(this.props.animateRotation.duration)

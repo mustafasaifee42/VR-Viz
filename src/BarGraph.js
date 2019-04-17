@@ -248,6 +248,8 @@ class BarGraph extends Component {
         />
       }
 
+      console.log(yScale(4))
+
       //Adding marks
       let marks;
       switch (this.props.mark.type) {

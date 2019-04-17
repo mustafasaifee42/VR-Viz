@@ -21,6 +21,7 @@ class ForceDirectedGraph extends Component {
 
 
   startAnimation = () => {
+      console.log('hello')
       d3.select(`#${this.props.index}`)
         .transition()
         .duration(this.props.animateRotation.duration)
@@ -278,6 +279,7 @@ class ForceDirectedGraph extends Component {
           if (this.props.mark.nodes.mouseOver.label)
             hoverText = this.props.mark.nodes.mouseOver.label.value(node.data.data)
         }
+        console.log(node)
         sphere.push(
           <Shape
             type={nodeType}
