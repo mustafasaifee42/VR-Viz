@@ -22,7 +22,6 @@ class RectangleChart extends Component {
 
 
   startAnimation = () => {
-      console.log('hello')
       d3.select(`#${this.props.index}`)
         .transition()
         .duration(this.props.animateRotation.duration)
@@ -171,7 +170,6 @@ class RectangleChart extends Component {
       yScale = d3.scaleLinear()
         .domain(yDomain)
         .range([0, this.props.style.dimensions.height])
-      console.log(yScale(10000))
       zScale = d3.scaleLinear()
         .domain(zDomain)
         .range([0, this.props.style.dimensions.depth])

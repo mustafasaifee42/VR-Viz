@@ -22,7 +22,6 @@ class MapTimeBars extends Component {
 
 
   startAnimation = () => {
-      console.log('hello')
       d3.select(`#${this.props.index}`)
         .transition()
         .duration(this.props.animateRotation.duration)
@@ -129,7 +128,6 @@ class MapTimeBars extends Component {
       return <a-entity />
     }
     else {
-      console.log(this.props.mark.timeLayers)
       // Getting domain for axis
 
       let dataset = []

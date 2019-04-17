@@ -15,7 +15,6 @@ class Axis extends Component {
 
     //Adding Axis
     let ticks, tickText, axis, tickValues, rotation, align, title, titlePosition, titleRotation, titleAlign, titlePadding, grid;
-    console.log(this.props)
     if (this.props.scaleType == 'ordinal') {
       tickValues = this.props.domain
     } else {
@@ -627,7 +626,6 @@ class Axis extends Component {
           break;
         }
     }
-    console.log(grid);
     return (
       <a-entity>
         {ticks}

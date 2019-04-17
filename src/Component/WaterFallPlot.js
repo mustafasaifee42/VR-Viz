@@ -22,7 +22,6 @@ class WaterFallPlot extends Component {
 
 
   startAnimation = () => {
-      console.log('hello')
       d3.select(`#${this.props.index}`)
         .transition()
         .duration(this.props.animateRotation.duration)
@@ -137,7 +136,6 @@ class WaterFallPlot extends Component {
         if (this.props.mark.position.x.scaleType === 'linear')
           if (!this.props.mark.position.x.domain) {
             xDomainTemp = this.props.mark.position.x.field.map((d, i) => parseFloat(d));
-            console.log(xDomainTemp)
             xDomain = [Math.min(...xDomainTemp), Math.max(...xDomainTemp)];
           } else {
             xDomain = this.props.mark.position.x.domain;
@@ -193,7 +191,6 @@ class WaterFallPlot extends Component {
         xScale = d3.scaleLinear()
           .range([0, this.props.style.dimensions.width])
           .domain(xDomain);
-      console.log(xDomain);
       yScale = d3.scaleLinear()
         .domain(yDomain)
         .range([0, this.props.style.dimensions.height])
@@ -319,7 +316,6 @@ class WaterFallPlot extends Component {
             else
               path = path + ` ${xScale(xDomainTemp[j])} ${yScale(d[xDomainTemp[j].toString()])} ${zScale(d[this.props.mark.position.z.field])}`
           }
-          console.log(path)
           switch (this.props.mark.style.stroke.scaleType) {
             case 'ordinal':
               return <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${path}; color: ${strokeColorScale(d[this.props.mark.style.stroke.field])}`}></a-entity>

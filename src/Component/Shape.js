@@ -62,7 +62,6 @@ AFRAME.registerComponent('change-color-on-hover', {
       else
         hvr.setAttribute('rotation', '0 0 0');
 
-      console.log(data.wrapCount);
       if (data.wrapCount != 'undefined')
         hvr.setAttribute('text', 'wrapCount', data.wrapCount);
 

@@ -21,9 +21,7 @@ AFRAME.registerComponent('cursor-listener', {
   },
 
   init: function (data) {
-    console.log(data);
     this.el.addEventListener('mouseenter', function (evt) {
-      console.log(evt)
       d3.selectAll('#mouseHover')
         .append('a-entity')
         .attr('class', 'hover')
@@ -50,7 +48,6 @@ class BarGraph extends Component {
 
 
   startAnimation = () => {
-      console.log('hello')
       d3.select(`#${this.props.index}`)
         .transition()
         .duration(this.props.animateRotation.duration)

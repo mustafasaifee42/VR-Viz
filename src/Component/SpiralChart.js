@@ -23,7 +23,6 @@ class SpiralChart extends Component {
 
 
   startAnimation = () => {
-      console.log('hello')
       d3.select(`#${this.props.index}`)
         .transition()
         .duration(this.props.animateRotation.duration)
@@ -198,7 +197,6 @@ class SpiralChart extends Component {
             fillColorScale = d3.scaleLinear()
               .domain(fillColorDomain)
               .range(fillColorRange)
-          console.log(fillColorScale(3))
         }
 
       //Drawing SpiralCoordinates

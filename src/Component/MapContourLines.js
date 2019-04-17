@@ -22,7 +22,6 @@ class MapBarChart extends Component {
 
 
   startAnimation = () => {
-      console.log('hello')
       d3.select(`#${this.props.index}`)
         .transition()
         .duration(this.props.animateRotation.duration)
@@ -131,7 +130,6 @@ class MapBarChart extends Component {
     else {
 
       // Getting domain
-      console.log(this.state.data)
       let colorDomain, elevationDomain;
 
       if (this.props.mark.isoLines.style.stroke.scaleType) {
