@@ -20,7 +20,6 @@ class TreeMap extends Component {
 
 
   startAnimation = () => {
-      console.log('hello')
       d3.select(`#${this.props.index}`)
         .transition()
         .duration(this.props.animateRotation.duration)
@@ -193,7 +192,6 @@ class TreeMap extends Component {
           if (this.props.mark.mouseOver.label)
             hoverText = this.props.mark.mouseOver.label.value(d.data)
         }
-        console.log(d.data)
         return <Shape
           key={i}
           type={'box'}

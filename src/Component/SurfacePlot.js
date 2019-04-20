@@ -12,7 +12,6 @@ class SurfacePlot extends Component {
     }
   }
   startAnimation = () => {
-      console.log('hello')
       d3.select(`#${this.props.index}`)
         .transition()
         .duration(this.props.animateRotation.duration)

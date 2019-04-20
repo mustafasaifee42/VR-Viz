@@ -247,9 +247,6 @@ class BarGraph extends Component {
           color={this.props.axisBox.color}
         />
       }
-
-      console.log(yScale(4))
-
       //Adding marks
       let marks;
       switch (this.props.mark.type) {

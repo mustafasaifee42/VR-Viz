@@ -26,14 +26,42 @@ import SpiralChart from './SpiralChart.js';
 import LollipopChart from './LollipopChart.js';
 import CrossSectionView from './CrossSectionView.js';
 
+import PropTypes from 'prop-types';
+
 require('aframe-teleport-controls');
+
+
+const propTypes = {
+  scene: PropTypes.object,
+  graph: PropTypes.object.isRequired
+}
 
 
 class VRViz extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      headset:false,
     }
+  }
+  componentDidMount() {
+    window.addEventListener('enter-vr', e => {
+      if (AFRAME.utils.device.checkHeadsetConnected()) {
+        this.setState({
+          headset:true,
+        })
+      }
+      else {
+        this.setState({
+          headset:false,
+        })
+      }
+    });
+    window.addEventListener('exit-vr', e => {
+      this.setState({
+        headset:false,
+      })
+    });
   }
   render() {
     let light, camera, sky, floor, obj;
@@ -67,14 +95,11 @@ class VRViz extends Component {
       else
         nearClipping = this.props.scene.camera.nearClipping;
       let cameraSettings = `active: true;near:${nearClipping};fov:${fov}`
-      console.log('hello', AFRAME.utils.device.checkHeadsetConnected ())
-      if(AFRAME.utils.device.checkHeadsetConnected ())
-        camera = <a-entity id="cameraRig" position={this.props.scene.camera.position} rotation={this.props.scene.camera.rotation} >
-          <a-entity id="head" camera={cameraSettings} position="0 1.6 0" look-controls wasd-controls="camera: #head" >
-          </a-entity>
-          <a-entity id="left-hand" windows-motion-controls="hand: left" vive-controls="hand: left" oculus-touch-controls="hand: left" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;">
-          </a-entity>
-          <a-entity id="right-hand" windows-motion-controls="hand: right" oculus-go-controls vive-controls="hand: right" oculus-touch-controls="hand: right" gearvr-controls daydream-controls teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;">
+      if(this.state.headset)
+      camera = <a-entity id="cameraRig" position={this.props.scene.camera.position} rotation={this.props.scene.camera.rotation}>
+          <a-entity id="head" camera={cameraSettings} position="0 1.6 0"  look-controls  wasd-controls="#cameraRig;"/>
+          <a-entity id="left-hand" windows-motion-controls="hand: left" vive-controls="hand: left" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;" />
+          <a-entity id="right-hand" windows-motion-controls="hand: right" vive-controls="hand: right" gearvr-controls daydream-controls teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;">
             <a-entity cursor="fuse: true; fuseTimeout: 50"
               position="0 0 -0.1"
               geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
@@ -92,7 +117,7 @@ class VRViz extends Component {
         </a-entity>
       else
         camera = <a-entity id="cameraRig" position={this.props.scene.camera.position} rotation={this.props.scene.camera.rotation}>
-          <a-entity id="head" camera={cameraSettings} position="0 1.6 0" look-controls wasd-controls="camera: #head" >
+          <a-entity id="head" camera={cameraSettings} position="0 1.6 0"  look-controls  wasd-controls="#cameraRig;">
             <a-entity cursor="fuse: true; fuseTimeout: 50"
               position="0 0 -0.1"
               geometry="primitive: ring; radiusInner: 0.002; radiusOuter: 0.003"
@@ -108,7 +133,6 @@ class VRViz extends Component {
               visible={false} />
           </a-entity>
         </a-entity>
-      console.log('hello', AFRAME.utils.device.checkHeadsetConnected ())
       //Sky
       sky = this.props.scene.sky.style.texture === false ? <a-sky id="bg" color={this.props.scene.sky.style.color} /> : <a-sky id="bg" src={this.props.scene.sky.style.img} />;
 
@@ -141,8 +165,10 @@ class VRViz extends Component {
     let visualization = this.props.graph.map((d, i) => {
       switch (d.type) {
         case 'BarGraph': {
-          if ((!d.data) || (!d.style) || (!d.mark))
+          if ((!d.data) || (!d.style) || (!d.mark)) {
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<BarGraph
               animateRotation={d.animateRotation}
@@ -167,8 +193,10 @@ class VRViz extends Component {
             />)
         }
         case 'ConnectedScatterPlot': {
-          if ((!d.data) || (!d.style) || (!d.mark))
+          if ((!d.data) || (!d.style) || (!d.mark)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<ConnectedScatterPlot
               animateRotation={d.animateRotation}
@@ -194,8 +222,10 @@ class VRViz extends Component {
         }
         case 'ContourMap': {
           let heightThreshold;
-          if ((!d.data) || (!d.style) || (!d.mark))
+          if ((!d.data) || (!d.style) || (!d.mark)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (!d.mark.heightThreshold)
             heightThreshold = 0
           else
@@ -223,8 +253,10 @@ class VRViz extends Component {
             />)
         }
         case 'ContourPlot': {
-          if ((!d.style) || (!d.mark))
+          if ((!d.style) || (!d.mark)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<ContourPlot
               animateRotation={d.animateRotation}
@@ -247,8 +279,10 @@ class VRViz extends Component {
             />)
         }
         case 'FlowMap': {
-          if ((!d.data) || (!d.style) || (!d.mark))
+          if ((!d.data) || (!d.style) || (!d.mark)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<FlowMap
               animateRotation={d.animateRotation}
@@ -270,8 +304,10 @@ class VRViz extends Component {
             />)
         }
         case 'ForceDirectedGraph': {
-          if ((!d.data) || (!d.style) || (!d.mark))
+          if ((!d.data) || (!d.style) || (!d.mark)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<ForceDirectedGraph
               animateRotation={d.animateRotation}
@@ -293,8 +329,10 @@ class VRViz extends Component {
             />)
         }
         case 'MapBarChart': {
-          if ((!d.data) || (!d.style) || (!d.mark))
+          if ((!d.data) || (!d.style) || (!d.mark)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<MapBarChart
               animateRotation={d.animateRotation}
@@ -316,8 +354,10 @@ class VRViz extends Component {
             />)
         }
         case 'MapStackedBarChart': {
-          if ((!d.data) || (!d.style) || (!d.mark))
+          if ((!d.data) || (!d.style) || (!d.mark)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<MapStackedBarChart
               animateRotation={d.animateRotation}
@@ -339,8 +379,10 @@ class VRViz extends Component {
             />)
         }
         case 'ParametricCurvePlot': {
-          if ((!d.style) || (!d.mark) || (!d.parameter))
+          if ((!d.style) || (!d.mark) || (!d.parameter)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<ParametricCurvePlot
               animateRotation={d.animateRotation}
@@ -365,8 +407,10 @@ class VRViz extends Component {
             />)
         }
         case 'ParametricSurfacePlot': {
-          if ((!d.style) || (!d.mark) || (!d.parameter))
+          if ((!d.style) || (!d.mark) || (!d.parameter)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<ParametricSurfacePlot
               animateRotation={d.animateRotation}
@@ -391,8 +435,10 @@ class VRViz extends Component {
             />)
         }
         case 'PointCloud': {
-          if ((!d.data) || (!d.style) || (!d.mark))
+          if ((!d.data) || (!d.style) || (!d.mark)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<PointCloud
               animateRotation={d.animateRotation}
@@ -414,8 +460,10 @@ class VRViz extends Component {
             />)
         }
         case 'PrismMap': {
-          if ((!d.data) || (!d.style) || (!d.mark))
+          if ((!d.data) || (!d.style) || (!d.mark)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<PrismMap
               animateRotation={d.animateRotation}
@@ -437,8 +485,10 @@ class VRViz extends Component {
             />)
         }
         case 'ScatterPlot': {
-          if ((!d.data) || (!d.style) || (!d.mark))
+          if ((!d.data) || (!d.style) || (!d.mark)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<ScatterPlot
               animateRotation={d.animateRotation}
@@ -463,8 +513,10 @@ class VRViz extends Component {
             />)
         }
         case 'StackedBarGraph': {
-          if ((!d.data) || (!d.style) || (!d.mark))
+          if ((!d.data) || (!d.style) || (!d.mark)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<StackedBarGraph
               animateRotation={d.animateRotation}
@@ -489,8 +541,10 @@ class VRViz extends Component {
             />)
         }
         case 'SurfacePlot': {
-          if ((!d.style) || (!d.mark))
+          if ((!d.style) || (!d.mark)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<SurfacePlot
               animateRotation={d.animateRotation}
@@ -513,8 +567,10 @@ class VRViz extends Component {
             />)
         }
         case 'TreeMap': {
-          if ((!d.style) || (!d.data) || (!d.mark))
+          if ((!d.style) || (!d.data) || (!d.mark)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<TreeMap
               animateRotation={d.animateRotation}
@@ -536,8 +592,10 @@ class VRViz extends Component {
             />)
         }
         case 'WaterFallPlot': {
-          if ((!d.data) || (!d.style) || (!d.mark))
+          if ((!d.data) || (!d.style) || (!d.mark)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<WaterFallPlot
               animateRotation={d.animateRotation}
@@ -562,8 +620,10 @@ class VRViz extends Component {
             />)
         }
         case 'MeshPlot': {
-          if ((!d.data) || (!d.style) || (!d.mark))
+          if ((!d.data) || (!d.style) || (!d.mark)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<MeshPlot
               animateRotation={d.animateRotation}
@@ -588,8 +648,10 @@ class VRViz extends Component {
             />)
         }
         case 'RectangleChart': {
-          if ((!d.data) || (!d.style) || (!d.mark))
+          if ((!d.data) || (!d.style) || (!d.mark)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<RectangleChart
               animateRotation={d.animateRotation}
@@ -614,8 +676,10 @@ class VRViz extends Component {
             />)
         }
         case 'LollipopChart': {
-          if ((!d.data) || (!d.style) || (!d.mark))
+          if ((!d.data) || (!d.style) || (!d.mark)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<LollipopChart
               animateRotation={d.animateRotation}
@@ -640,8 +704,10 @@ class VRViz extends Component {
             />)
         }
         case 'TimeSeries': {
-          if ((!d.data) || (!d.style) || (!d.mark) || (!d.x) || (!d.y))
+          if ((!d.data) || (!d.style) || (!d.mark) || (!d.x) || (!d.y)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<TimeSeries
               animateRotation={d.animateRotation}
@@ -666,8 +732,10 @@ class VRViz extends Component {
             />)
         }
         case 'MapTimeBars': {
-          if ((!d.data) || (!d.style) || (!d.mark))
+          if ((!d.data) || (!d.style) || (!d.mark)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<MapTimeBars
               animateRotation={d.animateRotation}
@@ -689,8 +757,10 @@ class VRViz extends Component {
             />)
         }
         case 'MapContourLines': {
-          if ((!d.data) || (!d.style) || (!d.mark))
+          if ((!d.data) || (!d.style) || (!d.mark)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<MapContourLines
               animateRotation={d.animateRotation}
@@ -711,8 +781,10 @@ class VRViz extends Component {
             />)
         }
         case 'SpiralChart': {
-          if ((!d.data) || (!d.style) || (!d.mark) || (!d.axis))
+          if ((!d.data) || (!d.style) || (!d.mark) || (!d.axis)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<SpiralChart
               animateRotation={d.animateRotation}
@@ -733,8 +805,10 @@ class VRViz extends Component {
             />)
         }
         case 'CrossSectionView': {
-          if ((!d.object) || (!d.style))
+          if ((!d.object) || (!d.style)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
+            return null
+          }
           if (d.axis)
             return (<CrossSectionView
               animateRotation={d.animateRotation}
@@ -754,15 +828,30 @@ class VRViz extends Component {
         }
         default: {
           console.log('The visualization type does not match the set in the library.')
-          break;
+          return null;
         }
       }
 
     })
-    console.log(light)
-    if (this.props.scene)
+    let divHeight = `${window.innerHeight}px`, divWidth  = `${window.innerWidth}px`, divClass = 'aframeBox';
+    if (this.props.scene){
+      if(this.props.scene.parentDiv){
+        if(this.props.scene.parentDiv.height)
+          divHeight = `${this.props.scene.parentDiv.height}px`
+        if(this.props.scene.parentDiv.width)
+          divWidth = `${this.props.scene.parentDiv.width}px`
+        if(this.props.scene.parentDiv.class)
+          divClass = `${this.props.scene.parentDiv.class}px`
+      }
       return (
-        <a-scene>
+        <a-scene  class={divClass} embedded
+          style={
+            {
+              height: divHeight,
+              width: divWidth
+            }
+          }
+        >
           {floor}
           {sky}
           {camera}
@@ -773,6 +862,7 @@ class VRViz extends Component {
           </a-entity>
         </a-scene>
       )
+    }
     else
       return (
         <a-entity>
@@ -781,4 +871,6 @@ class VRViz extends Component {
       )
   }
 }
+
+VRViz.propTypes = propTypes;
 export default VRViz

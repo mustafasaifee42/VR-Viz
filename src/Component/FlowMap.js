@@ -23,7 +23,6 @@ class FlowMap extends Component {
 
 
   startAnimation = () => {
-      console.log('hello')
       d3.select(`#${this.props.index}`)
         .transition()
         .duration(this.props.animateRotation.duration)
@@ -134,8 +133,6 @@ class FlowMap extends Component {
       // Getting domain
 
       let colorDomain, opacityDomain;
-
-      console.log(this.props.mark.flowlines.style.opacity.scaleType)
 
       if (this.props.mark.flowlines.style.opacity.scaleType) {
         if (!this.props.mark.flowlines.style.opacity.domain) {

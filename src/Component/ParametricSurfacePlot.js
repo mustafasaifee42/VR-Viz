@@ -11,7 +11,6 @@ class ParametricSurfacePlot extends Component {
     }
   }
   startAnimation = () => {
-      console.log('hello')
       d3.select(`#${this.props.index}`)
         .transition()
         .duration(this.props.animateRotation.duration)
@@ -81,8 +80,6 @@ class ParametricSurfacePlot extends Component {
         .domain([d3.min(dataSphere, d => d[0]), d3.max(dataSphere, d => d[0])])
         .range([0, this.props.style.dimensions.width]);
     }
-
-    console.log(xScale)
 
     if (this.props.mark.position.y.domain) {
       yDomain = this.props.mark.position.y.domain

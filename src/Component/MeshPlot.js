@@ -22,7 +22,6 @@ class MeshPlot extends Component {
 
 
   startAnimation = () => {
-      console.log('hello')
       d3.select(`#${this.props.index}`)
         .transition()
         .duration(this.props.animateRotation.duration)
@@ -138,7 +137,6 @@ class MeshPlot extends Component {
         if (this.props.mark.position.x.scaleType === 'linear')
           if (!this.props.mark.position.x.domain) {
             xDomainTemp = this.props.mark.position.x.field.map((d, i) => parseFloat(d));
-            console.log(xDomainTemp)
             xDomain = [Math.min(...xDomainTemp), Math.max(...xDomainTemp)];
           } else {
             xDomain = this.props.mark.position.x.domain;
@@ -172,8 +170,6 @@ class MeshPlot extends Component {
         } else
           yDomain = this.props.mark.position.y.domain
       }
-
-      console.log(yDomain);
       //Adding Scale
       let zRange = [];
       for (let i = 0; i < zDomain.length; i++) {
@@ -194,7 +190,6 @@ class MeshPlot extends Component {
         xScale = d3.scaleLinear()
           .range([0, this.props.style.dimensions.width])
           .domain(xDomain);
-      console.log(xDomain);
       yScale = d3.scaleLinear()
         .domain(yDomain)
         .range([0, this.props.style.dimensions.height])
@@ -341,8 +336,6 @@ class MeshPlot extends Component {
         marks = dataCoordinate.map((d, i) => <a-entity key={i} geometry={`primitive: planeFromVertices; vertices: ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}`} material={`color: ${colorScale(d[1])}; side: double; opacity: ${this.props.mark.style.fill.opacity}`} />);
       else
         marks = dataCoordinate.map((d, i) => <a-entity key={i} geometry={`primitive: planeFromVertices; vertices: ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}`} material={`color: ${this.props.mark.style.fill.color}; side: double; opacity: ${this.props.mark.style.fill.opacity}`} />);
-      console.log(dataCoordinate)
-
       let graphTitle
       if (this.props.title) {
         graphTitle = <a-text color={this.props.title.color} wrapCount={this.props.title.wrapCount} lineHeight={this.props.title.lineHeight} width={this.props.title.width} value={this.props.title.value} anchor='align' side='double' align={this.props.title.align} position={this.props.title.position} rotation={this.props.title.rotation} />

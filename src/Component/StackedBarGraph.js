@@ -22,7 +22,6 @@ class StackedBarGraph extends Component {
 
 
   startAnimation = () => {
-      console.log('hello')
       d3.select(`#${this.props.index}`)
         .transition()
         .duration(this.props.animateRotation.duration)
@@ -147,7 +146,6 @@ class StackedBarGraph extends Component {
           min = dataset[i][1]
         }
       }
-      console.log(dataset)
       // Getting domain for axis
       let xDomain, yDomain, zDomain, colorDomain = this.props.mark.style.fill.field;
 
@@ -307,7 +305,6 @@ class StackedBarGraph extends Component {
             if (this.props.mark.mouseOver.label)
               hoverText = this.props.mark.mouseOver.label.value(d1.data).replace('Label', `${d.key}`).replace('LabelValue', `${d1.data[d.key]}`)
           }
-          console.log(d1)
           return <Shape
             key={i}
             type={this.props.mark.type}

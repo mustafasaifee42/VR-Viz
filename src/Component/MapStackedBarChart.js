@@ -23,7 +23,6 @@ class MapStackedBarChart extends Component {
 
 
   startAnimation = () => {
-      console.log('hello')
       d3.select(`#${this.props.index}`)
         .transition()
         .duration(this.props.animateRotation.duration)
@@ -167,7 +166,6 @@ class MapStackedBarChart extends Component {
 
       let colorScale, yScale;
 
-      console.log(heightDomain)
 
       yScale = d3.scaleLinear()
         .domain(heightDomain)
