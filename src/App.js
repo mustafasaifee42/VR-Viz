@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import VRViz from './Component/Visualization.js'
-import customData from './barGraph.json';
-import mapData from './mapData/mapData.json'
 
 class App extends Component {
   render() {
@@ -35,6 +33,11 @@ class App extends Component {
               'position': '0 0 0',
               'rotation': '0 0 0',
             },
+            'parentDiv':{
+              'class':'graph',
+              'height':1000,
+              'width':1000
+            }
           }
         }
         graph={
