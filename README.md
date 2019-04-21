@@ -32,6 +32,23 @@ First import this component where you want to use it
 
 Then just renders it
 
+## Local Development Using this Repo
+
+To run this project using this repo, simply clone the repo and run yarn
+
+```
+git clone https://github.com/mustafasaifee42/VR-Viz.git
+cd vr-viz
+yarn
+```
+
+In the project directory, you can run:
+```
+yarn start
+```
+Runs the app in the development mode.
+
+
 ## Example of Visualization Component
 ```
 <VRViz
