@@ -8,13 +8,6 @@ VR-Viz provide a high-level react components to generate 3D visualization in web
 
 ### Boilerplate for using VR-Viz can be found [here](https://github.com/mustafasaifee42/vr-viz-boilerplate). 
 
-The react component used to generate visualizations is `VRViz` with 2 props:
-* __scene__
-* __graph__
-
-__scene__ defines the property of the A-Frame scene that will be generated in which the visualization will be placed. This is not a mandatory prop in the component. If the developers feels the need to design the scene before and then place the visualization in the designed scene he/she can do that. This provide flexibility to design a customized scene with textures and objects in it and also let the developers add other A-Frame component (to add interactivity or animation) to scene.
-
-__graph__ is the prop where the visualization is defined. Different visualization requires the developer to define different parameter. This is a mandatory prop in the component. The prop must be defined as an array which gives flexibility to add multiple visualizations in the same scene to either design a dashboard in VR (just by changing the position of their origin) or overlap multiple visualization on each other.
 
 ## If using NPM
 
@@ -48,6 +41,15 @@ yarn start
 ```
 Runs the app in the development mode.
 
+## VRViz Component
+
+The react component used to generate visualizations is `VRViz` with 2 props:
+* __scene__
+* __graph__
+
+__scene__ defines the property of the A-Frame scene that will be generated in which the visualization will be placed. This is not a mandatory prop in the component. If the developers feels the need to design the scene before and then place the visualization in the designed scene he/she can do that. This provide flexibility to design a customized scene with textures and objects in it and also let the developers add other A-Frame component (to add interactivity or animation) to scene.
+
+__graph__ is the prop where the visualization is defined. Different visualization requires the developer to define different parameter. This is a mandatory prop in the component. The prop must be defined as an array which gives flexibility to add multiple visualizations in the same scene to either design a dashboard in VR (just by changing the position of their origin) or overlap multiple visualization on each other.
 
 ## Example of Visualization Component
 ```
