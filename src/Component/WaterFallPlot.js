@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
 import * as moment from 'moment';
 
@@ -129,7 +128,7 @@ class WaterFallPlot extends Component {
     }
     else {
       // Getting domain for axis
-      let xDomain, yDomain, zDomain, colorDomain, xDomainTemp;
+      let xDomain, yDomain, zDomain, xDomainTemp;
       xDomain = this.props.mark.position.x.field;
       xDomainTemp = this.props.mark.position.x.field;
       if (this.props.mark.position.x) {
@@ -181,7 +180,7 @@ class WaterFallPlot extends Component {
         xRange.push(i * this.props.style.dimensions.width / (xDomain.length - 1))
       }
 
-      let xScale, yScale, zScale, colorScale;
+      let xScale, yScale, zScale;
 
       if (this.props.mark.position.x.scaleType === 'ordinal')
         xScale = d3.scaleOrdinal()
@@ -204,7 +203,7 @@ class WaterFallPlot extends Component {
           .domain(zDomain)
           .range([0, this.props.style.dimensions.depth]);
 
-      let strokeColorScale, strokeColorDomain = this.props.mark.position.z.field, strokeColorRange;
+      let strokeColorScale, strokeColorDomain = this.props.mark.position.z.field;
 
       if (this.props.mark.style.stroke)
         if (this.props.mark.style.stroke.scaleType) {
@@ -227,7 +226,7 @@ class WaterFallPlot extends Component {
         }
 
 
-      let fillColorScale, fillColorDomain = this.props.mark.position.z.field, fillColorRange;
+      let fillColorScale, fillColorDomain = this.props.mark.position.z.field;
 
       if (this.props.mark.style.fill)
         if (this.props.mark.style.fill.scaleType) {
@@ -339,11 +338,11 @@ class WaterFallPlot extends Component {
           let primitive = `primitive: map; vertices: ${path}; extrude: 0.00000001`;
           switch (this.props.mark.style.fill.scaleType) {
             case 'ordinal':
-              return <a-entity key={i} position={`0 0 ${zScale(d[this.props.mark.position.z.field])}`} geometry={primitive} material={`color: ${fillColorScale(d[this.props.mark.style.fill.field])}; side: double; opacity: ${this.props.mark.style.fill.opacity} `} />
+              return <a-entity key={`${this.props.index}_Map${i}`} position={`0 0 ${zScale(d[this.props.mark.position.z.field])}`} geometry={primitive} material={`color: ${fillColorScale(d[this.props.mark.style.fill.field])}; side: double; opacity: ${this.props.mark.style.fill.opacity} `} />
             case 'linear':
-              return <a-entity key={i} position={`0 0 ${zScale(d[this.props.mark.position.z.field])} `} geometry={primitive} material={`color: ${fillColorScale(d[this.props.mark.style.fill.field])}; side: double; opacity: ${this.props.mark.style.fill.opacity} `} />
+              return <a-entity key={`${this.props.index}_Map${i}`} position={`0 0 ${zScale(d[this.props.mark.position.z.field])} `} geometry={primitive} material={`color: ${fillColorScale(d[this.props.mark.style.fill.field])}; side: double; opacity: ${this.props.mark.style.fill.opacity} `} />
             default:
-              return <a-entity key={i} position={`0 0 ${zScale(d[this.props.mark.position.z.field])} `} geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; side: double; opacity: ${this.props.mark.style.fill.opacity} `} />
+              return <a-entity key={`${this.props.index}_Map${i}`} position={`0 0 ${zScale(d[this.props.mark.position.z.field])} `} geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; side: double; opacity: ${this.props.mark.style.fill.opacity} `} />
           }
         })
 

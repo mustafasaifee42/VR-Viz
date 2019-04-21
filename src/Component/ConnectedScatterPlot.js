@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import * as AFRAME from 'aframe';
 import 'aframe-curve-component';
 import * as d3 from 'd3';
 import * as moment from 'moment';
@@ -300,13 +299,13 @@ class ConnectedScatterPlot extends Component {
         else
           shape = 'sphere'
 
-        let hover, hoverText
+        let hoverText;
         if (this.props.mark.points.mouseOver) {
           if (this.props.mark.points.mouseOver.label)
             hoverText = this.props.mark.points.mouseOver.label.value(d)
         }
         return <Shape
-          key={i}
+          key={`${this.props.index}_Shape${i}`}
           type={shape}
           color={`${color}`}
           opacity={this.props.mark.points.style.fill.opacity}
@@ -324,16 +323,12 @@ class ConnectedScatterPlot extends Component {
       let labels;
       if (this.props.mark.label) {
         if (this.props.mark.points.style.radius.scaleType)
-          labels = this.state.data.map((d, i) => <a-text key={i} opacity={this.props.mark.label.style.opacity} color={this.props.mark.label.style.color} width={this.props.mark.label.style.fontSize} value={`${d[this.props.mark.label.field]}`} anchor='align' side='double' side='double' align='left' position={`${xScale(d[this.props.mark.position.x.field]) + 0.05 + radiusScale(d[this.props.mark.points.style.radius.field])} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />);
+          labels = this.state.data.map((d, i) => <a-text key={`${this.props.index}_Label${i}`} opacity={this.props.mark.label.style.opacity} color={this.props.mark.label.style.color} width={this.props.mark.label.style.fontSize} value={`${d[this.props.mark.label.field]}`} anchor='align' side='double' align='left' position={`${xScale(d[this.props.mark.position.x.field]) + 0.05 + radiusScale(d[this.props.mark.points.style.radius.field])} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />);
         else
-          labels = this.state.data.map((d, i) => <a-text key={i} opacity={this.props.mark.label.style.opacity} color={this.props.mark.label.style.color} width={this.props.mark.label.style.fontSize} value={`${d[this.props.mark.label.field]}`} anchor='align' side='double' side='double' align='left' position={`${xScale(d[this.props.mark.position.x.field]) + 0.05 + this.props.mark.points.style.radius.value} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />);
+          labels = this.state.data.map((d, i) => <a-text key={`${this.props.index}_Label${i}`} opacity={this.props.mark.label.style.opacity} color={this.props.mark.label.style.color} width={this.props.mark.label.style.fontSize} value={`${d[this.props.mark.label.field]}`} anchor='align' side='double' align='left' position={`${xScale(d[this.props.mark.position.x.field]) + 0.05 + this.props.mark.points.style.radius.value} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />);
       }
 
-      let points = this.state.data.map((d, i) => <a-curve-point key={i} position={`${xScale(d[this.props.mark.position.x.field])} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />);
-
-      let curve = <a-curve id={'lineGraph'}>
-        {points}
-      </a-curve>
+      let points = this.state.data.map((d, i) => <a-curve-point key={`${this.props.index}_Point${i}`} position={`${xScale(d[this.props.mark.position.x.field])} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />);
 
       let pivot
       if(this.props.style.pivot)

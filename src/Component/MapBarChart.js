@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
-import * as THREE from 'three';
 import * as moment from 'moment';
 
 import GetDomain from '../Utils/GetDomain.js';
@@ -186,7 +184,7 @@ class MapBarChart extends Component {
       //Adding Bars
       let marks = this.state.data.map((d, i) => {
         let hght = heightScale(d[this.props.mark.bars.style.height.field])
-        if (hght == 0) {
+        if (hght === 0) {
           hght = 0.000000000001;
         }
         let color = this.props.mark.bars.style.fill.color
@@ -196,13 +194,13 @@ class MapBarChart extends Component {
         let coordinates = GetMapCoordinates(d.longitude, d.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
         let position = `${coordinates[0]} ${0 - coordinates[1]} ${hght / 2}`
 
-        let hover, hoverText
+        let hoverText
         if (this.props.mark.bars.mouseOver) {
           if (this.props.mark.bars.mouseOver.label)
             hoverText = this.props.mark.bars.mouseOver.label.value(d)
         }
         return <Shape
-          key={i}
+          key={`${this.props.index}_Shape${i}`}
           type={this.props.mark.bars.type}
           color={`${color}`}
           opacity={this.props.mark.bars.style.fill.opacity}

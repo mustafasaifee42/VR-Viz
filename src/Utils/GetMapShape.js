@@ -1,7 +1,4 @@
-
-import * as topojson from 'topojson';
 import * as d3GeoProjection from 'd3-geo-projection';
-import { csv } from 'd3-request';
 import * as d3 from 'd3';
 
 export default function (mapData, proj, scale, position, identifier, shapeKey) {
@@ -16,19 +13,13 @@ export default function (mapData, proj, scale, position, identifier, shapeKey) {
     case ('AlbersUSA'): projection = d3.geoAlbersUsa(); break;
     default: projection = d3GeoProjection.geoRobinson(); break;
   }
-  let features = topojson.feature(mapData, mapData.objects[shapeKey]).features;
   let projection_scale = projection
     .scale(scale)
     .translate([position[0], position[1]]);
   let path = d3.geoPath().projection(projection_scale);
   let featureNew = [];
-  let print = features.map((d, i) => {
-    if (!path(d))
-      console.log(d)
-    else
-      featureNew.push(d)
-  })
   let countries = featureNew.map((d, i) => d[identifier])
+  // eslint-disable-next-line
   let coords = featureNew.map((d, i) => {
     if (path(d)) {
       let coordInd = path(d).split("M");

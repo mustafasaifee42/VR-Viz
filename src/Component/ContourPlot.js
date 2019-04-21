@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
-import GetDomain from '../Utils/GetDomain.js';
 import Axis from './Axis.js';
 import AxisBox from './AxisBox.js';
 
@@ -41,7 +39,7 @@ class ContourPlot extends Component {
     let xDomain, yDomain = this.props.mark.position.y.domain, zDomain;
 
     //Adding Scale
-    let xScale, yScale, zScale, colorScale;
+    let xScale, yScale, zScale;
 
     if (this.props.mark.position.x.domain) {
       xDomain = this.props.mark.position.x.domain
@@ -138,11 +136,7 @@ class ContourPlot extends Component {
     }
 
     //Adding marks
-    let points = dataCoordinate.map((d, i) => <a-curve-point key={i} position={`${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}`} />);
-
-    let curve = <a-curve id={'lineGraph'}>
-      {points}
-    </a-curve>
+    let points = dataCoordinate.map((d, i) => <a-curve-point key={`${this.props.index}_Point${i}`} position={`${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}`} />);
 
     let pivot
     if(this.props.style.pivot)

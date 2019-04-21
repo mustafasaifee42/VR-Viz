@@ -234,7 +234,7 @@ class BarGraph extends Component {
       let xAxis, yAxis, zAxis;
 
       if (this.props.xAxis) {
-        if ((this.props.mark.type == 'cylinder') || (this.props.mark.type == 'cone'))
+        if ((this.props.mark.type === 'cylinder') || (this.props.mark.type === 'cone'))
           xAxis = <Axis
             domain={xDomain}
             tick={this.props.xAxis.ticks}
@@ -277,7 +277,7 @@ class BarGraph extends Component {
       }
 
       if (this.props.zAxis) {
-        if ((this.props.mark.type == 'cylinder') || (this.props.mark.type == 'cone'))
+        if ((this.props.mark.type === 'cylinder') || (this.props.mark.type === 'cone'))
           zAxis = <Axis
             domain={zDomain}
             tick={this.props.zAxis.ticks}
@@ -335,16 +335,16 @@ class BarGraph extends Component {
         }
         let position = `${xScale(d[this.props.mark.position.x.field]) + width / 2} ${hght / 2} ${zScale(d[this.props.mark.position.z.field]) + depth / 2}`
 
-        if ((this.props.mark.type == 'cone') || (this.props.mark.type == 'cylinder'))
+        if ((this.props.mark.type === 'cone') || (this.props.mark.type === 'cylinder'))
           position = `${xScale(d[this.props.mark.position.x.field]) + radius} ${hght / 2} ${zScale(d[this.props.mark.position.z.field]) + radius}`
 
-        let hover, hoverText
+        let hoverText
         if (this.props.mark.mouseOver) {
           if (this.props.mark.mouseOver.label)
             hoverText = this.props.mark.mouseOver.label.value(d)
         }
         return <Shape
-          key={i}
+          key={`${this.props.index}_Shape${i}`}
           type={this.props.mark.type}
           color={`${color}`}
           opacity={this.props.mark.style.fill.opacity}

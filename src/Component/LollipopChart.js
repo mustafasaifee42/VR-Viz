@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
 import * as moment from 'moment';
 
@@ -250,7 +249,7 @@ class LollipopChart extends Component {
       let xAxis, yAxis, zAxis;
 
       if (this.props.xAxis) {
-        if ((this.props.mark.type == 'cylinder') || (this.props.mark.type == 'cone'))
+        if ((this.props.mark.type === 'cylinder') || (this.props.mark.type === 'cone'))
           xAxis = <Axis
             domain={xDomain}
             tick={this.props.xAxis.ticks}
@@ -293,7 +292,7 @@ class LollipopChart extends Component {
       }
 
       if (this.props.zAxis) {
-        if ((this.props.mark.type == 'cylinder') || (this.props.mark.type == 'cone'))
+        if ((this.props.mark.type === 'cylinder') || (this.props.mark.type === 'cone'))
           zAxis = <Axis
             domain={zDomain}
             tick={this.props.zAxis.ticks}
@@ -347,7 +346,7 @@ class LollipopChart extends Component {
         }
         let position = `${xScale(d[this.props.mark.position.x.field]) + width / 2} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field]) + depth / 2}`
 
-        let hover, hoverText
+        let hoverText
         if (this.props.mark.mouseOver) {
           if (this.props.mark.mouseOver.label)
             hoverText = this.props.mark.mouseOver.label.value(d)
@@ -359,7 +358,7 @@ class LollipopChart extends Component {
         else
           radiusValue = this.props.mark.style.radius.value
         return <Shape
-          key={i}
+          key={`${this.props.index}_Shape${i}`}
           type={this.props.mark.type}
           color={`${color}`}
           opacity={this.props.mark.style.fill.opacity}
@@ -382,7 +381,7 @@ class LollipopChart extends Component {
         let position = `${xScale(d[this.props.mark.position.x.field]) + width / 2} ${yScale(d[this.props.mark.position.y.field]) / 2} ${zScale(d[this.props.mark.position.z.field]) + depth / 2}`
         
         return <Shape
-          key={i}
+          key={`${this.props.index}_Shape${i}`}
           type={'cylinder'}
           color={`${color}`}
           opacity={this.props.mark.droplines.style.fill.opacity}

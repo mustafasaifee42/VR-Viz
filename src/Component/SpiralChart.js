@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
-import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
-import * as THREE from 'three';
 import * as moment from 'moment';
 import 'aframe-meshline-component';
 
 import GetDomain from '../Utils/GetDomain.js';
-import GetMapShape from '../Utils/GetMapShape';
-import GetMapCoordinates from '../Utils/GetMapCoordinates';
 import ReadPLY from '../Utils/ReadPLY.js';
 
 import { csv } from 'd3-request';
@@ -208,7 +204,7 @@ class SpiralChart extends Component {
       spiralCoordinates = this.state.data.map((d, i) => {
         let coordinates = ''
         let angle = Math.PI * 2 / scales.length;
-        scales.map((d1, j) => {
+        scales.forEach((d1, j) => {
           coordinates = coordinates + ` ${d1(d[this.props.mark.vertices[j].title]) * Math.sin(j * angle)} ${i * yPos} ${0 - d1(d[this.props.mark.vertices[j].title]) * Math.cos(j * angle)} ,`
         })
         coordinates = coordinates + ` ${scales[0](d[this.props.mark.vertices[0].title]) * Math.sin(0)} ${i * yPos} ${0 - scales[0](d[this.props.mark.vertices[0].title]) * Math.cos(0)}`
@@ -217,7 +213,7 @@ class SpiralChart extends Component {
       shapeCoordinates = this.state.data.map((d, i) => {
         let coordinates = ''
         let angle = Math.PI * 2 / scales.length;
-        scales.map((d1, j) => {
+        scales.forEach((d1, j) => {
           coordinates = coordinates + `${d1(d[this.props.mark.vertices[j].title]) * Math.sin(j * angle)} ${0 - d1(d[this.props.mark.vertices[j].title]) * Math.cos(j * angle)},`
         })
         coordinates = coordinates + `${scales[0](d[this.props.mark.vertices[0].title]) * Math.sin(0)} ${0 - scales[0](d[this.props.mark.vertices[0].title]) * Math.cos(0)}`

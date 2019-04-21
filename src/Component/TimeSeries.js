@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
 import * as moment from 'moment';
 
@@ -128,7 +127,7 @@ class TimeSeries extends Component {
     }
     else {
       // Getting domain for axis
-      let xDomain, yDomain, zDomain, colorDomain;
+      let xDomain, yDomain, zDomain;
 
       if (this.props.mark.position.x) {
         if (!this.props.mark.position.x.domain) {
@@ -150,7 +149,7 @@ class TimeSeries extends Component {
 
       //Adding Scale
 
-      let xScale, yScale, zScale, colorScale;
+      let xScale, yScale, zScale;
 
 
       if (this.props.mark.position.x.scaleType === 'ordinal')
@@ -265,11 +264,11 @@ class TimeSeries extends Component {
         borderCoordinate.push(tempData);
       }
 
-      marks = dataCoordinate.map((d, i) => <a-entity key={i} geometry={`primitive: planeFromVertices; vertices: ${d[0]} ${d[1]} ${d[2]}, ${d[3]} ${d[4]} ${d[5]}, ${d[6]} ${d[7]} ${d[8]}, ${d[9]} ${d[10]} ${d[11]}`} material={`color: ${this.props.mark.style.fill.color}; side: double; opacity: ${this.props.mark.style.fill.opacity}`} />);
+      marks = dataCoordinate.map((d, i) => <a-entity key={`${this.props.index}_Mark${i}`} geometry={`primitive: planeFromVertices; vertices: ${d[0]} ${d[1]} ${d[2]}, ${d[3]} ${d[4]} ${d[5]}, ${d[6]} ${d[7]} ${d[8]}, ${d[9]} ${d[10]} ${d[11]}`} material={`color: ${this.props.mark.style.fill.color}; side: double; opacity: ${this.props.mark.style.fill.opacity}`} />);
 
       let path = ''
 
-      borderCoordinate.map((d, i) => {
+      borderCoordinate.forEach((d, i) => {
         path = path + `${d[0]} ${d[1]} ${d[2]},`
       })
 

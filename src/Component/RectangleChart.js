@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
 import * as moment from 'moment';
 
@@ -262,13 +261,13 @@ class RectangleChart extends Component {
         }
         let position = `${xScale(d[this.props.mark.position.x.field]) + width / 2} ${hght / 2} ${depth / 2}`
 
-        let hover, hoverText
+        let hoverText
         if (this.props.mark.mouseOver) {
           if (this.props.mark.mouseOver.label)
             hoverText = this.props.mark.mouseOver.label.value(d)
         }
         return <Shape
-          key={i}
+          key={`${this.props.index}_Shape${i}`}
           type={'box'}
           color={`${color}`}
           opacity={this.props.mark.style.fill.opacity}

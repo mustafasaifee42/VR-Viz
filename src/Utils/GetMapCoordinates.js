@@ -1,7 +1,4 @@
-
-import * as topojson from 'topojson';
 import * as d3GeoProjection from 'd3-geo-projection';
-import { csv } from 'd3-request';
 import * as d3 from 'd3';
 
 export default function (long, lat, proj, scale, position) {

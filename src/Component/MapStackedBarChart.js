@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
-import * as THREE from 'three';
 import * as moment from 'moment';
-
-import GetDomain from '../Utils/GetDomain.js';
 import GetMapShape from '../Utils/GetMapShape';
 import GetMapCoordinates from '../Utils/GetMapCoordinates';
 import ReadPLY from '../Utils/ReadPLY.js';
@@ -147,43 +143,21 @@ class MapStackedBarChart extends Component {
       }
 
       // Getting domain
-      let colorDomain, heightDomain;
+      let heightDomain;
 
       if (!this.props.mark.bars.style.height.domain)
         heightDomain = [0, max]
       else
         heightDomain = this.props.mark.bars.style.height.domain
 
-
-      if (this.props.mark.bars.style.fill.scaleType) {
-        if (!this.props.mark.bars.style.fill.domain) {
-          colorDomain = GetDomain(this.state.data, this.props.mark.bars.style.fill.field, this.props.mark.bars.style.fill.scaleType, this.props.mark.bars.style.fill.startFromZero)
-        } else
-          colorDomain = this.props.mark.bars.style.fill.domain
-      }
-
       //Adding scales
 
-      let colorScale, yScale;
+      let yScale;
 
 
       yScale = d3.scaleLinear()
         .domain(heightDomain)
         .range(this.props.mark.bars.style.height.value)
-
-      if (this.props.mark.bars.style.fill.scaleType) {
-        let colorRange = d3.schemeCategory10;
-        if (this.props.mark.bars.style.fill.color)
-          colorRange = this.props.mark.bars.style.fill.color
-        if (this.props.mark.bars.style.fill.scaleType === 'ordinal')
-          colorScale = d3.scaleOrdinal()
-            .domain(colorDomain)
-            .range(colorRange)
-        else
-          colorScale = d3.scaleLinear()
-            .domain(colorDomain)
-            .range(colorRange)
-      }
 
 
       //Drawing Map
@@ -204,20 +178,20 @@ class MapStackedBarChart extends Component {
       let marks = data.map((d, i) => {
         let markTemp = d.map((d1, j) => {
           let hght = yScale(d1[1] - d1[0]);
-          if (hght == 0) {
+          if (hght === 0) {
             hght = 0.000000000001;
           }
           let color = this.props.mark.bars.style.fill.color[i]
           let coordinates = GetMapCoordinates(d1.data.longitude, d1.data.latitude, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
           let position = `${coordinates[0]} ${0 - coordinates[1]} ${yScale(d1[0]) + hght / 2}`
 
-          let hover, hoverText
+          let hoverText
           if (this.props.mark.bars.mouseOver) {
             if (this.props.mark.bars.mouseOver.label)
               hoverText = this.props.mark.bars.mouseOver.label.value(d1.data).replace('Label', `${d.key}`).replace('LabelValue', `${d1.data[d.key]}`)
           }
           return <Shape
-            key={i}
+            key={`${this.props.index}_Shape${i}`}
             type={this.props.mark.bars.type}
             color={`${color}`}
             opacity={this.props.mark.bars.style.fill.opacity}

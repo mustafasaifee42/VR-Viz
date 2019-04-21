@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
 import * as moment from 'moment';
 
@@ -147,7 +146,7 @@ class StackedBarGraph extends Component {
         }
       }
       // Getting domain for axis
-      let xDomain, yDomain, zDomain, colorDomain = this.props.mark.style.fill.field;
+      let xDomain, yDomain, zDomain;
 
       if (!this.props.mark.position.x.domain)
         xDomain = GetDomain(this.state.data, this.props.mark.position.x.field, this.props.mark.position.x.scaleType, this.props.mark.position.x.startFromZero)
@@ -169,7 +168,7 @@ class StackedBarGraph extends Component {
 
       //Adding Scale
 
-      let xScale, yScale, zScale, colorScale, width, depth;
+      let xScale, yScale, zScale, width, depth;
 
 
       if (this.props.mark.position.x.scaleType === 'ordinal') {
@@ -196,18 +195,12 @@ class StackedBarGraph extends Component {
       if (depth > width)
         radius = width / 2;
 
-      let colorRange = d3.schemeCategory10;
-      if (this.props.mark.style.fill.color)
-        colorRange = this.props.mark.style.fill.color;
-      colorScale = d3.scaleOrdinal()
-        .domain(colorDomain)
-        .range(colorRange)
 
       //Axis
       let xAxis, yAxis, zAxis;
 
       if (this.props.xAxis) {
-        if ((this.props.mark.type == 'cylinder') || (this.props.mark.type == 'cone'))
+        if ((this.props.mark.type === 'cylinder') || (this.props.mark.type === 'cone'))
           xAxis = <Axis
             domain={xDomain}
             tick={this.props.xAxis.ticks}
@@ -249,7 +242,7 @@ class StackedBarGraph extends Component {
       }
 
       if (this.props.zAxis) {
-        if ((this.props.mark.type == 'cylinder') || (this.props.mark.type == 'cone'))
+        if ((this.props.mark.type === 'cylinder') || (this.props.mark.type === 'cone'))
           zAxis = <Axis
             domain={zDomain}
             tick={this.props.zAxis.ticks}
@@ -291,22 +284,22 @@ class StackedBarGraph extends Component {
       let marks = data.map((d, i) => {
         let markTemp = d.map((d1, j) => {
           let hght = yScale(d1[1] - d1[0]);
-          if (hght == 0) {
+          if (hght === 0) {
             hght = 0.000000000001;
           }
           let color = this.props.mark.style.fill.color[i]
           let position = `${xScale(d1.data[this.props.mark.position.x.field]) + width / 2} ${yScale(d1[0]) + hght / 2} ${zScale(d1.data[this.props.mark.position.z.field]) + depth / 2}`
 
-          if (this.props.mark.type == 'cylinder')
+          if (this.props.mark.type === 'cylinder')
             position = `${xScale(d1.data[this.props.mark.position.x.field]) + radius} ${yScale(d1[0]) + hght / 2} ${zScale(d1.data[this.props.mark.position.z.field]) + radius}`
 
-          let hover, hoverText
+          let hoverText
           if (this.props.mark.mouseOver) {
             if (this.props.mark.mouseOver.label)
               hoverText = this.props.mark.mouseOver.label.value(d1.data).replace('Label', `${d.key}`).replace('LabelValue', `${d1.data[d.key]}`)
           }
           return <Shape
-            key={i}
+            key={`${this.props.index}_Shape${i}`}
             type={this.props.mark.type}
             color={`${color}`}
             opacity={this.props.mark.style.fill.opacity}

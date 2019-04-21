@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
 import * as moment from 'moment';
 
@@ -277,13 +276,13 @@ class ScatterPlot extends Component {
         else
           shape = 'sphere'
 
-        let hover, hoverText
+        let hoverText
         if (this.props.mark.mouseOver) {
           if (this.props.mark.mouseOver.label)
             hoverText = this.props.mark.mouseOver.label.value(d)
         }
         return <Shape
-          key={i}
+          key={`${this.props.index}_Shape${i}`}
           type={shape}
           color={`${color}`}
           opacity={this.props.mark.style.fill.opacity}

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
 import * as moment from 'moment';
 
@@ -128,7 +127,7 @@ class ForceDirectedGraph extends Component {
     }
     else {
 
-      let radiusValue = this.props.mark.nodes.style.radius.value, nodeColorValue = this.props.mark.nodes.style.fill.color, ifNodeColorScale = this.props.mark.nodes.style.fill.scaleType, ifLinkColorScale = this.props.mark.links.style.fill.scaleType, ifLinkOpacityScale = this.props.mark.links.style.fill.opacity.scale, ifRadiusScale = this.props.mark.nodes.style.radius.scale, linkColor = this.props.mark.links.style.fill.color, linkOpacity = ifLinkColorScale = this.props.mark.links.style.fill.opacity.value, ifLabel = this.props.mark.labels, labelWidth;
+      let ifLabel = this.props.mark.labels, labelWidth;
 
       let nodeType = this.props.mark.nodes.type, labelPadding, scale = this.props.style.scale;
 
@@ -273,7 +272,7 @@ class ForceDirectedGraph extends Component {
       }
       let sphere = [], lines = [], label = []
       g.forEachNode((node) => {
-        let hover, hoverText
+        let hoverText
         if (this.props.mark.nodes.mouseOver) {
           if (this.props.mark.nodes.mouseOver.label)
             hoverText = this.props.mark.nodes.mouseOver.label.value(node.data.data)
@@ -295,7 +294,7 @@ class ForceDirectedGraph extends Component {
           />
         )
         if (ifLabel)
-          label.push(<a-text color={node.data.color} width={labelWidth} value={node.data.text} anchor='align' side='double' side='double' align='left' position={`${layout.getNodePosition(node.id).x * scale + node.data.radius / 2 + labelPadding} ${layout.getNodePosition(node.id).y * scale} ${layout.getNodePosition(node.id).z * scale}`} />)
+          label.push(<a-text color={node.data.color} width={labelWidth} value={node.data.text} anchor='align' side='double' align='left' position={`${layout.getNodePosition(node.id).x * scale + node.data.radius / 2 + labelPadding} ${layout.getNodePosition(node.id).y * scale} ${layout.getNodePosition(node.id).z * scale}`} />)
       });
       g.forEachLink((link) => {
         lines.push(<a-entity line={`start: ${layout.getLinkPosition(link.id).from.x * scale}, ${layout.getLinkPosition(link.id).from.y * scale}, ${layout.getLinkPosition(link.id).from.z * scale}; end: ${layout.getLinkPosition(link.id).to.x * scale} ${layout.getLinkPosition(link.id).to.y * scale} ${layout.getLinkPosition(link.id).to.z * scale}; color: ${link.data.color}; opacity: ${link.data.opacity}`} />)

@@ -217,7 +217,7 @@ class PrismMap extends Component {
 
       let shapes = geoData.map((d, i) => {
         let extrusionHeight = extrusionScale(data[d['code']]['value'])
-        if (extrusionHeight == 0)
+        if (extrusionHeight === 0)
           extrusionHeight = 0.000000000001;
         let primitive = `primitive: map; vertices: ${d.vertices}; extrude: ${extrusionHeight}`
         if (this.props.mark.style.fill.scaleType)

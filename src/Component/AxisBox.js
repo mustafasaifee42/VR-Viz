@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import * as AFRAME from 'aframe';
-import * as d3 from 'd3';
-import GetDomain from '../Utils/GetDomain.js';
 
 class AxisBox extends Component {
   constructor(props) {

@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
-import * as THREE from 'three';
 import 'aframe-curve-component';
 import * as moment from 'moment';
 
@@ -197,15 +195,15 @@ class FlowMap extends Component {
             switch (this.props.mark.nodes.source.type) {
               case 'sphere':
                 {
-                  return <a-sphere key={i} opacity={this.props.mark.nodes.source.style.fill.opacity} color={this.props.mark.nodes.source.style.fill.color} radius={this.props.mark.nodes.source.style.radius.value} position={`${source_position[0]} ${source_position[1]} 0`} />
+                  return <a-sphere key={`${this.props.index}_Source${i}`} opacity={this.props.mark.nodes.source.style.fill.opacity} color={this.props.mark.nodes.source.style.fill.color} radius={this.props.mark.nodes.source.style.radius.value} position={`${source_position[0]} ${source_position[1]} 0`} />
                 }
               case 'box':
                 {
-                  return <a-box key={i} opacity={this.props.mark.nodes.source.style.fill.opacity} color={this.props.mark.nodes.source.style.fill.color} width={this.props.mark.nodes.source.style.radius.value} height={this.props.mark.nodes.source.style.radius.value} depth={this.props.mark.nodes.source.style.radius.value} position={`${source_position[0]} ${source_position[1]} 0`} />
+                  return <a-box key={`${this.props.index}_Source${i}`} opacity={this.props.mark.nodes.source.style.fill.opacity} color={this.props.mark.nodes.source.style.fill.color} width={this.props.mark.nodes.source.style.radius.value} height={this.props.mark.nodes.source.style.radius.value} depth={this.props.mark.nodes.source.style.radius.value} position={`${source_position[0]} ${source_position[1]} 0`} />
                 }
               default:
                 {
-                  return <a-sphere key={i} opacity={this.props.mark.nodes.source.style.fill.opacity} color={this.props.mark.nodes.source.style.fill.color} radius={this.props.mark.nodes.source.style.radius.value} position={`${source_position[0]} ${source_position[1]} 0`} />
+                  return <a-sphere key={`${this.props.index}_Source${i}`} opacity={this.props.mark.nodes.source.style.fill.opacity} color={this.props.mark.nodes.source.style.fill.color} radius={this.props.mark.nodes.source.style.radius.value} position={`${source_position[0]} ${source_position[1]} 0`} />
                 }
             }
           })
@@ -221,15 +219,15 @@ class FlowMap extends Component {
             switch (this.props.mark.nodes.target.type) {
               case 'sphere':
                 {
-                  return <a-sphere key={i} opacity={this.props.mark.nodes.target.style.fill.opacity} color={this.props.mark.nodes.target.style.fill.color} radius={this.props.mark.nodes.target.style.radius.value} position={`${target_position[0]} ${target_position[1]} 0`} />
+                  return <a-sphere key={`${this.props.index}_Target${i}`} opacity={this.props.mark.nodes.target.style.fill.opacity} color={this.props.mark.nodes.target.style.fill.color} radius={this.props.mark.nodes.target.style.radius.value} position={`${target_position[0]} ${target_position[1]} 0`} />
                 }
               case 'box':
                 {
-                  return <a-box key={i} opacity={this.props.mark.nodes.target.style.fill.opacity} color={this.props.mark.nodes.target.style.fill.color} width={this.props.mark.nodes.target.style.radius.value} height={this.props.mark.nodes.target.style.radius.value} depth={this.props.mark.nodes.target.style.radius.value} position={`${target_position[0]} ${target_position[1]} 0`} />
+                  return <a-box key={`${this.props.index}_Target${i}`} opacity={this.props.mark.nodes.target.style.fill.opacity} color={this.props.mark.nodes.target.style.fill.color} width={this.props.mark.nodes.target.style.radius.value} height={this.props.mark.nodes.target.style.radius.value} depth={this.props.mark.nodes.target.style.radius.value} position={`${target_position[0]} ${target_position[1]} 0`} />
                 }
               default:
                 {
-                  return <a-sphere key={i} opacity={this.props.mark.nodes.target.style.fill.opacity} color={this.props.mark.nodes.target.style.fill.color} radius={this.props.mark.nodes.target.style.radius.value} position={`${target_position[0]} ${target_position[1]} 0`} />
+                  return <a-sphere key={`${this.props.index}_Target${i}`} opacity={this.props.mark.nodes.target.style.fill.opacity} color={this.props.mark.nodes.target.style.fill.color} radius={this.props.mark.nodes.target.style.radius.value} position={`${target_position[0]} ${target_position[1]} 0`} />
                 }
             }
           })
@@ -257,7 +255,7 @@ class FlowMap extends Component {
         }
 
         let pointsData = [source_position, middle_point, target_position]
-        let points = pointsData.map((d, i) => <a-curve-point key={i} position={`${d[0]} ${d[1]} ${d[2]}`} />);
+        let points = pointsData.map((d, i) => <a-curve-point key={`${this.props.index}_Point${i}`} position={`${d[0]} ${d[1]} ${d[2]}`} />);
 
         let curve = <a-curve id={`lineGraph${i}`}>
           {points}

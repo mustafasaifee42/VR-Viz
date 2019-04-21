@@ -33,7 +33,7 @@ require('aframe-teleport-controls');
 
 const propTypes = {
   scene: PropTypes.object,
-  graph: PropTypes.object.isRequired
+  graph: PropTypes.array.isRequired
 }
 
 
@@ -50,6 +50,11 @@ class VRViz extends Component {
         this.setState({
           headset:true,
         })
+        if(AFRAME.utils.device.isMobile()){
+          this.setState({
+            headset:false,
+          })
+        }
       }
       else {
         this.setState({
@@ -78,9 +83,9 @@ class VRViz extends Component {
         else
           decay = item.decay;
         if (item.type === 'ambient')
-          return <a-entity light={`type:${item.type}; color: ${item.color}; intensity: ${intensity}; decay: ${decay}`} key={i} />
+          return <a-entity light={`type:${item.type}; color: ${item.color}; intensity: ${intensity}; decay: ${decay}`} key={`Light${i}`} />
         else
-          return <a-entity light={`type:${item.type}; color: ${item.color}; castShadow: true; intensity: ${intensity}; decay: ${decay}`} position={item.position} key={i} />
+          return <a-entity light={`type:${item.type}; color: ${item.color}; castShadow: true; intensity: ${intensity}; decay: ${decay}`} position={item.position} key={`Light${i}`} />
       })
 
       //Camera Rig and Camera
@@ -97,7 +102,7 @@ class VRViz extends Component {
       let cameraSettings = `active: true;near:${nearClipping};fov:${fov}`
       if(this.state.headset)
       camera = <a-entity id="cameraRig" position={this.props.scene.camera.position} rotation={this.props.scene.camera.rotation}>
-          <a-entity id="head" camera={cameraSettings} position="0 1.6 0"  look-controls  wasd-controls="#cameraRig;"/>
+          <a-entity id="head" camera={cameraSettings} position="0 1.6 0" wasd-controls="#cameraRig;"/>
           <a-entity id="left-hand" windows-motion-controls="hand: left" vive-controls="hand: left" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;" />
           <a-entity id="right-hand" windows-motion-controls="hand: right" vive-controls="hand: right" gearvr-controls daydream-controls teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;">
             <a-entity cursor="fuse: true; fuseTimeout: 50"
@@ -171,6 +176,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<BarGraph
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -184,6 +190,7 @@ class VRViz extends Component {
             />)
           else
             return (<BarGraph
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -199,6 +206,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<ConnectedScatterPlot
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -212,6 +220,7 @@ class VRViz extends Component {
             />)
           else
             return (<ConnectedScatterPlot
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -232,6 +241,7 @@ class VRViz extends Component {
             heightThreshold = d.mark.heightThreshold
           if (d.axis)
             return (<ContourMap
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -243,6 +253,7 @@ class VRViz extends Component {
             />)
           else
             return (<ContourMap
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -259,6 +270,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<ContourPlot
+              key={i}
               animateRotation={d.animateRotation}
               style={d.style}
               mark={d.mark}
@@ -271,6 +283,7 @@ class VRViz extends Component {
             />)
           else
             return (<ContourPlot
+              key={i}
               animateRotation={d.animateRotation}
               style={d.style}
               mark={d.mark}
@@ -285,6 +298,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<FlowMap
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -295,6 +309,7 @@ class VRViz extends Component {
             />)
           else
             return (<FlowMap
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -310,6 +325,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<ForceDirectedGraph
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -320,6 +336,7 @@ class VRViz extends Component {
             />)
           else
             return (<ForceDirectedGraph
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -335,6 +352,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<MapBarChart
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -345,6 +363,7 @@ class VRViz extends Component {
             />)
           else
             return (<MapBarChart
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -360,6 +379,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<MapStackedBarChart
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -370,6 +390,7 @@ class VRViz extends Component {
             />)
           else
             return (<MapStackedBarChart
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -385,6 +406,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<ParametricCurvePlot
+              key={i}
               animateRotation={d.animateRotation}
               style={d.style}
               mark={d.mark}
@@ -398,6 +420,7 @@ class VRViz extends Component {
             />)
           else
             return (<ParametricCurvePlot
+              key={i}
               animateRotation={d.animateRotation}
               style={d.style}
               mark={d.mark}
@@ -413,6 +436,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<ParametricSurfacePlot
+              key={i}
               animateRotation={d.animateRotation}
               style={d.style}
               mark={d.mark}
@@ -426,6 +450,7 @@ class VRViz extends Component {
             />)
           else
             return (<ParametricSurfacePlot
+              key={i}
               animateRotation={d.animateRotation}
               style={d.style}
               mark={d.mark}
@@ -441,6 +466,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<PointCloud
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -451,6 +477,7 @@ class VRViz extends Component {
             />)
           else
             return (<PointCloud
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -466,6 +493,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<PrismMap
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -476,6 +504,7 @@ class VRViz extends Component {
             />)
           else
             return (<PrismMap
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -491,6 +520,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<ScatterPlot
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -504,6 +534,7 @@ class VRViz extends Component {
             />)
           else
             return (<ScatterPlot
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -519,6 +550,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<StackedBarGraph
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -532,6 +564,7 @@ class VRViz extends Component {
             />)
           else
             return (<StackedBarGraph
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -547,6 +580,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<SurfacePlot
+              key={i}
               animateRotation={d.animateRotation}
               style={d.style}
               mark={d.mark}
@@ -559,6 +593,7 @@ class VRViz extends Component {
             />)
           else
             return (<SurfacePlot
+              key={i}
               animateRotation={d.animateRotation}
               style={d.style}
               mark={d.mark}
@@ -573,6 +608,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<TreeMap
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -583,6 +619,7 @@ class VRViz extends Component {
             />)
           else
             return (<TreeMap
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -598,6 +635,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<WaterFallPlot
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -611,6 +649,7 @@ class VRViz extends Component {
             />)
           else
             return (<WaterFallPlot
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -626,6 +665,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<MeshPlot
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -639,6 +679,7 @@ class VRViz extends Component {
             />)
           else
             return (<MeshPlot
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -654,6 +695,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<RectangleChart
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -667,6 +709,7 @@ class VRViz extends Component {
             />)
           else
             return (<RectangleChart
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -682,6 +725,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<LollipopChart
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -695,6 +739,7 @@ class VRViz extends Component {
             />)
           else
             return (<LollipopChart
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -710,6 +755,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<TimeSeries
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -723,6 +769,7 @@ class VRViz extends Component {
             />)
           else
             return (<TimeSeries
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -738,6 +785,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<MapTimeBars
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -748,6 +796,7 @@ class VRViz extends Component {
             />)
           else
             return (<MapTimeBars
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -763,6 +812,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<MapContourLines
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -772,6 +822,7 @@ class VRViz extends Component {
             />)
           else
             return (<MapContourLines
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -787,6 +838,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<SpiralChart
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -797,6 +849,7 @@ class VRViz extends Component {
             />)
           else
             return (<SpiralChart
+              key={i}
               animateRotation={d.animateRotation}
               data={d.data}
               style={d.style}
@@ -811,6 +864,7 @@ class VRViz extends Component {
           }
           if (d.axis)
             return (<CrossSectionView
+              key={i}
               animateRotation={d.animateRotation}
               object={d.object}
               style={d.style}
@@ -819,6 +873,7 @@ class VRViz extends Component {
             />)
           else
             return (<CrossSectionView
+              key={i}
               animateRotation={d.animateRotation}
               object={d.object}
               style={d.style}

@@ -258,9 +258,9 @@ class BarGraph extends Component {
                 hght = 0.000000000001;
               }
               if (this.props.mark.style.fill.scaleType) {
-                return <a-box key={i} color={`${colorScale(d[this.props.mark.style.fill.field])}`} opacity={this.props.mark.style.fill.opacity} depth={`${this.props.mark.style.depth}`} height={`${hght}`} width={`${this.props.mark.style.width}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
+                return <a-box key={`${this.props.index}_Mark${i}`} color={`${colorScale(d[this.props.mark.style.fill.field])}`} opacity={this.props.mark.style.fill.opacity} depth={`${this.props.mark.style.depth}`} height={`${hght}`} width={`${this.props.mark.style.width}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
               } else
-                return <a-box key={i} color={`${this.props.mark.style.fill.color}`} opacity={this.props.mark.style.fill.opacity} depth={`${this.props.mark.style.depth}`} height={`${hght}`} width={`${this.props.mark.style.width}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
+                return <a-box key={`${this.props.index}_Mark${i}`} color={`${this.props.mark.style.fill.color}`} opacity={this.props.mark.style.fill.opacity} depth={`${this.props.mark.style.depth}`} height={`${hght}`} width={`${this.props.mark.style.width}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
             });
             break;
           }
@@ -272,9 +272,9 @@ class BarGraph extends Component {
                 hght = 0.000000000001;
               }
               if (this.props.mark.style.fill.scaleType)
-                return <a-cylinder key={i} opacity={this.props.mark.style.fill.opacity} color={`${colorScale(d[this.props.mark.style.fill.field])}`} height={`${hght}`} radius={`${this.props.mark.style.radius}`} segments-radial={`${this.props.mark.style.segments}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
+                return <a-cylinder key={`${this.props.index}_Mark${i}`} opacity={this.props.mark.style.fill.opacity} color={`${colorScale(d[this.props.mark.style.fill.field])}`} height={`${hght}`} radius={`${this.props.mark.style.radius}`} segments-radial={`${this.props.mark.style.segments}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
               else
-                return <a-cylinder key={i} opacity={this.props.mark.style.fill.opacity} color={`${this.props.mark.style.fill.color}`} height={`${hght}`} radius={`${this.props.mark.style.radius}`} segments-radial={`${this.props.mark.style.segments}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
+                return <a-cylinder key={`${this.props.index}_Mark${i}`} opacity={this.props.mark.style.fill.opacity} color={`${this.props.mark.style.fill.color}`} height={`${hght}`} radius={`${this.props.mark.style.radius}`} segments-radial={`${this.props.mark.style.segments}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
             });
             break;
           }
@@ -286,9 +286,9 @@ class BarGraph extends Component {
                 hght = 0.000000000001;
               }
               if (this.props.mark.style.fill.scaleType)
-                return <a-cone key={i} opacity={this.props.mark.style.fill.opacity} color={`${colorScale(d[this.props.mark.style.fill.field])}`} height={`${hght}`} radius-bottom={`${this.props.mark.style.radiusBottom}`} radius-top={`${this.props.mark.style.radiusTop}`} segments-radial={`${this.props.mark.style.segments}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
+                return <a-cone key={`${this.props.index}_Mark${i}`} opacity={this.props.mark.style.fill.opacity} color={`${colorScale(d[this.props.mark.style.fill.field])}`} height={`${hght}`} radius-bottom={`${this.props.mark.style.radiusBottom}`} radius-top={`${this.props.mark.style.radiusTop}`} segments-radial={`${this.props.mark.style.segments}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
               else
-                return <a-cone key={i} opacity={this.props.mark.style.fill.opacity} color={`${this.props.mark.style.fill.color}`} height={`${hght}`} radius-bottom={`${this.props.mark.style.radiusBottom}`} radius-top={`${this.props.mark.style.radiusTop}`} segments-radial={`${this.props.mark.style.segments}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
+                return <a-cone key={`${this.props.index}_Mark${i}`} opacity={this.props.mark.style.fill.opacity} color={`${this.props.mark.style.fill.color}`} height={`${hght}`} radius-bottom={`${this.props.mark.style.radiusBottom}`} radius-top={`${this.props.mark.style.radiusTop}`} segments-radial={`${this.props.mark.style.segments}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
             });
             break;
           }
@@ -300,9 +300,9 @@ class BarGraph extends Component {
                 hght = 0.000000000001;
               }
               if (this.props.mark.style.fill.scaleType)
-                return <a-box key={i} opacity={this.props.mark.style.fill.opacity} color={`${colorScale(d[this.props.mark.style.fill.field])}`} depth={`${this.props.mark.style.depth}`} height={`${hght}`} width={`${this.props.mark.style.width}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
+                return <a-box key={`${this.props.index}_Mark${i}`} opacity={this.props.mark.style.fill.opacity} color={`${colorScale(d[this.props.mark.style.fill.field])}`} depth={`${this.props.mark.style.depth}`} height={`${hght}`} width={`${this.props.mark.style.width}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
               else
-                return <a-box key={i} opacity={this.props.mark.style.fill.opacity} color={`${this.props.mark.style.fill.color}`} depth={`${this.props.mark.style.depth}`} height={`${hght}`} width={`${this.props.mark.style.width}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
+                return <a-box key={`${this.props.index}_Mark${i}`} opacity={this.props.mark.style.fill.opacity} color={`${this.props.mark.style.fill.color}`} depth={`${this.props.mark.style.depth}`} height={`${hght}`} width={`${this.props.mark.style.width}`} position={`${xScale(d[this.props.mark.position.x.field])} ${hght / 2} ${zScale(d[this.props.mark.position.z.field])}`} />
             });
             break;
           }

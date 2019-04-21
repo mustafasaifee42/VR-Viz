@@ -27,7 +27,6 @@ AFRAME.registerComponent('change-color-on-hover', {
   init: function () {
     var data = this.data;
     var el = this.el;  // <a-box>
-    var defaultColor = el.getAttribute('material').color;
 
     el.addEventListener('mouseenter', function () {
       let hvr = document.getElementById("hover")
@@ -35,54 +34,54 @@ AFRAME.registerComponent('change-color-on-hover', {
       let shapes = d3.selectAll(`#${data.graphID}`)
         .selectAll('.shapes')
 
-      if (data.hoverText != 'undefined') {
+      if (data.hoverText !== 'undefined') {
         hvr.setAttribute('visible', true);
         hvr.setAttribute('text', 'value', data.hoverText);
       }
 
-      if (data.nonFocusedObjectOpacity != 'undefined') {
+      if (data.nonFocusedObjectOpacity !== 'undefined') {
         shapes.attr('opacity', parseFloat(data.nonFocusedObjectOpacity))
       }
 
-      if (data.focusedObjectOpacity != 'undefined') {
+      if (data.focusedObjectOpacity !== 'undefined') {
         el.setAttribute('opacity', data.focusedObjectOpacity);
       }
 
-      if (data.focusedObjectfill != 'undefined') {
+      if (data.focusedObjectfill !== 'undefined') {
         el.setAttribute('color', data.focusedObjectfill);
       }
 
-      if (data.labelPosition != 'undefined')
+      if (data.labelPosition !== 'undefined')
         hvr.setAttribute('position', data.labelPosition);
       else
         hvr.setAttribute('position', '0 -0.3 -1');
 
-      if (data.labelRotation != 'undefined')
+      if (data.labelRotation !== 'undefined')
         hvr.setAttribute('rotation', data.labelRotation);
       else
         hvr.setAttribute('rotation', '0 0 0');
-      if (data.wrapCount != 'undefined')
+      if (data.wrapCount !== 'undefined')
         hvr.setAttribute('text', 'wrapCount', data.wrapCount);
 
-      if (data.lineHeight != 'undefined')
+      if (data.lineHeight !== 'undefined')
         hvr.setAttribute('text', 'lineHeight', data.lineHeight);
 
-      if (data.labelFontColor != 'undefined')
+      if (data.labelFontColor !== 'undefined')
         hvr.setAttribute('text', 'color', data.labelFontColor);
 
-      if (data.labelAlign != 'undefined')
+      if (data.labelAlign !== 'undefined')
         hvr.setAttribute('text', 'align', data.labelAlign);
 
-      if (data.labelWidth != 'undefined')
+      if (data.labelWidth !== 'undefined')
         hvr.setAttribute('geometry', 'width', data.labelWidth);
 
-      if (data.labelHeight != 'undefined')
+      if (data.labelHeight !== 'undefined')
         hvr.setAttribute('geometry', 'height', data.labelHeight);
 
-      if (data.labelBackgroundColor != 'undefined')
+      if (data.labelBackgroundColor !== 'undefined')
         hvr.setAttribute('material', 'color', data.labelBackgroundColor);
 
-      if (data.backgroundOpacity != 'undefined')
+      if (data.backgroundOpacity !== 'undefined')
         hvr.setAttribute('material', 'opacity', data.backgroundOpacity)
       else
         hvr.setAttribute('material', 'opacity', 1)
@@ -94,7 +93,7 @@ AFRAME.registerComponent('change-color-on-hover', {
       hvr.setAttribute('visible', false);
       el.setAttribute('opacity', data.prevOpacity);
       el.setAttribute('color', data.prevColor);
-      let shapes = d3.selectAll(`#${data.graphID}`)
+      d3.selectAll(`#${data.graphID}`)
         .selectAll('.shapes')
         .attr('opacity', parseFloat(data.prevOpacity))
     });
@@ -108,7 +107,6 @@ class Shapes extends Component {
   }
 
   render() {
-    let marks;
     let rotation = '0 0 0';
     if (this.props.rotation) {
       rotation = this.props.rotation

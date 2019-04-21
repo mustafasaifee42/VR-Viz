@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
 import * as moment from 'moment';
 
-import GetDomain from '../Utils/GetDomain.js';
 import ReadPLY from '../Utils/ReadPLY.js';
 import Shape from './Shape.js';
 import GetMapShape from '../Utils/GetMapShape';
@@ -202,13 +200,13 @@ class MapTimeBars extends Component {
           let position = `${coordinates[0]} ${0 - coordinates[1]} ${(j + 1 / 2) * this.props.mark.timeLayers.style.height + j * this.props.mark.timeLayers.style.padding}`
           let radius = radiusScale(d[d1])
 
-          let hover, hoverText
+          let hoverText
           if (this.props.mark.timeLayers.mouseOver) {
             if (this.props.mark.timeLayers.mouseOver.label)
               hoverText = this.props.mark.timeLayers.mouseOver.label.value(d).replace('Label', `${d1}`).replace('LabelValue', `${d[d1]}`)
           }
           return <Shape
-            key={i}
+            key={`${this.props.index}_Shape${i}`}
             type={this.props.mark.timeLayers.type}
             color={`${color}`}
             opacity={this.props.mark.timeLayers.style.fill.opacity}

@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import * as AFRAME from 'aframe';
 import * as d3 from 'd3';
 import * as moment from 'moment';
 
-import GetDomain from '../Utils/GetDomain.js';
 import ReadPLY from '../Utils/ReadPLY.js';
 import Shape from './Shape.js';
 
@@ -141,7 +139,7 @@ class TreeMap extends Component {
 
       let parent = []
       for (let i = 0; i < tree.leaves().length; i++) {
-        if ((parent.indexOf(tree.leaves()[i].parent.data.name) == -1) && (tree.leaves()[i].parent.data.name !== null))
+        if ((parent.indexOf(tree.leaves()[i].parent.data.name) === -1) && (tree.leaves()[i].parent.data.name !== null))
           parent.push(tree.leaves()[i].parent.data.name)
       }
 
@@ -187,13 +185,13 @@ class TreeMap extends Component {
         let color = `${this.props.mark.style.fill.color}`
         if (this.props.mark.style.fill.scaleType)
           color = colorScale(d.parent.data.name)
-        let hover, hoverText
+        let hoverText
         if (this.props.mark.mouseOver) {
           if (this.props.mark.mouseOver.label)
             hoverText = this.props.mark.mouseOver.label.value(d.data)
         }
         return <Shape
-          key={i}
+          key={`${this.props.index}_Shape${i}`}
           type={'box'}
           color={`${color}`}
           opacity={this.props.mark.style.fill.opacity}

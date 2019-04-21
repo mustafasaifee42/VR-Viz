@@ -2,17 +2,6 @@ import React, { Component } from 'react';
 import * as AFRAME from 'aframe';
 import * as THREE from 'three';
 import * as d3 from 'd3';
-import * as moment from 'moment';
-
-import GetDomain from '../Utils/GetDomain.js';
-import ReadPLY from '../Utils/ReadPLY.js';
-import Axis from './Axis.js';
-import AxisBox from './AxisBox.js';
-import Shape from './Shape.js';
-
-import { csv } from 'd3-request';
-import { json } from 'd3-request';
-import { text } from 'd3-request';
 
 AFRAME.registerComponent('modify-materials', {
   schema: {

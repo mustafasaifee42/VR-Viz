@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import 'aframe';
-import * as d3 from 'd3';
-import GetDomain from '../Utils/GetDomain.js';
 import * as moment from 'moment';
 
 class Axis extends Component {
@@ -15,7 +13,7 @@ class Axis extends Component {
 
     //Adding Axis
     let ticks, tickText, axis, tickValues, rotation, align, title, titlePosition, titleRotation, titleAlign, titlePadding, grid;
-    if (this.props.scaleType == 'ordinal') {
+    if (this.props.scaleType === 'ordinal') {
       tickValues = this.props.domain
     } else {
       tickValues = this.props.scale.ticks(this.props.tick.noOfTicks)
@@ -68,18 +66,18 @@ class Axis extends Component {
 
                 }
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} ${this.props.dimensions.height} 0; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
+                  grid = tickValues.map((d, i) => <a-entity key={`Axis_Grid_X${i}`} line={`start:${this.props.scale(d) + padding}, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} ${this.props.dimensions.height} 0; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
 
                 }
                 if (!this.props.tick.format) {
                   axis = <a-entity line={`start:0, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} ${this.props.dimensions.height} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} ${this.props.dimensions.height} ${this.props.dimensions.depth + this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
-                  tickText = tickValues.map((d, i) => <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${this.props.scale(d) + padding} ${this.props.dimensions.height} ${this.props.dimensions.depth + this.props.tick['size'] + 0.05}`} />);
+                  ticks = tickValues.map((d, i) => <a-entity key={i}  line={`start:${this.props.scale(d) + padding}, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} ${this.props.dimensions.height} ${this.props.dimensions.depth + this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
+                  tickText = tickValues.map((d, i) => <a-text key={i}  opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${this.props.scale(d) + padding} ${this.props.dimensions.height} ${this.props.dimensions.depth + this.props.tick['size'] + 0.05}`} />);
                   break;
                 }
                 else {
                   axis = <a-entity line={`start:0, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} ${this.props.dimensions.height} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} ${this.props.dimensions.height} ${this.props.dimensions.depth + this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
+                  ticks = tickValues.map((d, i) => <a-entity key={i}  line={`start:${this.props.scale(d) + padding}, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} ${this.props.dimensions.height} ${this.props.dimensions.depth + this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
                     return <a-text key={i} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${this.props.scale(d) + padding} ${this.props.dimensions.height} ${this.props.dimensions.depth + this.props.tick['size'] + 0.05}`} />
@@ -98,7 +96,7 @@ class Axis extends Component {
 
                 }
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, 0.001, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} 0.001 0; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
+                  grid = tickValues.map((d, i) => <a-entity  key={`Axis_Grid_X${i}`} line={`start:${this.props.scale(d) + padding}, 0.001, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} 0.001 0; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
                 }
                 if (!this.props.tick.format) {
                   axis = <a-entity line={`start:0, 0.001, 0; end:${this.props.dimensions.width} 0.001 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
@@ -127,7 +125,7 @@ class Axis extends Component {
 
                 }
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} ${this.props.dimensions.height} 0; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
+                  grid = tickValues.map((d, i) => <a-entity key={`Axis_Grid_X${i}`} line={`start:${this.props.scale(d) + padding}, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} ${this.props.dimensions.height} 0; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
 
                 }
                 if (!this.props.tick.format) {
@@ -156,7 +154,7 @@ class Axis extends Component {
                   title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.value}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} />;
                 }
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, 0.001, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} 0.001 0; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
+                  grid = tickValues.map((d, i) => <a-entity key={`Axis_Grid_X${i}`} line={`start:${this.props.scale(d) + padding}, 0.001, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} 0.001 0; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
                 }
                 if (!this.props.tick.format) {
                   axis = <a-entity line={`start:0, 0.001, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
@@ -184,7 +182,7 @@ class Axis extends Component {
                   title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.value}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} />;
                 }
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, 0.001, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} 0.001 0; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
+                  grid = tickValues.map((d, i) => <a-entity key={`Axis_Grid_X${i}`} line={`start:${this.props.scale(d) + padding}, 0.001, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} 0.001 0; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
                 }
                 if (!this.props.tick.format) {
                   axis = <a-entity line={`start:0, 0.001, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
@@ -232,7 +230,7 @@ class Axis extends Component {
               {
 
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => <a-entity key={i} line={`start:0, ${this.props.scale(d) + padding}, 0; end:0 ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
+                  grid = tickValues.map((d, i) => <a-entity  key={`Axis_Grid_Y${i}`} line={`start:0, ${this.props.scale(d) + padding}, 0; end:0 ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
                 }
                 if (this.props.title) {
                   if (!this.props.title.align)
@@ -266,7 +264,7 @@ class Axis extends Component {
               {
 
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => <a-entity key={i} line={`start:0, ${this.props.scale(d) + padding}, 0; end:0 ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
+                  grid = tickValues.map((d, i) => <a-entity key={`Axis_Grid_Y${i}`} line={`start:0, ${this.props.scale(d) + padding}, 0; end:0 ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
                 }
                 if (this.props.title) {
                   if (!this.props.title.align)
@@ -300,7 +298,7 @@ class Axis extends Component {
               {
 
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.dimensions.width}, ${this.props.scale(d) + padding}, 0; end:${this.props.dimensions.width} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
+                  grid = tickValues.map((d, i) => <a-entity  key={`Axis_Grid_Y${i}`} line={`start:${this.props.dimensions.width}, ${this.props.scale(d) + padding}, 0; end:${this.props.dimensions.width} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
                 }
                 if (this.props.title) {
                   if (!this.props.title.align)
@@ -333,7 +331,7 @@ class Axis extends Component {
             case 'back-right':
               {
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.dimensions.width}, ${this.props.scale(d) + padding}, 0; end:${this.props.dimensions.width} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
+                  grid = tickValues.map((d, i) => <a-entity  key={`Axis_Grid_Y${i}`} line={`start:${this.props.dimensions.width}, ${this.props.scale(d) + padding}, 0; end:${this.props.dimensions.width} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
                 }
                 if (this.props.title) {
                   if (!this.props.title.align)
@@ -366,7 +364,7 @@ class Axis extends Component {
             default:
               {
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => <a-entity key={i} line={`start:0, ${this.props.scale(d) + padding}, 0; end:0 ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
+                  grid = tickValues.map((d, i) => <a-entity key={`Axis_Grid_Y${i}`} line={`start:0, ${this.props.scale(d) + padding}, 0; end:0 ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
                 }
                 if (this.props.title) {
                   if (!this.props.title.align)
@@ -426,9 +424,9 @@ class Axis extends Component {
 
                 if (this.props.grid) {
                   grid = tickValues.map((d, i) => {
-                    return <a-entity>
-                      <a-entity key={i} line={`start:0, 0.001, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
-                      <a-entity key={i} line={`start:0.001, 0, ${this.props.scale(d) + padding}; end:0.001 ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
+                    return <a-entity key={i}>
+                      <a-entity key={`Line1_${i}`} line={`start:0, 0.001, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
+                      <a-entity key={`Line2_${i}`} line={`start:0.001, 0, ${this.props.scale(d) + padding}; end:0.001 ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
                     </a-entity>
                   });
                 }
@@ -465,9 +463,9 @@ class Axis extends Component {
 
                 if (this.props.grid) {
                   grid = tickValues.map((d, i) => {
-                    return <a-entity>
-                      <a-entity key={i} line={`start:0, ${this.props.dimensions.height}, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width} ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
-                      <a-entity key={i} line={`start:0.001, 0, ${this.props.scale(d) + padding}; end:0.001 ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
+                    return <a-entity key={i}>
+                      <a-entity key={`Line1_${i}`} line={`start:0, ${this.props.dimensions.height}, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width} ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
+                      <a-entity key={`Line2_${i}`} line={`start:0.001, 0, ${this.props.scale(d) + padding}; end:0.001 ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
                     </a-entity>
                   });
                 }
@@ -504,9 +502,9 @@ class Axis extends Component {
 
                 if (this.props.grid) {
                   grid = tickValues.map((d, i) => {
-                    return <a-entity>
-                      <a-entity key={i} line={`start:0, ${this.props.dimensions.height}, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width} ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
-                      <a-entity key={i} line={`start:${this.props.dimensions.width}, 0, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width} ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
+                    return <a-entity key={i}>
+                      <a-entity key={`Line1_${i}`} line={`start:0, ${this.props.dimensions.height}, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width} ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
+                      <a-entity key={`Line2_${i}`} line={`start:${this.props.dimensions.width}, 0, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width} ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
                     </a-entity>
                   });
                 }
@@ -543,9 +541,9 @@ class Axis extends Component {
 
                 if (this.props.grid) {
                   grid = tickValues.map((d, i) => {
-                    return <a-entity>
-                      <a-entity key={i} line={`start:0, 0.001, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
-                      <a-entity key={i} line={`start:${this.props.dimensions.width}, 0, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width} ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
+                    return <a-entity key={i}>
+                      <a-entity key={`Line1_${i}`} line={`start:0, 0.001, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
+                      <a-entity key={`Line2_${i}`} line={`start:${this.props.dimensions.width}, 0, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width} ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
                     </a-entity>
                   });
                 }
@@ -583,9 +581,9 @@ class Axis extends Component {
 
                 if (this.props.grid) {
                   grid = tickValues.map((d, i) => {
-                    return <a-entity>
-                      <a-entity key={i} line={`start:0, 0.001, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
-                      <a-entity key={i} line={`start:0.001, 0, ${this.props.scale(d) + padding}; end:0.001 ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
+                    return <a-entity key={i}>
+                      <a-entity key={`Line1_${i}`} line={`start:0, 0.001, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
+                      <a-entity key={`Line2_${i}`} line={`start:0.001, 0, ${this.props.scale(d) + padding}; end:0.001 ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
                     </a-entity>
                   });
                 }
