@@ -213,7 +213,7 @@ class TreeMap extends Component {
       if(this.props.style.pivot)
         pivot = this.props.style.pivot;
       else
-        pivot = `${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`
+        pivot = `0 0 0`
       return (
         <a-entity pivot={pivot} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
           {marks}

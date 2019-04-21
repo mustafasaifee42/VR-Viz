@@ -206,7 +206,7 @@ class MapBarChart extends Component {
       if(this.props.style.pivot)
         pivot = this.props.style.pivot;
       else
-        pivot = `${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`
+        pivot = `0 0 0`
       return (
         <a-entity pivot={pivot} rotation={this.props.mark.rotation} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} id={this.props.index}>
           {shapes}

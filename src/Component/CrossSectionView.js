@@ -90,7 +90,7 @@ class CrossSectionView extends Component {
     if(this.props.style.pivot)
       pivot = this.props.style.pivot;
     else
-      pivot = `${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`
+      pivot = `0 0 0`
     return (
       <a-entity pivot={pivot} gltf-model={`url(${this.props.object})`} position={`${this.props.style.position[0]} ${this.props.style.position[1]} ${this.props.style.position[2]}`} scale={`${this.props.style.scale[0]} ${this.props.style.scale[1]} ${this.props.style.scale[2]}`} modify-materials={`opacity: ${this.props.style.opacity}; color: ${this.props.style.color}`} play-all-model-animations />
     )
