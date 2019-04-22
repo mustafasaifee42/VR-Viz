@@ -76,6 +76,5 @@ export default function (mapData, proj, scale, position, identifier, shapeKey) {
       }
     }
   }
-  console.log(mapData, proj, scale, position, identifier, shapeKey)
   return (geoData);
 }
