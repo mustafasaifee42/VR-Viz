@@ -214,7 +214,6 @@ class PrismMap extends Component {
       //Adding marks
 
       let geoData = GetMapShape(this.props.mark.data, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin, this.props.mark.shapeIdentifier, this.props.mark.shapeKey);
-
       let shapes = geoData.map((d, i) => {
         let extrusionHeight = extrusionScale(data[d['code']]['value'])
         if (extrusionHeight === 0)
@@ -225,7 +224,6 @@ class PrismMap extends Component {
         else
           return (<a-entity geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; metalness: 0.2; opacity:${this.props.mark.style.fill.opacity}`} />)
       })
-
       let border;
       if (this.props.mark.style.stroke)
         border = geoData.map((d, i) => <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${`${d.vertices.replace(/,/g, ` ${extrusionScale(data[d['code']]['value'])},`)} ${extrusionScale(data[d['code']]['value'])}`}; color:${this.props.mark.style.stroke.color}`} />);
