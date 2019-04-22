@@ -8,7 +8,6 @@ VR-Viz provide a high-level react components to generate 3D visualization in web
 
 ### Boilerplate for using VR-Viz can be found [here](https://github.com/mustafasaifee42/vr-viz-boilerplate). 
 
-
 ## If using NPM
 
 Package link: [https://www.npmjs.com/package/vr-viz](https://www.npmjs.com/package/vr-viz)
