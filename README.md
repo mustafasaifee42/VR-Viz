@@ -477,5 +477,6 @@ grid.opacity|float|Defined the opacity for grid for the axis. __Required.__ _Val
 * Add collaboration using [A-Frame Networked](https://haydenlee.io/networked-aframe/)
 
 ## Known Issues
+* Multiple a-frame screens cannot be embedded in the same page [(https://github.com/aframevr/aframe/issues/916)](https://github.com/aframevr/aframe/issues/916)
 * ~~Grid in the axes doesnt work right now~~
 * ~~Titles of the axes doesnt work right now~~
