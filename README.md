@@ -186,7 +186,7 @@ __Example__
 * lights
 * camera
 * floor
-* 3D-objects
+* 3D-objects _(optional)_
 * parentDiv _(optional)_
 * reloadPageOnExitVR _(optional)_
 
