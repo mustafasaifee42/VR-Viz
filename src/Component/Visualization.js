@@ -45,7 +45,7 @@ class VRViz extends Component {
     }
   }
   componentDidMount() {
-    window.addEventListener('enter-vr', e => {
+    document.addEventListener('enter-vr', e => {
       if (AFRAME.utils.device.checkHeadsetConnected()) {
         this.setState({
           headset:true,
@@ -62,10 +62,15 @@ class VRViz extends Component {
         })
       }
     });
-    window.addEventListener('exit-vr', e => {
-      this.setState({
-        headset:false,
-      })
+    document.addEventListener('exit-vr', e => {
+      if(this.props.scene.reloadPageOnExitVR) {
+        window.location.reload()
+      }
+      else {
+        this.setState({
+          headset:false,
+        })
+      }
     });
   }
   render() {
