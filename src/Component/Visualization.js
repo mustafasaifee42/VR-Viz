@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import AFRAME from 'aframe';
+
 import BarGraph from './BarGraph.js';
 import ScatterPlot from './ScatterPlot.js';
 import StackedBarGraph from './StackedBarGraph.js';
@@ -26,7 +28,13 @@ import SpiralChart from './SpiralChart.js';
 import LollipopChart from './LollipopChart.js';
 import CrossSectionView from './CrossSectionView.js';
 
-import PropTypes from 'prop-types';
+import '../AFrameComponents/ChangeColorOnHover.js';
+import '../AFrameComponents/CursorListener.js';
+import '../AFrameComponents/ModifyMaterials.js';
+import '../AFrameComponents/PlayAllModelAnimations.js';
+
+import '../AFrameGeometries/Map.js';
+import '../AFrameGeometries/PlaneFromVertices.js';
 
 require('aframe-teleport-controls');
 
