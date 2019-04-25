@@ -267,7 +267,7 @@ class ConnectedScatterPlot extends Component {
 
       let graphTitle
       if (this.props.title) {
-        graphTitle = <a-text color={this.props.title.color} wrapCount={this.props.title.wrapCount} lineHeight={this.props.title.lineHeight} width={this.props.title.width} value={this.props.title.value} anchor='align' side='double' align={this.props.title.align} position={this.props.title.position} rotation={this.props.title.rotation} />
+        graphTitle = <a-text color={this.props.title.color} wrapCount={this.props.title.wrapCount} lineHeight={this.props.title.lineHeight} width={this.props.title.width} value={this.props.title.value} anchor='align' side='double' align={this.props.title.align} position={this.props.title.position} rotation={this.props.title.rotation} billboard={this.props.title.billboarding} />
       }
       let box;
       if (this.props.axisBox) {
@@ -323,9 +323,9 @@ class ConnectedScatterPlot extends Component {
       let labels;
       if (this.props.mark.label) {
         if (this.props.mark.points.style.radius.scaleType)
-          labels = this.state.data.map((d, i) => <a-text key={`${this.props.index}_Label${i}`} opacity={this.props.mark.label.style.opacity} color={this.props.mark.label.style.color} width={this.props.mark.label.style.fontSize} value={`${d[this.props.mark.label.field]}`} anchor='align' side='double' align='left' position={`${xScale(d[this.props.mark.position.x.field]) + 0.05 + radiusScale(d[this.props.mark.points.style.radius.field])} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />);
+          labels = this.state.data.map((d, i) => <a-text key={`${this.props.index}_Label${i}`} opacity={this.props.mark.label.style.opacity} color={this.props.mark.label.style.color} width={this.props.mark.label.style.fontSize} value={`${d[this.props.mark.label.field]}`} anchor='align' side='double' align='left' position={`${xScale(d[this.props.mark.position.x.field]) + 0.05 + radiusScale(d[this.props.mark.points.style.radius.field])} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} billboard={this.props.mark.label.billboarding} />);
         else
-          labels = this.state.data.map((d, i) => <a-text key={`${this.props.index}_Label${i}`} opacity={this.props.mark.label.style.opacity} color={this.props.mark.label.style.color} width={this.props.mark.label.style.fontSize} value={`${d[this.props.mark.label.field]}`} anchor='align' side='double' align='left' position={`${xScale(d[this.props.mark.position.x.field]) + 0.05 + this.props.mark.points.style.radius.value} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />);
+          labels = this.state.data.map((d, i) => <a-text key={`${this.props.index}_Label${i}`} opacity={this.props.mark.label.style.opacity} color={this.props.mark.label.style.color} width={this.props.mark.label.style.fontSize} value={`${d[this.props.mark.label.field]}`} anchor='align' side='double' align='left' position={`${xScale(d[this.props.mark.position.x.field]) + 0.05 + this.props.mark.points.style.radius.value} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} billboard={this.props.mark.label.billboarding}/>);
       }
 
       let points = this.state.data.map((d, i) => <a-curve-point key={`${this.props.index}_Point${i}`} position={`${xScale(d[this.props.mark.position.x.field])} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />);

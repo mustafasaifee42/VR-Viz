@@ -32,6 +32,7 @@ import '../AFrameComponents/ChangeColorOnHover.js';
 import '../AFrameComponents/CursorListener.js';
 import '../AFrameComponents/ModifyMaterials.js';
 import '../AFrameComponents/PlayAllModelAnimations.js';
+import '../AFrameComponents/BIllboard.js';
 
 import '../AFrameGeometries/Map.js';
 import '../AFrameGeometries/PlaneFromVertices.js';
