@@ -111,6 +111,7 @@ line.style.stroke.opacity|float|Defines the opacity for line. __Required.__ _Val
 label|object|Defines the style of the connecting line in connected scatter plot. __Not Required.__ _If not present the labels are not shown close to the point._
 label.field|string|Defines the field in the data that will be used as the text for the labels. __Required.__
 label.style|object|Defines the style of the label. __Required.__
+label.billboarding|bool|Defines if the text always face the camera. __Not Required. Default value:false.__
 label.style.color|string|Defines the color for label. __Required.__
 label.style.opacity|float|Defines the opacity for label. __Required.__ _Value must be between 0 and 1._
 label.style.fontSize|float|Defines the size of label. __Required.__

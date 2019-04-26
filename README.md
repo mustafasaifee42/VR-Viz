@@ -467,6 +467,7 @@ title.text|string|Defined the text for title for the axis. __Required.__ _Curren
 title.fontSize|int|Defined the font size for title for the axis. __Required.__ _Currently this feature is not available._
 title.color|string|Defined the color for title for the axis. __Required.__ _Currently this feature is not available._
 title.opacity|float|Defined the opacity for title for the axis. __Required.__ _Value must be between 0 and 1. Currently this feature is not available._
+title.billboarding|bool|Defines if the text always face the camera. __Not Required. Default value:false.__ _If the value is change to true `title.rotation` is ignored._
 tick|object|Defined the ticks for the axis. __Required.__
 tick.noOfTicks|int|Defined the no. of tick for the axis. __Required.__ _No. of ticks are only applicable for `linear` scale._
 tick.size|float|Defined the font size for ticks for the axis. __Required.__ 
@@ -474,7 +475,8 @@ tick.fontSize|int|Defined the font size for text for tick for the axis. __Requir
 tick.color|string|Defined the color for ticks and text for tick for the axis. __Required.__ 
 tick.opacity|float|Defined the opacity for title for the axis. __Required.__ _Value must be between 0 and 1._
 tick.rotation|string| Defines the alignment of the text for ticks. __Not Required. Default value for x-axis: "-90 0 0". Default value for y-axis: "0 0 0". Default value for z-axis: "-90 0 0". Format is "0 0 0"__.
-tick.align|string| Defines the alignment of the text for ticks. __Not Required. Default value for x-axis: center. Default value for y-axis: right. Default value for z-axis: right.__. _Available values: left, center, right._
+tick.align|string| Defines the alignment of the text for ticks. __Not Required. Default value for x-axis: center. Default value for y-axis: right. Default value for z-axis: right.__ _Available values: left, center, right._
+tick.billboarding|bool|Defines if the text always face the camera. __Not Required. Default value:false.__ _If the value is change to true `tick.rotation` is ignored._
 grid|object|Defined the style of grid for the axis. __Not Required.__
 grid.color|string|Defined the color for grid for the axis. __Required.__
 grid.opacity|float|Defined the opacity for grid for the axis. __Required.__ _Value must be between 0 and 1._

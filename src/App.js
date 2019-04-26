@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import VRViz from './Component/Visualization.js'
+import mapData from './mapData/mapData.json'
 
 class App extends Component {
   render() {
@@ -10,7 +11,7 @@ class App extends Component {
           {
             'sky': {
               'style': {
-                'color': '#333',
+                'color': '#ccc',
                 'texture': false,
               }
             },
@@ -20,145 +21,177 @@ class App extends Component {
                 'color': '#fff',
                 'position': '0 1 1',
                 'intensity': 1,
-                'decay': 1,
+                "decay": 1,
               },
               {
                 'type': 'ambient',
                 'color': '#fff',
                 'intensity': 1,
-                'decay': 1,
+                "decay": 1,
               }
             ],
             'camera': {
-              'position': '0 0 0',
+              'position': '0 0 10',
               'rotation': '0 0 0',
             },
-            'parentDiv':{
-              'class':'graph',
-              'height':1000,
-              'width':1000
+            'floor': {
+              'style': {
+                'color': '#ccc',
+                'texture': false,
+                'width': 100,
+                'depth': 100,
+              }
             }
           }
         }
         graph={
           [
             {
-              'type': 'BarGraph',
+              'type': 'ConnectedScatterPlot',
               'data': {
-                'dataFile': 'data.csv',
+                'dataFile': "data/ConnectedScatterPlot.csv",
                 'fileType': 'csv',
-                'fieldDesc': [['x', 'text'], ['z', 'text'], ['height', 'number']]
+                'fieldDesc': [['Year', 'text'], ['Cars', 'number'], ['Trucks', 'number'], ['Bikes', 'number']]
               },
               'style': {
                 'origin': [0, 0, 0],
                 'dimensions': {
-                  'width': 20,
-                  'height': 5,
+                  'width': 10,
+                  'height': 10,
                   'depth': 10,
                 },
-                'pivot': '10 0 5',
-              },
-              'animateRotation':{
-                'initialAngles': [0,0,0],
-                'finalAngles': [0,360,0],
-                'duration':15000,
               },
               'mark': {
-                'type': 'box',
                 'position': {
                   'x': {
-                    'scaleType': 'ordinal',
-                    'field': 'x',
+                    'scaleType': 'linear',
+                    'field': 'Cars',
+                  },
+                  'y': {
+                    'scaleType': 'linear',
+                    'field': 'Trucks',
                   },
                   'z': {
-                    'scaleType': 'ordinal',
-                    'field': 'z',
+                    'scaleType': 'linear',
+                    'field': 'Bikes',
                   }
                 },
-                'style': {
-                  'padding': {
-                    'x': 0.1,
-                    'z': 0.1,
+                'points': {
+                  'type': 'sphere',
+                  'style': {
+                    'radius': {
+                      'value': 0.05,
+                    },
+                    'fill': {
+                      'opacity': 1,
+                      'color': 'red',
+                    },
                   },
-                  'height': {
-                    'scaleType': 'linear',
-                    'startFromZero': true,
-                    'field': 'height',
-                  },
-                  'fill': {
-                    'opacity': 0.8,
-                    'scaleType': 'linear',
-                    'field': 'height',
-                    'color': ['#b71c1c', '#2196f3'],
+                  'mouseOver': {
+                    'focusedObject': {
+                      'opacity': 1,
+                      'fill': '#333',
+                    },
+                    'nonFocusedObject': {
+                      'opacity': 0.1,
+                    },
+                    'label': {
+                      'value': (d) => `Year:${d.Year}\nCars:${d.Cars}\nTrucks:${d.Trucks}\nBikes:${d.Bikes}`,
+                      'align': 'center',
+                      'fontSize': 1,
+                      'backgroundColor': '#333',
+                      'backgroundOpacity': 1,
+                      'fontColor': '#fff',
+                    }
+                  }
+                },
+                'line': {
+                  'style': {
+                    'stroke': {
+                      'color': 'black',
+                      'opacity': 1,
+                    },
                   },
                 },
+                'label': {
+                  'field': 'Year',
+                  'billboarding':true,
+                  'style': {
+                    'color': 'black',
+                    'fontSize': 2,
+                    'opacity': 1,
+                  },
+                }
               },
               'axis': {
+                'axis-box': {
+                  'color': 'black',
+                },
                 'x-axis': {
-                  'orient': 'back-bottom',
+                  'orient': 'bottom-back',
                   'title': {
-                    'value': '',
-                    'fontSize': 3,
-                    'color': 'white',
-                    'opacity': 0.7,
+                    'text': '',
+                    'fontSize': 10,
+                    'color': 'black',
+                    'opacity': 1,
                   },
                   'ticks': {
                     'noOfTicks': 10,
-                    'size': 0.01,
-                    'color': 'white',
-                    'opacity': 0.7,
-                    'fontSize': 3,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
                   },
                   'grid': {
-                    'color': 'white',
-                    'opacity': 0.7,
+                    'color': 'black',
+                    'opacity': 1,
                   }
                 },
                 'y-axis': {
-                  'orient': 'back-left',
+                  'orient': 'bottom-back',
                   'title': {
-                    'value': '',
-                    'fontSize': 3,
-                    'color': 'white',
-                    'opacity': 0.7,
+                    'text': '',
+                    'fontSize': 10,
+                    'color': 'black',
+                    'opacity': 1,
                   },
                   'ticks': {
                     'noOfTicks': 10,
-                    'size': 0.01,
-                    'color': 'white',
-                    'opacity': 0.7,
-                    'fontSize': 3,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
                   },
                   'grid': {
-                    'color': 'white',
-                    'opacity': 0.7,
+                    'color': 'black',
+                    'opacity': 1,
                   }
                 },
                 'z-axis': {
-                  'orient': 'bottom-left',
+                  'orient': 'bottom-back',
                   'title': {
-                    'value': '',
-                    'fontSize': 3,
-                    'color': 'white',
-                    'opacity': 0.7,
+                    'text': '',
+                    'fontSize': 10,
+                    'color': 'black',
+                    'opacity': 1,
                   },
                   'ticks': {
                     'noOfTicks': 10,
-                    'size': 0.01,
-                    'color': 'white',
-                    'opacity': 0.7,
-                    'fontSize': 3,
+                    'size': 0.1,
+                    'color': 'black',
+                    'opacity': 1,
+                    'fontSize': 10,
                   },
                   'grid': {
-                    'color': 'white',
-                    'opacity': 0.7,
+                    'color': 'black',
+                    'opacity': 1,
                   }
                 }
               }
             }
           ]
         }
-    />
+      />
     );
   }
 }

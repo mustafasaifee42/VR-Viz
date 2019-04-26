@@ -101,6 +101,7 @@ links.style.fill.opacity.startFromZero|boolean|Defines if the domain starts from
 links.style.fill.opacity.value|array of float or float|Defines the range of opacity value of links. __Required.__ _If links.style.fill.opacity.scaleType is not present the this needs to be a float otherwise an array. Value must be between 0 and 1._
 labels|object|Defines the style of the label. __Not Required.__ _If not present the labels are not shown close to the nodes._
 label.field|string|Defines the field in the data that will be used as the text for the labels. __Required.__
+tabel.billboarding|bool|Defines if the text always face the camera. __Not Required. Default value:false.__
 label.style|object|Defines the style of the label. __Required.__
 label.style.color|string|Defines the color for label. __Required.__
 label.style.opacity|float|Defines the opacity for label. __Required.__ _Value must be between 0 and 1._
