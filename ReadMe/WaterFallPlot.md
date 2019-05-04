@@ -7,15 +7,15 @@
 'mark': {
   'position': {
     'x': {
-      'scaleType': 'linear',
-      'field': 'Alpha',
+      'scaleType': 'ordinal',
+      'domain': ['-10', '0', '10']
     },
     'y': {
       'scaleType': 'linear',
     },
     'z': {
       'scaleType': 'ordinal',
-      'domain': ['-10', '0', '10'],
+      'field': 'Alpha'
     }
   },
   'style': {
@@ -38,7 +38,6 @@ Property|Type|Description
 position|object|Defines the how the position of vertices for contour will be mapped. __Required__
 position.x|object|__Required.__
 position.x.scaleType|string|Defines the scale type for x position of the points on the mesh. __Required.__ _Available values: linear or ordinal._
-position.x.field|string|Defines the field in the data that will be mapped as x position of the points on the mesh. __Required.__
 position.x.domain|float|Defines the domain for x position. __Not Required.__ _If not present the domain is calculated from the provide data depending on the position.x.scaleType._
 position.x.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if position.x.domain is not given and position.x.scaleType is `linear`._
 position.y|object|__Required.__
@@ -49,7 +48,6 @@ position.z|object|__Required.__
 position.z.scaleType|string|Defines the scale type for x position of the points on the mesh. __Required.__ _Available values: linear or ordinal._
 position.z.field|string|Defines the field in the data that will be mapped as x position of the points on the mesh. __Required.__
 position.z.domain|float|Defines the domain for x position. __Not Required.__ _If not present the domain is calculated from the provide data depending on the position.z.scaleType._
-position.z.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if position.z.domain is not given and position.z.scaleType is `linear`._
 style|object|Defines the style of the contour. __Required__
 style.fill|object|Defines the fill of the surface. __Required.__
 style.fill.opacity|float|Defines the opacity of the surface. __Required.__ _Value must be between 0 and 1._
