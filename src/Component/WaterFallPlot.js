@@ -128,25 +128,35 @@ class WaterFallPlot extends Component {
     }
     else {
       // Getting domain for axis
-      let xDomain, yDomain, zDomain, xDomainTemp;
-      xDomain = this.props.mark.position.x.field;
-      xDomainTemp = this.props.mark.position.x.field;
+      let xDomain, yDomain, zDomain, zDomainTemp;
       if (this.props.mark.position.x) {
-        if (this.props.mark.position.x.scaleType === 'linear')
-          if (!this.props.mark.position.x.domain) {
-            xDomainTemp = this.props.mark.position.x.field.map((d, i) => parseFloat(d));
-            xDomain = [Math.min(...xDomainTemp), Math.max(...xDomainTemp)];
-          } else {
-            xDomain = this.props.mark.position.x.domain;
-            xDomainTemp = this.props.mark.position.x.domain;
-          }
+        if (!this.props.mark.position.x.domain) {
+          xDomain = [];
+          Object.keys(this.state.data[0]).forEach((d,i) => {
+            if(d !== this.props.mark.position.z.field){
+              xDomain.push(d)
+            }
+          })
+        } 
+        else 
+          xDomain = this.props.mark.position.x.domain;
       }
-
+      
       if (this.props.mark.position.z) {
-        if (!this.props.mark.position.z.domain) {
+        if (this.props.mark.position.z.scaleType === 'linear') {
+          if (!this.props.mark.position.z.domain) {
+            zDomainTemp = this.state.data.map((d, i) => parseFloat(d[this.props.mark.position.z.field]));
+            zDomain = [Math.min(...zDomainTemp), Math.max(...zDomainTemp)];
+          } else {
+            zDomain = this.props.mark.position.z.domain;
+            zDomainTemp = this.props.mark.position.z.domain;
+          }
+
+        }
+        else{
           zDomain = GetDomain(this.state.data, this.props.mark.position.z.field, this.props.mark.position.z.scaleType, this.props.mark.position.z.startFromZero)
-        } else
-          zDomain = this.props.mark.position.z.domain
+          zDomainTemp = GetDomain(this.state.data, this.props.mark.position.z.field, this.props.mark.position.z.scaleType, this.props.mark.position.z.startFromZero)
+        }
       }
 
       if (this.props.mark.position.y) {
@@ -169,7 +179,7 @@ class WaterFallPlot extends Component {
           yDomain = this.props.mark.position.y.domain
       }
 
-
+      console.log(yDomain)
       //Adding Scale
       let zRange = [];
       for (let i = 0; i < zDomain.length; i++) {
@@ -309,41 +319,34 @@ class WaterFallPlot extends Component {
       if (this.props.mark.style.stroke)
         line = this.state.data.map((d, i) => {
           let path = ''
-          for (let j = 0; j < xDomainTemp.length; j++) {
-            if (j !== xDomainTemp.length - 1)
-              path = path + ` ${xScale(xDomainTemp[j])} ${yScale(d[xDomainTemp[j].toString()])} ${zScale(d[this.props.mark.position.z.field])},`
+          for (let j = 0; j < xDomain.length; j++) {
+            if (j !== xDomain.length - 1)
+              path = path + ` ${xScale(xDomain[j])} ${yScale(d[xDomain[j].toString()])} ${zScale(d[this.props.mark.position.z.field])},`
             else
-              path = path + ` ${xScale(xDomainTemp[j])} ${yScale(d[xDomainTemp[j].toString()])} ${zScale(d[this.props.mark.position.z.field])}`
+              path = path + ` ${xScale(xDomain[j])} ${yScale(d[xDomain[j].toString()])} ${zScale(d[this.props.mark.position.z.field])}`
           }
-          switch (this.props.mark.style.stroke.scaleType) {
-            case 'ordinal':
-              return <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${path}; color: ${strokeColorScale(d[this.props.mark.style.stroke.field])}`}></a-entity>
-            case 'linear':
-              return <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${path}; color: ${strokeColorScale(d[this.props.mark.style.stroke.field])}`}></a-entity>
-            default:
-              return <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${path}; color: ${this.props.mark.style.stroke.color}`}></a-entity>
+          if(this.props.mark.style.stroke.scaleType){
+            return <a-entity key={`${this.props.index}_Mark${i}`} plane-from-vertices={`path:${path};face:false;stroke:true;strokeColor:${strokeColorScale(d[this.props.mark.style.stroke.field])}`} />
           }
+          else
+            return <a-entity key={`${this.props.index}_Mark${i}`} plane-from-vertices={`path:${path};face:false;stroke:true;strokeColor:${this.props.mark.style.stroke.color}`} />
         })
 
       if (this.props.mark.style.fill)
         marks = this.state.data.map((d, i) => {
           let path = `0 0,`
-          for (let j = 0; j < xDomainTemp.length; j++) {
-            if (j !== xDomainTemp.length - 1)
-              path = path + ` ${xScale(xDomainTemp[j])} ${yScale(d[xDomainTemp[j].toString()])},`
+          for (let j = 0; j < xDomain.length; j++) {
+            if (j !== xDomain.length - 1)
+              path = path + ` ${xScale(xDomain[j])} ${yScale(d[xDomain[j].toString()])},`
             else
-              path = path + ` ${xScale(xDomainTemp[j])} ${yScale(d[xDomainTemp[j].toString()])}`
+              path = path + ` ${xScale(xDomain[j])} ${yScale(d[xDomain[j].toString()])}`
           }
-          path = path + `, ${xScale(xDomainTemp[xDomainTemp.length - 1])} 0`
+          path = path + `, ${xScale(xDomain[xDomain.length - 1])} 0`
           let primitive = `primitive: map; vertices: ${path}; extrude: 0.00000001`;
-          switch (this.props.mark.style.fill.scaleType) {
-            case 'ordinal':
-              return <a-entity key={`${this.props.index}_Map${i}`} position={`0 0 ${zScale(d[this.props.mark.position.z.field])}`} geometry={primitive} material={`color: ${fillColorScale(d[this.props.mark.style.fill.field])}; side: double; opacity: ${this.props.mark.style.fill.opacity} `} />
-            case 'linear':
-              return <a-entity key={`${this.props.index}_Map${i}`} position={`0 0 ${zScale(d[this.props.mark.position.z.field])} `} geometry={primitive} material={`color: ${fillColorScale(d[this.props.mark.style.fill.field])}; side: double; opacity: ${this.props.mark.style.fill.opacity} `} />
-            default:
-              return <a-entity key={`${this.props.index}_Map${i}`} position={`0 0 ${zScale(d[this.props.mark.position.z.field])} `} geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; side: double; opacity: ${this.props.mark.style.fill.opacity} `} />
-          }
+          if(this.props.mark.style.fill.scaleType) 
+            return <a-entity key={`${this.props.index}_Map${i}`} position={`0 0 ${zScale(d[this.props.mark.position.z.field])}`} geometry={primitive} material={`color: ${fillColorScale(d[this.props.mark.style.fill.field])}; side: double; opacity: ${this.props.mark.style.fill.opacity} `} />
+          else
+            return <a-entity key={`${this.props.index}_Map${i}`} position={`0 0 ${zScale(d[this.props.mark.position.z.field])} `} geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; side: double; opacity: ${this.props.mark.style.fill.opacity} `} />
         })
 
       let graphTitle
