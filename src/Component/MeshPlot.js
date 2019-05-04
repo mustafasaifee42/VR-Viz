@@ -130,12 +130,10 @@ class MeshPlot extends Component {
 
       // Getting domain for axis
       let xDomain, yDomain, zDomain, xDomainTemp;
-      xDomain = this.props.mark.position.x.field;
-      xDomainTemp = this.props.mark.position.x.field;
       if (this.props.mark.position.x) {
         if (this.props.mark.position.x.scaleType === 'linear') {
           if (!this.props.mark.position.x.domain) {
-            xDomainTemp = this.props.mark.position.x.field.map((d, i) => parseFloat(d));
+            xDomainTemp = this.state.data.map((d, i) => parseFloat(d[this.props.mark.position.x.field]));
             xDomain = [Math.min(...xDomainTemp), Math.max(...xDomainTemp)];
           } else {
             xDomain = this.props.mark.position.x.domain;
