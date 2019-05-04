@@ -133,7 +133,7 @@ class MeshPlot extends Component {
       xDomain = this.props.mark.position.x.field;
       xDomainTemp = this.props.mark.position.x.field;
       if (this.props.mark.position.x) {
-        if (this.props.mark.position.x.scaleType === 'linear')
+        if (this.props.mark.position.x.scaleType === 'linear') {
           if (!this.props.mark.position.x.domain) {
             xDomainTemp = this.props.mark.position.x.field.map((d, i) => parseFloat(d));
             xDomain = [Math.min(...xDomainTemp), Math.max(...xDomainTemp)];
@@ -141,25 +141,36 @@ class MeshPlot extends Component {
             xDomain = this.props.mark.position.x.domain;
             xDomainTemp = this.props.mark.position.x.domain;
           }
-      }
 
+        }
+        else{
+          xDomain = GetDomain(this.state.data, this.props.mark.position.x.field, this.props.mark.position.x.scaleType, this.props.mark.position.x.startFromZero)
+          xDomainTemp = GetDomain(this.state.data, this.props.mark.position.x.field, this.props.mark.position.x.scaleType, this.props.mark.position.x.startFromZero)
+        }
+      }
       if (this.props.mark.position.z) {
         if (!this.props.mark.position.z.domain) {
-          zDomain = GetDomain(this.state.data, this.props.mark.position.z.field, this.props.mark.position.z.scaleType, this.props.mark.position.z.startFromZero)
-        } else
+          zDomain = [];
+          Object.keys(this.state.data[0]).forEach((d,i) => {
+            if(d !== this.props.mark.position.x.field){
+              zDomain.push(d)
+            }
+          })
+        } 
+        else
           zDomain = this.props.mark.position.z.domain
       }
 
       if (this.props.mark.position.y) {
         if (!this.props.mark.position.y.domain) {
           let min = 9999999999999999, max = -99999999999999999;
-          for (let k = 0; k < xDomainTemp.length; k++) {
+          for (let k = 0; k < zDomain.length; k++) {
             for (let i = 0; i < this.state.data.length; i++) {
-              if (min > this.state.data[i][xDomainTemp[k]]) {
-                min = this.state.data[i][xDomainTemp[k]]
+              if (min > this.state.data[i][zDomain[k]]) {
+                min = this.state.data[i][zDomain[k]]
               }
-              if (max < this.state.data[i][xDomainTemp[k]])
-                max = this.state.data[i][xDomainTemp[k]]
+              if (max < this.state.data[i][zDomain[k]])
+                max = this.state.data[i][zDomain[k]]
             }
           }
           if (this.props.mark.position.y.startFromZero)
@@ -207,23 +218,24 @@ class MeshPlot extends Component {
       let dataCoordinate = [];
 
       for (let i = 0; i < this.state.data.length - 1; i++) {
-        for (let j = 0; j < this.props.mark.position.x.field.length - 1; j++) {
+        for (let j = 0; j < zDomain.length - 1; j++) {
           let tempData = [];
-          tempData.push(this.props.mark.position.x.field[j]);
-          tempData.push(this.state.data[i][this.props.mark.position.x.field[j]]);
-          tempData.push(this.state.data[i][this.props.mark.position.z.field]);
+          tempData.push(this.state.data[i][this.props.mark.position.x.field]);
+          tempData.push(this.state.data[i][zDomain[j]]);
+          tempData.push(zDomain[j]);
 
-          tempData.push(this.props.mark.position.x.field[j]);
-          tempData.push(this.state.data[i + 1][this.props.mark.position.x.field[j]]);
-          tempData.push(this.state.data[i + 1][this.props.mark.position.z.field]);
+          tempData.push(this.state.data[i+1][this.props.mark.position.x.field]);
+          tempData.push(this.state.data[i+1][zDomain[j]]);
+          tempData.push(zDomain[j]);
 
-          tempData.push(this.props.mark.position.x.field[j + 1]);
-          tempData.push(this.state.data[i + 1][this.props.mark.position.x.field[j + 1]]);
-          tempData.push(this.state.data[i + 1][this.props.mark.position.z.field]);
+          
+          tempData.push(this.state.data[i+1][this.props.mark.position.x.field]);
+          tempData.push(this.state.data[i+1][zDomain[j+1]]);
+          tempData.push(zDomain[j+1]);
 
-          tempData.push(this.props.mark.position.x.field[j + 1]);
-          tempData.push(this.state.data[i][this.props.mark.position.x.field[j + 1]]);
-          tempData.push(this.state.data[i][this.props.mark.position.z.field]);
+          tempData.push(this.state.data[i][this.props.mark.position.x.field]);
+          tempData.push(this.state.data[i][zDomain[j+1]]);
+          tempData.push(zDomain[j+1]);
           /*
           if (this.props.mark.surface.style.fill.function)
             tempData.push(this.props.mark.surface.style.fill.function(i, j))
@@ -233,7 +245,7 @@ class MeshPlot extends Component {
       }
 
       //Color Scale
-      if (this.props.mark.style.fill.scaleType) {
+      if (this.props.mark.style.fill.scaleType){
         let colorRange = d3.schemeCategory10;
         if (this.props.mark.style.fill.color)
           colorRange = this.props.mark.style.fill.color
@@ -243,7 +255,7 @@ class MeshPlot extends Component {
             .range(colorRange)
         else
           colorScale = d3.scaleLinear()
-            .domain([d3.min(dataCoordinate, d => d[1]), d3.max(dataCoordinate, d => d[1])])
+            .domain([d3.min(dataCoordinate, d => d[this.props.mark.style.fill.axis]), d3.max(dataCoordinate, d => d[this.props.mark.style.fill.axis])])
             .range(colorRange)
       }
 
@@ -304,37 +316,21 @@ class MeshPlot extends Component {
       }
 
       //Adding marks
-      let marks, lineHorizontal, lineVertical;
-
+      let marks;
+      console.log(dataCoordinate)
+      
       if (this.props.mark.style.stroke) {
-
-        lineHorizontal = this.state.data.map((d, i) => {
-          let path = ''
-          for (let j = 0; j < xDomainTemp.length; j++) {
-            if (j !== xDomainTemp.length - 1)
-              path = path + ` ${xScale(xDomainTemp[j])} ${yScale(d[xDomainTemp[j]])} ${zScale(d[this.props.mark.position.z.field])},`
-            else
-              path = path + ` ${xScale(xDomainTemp[j])} ${yScale(d[xDomainTemp[j]])} ${zScale(d[this.props.mark.position.z.field])}`
-          }
-          return <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${path}; color: ${this.props.mark.style.stroke.color}`}></a-entity>
-        })
-
-        lineVertical = xDomainTemp.map((d, i) => {
-          let path = ''
-          for (let j = 0; j < this.state.data.length; j++) {
-            if (j !== this.state.data.length - 1)
-              path = path + ` ${xScale(d)} ${yScale(this.state.data[j][d])} ${zScale(this.state.data[j][this.props.mark.position.z.field])},`
-            else
-              path = path + ` ${xScale(d)} ${yScale(this.state.data[j][d])} ${zScale(this.state.data[j][this.props.mark.position.z.field])}`
-          }
-          return <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${path}; color: ${this.props.mark.style.stroke.color}`}></a-entity>
-        })
+        if (this.props.mark.style.fill.scaleType)
+          marks = dataCoordinate.map((d, i) => <a-entity key={`${this.props.index}_Mark${i}`} plane-from-vertices={`path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}, ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])};face:true;faceColor: ${colorScale(d[this.props.mark.style.fill.axis])};faceOpacity: ${this.props.mark.style.fill.opacity};stroke:false;stroke:true;strokeWidth:${this.props.mark.style.stroke.width};strokeColor:${this.props.mark.style.stroke.color}`} />);
+        else
+          marks = dataCoordinate.map((d, i) => <a-entity key={`${this.props.index}_Mark${i}`} plane-from-vertices={`path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}, ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])};face:true;faceColor: ${this.props.mark.style.fill.color};faceOpacity: ${this.props.mark.style.fill.opacity};stroke:false;stroke:true;strokeWidth:${this.props.mark.style.stroke.width};strokeColor:${this.props.mark.style.stroke.color}`} />);
       }
-
-      if (this.props.mark.style.fill.scaleType)
-        marks = dataCoordinate.map((d, i) => <a-entity key={`${this.props.index}_Mark${i}`} geometry={`primitive: planeFromVertices; vertices: ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}`} material={`color: ${colorScale(d[1])}; side: double; opacity: ${this.props.mark.style.fill.opacity}`} />);
-      else
-        marks = dataCoordinate.map((d, i) => <a-entity key={`${this.props.index}_Mark${i}`} geometry={`primitive: planeFromVertices; vertices: ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}`} material={`color: ${this.props.mark.style.fill.color}; side: double; opacity: ${this.props.mark.style.fill.opacity}`} />);
+      else {
+        if (this.props.mark.style.fill.scaleType)
+          marks = dataCoordinate.map((d, i) => <a-entity key={`${this.props.index}_Mark${i}`} plane-from-vertices={`path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}, ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])};face:true;faceColor: ${colorScale(d[this.props.mark.style.fill.axis])};faceOpacity: ${this.props.mark.style.fill.opacity};stroke:false`} />);
+        else
+          marks = dataCoordinate.map((d, i) => <a-entity key={`${this.props.index}_Mark${i}`} plane-from-vertices={`path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}, ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])};face:true;faceColor: ${this.props.mark.style.fill.color};faceOpacity: ${this.props.mark.style.fill.opacity};stroke:false`} />);
+      }
       let graphTitle
       if (this.props.title) {
         graphTitle = <a-text color={this.props.title.color} wrapCount={this.props.title.wrapCount} lineHeight={this.props.title.lineHeight} width={this.props.title.width} value={this.props.title.value} anchor='align' side='double' align={this.props.title.align} position={this.props.title.position} rotation={this.props.title.rotation} billboard={this.props.title.billboarding} />
@@ -352,8 +348,6 @@ class MeshPlot extends Component {
           {graphTitle}
           {box}
           {marks}
-          {lineHorizontal}
-          {lineVertical}
         </a-entity>
       )
     }
