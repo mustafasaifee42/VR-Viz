@@ -151,11 +151,10 @@ class WaterFallPlot extends Component {
             zDomain = this.props.mark.position.z.domain;
             zDomainTemp = this.props.mark.position.z.domain;
           }
-
         }
         else{
-          zDomain = GetDomain(this.state.data, this.props.mark.position.z.field, this.props.mark.position.z.scaleType, this.props.mark.position.z.startFromZero)
-          zDomainTemp = GetDomain(this.state.data, this.props.mark.position.z.field, this.props.mark.position.z.scaleType, this.props.mark.position.z.startFromZero)
+          zDomain = GetDomain(this.state.data, this.props.mark.position.z.field, this.props.mark.position.z.scaleType, false)
+          zDomainTemp = GetDomain(this.state.data, this.props.mark.position.z.field, this.props.mark.position.z.scaleType, false)
         }
       }
 
@@ -326,10 +325,10 @@ class WaterFallPlot extends Component {
               path = path + ` ${xScale(xDomain[j])} ${yScale(d[xDomain[j].toString()])} ${zScale(d[this.props.mark.position.z.field])}`
           }
           if(this.props.mark.style.stroke.scaleType){
-            return <a-entity key={`${this.props.index}_Mark${i}`} plane-from-vertices={`path:${path};face:false;stroke:true;strokeColor:${strokeColorScale(d[this.props.mark.style.stroke.field])}`} />
+            return <a-entity key={`${this.props.index}_Mark${i}`} plane-from-vertices={`path:${path};face:false;stroke:true;strokeColor:${strokeColorScale(d[this.props.mark.style.stroke.field])};strokeWidth:${this.props.mark.style.stroke.width}`} />
           }
           else
-            return <a-entity key={`${this.props.index}_Mark${i}`} plane-from-vertices={`path:${path};face:false;stroke:true;strokeColor:${this.props.mark.style.stroke.color}`} />
+            return <a-entity key={`${this.props.index}_Mark${i}`} plane-from-vertices={`path:${path};face:false;stroke:true;strokeColor:${this.props.mark.style.stroke.color};strokeWidth:${this.props.mark.style.stroke.width}`} />
         })
 
       if (this.props.mark.style.fill)
