@@ -52,7 +52,7 @@ position.z.scaleType|string|Defines the scale type for z position. __Required.__
 position.z.domain|array|Defines the domain for z position. __Not Required.__ _If not present the domain is calculated from the provide data depending on the position.z.scaleType._
 position.z.function|function|Defines the function for z position. __Required.__
 style|object|Defines the style of the contour. __Required__
-style.fill|object|Defines the fill of the surface. __Required.__
+style.fill|object|Defines the fill of the surface. __Not Required. If not present the planes are not fill.__
 style.fill.opacity|float|Defines the opacity of the surface. __Required.__ _Value must be between 0 and 1._
 style.fill.scaleType|string|Defines the scale type for fill of the surface. __Not Required. If not present then a constant color that is defined is filled in the surface.__ _Available values: linear or ordinal._
 style.fill.function|string|Defines the function that will be mapped as fill of the surface. __Required if `style.fill.scaleType` is present.__

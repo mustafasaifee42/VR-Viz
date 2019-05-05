@@ -56,7 +56,7 @@ position.z.field|string|Defines the field in the data that will be mapped as z p
 position.z.domain|float|Defines the domain for z position. __Not Required.__ _If not present the domain is calculated from the provide data depending on the position.z.scaleType._
 position.z.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if position.z.domain is not given and position.z.scaleType is `linear`._
 style|object|Defines the style of the contour. __Required__
-style.fill|object|Defines the fill of the surface. __Required.__
+style.fill|object|Defines the fill of the surface. __Not Required. If not present the planes are not fill.__
 style.fill.opacity|float|Defines the opacity of the surface. __Required.__ _Value must be between 0 and 1._
 style.fill.scaleType|string|Defines the scale type for fill of the surface. __Not Required. If not present then a constant color that is defined is filled in the surface.__ _Available values: linear._ This is feature to make the mesh more readable.
 style.fill.axis|int|Defines along what axis the color will be changed. __Required if `style.fill.scaleType` is present.__ _Availabe values:0, 1, 2. 0 for x-axis, 1 for y-axis and 2 for z-axis._
