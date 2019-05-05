@@ -144,31 +144,31 @@ class ContourMap extends Component {
 
       // Getting domain
       let colorDomain;
-
-      if (this.props.mark.style.fill.scaleType) {
-        if (!this.props.mark.style.fill.domain) {
-          colorDomain = [d3.min(dataFormatted, d => d[1]), d3.max(dataFormatted, d => d[1])]
-        } else
-          colorDomain = this.props.mark.style.fill.domain
-      }
+      if (this.props.mark.style.fill)
+        if (this.props.mark.style.fill.scaleType) {
+          if (!this.props.mark.style.fill.domain) {
+            colorDomain = [d3.min(dataFormatted, d => d[1]), d3.max(dataFormatted, d => d[1])]
+          } else
+            colorDomain = this.props.mark.style.fill.domain
+        }
 
       //Adding scales
 
       let colorScale;
-
-      if (this.props.mark.style.fill.scaleType) {
-        let colorRange = d3.schemeCategory10;
-        if (this.props.mark.style.fill.color)
-          colorRange = this.props.mark.style.fill.color;
-        if (this.props.mark.style.fill.scaleType === 'ordinal')
-          colorScale = d3.scaleOrdinal()
-            .domain(colorDomain)
-            .range(colorRange)
-        else
-          colorScale = d3.scaleLinear()
-            .domain(colorDomain)
-            .range(colorRange)
-      }
+      if (this.props.mark.style.fill)
+        if (this.props.mark.style.fill.scaleType) {
+          let colorRange = d3.schemeCategory10;
+          if (this.props.mark.style.fill.color)
+            colorRange = this.props.mark.style.fill.color;
+          if (this.props.mark.style.fill.scaleType === 'ordinal')
+            colorScale = d3.scaleOrdinal()
+              .domain(colorDomain)
+              .range(colorRange)
+          else
+            colorScale = d3.scaleLinear()
+              .domain(colorDomain)
+              .range(colorRange)
+        }
 
 
 
