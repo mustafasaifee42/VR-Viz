@@ -34,7 +34,6 @@ import '../AFrameComponents/ModifyMaterials.js';
 import '../AFrameComponents/PlayAllModelAnimations.js';
 import '../AFrameComponents/BIllboard.js';
 import '../AFrameComponents/PlaneFromVertices.js';
-import '../AFrameComponents/ShaderTest.js';
 
 import '../AFrameGeometries/Map.js';
 
