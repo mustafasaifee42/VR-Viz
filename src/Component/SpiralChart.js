@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import * as moment from 'moment';
-import 'aframe-meshline-component';
 
 import GetDomain from '../Utils/GetDomain.js';
 import ReadPLY from '../Utils/ReadPLY.js';
@@ -200,7 +199,6 @@ class SpiralChart extends Component {
       let spiralCoordinates, shapeCoordinates;
 
       let yPos = this.props.style.height / this.state.data.length;
-
       spiralCoordinates = this.state.data.map((d, i) => {
         let coordinates = ''
         let angle = Math.PI * 2 / scales.length;
@@ -227,18 +225,18 @@ class SpiralChart extends Component {
       if (this.props.mark.style.stroke)
         spiral = this.state.data.map((d, i) => {
           if (this.props.mark.style.stroke.scaleType)
-            return <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; lineWidthStyler: 1; path:${spiralCoordinates[i]}; color: ${colorScale(d[this.props.mark.style.stroke.field])}`}></a-entity>
+            return <a-entity key={i} plane-from-vertices={`path:${spiralCoordinates[i]};face:false;stroke:true;strokeWidth:${this.props.mark.style.stroke.width};strokeColor:${colorScale(d[this.props.mark.style.stroke.field])}`} />
           else
-            return <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; lineWidthStyler: 1; path:${spiralCoordinates[i]}; color: ${this.props.mark.style.stroke.color}`}></a-entity>
+            return <a-entity key={i} plane-from-vertices={`path:${spiralCoordinates[i]};face:false;stroke:true;strokeWidth:${this.props.mark.style.stroke.width};strokeColor:${this.props.mark.style.stroke.color}`} />
         })
 
       if (this.props.mark.style.fill)
         shapes = this.state.data.map((d, i) => {
           let primitive = `primitive: map; vertices: ${shapeCoordinates[i]}; extrude: ${0.00001}`;
           if (this.props.mark.style.fill.scaleType)
-            return (<a-entity geometry={primitive} material={`color: ${fillColorScale(d[this.props.mark.style.fill.field])}; metalness: 0.2; opacity:${this.props.mark.style.fill.opacity}`} position={`0 ${i * yPos} 0`} rotation={`90 0 0`} />)
+            return (<a-entity key={i} geometry={primitive} material={`color: ${fillColorScale(d[this.props.mark.style.fill.field])}; metalness: 0.2; opacity:${this.props.mark.style.fill.opacity}`} position={`0 ${i * yPos} 0`} rotation={`90 0 0`} />)
           else
-            return (<a-entity geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; metalness: 0.2; opacity:${this.props.mark.style.fill.opacity}`} position={`0 ${i * yPos} 0`} rotation={`90 0 0`} />)
+            return (<a-entity key={i}  geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; metalness: 0.2; opacity:${this.props.mark.style.fill.opacity}`} position={`0 ${i * yPos} 0`} rotation={`90 0 0`} />)
         })
 
       let graphTitle
