@@ -48,8 +48,9 @@ class ParametricSurfacePlot extends Component {
         tempData.push(this.props.mark.position.x.function(i, j + parameterStep2));
         tempData.push(this.props.mark.position.y.function(i, j + parameterStep2));
         tempData.push(this.props.mark.position.z.function(i, j + parameterStep2));
-        if (this.props.mark.style.fill.function)
-          tempData.push(this.props.mark.style.fill.function(i, j))
+        if(this.props.mark.style.fill)
+          if (this.props.mark.style.fill.function)
+            tempData.push(this.props.mark.style.fill.function(i, j))
         dataCoordinate.push(tempData);
       }
     }
@@ -103,20 +104,20 @@ class ParametricSurfacePlot extends Component {
         .domain([d3.min(dataSphere, d => d[2]), d3.max(dataSphere, d => d[2])])
         .range([0, this.props.style.dimensions.depth]);
 
-
-    if (this.props.mark.style.fill.scaleType) {
-      let colorRange = d3.schemeCategory10;
-      if (this.props.mark.style.fill.color)
-        colorRange = this.props.mark.style.fill.color;
-      if (this.props.mark.style.fill.domain)
-        colorScale = d3.scaleLinear()
-          .domain(this.props.mark.style.fill.domain)
-          .range(colorRange)
-      else
-        colorScale = d3.scaleLinear()
-          .domain([d3.min(dataCoordinate, d => d[12]), d3.max(dataCoordinate, d => d[12])])
-          .range(colorRange)
-    }
+    if(this.props.mark.style.fill)
+      if (this.props.mark.style.fill.scaleType) {
+        let colorRange = d3.schemeCategory10;
+        if (this.props.mark.style.fill.color)
+          colorRange = this.props.mark.style.fill.color;
+        if (this.props.mark.style.fill.domain)
+          colorScale = d3.scaleLinear()
+            .domain(this.props.mark.style.fill.domain)
+            .range(colorRange)
+        else
+          colorScale = d3.scaleLinear()
+            .domain([d3.min(dataCoordinate, d => d[12]), d3.max(dataCoordinate, d => d[12])])
+            .range(colorRange)
+      }
 
     //Axis
     let xAxis, yAxis, zAxis;
@@ -176,15 +177,22 @@ class ParametricSurfacePlot extends Component {
 
     //Adding marks
     let marks;
-    if (this.props.mark.style.fill.function)
-      marks = dataCoordinate.map((d, i) => <a-entity key={`${this.props.index}_Mark${i}`} geometry={`primitive: planeFromVertices; vertices: ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}`} material={`color: ${colorScale(d[12])}; side: double; opacity: ${this.props.mark.style.fill.opacity}`} />);
-    else
-      marks = dataCoordinate.map((d, i) => <a-entity key={`${this.props.index}_Mark${i}`} geometry={`primitive: planeFromVertices; vertices: ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}`} material={`color: ${this.props.mark.style.fill.color}; side: double; opacity: ${this.props.mark.style.fill.opacity}`} />);
-
-    let border;
-    if (this.props.mark.style.stroke)
-      border = dataCoordinate.map((d, i) => <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}; color:${this.props.mark.style.stroke.color}`} />);
-
+    if (this.props.mark.style.stroke){
+      if(this.props.mark.style.fill) {
+        if (this.props.mark.style.fill.function)
+          marks = dataCoordinate.map((d, i) => <a-entity key={`${i}`} plane-from-vertices={`path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}, ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])};face:true;faceColor: ${colorScale(d[12])};faceOpacity: ${this.props.mark.style.fill.opacity};stroke:true;strokeWidth:${this.props.mark.style.stroke.width};strokeColor:${this.props.mark.style.stroke.color}`} />);
+        else
+          marks = dataCoordinate.map((d, i) => <a-entity key={`${i}`} plane-from-vertices={`path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}, ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])};face:true;faceColor: ${this.props.mark.style.fill.color};faceOpacity: ${this.props.mark.style.fill.opacity};stroke:true;strokeWidth:${this.props.mark.style.stroke.width};strokeColor:${this.props.mark.style.stroke.color}`} />);
+      }
+      else
+        marks = dataCoordinate.map((d, i) => <a-entity key={`${i}`} plane-from-vertices={`path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}, ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])};face:false;stroke:true;strokeWidth:${this.props.mark.style.stroke.width};strokeColor:${this.props.mark.style.stroke.color}`} />);
+    }
+    else {
+      if (this.props.mark.style.fill.function)
+        marks = dataCoordinate.map((d, i) => <a-entity key={`${i}`} plane-from-vertices={`path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}, ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])};face:true;faceColor: ${colorScale(d[12])};faceOpacity: ${this.props.mark.style.fill.opacity};stroke:false`} />);
+      else
+        marks = dataCoordinate.map((d, i) => <a-entity key={`${i}`} plane-from-vertices={`path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}, ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])};face:true;faceColor: ${this.props.mark.style.fill.color};faceOpacity: ${this.props.mark.style.fill.opacity};stroke:false`} />);
+    }
     let graphTitle
     if (this.props.title) {
       graphTitle = <a-text color={this.props.title.color} wrapCount={this.props.title.wrapCount} lineHeight={this.props.title.lineHeight} width={this.props.title.width} value={this.props.title.value} anchor='align' side='double' align={this.props.title.align} position={this.props.title.position} rotation={this.props.title.rotation} billboard={this.props.title.billboarding}/>
@@ -197,7 +205,6 @@ class ParametricSurfacePlot extends Component {
     return (
       <a-entity pivot={pivot} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
         {marks}
-        {border}
         {xAxis}
         {yAxis}
         {zAxis}
