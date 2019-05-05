@@ -123,6 +123,7 @@ class TimeSeries extends Component {
 
   render() {
     if (!this.state.data) {
+      console.log('hello')
       return <a-entity />
     }
     else {
@@ -263,8 +264,7 @@ class TimeSeries extends Component {
         tempData.push(0);
         borderCoordinate.push(tempData);
       }
-
-      marks = dataCoordinate.map((d, i) => <a-entity key={`${this.props.index}_Mark${i}`} geometry={`primitive: planeFromVertices; vertices: ${d[0]} ${d[1]} ${d[2]}, ${d[3]} ${d[4]} ${d[5]}, ${d[6]} ${d[7]} ${d[8]}, ${d[9]} ${d[10]} ${d[11]}`} material={`color: ${this.props.mark.style.fill.color}; side: double; opacity: ${this.props.mark.style.fill.opacity}`} />);
+      marks = dataCoordinate.map((d, i) => <a-entity key={`${i}`} plane-from-vertices={`path:${d[0]} ${d[1]} ${d[2]}, ${d[3]} ${d[4]} ${d[5]}, ${d[6]} ${d[7]} ${d[8]}, ${d[9]} ${d[10]} ${d[11]}, ${d[0]} ${d[1]} ${d[2]};face:true;faceColor: ${this.props.mark.style.fill.color};faceOpacity: ${this.props.mark.style.fill.opacity};stroke:false`} />);
 
       let path = ''
 
@@ -276,7 +276,7 @@ class TimeSeries extends Component {
 
       let border
       if (this.props.mark.style.stroke)
-        border = <a-entity meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${path}; color:${this.props.mark.style.stroke.color}`} />;
+        border = <a-entity plane-from-vertices={`path:${path};face:false;stroke:true;strokeWidth:${this.props.mark.style.stroke.width};strokeColor:${this.props.mark.style.stroke.color}`} />;
 
 
       let graphTitle

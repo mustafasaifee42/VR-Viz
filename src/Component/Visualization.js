@@ -34,6 +34,7 @@ import '../AFrameComponents/ModifyMaterials.js';
 import '../AFrameComponents/PlayAllModelAnimations.js';
 import '../AFrameComponents/BIllboard.js';
 import '../AFrameComponents/PlaneFromVertices.js';
+import '../AFrameComponents/ShaderTest.js';
 
 import '../AFrameGeometries/Map.js';
 import '../AFrameGeometries/PlaneFromVertices.js';
@@ -764,7 +765,7 @@ class VRViz extends Component {
             />)
         }
         case 'TimeSeries': {
-          if ((!d.data) || (!d.style) || (!d.mark) || (!d.x) || (!d.y)){
+          if ((!d.data) || (!d.style) || (!d.mark)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
             return null
           }
