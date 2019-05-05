@@ -342,9 +342,9 @@ class WaterFallPlot extends Component {
           path = path + `, ${xScale(xDomain[xDomain.length - 1])} 0`
           let primitive = `primitive: map; vertices: ${path}; extrude: 0.00000001`;
           if(this.props.mark.style.fill.scaleType) 
-            return <a-entity key={`${this.props.index}_Map${i}`} position={`0 0 ${zScale(d[this.props.mark.position.z.field])}`} geometry={primitive} material={`color: ${fillColorScale(d[this.props.mark.style.fill.field])}; side: double; opacity: ${this.props.mark.style.fill.opacity} `} />
+            return <a-entity key={`${this.props.index}_Map${i}`} position={`0 0 ${zScale(d[this.props.mark.position.z.field])}`} geometry={primitive} material={`color: ${fillColorScale(d[this.props.mark.style.fill.field])}; side: double; opacity: ${this.props.mark.style.fill.opacity};metalness: 0.2;`} />
           else
-            return <a-entity key={`${this.props.index}_Map${i}`} position={`0 0 ${zScale(d[this.props.mark.position.z.field])} `} geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; side: double; opacity: ${this.props.mark.style.fill.opacity} `} />
+            return <a-entity key={`${this.props.index}_Map${i}`} position={`0 0 ${zScale(d[this.props.mark.position.z.field])} `} geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; side: double; opacity: ${this.props.mark.style.fill.opacity};metalness: 0.2;`} />
         })
 
       let graphTitle
