@@ -37,7 +37,6 @@ import '../AFrameComponents/PlaneFromVertices.js';
 import '../AFrameComponents/ShaderTest.js';
 
 import '../AFrameGeometries/Map.js';
-import '../AFrameGeometries/PlaneFromVertices.js';
 
 require('aframe-teleport-controls');
 
