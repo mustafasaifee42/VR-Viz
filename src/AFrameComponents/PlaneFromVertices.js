@@ -5,7 +5,7 @@ if (typeof AFRAME === 'undefined') {
 }
 
 
-var coordinates = AFRAME.utils.coordinates;
+let coordinates = AFRAME.utils.coordinates;
 
 AFRAME.registerComponent('plane-from-vertices', {
   schema: {
@@ -34,29 +34,29 @@ AFRAME.registerComponent('plane-from-vertices', {
 
 
   update: function (oldData) {
-    var strokeGeometry = new AFRAME.THREE.Geometry();
-    var faceGeometry = new AFRAME.THREE.Geometry();
+    let strokeGeometry = new AFRAME.THREE.Geometry();
+    let bufferGeometry = new AFRAME.THREE.BufferGeometry();
+    let vertices = [];
     this.data.path.forEach(function (vec3) {
+      vertices.push( vec3.x, vec3.y,vec3.z )
       strokeGeometry.vertices.push(
         new AFRAME.THREE.Vector3(vec3.x, vec3.y, vec3.z)
       );
-      faceGeometry.vertices.push(
-        new AFRAME.THREE.Vector3(vec3.x, vec3.y, vec3.z)
-      );
     });
-  
-    faceGeometry.faces.push(new AFRAME.THREE.Face3(0, 1, 2));
-    faceGeometry.faces.push(new AFRAME.THREE.Face3(0, 2, 3));
+    let indices = [0, 1, 2, 0, 2, 3];
+    bufferGeometry.setIndex( indices );
+    bufferGeometry.addAttribute( 'position', new AFRAME.THREE.Float32BufferAttribute( vertices, 3 ) );
     
-    var faceMaterial = new AFRAME.THREE.MeshBasicMaterial({
-      color: this.data.faceColor,
-      opacity: this.data.faceOpacity,
+    
+    var material = new AFRAME.THREE.MeshPhongMaterial( {
+      color: this.data.faceColor, 
+      shininess: 250,
+      side: AFRAME.THREE.DoubleSide,
       transparent: true,
-      side: AFRAME.THREE.DoubleSide
+      opacity: this.data.faceOpacity
     });
     
-    
-    var strokeMaterial = new AFRAME.THREE.LineBasicMaterial({
+    let strokeMaterial = new AFRAME.THREE.LineBasicMaterial({
       color: this.data.strokeColor,
       linewidth: this.data.strokeWidth,
       linecap: 'round', //ignored by WebGLRenderer
@@ -65,11 +65,11 @@ AFRAME.registerComponent('plane-from-vertices', {
   
   
     // Apply mesh.
-    let faceMesh = new AFRAME.THREE.Mesh(faceGeometry, faceMaterial);
+    let faceMesh = new AFRAME.THREE.Mesh(bufferGeometry, material);
 
     // Apply mesh.
     let lineMesh = new AFRAME.THREE.Line(strokeGeometry, strokeMaterial);
-    var group = new AFRAME.THREE.Group();
+    let group = new AFRAME.THREE.Group();
     if(this.data.stroke)
       group.add( lineMesh );
     if(this.data.face)
