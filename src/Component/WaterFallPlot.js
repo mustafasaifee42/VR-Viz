@@ -10,7 +10,6 @@ import AxisBox from './AxisBox.js';
 import { csv } from 'd3-request';
 import { json } from 'd3-request';
 import { text } from 'd3-request';
-import 'aframe-meshline-component';
 
 class WaterFallPlot extends Component {
   constructor(props) {

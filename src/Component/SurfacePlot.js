@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import Axis from './Axis.js';
 import AxisBox from './AxisBox.js';
-import 'aframe-meshline-component';
 
 
 class SurfacePlot extends Component {
