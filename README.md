@@ -504,8 +504,10 @@ duration|int|Defines the timeperiod of the animation. The value is in millisecon
 ## To Do
 * Add Legends
 * Add collaboration using [A-Frame Networked](https://haydenlee.io/networked-aframe/)
+* Add vase plot and map vase plot
 
 ## Known Issues
 * Multiple a-frame screens cannot be embedded in the same page [(https://github.com/aframevr/aframe/issues/916)](https://github.com/aframevr/aframe/issues/916)
+* Ticks in Spiral chart is not working
 * ~~Grid in the axes doesnt work right now~~
 * ~~Titles of the axes doesnt work right now~~
