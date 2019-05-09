@@ -122,3 +122,7 @@ latitude,longitude,value
 23.424076,53.847818,9.563725062
 33.93911,67.709953,7.260326865
 ```
+
+## Known Issue
+
+* Holes in the maps don't work (for example Lesotho in South Africa)
