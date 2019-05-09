@@ -74,3 +74,7 @@ id,value,colorValue
 024,6.860288838552762,5
 008,6.492813386791552,3
 ```
+
+## Known Issue
+
+* Holes in the maps don't work (for example Lesotho in South Africa)
