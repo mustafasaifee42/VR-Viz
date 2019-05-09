@@ -113,3 +113,7 @@ source_latitude,source_longitude,target_latitude,target_longitude,value
 33.93911,67.709953,17.060816,-61.796428,7.260326865
 18.220554,-63.068615,41.153332,20.168331,9.61927466
 ```
+
+## Known Issue
+
+* Holes in the maps don't work (for example Lesotho in South Africa)
