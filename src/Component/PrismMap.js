@@ -178,21 +178,24 @@ class PrismMap extends Component {
 
       //Adding marks
 
+      let border, shapes;
       let geoData = GetMapShape(this.props.mark.data, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin, this.props.mark.shapeIdentifier, this.props.mark.shapeKey);
-      let shapes = geoData.map((d, i) => {
-        let extrusionHeight = extrusionScale(data[d['code']]['value'])
-        if (extrusionHeight === 0)
-          extrusionHeight = 0.000000000001;
-        let primitive = `primitive: map; vertices: ${d.vertices}; extrude: ${extrusionHeight}`
-        if (this.props.mark.style.fill.scaleType)
-          return (<a-entity key={i} geometry={primitive} material={`color: ${colorScale(data[d['code']]['colorField'])}; metalness: 0.2; opacity:${this.props.mark.style.fill.opacity}`} />)
-        else
-          return (<a-entity key={i} geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; metalness: 0.2; opacity:${this.props.mark.style.fill.opacity}`} />)
-      })
-      let border;
-      if (this.props.mark.style.stroke)
-        border = geoData.map((d, i) => <a-entity key={i} meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${`${d.vertices.replace(/,/g, ` ${extrusionScale(data[d['code']]['value'])},`)} ${extrusionScale(data[d['code']]['value'])}`}; color:${this.props.mark.style.stroke.color}`} />);
+      if (this.props.mark.projection){
+        shapes = geoData.map((d, i) => {
+          let extrusionHeight = extrusionScale(data[d['code']]['value'])
+          if (extrusionHeight === 0)
+            extrusionHeight = 0.000000000001;
+          let primitive = `primitive: map; vertices: ${d.vertices}; extrude: ${extrusionHeight}`
+          if (this.props.mark.style.fill.scaleType)
+            return (<a-entity key={i} geometry={primitive} material={`color: ${colorScale(data[d['code']]['colorField'])}; metalness: 0.2; opacity:${this.props.mark.style.fill.opacity}`} />)
+          else
+            return (<a-entity key={i} geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; metalness: 0.2; opacity:${this.props.mark.style.fill.opacity}`} />)
+        })
+        if (this.props.mark.style.stroke)
+          border = geoData.map((d, i) => <a-entity key={i} meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${`${d.vertices.replace(/,/g, ` ${extrusionScale(data[d['code']]['value'])},`)} ${extrusionScale(data[d['code']]['value'])}`}; color:${this.props.mark.style.stroke.color}`} />);
+      } else {
 
+      }
       let graphTitle
       if (this.props.title) {
         graphTitle = <a-text color={this.props.title.color} wrapCount={this.props.title.wrapCount} lineHeight={this.props.title.lineHeight} width={this.props.title.width} value={this.props.title.value} anchor='align' side='double' align={this.props.title.align} position={this.props.title.position} rotation={this.props.title.rotation} billboard={this.props.title.billboarding} />
