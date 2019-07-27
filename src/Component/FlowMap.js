@@ -19,24 +19,6 @@ class FlowMap extends Component {
     }
   }
 
-
-  startAnimation = () => {
-      d3.select(`#${this.props.index}`)
-        .transition()
-        .duration(this.props.animateRotation.duration)
-        .ease(d3.easeLinear)
-        .attrTween("rotation", () => d3.interpolate(`${this.props.animateRotation.initialAngles[0]} ${this.props.animateRotation.initialAngles[1]} ${this.props.animateRotation.initialAngles[2]}`, `${this.props.animateRotation.finalAngles[0]} ${this.props.animateRotation.finalAngles[1]} ${this.props.animateRotation.finalAngles[2]}`));
-  }
-  componentDidUpdate(){
-    if(this.state.data){
-      if(this.props.animateRotation) {
-        this.startAnimation();
-        window.setInterval(this.startAnimation, this.props.animateRotation.duration);
-      }
-    }
-  }
-
-
   componentWillMount() {
     if (this.props.data) {
       switch (this.props.data.fileType) {
@@ -281,25 +263,27 @@ class FlowMap extends Component {
         return flowLine
       })
 
-
-      let graphTitle
-      if (this.props.title) {
-        graphTitle = <a-text color={this.props.title.color} wrapCount={this.props.title.wrapCount} lineHeight={this.props.title.lineHeight} width={this.props.title.width} value={this.props.title.value} anchor='align' side='double' align={this.props.title.align} position={this.props.title.position} rotation={this.props.title.rotation} billboard={this.props.title.billboarding} />
+      let  clickRotation = 'true',animation;
+      if(this.props.animateRotation){
+        clickRotation='false'
+        animation  = <a-animation
+            attribute="rotation"
+            easing="linear"
+            dur={`${this.props.animateRotation.duration}`}
+            from={this.props.animateRotation.initialAngles}
+            to={this.props.animateRotation.finalAngles}
+            repeat="indefinite"
+          />
       }
-      let pivot
-      if(this.props.style.pivot)
-        pivot = this.props.style.pivot;
-      else
-        pivot = `0 0 0`
       return (
-        <a-entity pivot={pivot} rotation={this.props.mark.rotation} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} id={this.props.index}>
+        <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  rotation={this.props.mark.rotation} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} id={this.props.index}>
+          {animation}
           {shapes}
           {curves}
           {border}
           {sourceNode}
           {targetNode}
           {flowLines}
-          {graphTitle}
         </a-entity>
       )
     }

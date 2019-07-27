@@ -346,7 +346,9 @@ Property|Type|Description
 origin|array of numbers|Defines the position where the origin of the graph is placed. __Required.__ _Example: [0,0,0]_
 rotation|string|Defines the rotation of the chart. __Not Required. Default value: '0 0 0'__ _Format example: '-90 0 0'_
 dimension|object|Defines the dimension of the graph. Keys in the object are `width`, `depth` and `height`. The value for all these keys are float type. __Required.__
-pivot|string|Defines the pivot point around which the graph can be rotated using `animateRotation`. __Not required. Default value: 0 0 0__ _Example: '0 0 0'_
+xPivot|number|Defines the pivot point on x axis around which the graph can be rotated using `animateRotation` or on mouse drag. __Not required. Default value is the center point of the grsph__
+yPivot|number|Defines the pivot point on y axis around which the graph can be rotated using `animateRotation` or on mouse drag. __Not required. Default value is the center point of the grsph__
+zPivot|number|Defines the pivot point on z axis around which the graph can be rotated using `animateRotation` or on mouse drag. __Not required. Default value is the center point of the grsph__
 
 #### mark
 `mark` is used to define the style and encoding for graphics in different visualizations. Different visualizations have different `mark` properties and key. These are discussed further in the documentation of individual visualizations.
@@ -491,14 +493,14 @@ title.width|float|Defines the width of the graph title. __Not Required.__
 title.billboarding|bool|Defines if the text always face the camera. __Not Required. Default value:false.__ _If the value is change to true `title.rotation` is ignored._
 
 #### animateRotation __Not Required__
-This is use to define the rotation animation of the graph for viewing it in different perspective.
+This is use to define the rotation animation of the graph for viewing it in different perspective. _If animateRotation is present the roation of graph on mouse drag is ignored._
 
 __Properties for animateRotation__
 
 Property|Type|Description
 ---|---|---
-initialAngles|array of numbers|Defines the starting angel of the rotation animation for the graph. The array is [Angle of rotation around x axis, Angle of rotation around y axis, Angle of rotation around z axis]. __Required.__ _Example: [0,0,0]_
-finalAngles|array of numbers|Defines the ending angel of the rotation animation for the graph. The array is [Angle of rotation around x axis, Angle of rotation around y axis, Angle of rotation around z axis]. __Not Required. Default value: '0 0 0'__ _Example: [0,360,0]_
+initialAngles|string|Defines the starting angel (in degrees) of the rotation animation for the graph.  __Required.__ _Example: "0 0 0"_
+finalAngles|string|Defines the ending angel (in degrees) of the rotation animation for the graph.  __Required.__ _Example: "0 360 0"_
 duration|int|Defines the timeperiod of the animation. The value is in millisecond. __Required.__
 
 ## To Do

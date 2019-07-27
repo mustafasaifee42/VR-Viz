@@ -10,21 +10,6 @@ class SurfacePlot extends Component {
     this.state = {
     }
   }
-  startAnimation = () => {
-      d3.select(`#${this.props.index}`)
-        .transition()
-        .duration(this.props.animateRotation.duration)
-        .ease(d3.easeLinear)
-        .attrTween("rotation", () => d3.interpolate(`${this.props.animateRotation.initialAngles[0]} ${this.props.animateRotation.initialAngles[1]} ${this.props.animateRotation.initialAngles[2]}`, `${this.props.animateRotation.finalAngles[0]} ${this.props.animateRotation.finalAngles[1]} ${this.props.animateRotation.finalAngles[2]}`));
-  }
-  componentWillMount(){
-    if(this.props.animateRotation) {
-      this.startAnimation();
-      window.setInterval(this.startAnimation, this.props.animateRotation.duration);
-    }
-  }
-
-
   render() {
 
     // Data manipulation
@@ -181,22 +166,25 @@ class SurfacePlot extends Component {
     else {
       marks = dataCoordinate.map((d, i) => <a-entity key={`${this.props.index}_Mark${i}`} plane-from-vertices={`path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}, ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])};face:false;stroke:true;strokeWidth:${this.props.mark.style.stroke.width};strokeColor:${this.props.mark.style.stroke.color}`} />);
     }
-    let graphTitle
-    if (this.props.title) {
-      graphTitle = <a-text color={this.props.title.color} wrapCount={this.props.title.wrapCount} lineHeight={this.props.title.lineHeight} width={this.props.title.width} value={this.props.title.value} anchor='align' side='double' align={this.props.title.align} position={this.props.title.position} rotation={this.props.title.rotation} billboard={this.props.title.billboarding} />
+    let  clickRotation = 'true',animation;
+    if(this.props.animateRotation){
+      clickRotation='false'
+      animation  = <a-animation
+          attribute="rotation"
+          easing="linear"
+          dur={`${this.props.animateRotation.duration}`}
+          from={this.props.animateRotation.initialAngles}
+          to={this.props.animateRotation.finalAngles}
+          repeat="indefinite"
+        />
     }
-    let pivot
-    if(this.props.style.pivot)
-      pivot = this.props.style.pivot;
-    else
-      pivot = `0 0 0`
     return (
-      <a-entity pivot={pivot} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} >
+      <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} >
+        {animation}
         {marks}
         {xAxis}
         {yAxis}
         {zAxis}
-        {graphTitle}
         {box}
       </a-entity>
     )

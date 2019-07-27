@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import * as moment from 'moment';
-
 import GetDomain from '../Utils/GetDomain.js';
 import ReadPLY from '../Utils/ReadPLY.js';
 import Axis from './Axis.js';
@@ -12,27 +11,12 @@ import { csv } from 'd3-request';
 import { json } from 'd3-request';
 import { text } from 'd3-request';
 
+
+
 class BarGraph extends Component {
   constructor(props) {
     super(props)
     this.state = {
-    }
-  }
-
-
-  startAnimation = () => {
-      d3.select(`#${this.props.index}`)
-        .transition()
-        .duration(this.props.animateRotation.duration)
-        .ease(d3.easeLinear)
-        .attrTween("rotation", () => d3.interpolate(`${this.props.animateRotation.initialAngles[0]} ${this.props.animateRotation.initialAngles[1]} ${this.props.animateRotation.initialAngles[2]}`, `${this.props.animateRotation.finalAngles[0]} ${this.props.animateRotation.finalAngles[1]} ${this.props.animateRotation.finalAngles[2]}`));
-  }
-  componentDidUpdate(){
-    if(this.state.data){
-      if(this.props.animateRotation) {
-        this.startAnimation();
-        window.setInterval(this.startAnimation, this.props.animateRotation.duration);
-      }
     }
   }
   componentWillMount() {
@@ -119,7 +103,6 @@ class BarGraph extends Component {
       });
     }
   }
-
 
   render() {
     if (!this.state.data) {
@@ -290,12 +273,6 @@ class BarGraph extends Component {
         />
       }
 
-      let graphTitle;
-
-      if (this.props.title) {
-        graphTitle = <a-text color={this.props.title.color} wrapCount={this.props.title.wrapCount} lineHeight={this.props.title.lineHeight} width={this.props.title.width} value={this.props.title.value} anchor='align' side='double' align={this.props.title.align} position={this.props.title.position} rotation={this.props.title.rotation} billboard={this.props.title.billboarding} />
-      }
-
       //Adding marks
       let marks = this.state.data.map((d, i) => {
         let hght = yScale(d[this.props.mark.style.height.field]);
@@ -332,18 +309,25 @@ class BarGraph extends Component {
           graphID={this.props.index}
         />
       });
-      let pivot
-      if(this.props.style.pivot)
-        pivot = this.props.style.pivot;
-      else
-        pivot = `0 0 0`
+      let  clickRotation = 'true', animation;
+      if(this.props.animateRotation){
+        clickRotation='false'
+        animation  = <a-animation
+          attribute="rotation"
+          easing="linear"
+          dur={`${this.props.animateRotation.duration}`}
+          from={this.props.animateRotation.initialAngles}
+          to={this.props.animateRotation.finalAngles}
+          repeat="indefinite"
+          />
+      }
       return (
-        <a-entity pivot={pivot} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
+        <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>     
+          {animation}
           {marks}
           {xAxis}
           {yAxis}
           {zAxis}
-          {graphTitle}
           {box}
         </a-entity>
       )

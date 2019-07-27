@@ -10,29 +10,10 @@ import { csv } from 'd3-request';
 import { json } from 'd3-request';
 import { text } from 'd3-request';
 
-
 class PrismMap extends Component {
   constructor(props) {
     super(props)
     this.state = {
-    }
-  }
-
-
-
-  startAnimation = () => {
-    d3.select(`#${this.props.index}`)
-      .transition()
-      .duration(this.props.animateRotation.duration)
-      .ease(d3.easeLinear)
-      .attrTween("rotation", () => d3.interpolate(`${this.props.animateRotation.initialAngles[0]} ${this.props.animateRotation.initialAngles[1]} ${this.props.animateRotation.initialAngles[2]}`, `${this.props.animateRotation.finalAngles[0]} ${this.props.animateRotation.finalAngles[1]} ${this.props.animateRotation.finalAngles[2]}`));
-  }
-  componentDidUpdate(){
-    if(this.state.data){
-      if(this.props.animateRotation) {
-        this.startAnimation();
-        window.setInterval(this.startAnimation, this.props.animateRotation.duration);
-      }
     }
   }
 
@@ -178,35 +159,41 @@ class PrismMap extends Component {
 
       //Adding marks
 
+      let border, shapes;
       let geoData = GetMapShape(this.props.mark.data, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin, this.props.mark.shapeIdentifier, this.props.mark.shapeKey);
-      let shapes = geoData.map((d, i) => {
-        let extrusionHeight = extrusionScale(data[d['code']]['value'])
-        if (extrusionHeight === 0)
-          extrusionHeight = 0.000000000001;
-        let primitive = `primitive: map; vertices: ${d.vertices}; extrude: ${extrusionHeight}`
-        if (this.props.mark.style.fill.scaleType)
-          return (<a-entity key={i} geometry={primitive} material={`color: ${colorScale(data[d['code']]['colorField'])}; metalness: 0.2; opacity:${this.props.mark.style.fill.opacity}`} />)
-        else
-          return (<a-entity key={i} geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; metalness: 0.2; opacity:${this.props.mark.style.fill.opacity}`} />)
-      })
-      let border;
-      if (this.props.mark.style.stroke)
-        border = geoData.map((d, i) => <a-entity key={i} meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${`${d.vertices.replace(/,/g, ` ${extrusionScale(data[d['code']]['value'])},`)} ${extrusionScale(data[d['code']]['value'])}`}; color:${this.props.mark.style.stroke.color}`} />);
+      if (this.props.mark.projection){
+        shapes = geoData.map((d, i) => {
+          let extrusionHeight = extrusionScale(data[d['code']]['value'])
+          if (extrusionHeight === 0)
+            extrusionHeight = 0.000000000001;
+          let primitive = `primitive: map; vertices: ${d.vertices}; extrude: ${extrusionHeight}`
+          if (this.props.mark.style.fill.scaleType)
+            return (<a-entity key={i} geometry={primitive} material={`color: ${colorScale(data[d['code']]['colorField'])}; metalness: 0.2; opacity:${this.props.mark.style.fill.opacity}`} />)
+          else
+            return (<a-entity key={i} geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; metalness: 0.2; opacity:${this.props.mark.style.fill.opacity}`} />)
+        })
+        if (this.props.mark.style.stroke)
+          border = geoData.map((d, i) => <a-entity key={i} meshline={`lineWidth: ${this.props.mark.style.stroke.width}; path:${`${d.vertices.replace(/,/g, ` ${extrusionScale(data[d['code']]['value'])},`)} ${extrusionScale(data[d['code']]['value'])}`}; color:${this.props.mark.style.stroke.color}`} />);
+      } else {
 
-      let graphTitle
-      if (this.props.title) {
-        graphTitle = <a-text color={this.props.title.color} wrapCount={this.props.title.wrapCount} lineHeight={this.props.title.lineHeight} width={this.props.title.width} value={this.props.title.value} anchor='align' side='double' align={this.props.title.align} position={this.props.title.position} rotation={this.props.title.rotation} billboard={this.props.title.billboarding} />
       }
-      let pivot
-      if(this.props.style.pivot)
-        pivot = this.props.style.pivot;
-      else
-        pivot = `0 0 0`
+      let  clickRotation = 'true',animation;
+      if(this.props.animateRotation){
+        clickRotation='false'
+        animation  = <a-animation
+            attribute="rotation"
+            easing="linear"
+            dur={`${this.props.animateRotation.duration}`}
+            from={this.props.animateRotation.initialAngles}
+            to={this.props.animateRotation.finalAngles}
+            repeat="indefinite"
+          />
+      }
       return (
-        <a-entity pivot={pivot} rotation={this.props.mark.rotation} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} id={this.props.index}>
+        <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  rotation={this.props.mark.rotation} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} id={this.props.index}>
+          {animation}
           {shapes}
           {border}
-          {graphTitle}
         </a-entity>
       )
     }

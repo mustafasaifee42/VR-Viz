@@ -34,11 +34,12 @@ import '../AFrameComponents/ModifyMaterials.js';
 import '../AFrameComponents/PlayAllModelAnimations.js';
 import '../AFrameComponents/BIllboard.js';
 import '../AFrameComponents/PlaneFromVertices.js';
+import '../AFrameComponents/DragRotateComponent.js';
+import '../AFrameComponents/PivotCenter.js';
 
 import '../AFrameGeometries/Map.js';
 
 require('aframe-teleport-controls');
-
 
 const propTypes = {
   scene: PropTypes.object,
@@ -135,13 +136,8 @@ class VRViz extends Component {
           </a-entity>
         </a-entity>
       else
-        camera = <a-entity id="cameraRig" position={this.props.scene.camera.position} rotation={this.props.scene.camera.rotation}>
-          <a-entity id="head" camera={cameraSettings} position="0 1.6 0"  look-controls  wasd-controls="#cameraRig;">
-            <a-entity cursor="fuse: true; fuseTimeout: 50"
-              position="0 0 -0.1"
-              geometry="primitive: ring; radiusInner: 0.002; radiusOuter: 0.003"
-              material="color: black; shader: flat"
-              raycaster="far: 1000; interval: 100;objects: .clickable;showLine: true;" />
+        camera = <a-entity id="cameraRig" position={this.props.scene.camera.position} rotation={this.props.scene.camera.rotation} >
+          <a-entity id="head" camera={cameraSettings} position="0 1.6 0"  look-controls='enabled: true' wasd-controls="#cameraRig;">
             <a-entity
               id="hover"
               geometry="primitive: plane; height: auto; width: auto"
@@ -179,9 +175,14 @@ class VRViz extends Component {
         })
       }
     }
+    
     // Adding Visualization
 
     let visualization = this.props.graph.map((d, i) => {
+      let graphTitle
+      if (d.title) {
+        graphTitle = <a-text color={d.title.color} wrapCount={d.title.wrapCount} lineHeight={d.title.lineHeight} width={d.title.width} value={d.title.value} anchor='align' side='double' align={d.title.align} position={d.title.position} rotation={d.title.rotation} billboard={d.title.billboarding} />
+      }
       switch (d.type) {
         case 'BarGraph': {
           if ((!d.data) || (!d.style) || (!d.mark)) {
@@ -189,29 +190,39 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<BarGraph
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              xAxis={d.axis['x-axis']}
-              yAxis={d.axis['y-axis']}
-              zAxis={d.axis['z-axis']}
-              axisBox={d.axis['axis-box']}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <BarGraph
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  xAxis={d.axis['x-axis']}
+                  yAxis={d.axis['y-axis']}
+                  zAxis={d.axis['z-axis']}
+                  axisBox={d.axis['axis-box']}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<BarGraph
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}            
+                <BarGraph
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'ConnectedScatterPlot': {
           if ((!d.data) || (!d.style) || (!d.mark)){
@@ -219,29 +230,39 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<ConnectedScatterPlot
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              xAxis={d.axis['x-axis']}
-              yAxis={d.axis['y-axis']}
-              zAxis={d.axis['z-axis']}
-              axisBox={d.axis['axis-box']}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <ConnectedScatterPlot
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  xAxis={d.axis['x-axis']}
+                  yAxis={d.axis['y-axis']}
+                  zAxis={d.axis['z-axis']}
+                  axisBox={d.axis['axis-box']}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<ConnectedScatterPlot
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <ConnectedScatterPlot
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'ContourMap': {
           let heightThreshold;
@@ -254,28 +275,38 @@ class VRViz extends Component {
           else
             heightThreshold = d.mark.heightThreshold
           if (d.axis)
-            return (<ContourMap
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              heightThreshold={heightThreshold}
-              axisBox={d.axis['axis-box']}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <ContourMap
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  heightThreshold={heightThreshold}
+                  axisBox={d.axis['axis-box']}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<ContourMap
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              heightThreshold={heightThreshold}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <ContourMap
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  heightThreshold={heightThreshold}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'ContourPlot': {
           if ((!d.style) || (!d.mark)){
@@ -283,27 +314,37 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<ContourPlot
-              key={i}
-              animateRotation={d.animateRotation}
-              style={d.style}
-              mark={d.mark}
-              xAxis={d.axis['x-axis']}
-              yAxis={d.axis['y-axis']}
-              zAxis={d.axis['z-axis']}
-              axisBox={d.axis['axis-box']}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <ContourPlot
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  style={d.style}
+                  mark={d.mark}
+                  xAxis={d.axis['x-axis']}
+                  yAxis={d.axis['y-axis']}
+                  zAxis={d.axis['z-axis']}
+                  axisBox={d.axis['axis-box']}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<ContourPlot
-              key={i}
-              animateRotation={d.animateRotation}
-              style={d.style}
-              mark={d.mark}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <ContourPlot
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  style={d.style}
+                  mark={d.mark}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'FlowMap': {
           if ((!d.data) || (!d.style) || (!d.mark)){
@@ -311,26 +352,36 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<FlowMap
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              axisBox={d.axis['axis-box']}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <FlowMap
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  axisBox={d.axis['axis-box']}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<FlowMap
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <FlowMap
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'ForceDirectedGraph': {
           if ((!d.data) || (!d.style) || (!d.mark)){
@@ -338,26 +389,36 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<ForceDirectedGraph
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              axisBox={d.axis['axis-box']}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <ForceDirectedGraph
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  axisBox={d.axis['axis-box']}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<ForceDirectedGraph
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <ForceDirectedGraph
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'MapBarChart': {
           if ((!d.data) || (!d.style) || (!d.mark)){
@@ -365,26 +426,36 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<MapBarChart
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              axisBox={d.axis['axis-box']}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <MapBarChart
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  axisBox={d.axis['axis-box']}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<MapBarChart
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <MapBarChart
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'MapStackedBarChart': {
           if ((!d.data) || (!d.style) || (!d.mark)){
@@ -392,26 +463,36 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<MapStackedBarChart
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              axisBox={d.axis['axis-box']}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <MapStackedBarChart
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  axisBox={d.axis['axis-box']}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<MapStackedBarChart
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <MapStackedBarChart
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'ParametricCurvePlot': {
           if ((!d.style) || (!d.mark) || (!d.parameter)){
@@ -419,29 +500,39 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<ParametricCurvePlot
-              key={i}
-              animateRotation={d.animateRotation}
-              style={d.style}
-              mark={d.mark}
-              xAxis={d.axis['x-axis']}
-              yAxis={d.axis['y-axis']}
-              zAxis={d.axis['z-axis']}
-              parameter={d.parameter}
-              axisBox={d.axis['axis-box']}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <ParametricCurvePlot
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  style={d.style}
+                  mark={d.mark}
+                  xAxis={d.axis['x-axis']}
+                  yAxis={d.axis['y-axis']}
+                  zAxis={d.axis['z-axis']}
+                  parameter={d.parameter}
+                  axisBox={d.axis['axis-box']}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<ParametricCurvePlot
-              key={i}
-              animateRotation={d.animateRotation}
-              style={d.style}
-              mark={d.mark}
-              parameter={d.parameter}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <ParametricCurvePlot
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  style={d.style}
+                  mark={d.mark}
+                  parameter={d.parameter}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'ParametricSurfacePlot': {
           if ((!d.style) || (!d.mark) || (!d.parameter)){
@@ -449,29 +540,39 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<ParametricSurfacePlot
-              key={i}
-              animateRotation={d.animateRotation}
-              style={d.style}
-              mark={d.mark}
-              xAxis={d.axis['x-axis']}
-              yAxis={d.axis['y-axis']}
-              zAxis={d.axis['z-axis']}
-              parameter={d.parameter}
-              axisBox={d.axis['axis-box']}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <ParametricSurfacePlot
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  style={d.style}
+                  mark={d.mark}
+                  xAxis={d.axis['x-axis']}
+                  yAxis={d.axis['y-axis']}
+                  zAxis={d.axis['z-axis']}
+                  parameter={d.parameter}
+                  axisBox={d.axis['axis-box']}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<ParametricSurfacePlot
-              key={i}
-              animateRotation={d.animateRotation}
-              style={d.style}
-              mark={d.mark}
-              parameter={d.parameter}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <ParametricSurfacePlot
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  style={d.style}
+                  mark={d.mark}
+                  parameter={d.parameter}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'PointCloud': {
           if ((!d.data) || (!d.style) || (!d.mark)){
@@ -479,26 +580,36 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<PointCloud
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              axisBox={d.axis['axis-box']}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <PointCloud
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  axisBox={d.axis['axis-box']}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<PointCloud
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <PointCloud
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'PrismMap': {
           if ((!d.data) || (!d.style) || (!d.mark)){
@@ -506,26 +617,36 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<PrismMap
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              axisBox={d.axis['axis-box']}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <PrismMap
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  axisBox={d.axis['axis-box']}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<PrismMap
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <PrismMap
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'ScatterPlot': {
           if ((!d.data) || (!d.style) || (!d.mark)){
@@ -533,29 +654,39 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<ScatterPlot
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              xAxis={d.axis['x-axis']}
-              yAxis={d.axis['y-axis']}
-              zAxis={d.axis['z-axis']}
-              axisBox={d.axis['axis-box']}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <ScatterPlot
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  xAxis={d.axis['x-axis']}
+                  yAxis={d.axis['y-axis']}
+                  zAxis={d.axis['z-axis']}
+                  axisBox={d.axis['axis-box']}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<ScatterPlot
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <ScatterPlot
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'StackedBarGraph': {
           if ((!d.data) || (!d.style) || (!d.mark)){
@@ -563,29 +694,39 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<StackedBarGraph
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              xAxis={d.axis['x-axis']}
-              yAxis={d.axis['y-axis']}
-              zAxis={d.axis['z-axis']}
-              axisBox={d.axis['axis-box']}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <StackedBarGraph
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  xAxis={d.axis['x-axis']}
+                  yAxis={d.axis['y-axis']}
+                  zAxis={d.axis['z-axis']}
+                  axisBox={d.axis['axis-box']}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<StackedBarGraph
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <StackedBarGraph
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'SurfacePlot': {
           if ((!d.style) || (!d.mark)){
@@ -593,27 +734,37 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<SurfacePlot
-              key={i}
-              animateRotation={d.animateRotation}
-              style={d.style}
-              mark={d.mark}
-              xAxis={d.axis['x-axis']}
-              yAxis={d.axis['y-axis']}
-              zAxis={d.axis['z-axis']}
-              axisBox={d.axis['axis-box']}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <SurfacePlot
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  style={d.style}
+                  mark={d.mark}
+                  xAxis={d.axis['x-axis']}
+                  yAxis={d.axis['y-axis']}
+                  zAxis={d.axis['z-axis']}
+                  axisBox={d.axis['axis-box']}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<SurfacePlot
-              key={i}
-              animateRotation={d.animateRotation}
-              style={d.style}
-              mark={d.mark}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <SurfacePlot
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  style={d.style}
+                  mark={d.mark}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'TreeMap': {
           if ((!d.style) || (!d.data) || (!d.mark)){
@@ -621,26 +772,36 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<TreeMap
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              axisBox={d.axis['axis-box']}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <TreeMap
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  axisBox={d.axis['axis-box']}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<TreeMap
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <TreeMap
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'WaterFallPlot': {
           if ((!d.data) || (!d.style) || (!d.mark)){
@@ -648,29 +809,39 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<WaterFallPlot
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              xAxis={d.axis['x-axis']}
-              yAxis={d.axis['y-axis']}
-              zAxis={d.axis['z-axis']}
-              axisBox={d.axis['axis-box']}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <WaterFallPlot
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  xAxis={d.axis['x-axis']}
+                  yAxis={d.axis['y-axis']}
+                  zAxis={d.axis['z-axis']}
+                  axisBox={d.axis['axis-box']}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<WaterFallPlot
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <WaterFallPlot
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'MeshPlot': {
           if ((!d.data) || (!d.style) || (!d.mark)){
@@ -678,29 +849,39 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<MeshPlot
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              xAxis={d.axis['x-axis']}
-              yAxis={d.axis['y-axis']}
-              zAxis={d.axis['z-axis']}
-              axisBox={d.axis['axis-box']}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <MeshPlot
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  xAxis={d.axis['x-axis']}
+                  yAxis={d.axis['y-axis']}
+                  zAxis={d.axis['z-axis']}
+                  axisBox={d.axis['axis-box']}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<MeshPlot
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <MeshPlot
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'RectangleChart': {
           if ((!d.data) || (!d.style) || (!d.mark)){
@@ -708,29 +889,39 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<RectangleChart
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              xAxis={d.axis['x-axis']}
-              yAxis={d.axis['y-axis']}
-              zAxis={d.axis['z-axis']}
-              axisBox={d.axis['axis-box']}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <RectangleChart
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  xAxis={d.axis['x-axis']}
+                  yAxis={d.axis['y-axis']}
+                  zAxis={d.axis['z-axis']}
+                  axisBox={d.axis['axis-box']}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<RectangleChart
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <RectangleChart
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'LollipopChart': {
           if ((!d.data) || (!d.style) || (!d.mark)){
@@ -738,29 +929,39 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<LollipopChart
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              xAxis={d.axis['x-axis']}
-              yAxis={d.axis['y-axis']}
-              zAxis={d.axis['z-axis']}
-              axisBox={d.axis['axis-box']}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <LollipopChart
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  xAxis={d.axis['x-axis']}
+                  yAxis={d.axis['y-axis']}
+                  zAxis={d.axis['z-axis']}
+                  axisBox={d.axis['axis-box']}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<LollipopChart
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <LollipopChart
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'TimeSeries': {
           if ((!d.data) || (!d.style) || (!d.mark)){
@@ -768,29 +969,39 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<TimeSeries
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              xAxis={d.axis['x-axis']}
-              yAxis={d.axis['y-axis']}
-              zAxis={d.axis['z-axis']}
-              axisBox={d.axis['axis-box']}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <TimeSeries
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  xAxis={d.axis['x-axis']}
+                  yAxis={d.axis['y-axis']}
+                  zAxis={d.axis['z-axis']}
+                  axisBox={d.axis['axis-box']}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<TimeSeries
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <TimeSeries
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'MapTimeBars': {
           if ((!d.data) || (!d.style) || (!d.mark)){
@@ -798,26 +1009,36 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<MapTimeBars
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              axisBox={d.axis['axis-box']}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <MapTimeBars
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  axisBox={d.axis['axis-box']}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<MapTimeBars
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <MapTimeBars
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'MapContourLines': {
           if ((!d.data) || (!d.style) || (!d.mark)){
@@ -825,25 +1046,35 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<MapContourLines
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <MapContourLines
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<MapContourLines
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <MapContourLines
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'SpiralChart': {
           if ((!d.data) || (!d.style) || (!d.mark) || (!d.axis)){
@@ -851,25 +1082,35 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<SpiralChart
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              mark={d.mark}
-              axis={d.axis}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <SpiralChart
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  mark={d.mark}
+                  axis={d.axis}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<SpiralChart
-              key={i}
-              animateRotation={d.animateRotation}
-              data={d.data}
-              style={d.style}
-              index={`Graph${i}`}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <SpiralChart
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  data={d.data}
+                  style={d.style}
+                  index={`Graph${i}`}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         case 'CrossSectionView': {
           if ((!d.object) || (!d.style)){
@@ -877,23 +1118,33 @@ class VRViz extends Component {
             return null
           }
           if (d.axis)
-            return (<CrossSectionView
-              key={i}
-              animateRotation={d.animateRotation}
-              object={d.object}
-              style={d.style}
-              highlights={d.highlights}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <CrossSectionView
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  object={d.object}
+                  style={d.style}
+                  highlights={d.highlights}
+                  title={d.title}
+                />
+              </a-entity>
+            )
           else
-            return (<CrossSectionView
-              key={i}
-              animateRotation={d.animateRotation}
-              object={d.object}
-              style={d.style}
-              highlights={d.highlights}
-              title={d.title}
-            />)
+            return (
+              <a-entity key={i}>
+                {graphTitle}
+                <CrossSectionView
+                  key={i}
+                  animateRotation={d.animateRotation}
+                  object={d.object}
+                  style={d.style}
+                  highlights={d.highlights}
+                  title={d.title}
+                />
+              </a-entity>
+            )
         }
         default: {
           console.log('The visualization type does not match the set in the library.')
@@ -913,7 +1164,7 @@ class VRViz extends Component {
           divClass = `${this.props.scene.parentDiv.class}px`
       }
       return (
-        <a-scene  class={divClass} embedded
+        <a-scene  class={divClass} embedded cursor="rayOrigin: mouse"
           style={
             {
               height: divHeight,
@@ -926,7 +1177,7 @@ class VRViz extends Component {
           {camera}
           {light}
           {obj}
-          <a-entity class='parentEntity'>
+          <a-entity class='parentEntity' id='my-element'>
             {visualization}
           </a-entity>
         </a-scene>
