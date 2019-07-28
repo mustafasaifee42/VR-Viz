@@ -36,6 +36,7 @@ import '../AFrameComponents/BIllboard.js';
 import '../AFrameComponents/PlaneFromVertices.js';
 import '../AFrameComponents/DragRotateComponent.js';
 import '../AFrameComponents/PivotCenter.js';
+import '../AFrameComponents/PivotCenterForModel.js';
 
 import '../AFrameGeometries/Map.js';
 
