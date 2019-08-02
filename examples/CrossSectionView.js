@@ -40,34 +40,36 @@ class App extends Component {
             {
               'type': 'CrossSectionView',
               'style': {
-                'position': [0, 0, 0],
+                'position': [-10, 5, 0],
                 'scale':[1,1,1],
               },
-              'material':{
-                'type':'phong',
-                'fill': {
-                  'opacity': 0.4,
-                  'color': '#ff0000',
-                  'shininess':30,
-                  'emissive':'#000000',
-                  'specular':'#ffffff',
+              'mark':{
+                'material':{
+                  'type':'phong',
+                  'fill': {
+                    'opacity': 0.4,
+                    'color': '#ff0000',
+                    'shininess':30,
+                    'emissive':'#000000',
+                    'specular':'#ffffff',
+                  },
+                  'stroke': {
+                    'width': 1,
+                    'color': '#ffff00',
+                    'edgeThresholdAngle':50
+                  },
+                  'emphasisMaterial':{
+                    'opacity': 0.8,
+                    'color': '#ffff00',
+                    'meshes':['Adam','Eyelid'],
+                  },
+                  'highlightOnClick':{
+                    'opacity': 0.8,
+                    'color': '#ff0000',
+                  }
                 },
-                'stroke': {
-                  'width': 1,
-                  'color': '#ffff00',
-                  'edgeThresholdAngle':50
-                },
-                'emphasisMaterial':{
-                  'opacity': 0.8,
-                  'color': '#ffff00',
-                  'meshes':['Adam','Eyelid'],
-                },
-                'highlightOnClick':{
-                  'opacity': 0.8,
-                  'color': '#ff0000',
-                }
-              },
-              'object':'data/adamHead/adamHead.gltf'
+                'object':'data/Duck.gltf'
+              }
             }
           ]
         }

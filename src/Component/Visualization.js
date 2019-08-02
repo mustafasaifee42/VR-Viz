@@ -1113,7 +1113,7 @@ class VRViz extends Component {
             )
         }
         case 'CrossSectionView': {
-          if ((!d.object) || (!d.style)){
+          if ((!d.mark) || (!d.style)){
             console.log(`Error: Some necessary attributes missing for ${d.type}`)
             return null
           }
@@ -1124,9 +1124,9 @@ class VRViz extends Component {
                 <CrossSectionView
                   key={i}
                   animateRotation={d.animateRotation}
-                  object={d.object}
+                  object={d.mark.object}
+                  material={d.mark.material}
                   style={d.style}
-                  highlights={d.highlights}
                   title={d.title}
                 />
               </a-entity>
@@ -1138,10 +1138,9 @@ class VRViz extends Component {
                 <CrossSectionView
                   key={i}
                   animateRotation={d.animateRotation}
-                  object={d.object}
-                  material={d.material}
+                  object={d.mark.object}
+                  material={d.mark.material}
                   style={d.style}
-                  highlights={d.highlights}
                   title={d.title}
                 />
               </a-entity>
