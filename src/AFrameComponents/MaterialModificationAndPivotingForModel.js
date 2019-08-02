@@ -6,6 +6,9 @@ AFRAME.registerComponent("material-modifcation-pivot-center-model", {
     pivotX: {type: 'number', default: Infinity},
     pivotY: {type: 'number', default: Infinity},
     pivotZ: {type: 'number', default: Infinity},
+    xPosition: {type: 'number', default: 0},
+    yPosition: {type: 'number', default: 0},
+    zPosition: {type: 'number', default: 0},
     stroke:{type:'boolean',default:false},
     strokeWidth:{type:'number',default: 1},
     strokeColor:{type:'string',default:'#000000'},
@@ -101,7 +104,7 @@ AFRAME.registerComponent("material-modifcation-pivot-center-model", {
         yPivot = bboxCenter.y
       if(isNaN(this.data.pivotZ))
         zPivot = bboxCenter.z
-      this.el.setAttribute('pivot',`${xPivot} ${yPivot} ${zPivot}`)
+      this.el.setAttribute('pivot',`${xPivot - this.data.xPosition} ${yPivot - this.data.yPosition} ${zPivot - this.data.zPosition}`)
       if(this.data.emphasisMaterial){
         this.data.emphasisMeshName.forEach(d => {
           this.model.traverse((node) => {
@@ -129,7 +132,6 @@ AFRAME.registerComponent("material-modifcation-pivot-center-model", {
             object = evt.detail.intersection.object;
           let clickPeriod = this.mouseUpTime - this.mouseDownTime
           if(clickPeriod < 500){
-          
             // name of object and its children
             object.traverse((node) => {
               if(node.material) {
