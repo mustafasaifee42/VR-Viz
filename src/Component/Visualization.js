@@ -30,13 +30,12 @@ import CrossSectionView from './CrossSectionView.js';
 
 import '../AFrameComponents/ChangeColorOnHover.js';
 import '../AFrameComponents/CursorListener.js';
-import '../AFrameComponents/ModifyMaterials.js';
 import '../AFrameComponents/PlayAllModelAnimations.js';
 import '../AFrameComponents/BIllboard.js';
 import '../AFrameComponents/PlaneFromVertices.js';
 import '../AFrameComponents/DragRotateComponent.js';
 import '../AFrameComponents/PivotCenter.js';
-import '../AFrameComponents/PivotCenterForModel.js';
+import '../AFrameComponents/MaterialModificationAndPivotingForModel.js';
 
 import '../AFrameGeometries/Map.js';
 
@@ -1140,6 +1139,7 @@ class VRViz extends Component {
                   key={i}
                   animateRotation={d.animateRotation}
                   object={d.object}
+                  material={d.material}
                   style={d.style}
                   highlights={d.highlights}
                   title={d.title}

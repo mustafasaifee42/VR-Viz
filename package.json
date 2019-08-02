@@ -21,6 +21,7 @@
     "react-dom": "^16.3.2",
     "react-scripts": "1.1.4",
     "super-hands": "^2.1.0",
+    "three-gltf-loader": "^1.106.0",
     "topojson": "^3.0.2"
   },
   "scripts": {

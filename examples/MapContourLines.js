@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import Visualization from './Component/Visualization.js'
+import VRViz from './Component/Visualization.js'
 import mapData from './mapData/mapData.json'
 import sfMapData from './mapData/sfMapData.json'
 
