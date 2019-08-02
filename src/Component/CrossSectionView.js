@@ -21,7 +21,7 @@ class CrossSectionView extends Component {
           repeat="indefinite"
         />
     }
-    let modifyMaterial=false,material='none',materialOpacity = 1,shininess=30,emissive='#000000',specular='#ffffff',emphasisMaterial=false,emphasisOpacity=0.8,emphasisColor='#ffff00',highlightEffect=false,highlightedOpacity=0.8, meshName = "", highlightedColor='#ffff00',materialColor = '#ff0000',stroke = false, strokeWidth = 1, strokeColor = '#000000', edgeThresholdAngle = 20;
+    let modifyMaterial=false,material='none',materialOpacity = 1,shininess=30,emissive='#000000',specular='#ffffff',emphasisMaterial=false,emphasisOpacity=1,emphasisColor='#ffff00',highlightEffect=false,highlightedOpacity=1, meshName = "", highlightedColor='#ffff00',materialColor = '#ff0000',stroke = false, strokeWidth = 1, strokeColor = '#000000', edgeThresholdAngle = 20;
     if(this.props.material){
       modifyMaterial = true
       if(this.props.material.type)

@@ -282,6 +282,7 @@ type is used to define what kind of visualization is needed. The availabe values
 * `RectangleChart` for 3D Rectangle Chart
 * `ScatterPlot` for 3D Scatter Plot / 3D Bubble Chat
 * `ConnectedScatterPlot` for 3D Connected Scatter Plot
+* `CrossSectionView` for 3D Cross Sectional View or 3D Models
 * `MeshPlot` for 3D Mesh Plot
 * `WaterFallPlot` for Waterfall Plot
 * `TimeSeries` for 3D Time Series
@@ -308,6 +309,7 @@ __Supported Visualizations__
 * [3D Rectangle Chart](/ReadMe/RectangleChart.md)
 * [3D Scatter Plot / 3D Bubble Chat](/ReadMe/ScatterPlot.md)
 * [3D Connected Scatter Plot](/ReadMe/ConnectedScatterPlot.md)
+* [3D Cross Sectional View](/ReadMe/CrossSectionalView.md)
 * [3D Mesh Plot](/ReadMe/MeshPlot.md)
 * [Waterfall Plot](/ReadMe/WaterFallPlot.md)
 * [3D Time Series](/ReadMe/TimeSeries.md)
