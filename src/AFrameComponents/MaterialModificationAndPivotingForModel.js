@@ -38,7 +38,7 @@ AFRAME.registerComponent("material-modifcation-pivot-center-model", {
     this.max = {'x':[],'y':[],'z':[]}
     this.mouseDownTime = 0;
     this.mouseUpTime = 0;
-    this.el.addEventListener('model-loaded', () => {;
+    this.el.addEventListener('model-loaded', () => {
       // Go over the submeshes and modify materials we want.
         this.model.traverse((node) => {
           if(node.material) {

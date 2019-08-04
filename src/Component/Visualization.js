@@ -39,6 +39,7 @@ import '../AFrameComponents/MaterialModificationAndPivotingForModel.js';
 
 import '../AFrameGeometries/Map.js';
 
+
 require('aframe-teleport-controls');
 
 const propTypes = {
@@ -119,12 +120,12 @@ class VRViz extends Component {
       camera = <a-entity id="cameraRig" position={this.props.scene.camera.position} rotation={this.props.scene.camera.rotation}>
           <a-entity id="head" camera={cameraSettings} position="0 1.6 0" wasd-controls="#cameraRig;"/>
           <a-entity id="left-hand" windows-motion-controls="hand: left" vive-controls="hand: left" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;" />
-          <a-entity id="right-hand" windows-motion-controls="hand: right" vive-controls="hand: right" gearvr-controls daydream-controls teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;">
-            <a-entity cursor="fuse: true; fuseTimeout: 50"
-              position="0 0 -0.1"
+          <a-entity id="right-hand" laser-controls="hand: right" raycaster="interval: 100;objects: .clickable;" line="color: red; opacity: 0.75" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;">
+            <a-entity cursor="fuse: false"
+              position="0 0 0"
               geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
               material="color: black; shader: flat"
-              raycaster="far: 1000; interval: 100;objects: .clickable;showLine: true;" />
+              raycaster="far: 0; interval: 100;objects: .clickable;showLine: true;" />
             <a-entity
               id="hover"
               geometry="primitive: plane; height: auto; width: auto"
