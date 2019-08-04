@@ -121,42 +121,35 @@ AFRAME.registerComponent("material-modifcation-pivot-center-model", {
           })
         })
       }
+
       if(this.data.highlightEffect){
-        this.el.addEventListener('mousedown', (evt) => {
-          this.mouseDownTime  = evt.timeStamp
-        })
-        this.el.addEventListener('mouseup', (evt) => {
-          this.mouseUpTime  = evt.timeStamp;
+        this.el.addEventListener('click', (evt) => {
           let object
           if(evt.detail.intersection)
             object = evt.detail.intersection.object;
-          let clickPeriod = this.mouseUpTime - this.mouseDownTime
-          if(clickPeriod < 500){
-            // name of object and its children
-            object.traverse((node) => {
-              if(node.material) {
-                if(node.userData.clicked){
-                  node.material.opacity = this.data.materialOpacity
+          object.traverse((node) => {
+            if(node.material) {
+              if(node.userData.clicked){
+                node.material.opacity = this.data.materialOpacity
+                if(node.userData.emphasized) {
+                  node.material.opacity = this.data.emphasisOpacity
+                }
+                if(node.material.type === "MeshLambertMaterial" || node.material.type === "MeshPhongMaterial"){
+                  node.material.color = new THREE.Color(this.data.materialColor)
                   if(node.userData.emphasized) {
-                    node.material.opacity = this.data.emphasisOpacity
+                    node.material.color = new THREE.Color(this.data.emphasisColor)
                   }
-                  if(node.material.type === "MeshLambertMaterial" || node.material.type === "MeshPhongMaterial"){
-                    node.material.color = new THREE.Color(this.data.materialColor)
-                    if(node.userData.emphasized) {
-                      node.material.color = new THREE.Color(this.data.emphasisColor)
-                    }
-                  }
-                  node.userData.clicked = false
                 }
-                else {
-                  node.userData.clicked = true
-                  node.material.opacity = this.data.highlightedOpacity
-                  if(node.material.type === "MeshLambertMaterial" || node.material.type === "MeshPhongMaterial")
-                    node.material.color = new THREE.Color(this.data.highlightedColor)
-                }
+                node.userData.clicked = false
               }
-            });  
-          }
+              else {
+                node.userData.clicked = true
+                node.material.opacity = this.data.highlightedOpacity
+                if(node.material.type === "MeshLambertMaterial" || node.material.type === "MeshPhongMaterial")
+                  node.material.color = new THREE.Color(this.data.highlightedColor)
+              }
+            }
+          });  
         })
       }
     })
