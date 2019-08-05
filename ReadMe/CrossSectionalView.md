@@ -1,6 +1,6 @@
 # CrossSectionView Component
 
-![CrossSectionView](../imgs/CrossSectionView.png)
+![CrossSectionView](../imgs/CrossSectionView.PNG)
 
 ## Object in Graph Props
 ```
