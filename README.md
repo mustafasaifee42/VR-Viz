@@ -237,10 +237,10 @@ texture|bool|If there is texture present in the floor or not. __Not Required. De
 img|string|Path to the texture / image that is shown on the floor. __Not Required if `texture` is false.__ 
 repeat|bool|__Not Required if `texture` is false.__ 
 
-#### 3D-Object
-3D-Object property is defined as array which can have multiple 3D objects. Each element of array i.e. 3D object is defined using the properties mentioned below.
+#### 3D-objects
+3D-objects property is defined as array which can have multiple 3D objects. Each element of array i.e. 3D object is defined using the properties mentioned below.
 
-__Properties for 3D-Object__
+__Properties for 3D-objects__
 
 Property|Type|Description
 ---|---|---
