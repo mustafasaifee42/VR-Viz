@@ -31,7 +31,7 @@ import CrossSectionView from './CrossSectionView.js';
 import '../AFrameComponents/ChangeColorOnHover.js';
 import '../AFrameComponents/CursorListener.js';
 import '../AFrameComponents/PlayAllModelAnimations.js';
-import '../AFrameComponents/BIllboard.js';
+import '../AFrameComponents/Billboard.js';
 import '../AFrameComponents/DragRotateComponent.js';
 import '../AFrameComponents/PivotCenter.js';
 import '../AFrameComponents/PivotCenterForModel.js';
