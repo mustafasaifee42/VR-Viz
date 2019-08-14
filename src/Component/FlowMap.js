@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
-import 'aframe-curve-component';
 import * as moment from 'moment';
 
 import GetDomain from '../Utils/GetDomain.js';
