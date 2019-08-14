@@ -107,31 +107,19 @@ class ContourMap extends Component {
     else {
       // Data Manipulation
 
-      let dataFormatted = []
-      for (let i = 0; i < this.state.data.length - 1; i++) {
-        for (let k = 0; k < this.state.data[i].length - 1; k++) {
+      let dataFormatted = [];
+      for (let i = 0; i < this.state.data.length; i++) {
+        for (let k = 0; k < this.state.data[i].length; k++) {
           dataFormatted.push([]);
-          dataFormatted[dataFormatted.length - 1].push(i)
           dataFormatted[dataFormatted.length - 1].push(this.state.data[i][k])
-          dataFormatted[dataFormatted.length - 1].push(k)
-          dataFormatted[dataFormatted.length - 1].push(i + 1)
-          dataFormatted[dataFormatted.length - 1].push(this.state.data[i + 1][k])
-          dataFormatted[dataFormatted.length - 1].push(k)
-          dataFormatted[dataFormatted.length - 1].push(i + 1)
-          dataFormatted[dataFormatted.length - 1].push(this.state.data[i + 1][k + 1])
-          dataFormatted[dataFormatted.length - 1].push(k + 1)
-          dataFormatted[dataFormatted.length - 1].push(i)
-          dataFormatted[dataFormatted.length - 1].push(this.state.data[i][k + 1])
-          dataFormatted[dataFormatted.length - 1].push(k + 1)
         }
       }
-
       // Getting domain
       let colorDomain;
       if (this.props.mark.style.fill)
         if (this.props.mark.style.fill.scaleType) {
           if (!this.props.mark.style.fill.domain) {
-            colorDomain = [d3.min(dataFormatted, d => d[1]), d3.max(dataFormatted, d => d[1])]
+            colorDomain = [d3.min(dataFormatted, d => d[0]), d3.max(dataFormatted, d => d[0])]
           } else
             colorDomain = this.props.mark.style.fill.domain
         }
@@ -153,27 +141,47 @@ class ContourMap extends Component {
               .domain(colorDomain)
               .range(colorRange)
         }
+      else {
+        colorScale = d3.scaleLinear()
+          .domain([0,1])
+          .range([this.props.mark.style.fill.color,this.props.mark.style.fill.color])
+      }
 
-      //Drawing Contour
-
-      let shapes = dataFormatted.map((d, i) => {
-        if(this.props.mark.style.fill) {
-          let color = this.props.mark.style.fill.color;
-          if (this.props.mark.style.fill.scaleType)
-            color = colorScale(d[1])
-          if (this.props.mark.style.stroke)
-            return <a-entity key={`${i}`} plane-from-vertices={`path:${d[0] * this.props.style.objectScale.ground} ${(d[1] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[2] * this.props.style.objectScale.ground}, ${d[3] * this.props.style.objectScale.ground} ${(d[4] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[5] * this.props.style.objectScale.ground}, ${d[6] * this.props.style.objectScale.ground} ${(d[7] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[8] * this.props.style.objectScale.ground}, ${d[9] * this.props.style.objectScale.ground} ${(d[10] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[11] * this.props.style.objectScale.ground}, ${d[0] * this.props.style.objectScale.ground} ${(d[1] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[2] * this.props.style.objectScale.ground};face:true;faceColor: ${color};faceOpacity: ${this.props.mark.style.fill.opacity};stroke:true;strokeWidth:${this.props.mark.style.stroke.width};strokeColor:${this.props.mark.style.stroke.color}`} />
-          else
-          return <a-entity key={`${i}`} plane-from-vertices={`path:${d[0] * this.props.style.objectScale.ground} ${(d[1] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[2] * this.props.style.objectScale.ground}, ${d[3] * this.props.style.objectScale.ground} ${(d[4] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[5] * this.props.style.objectScale.ground}, ${d[6] * this.props.style.objectScale.ground} ${(d[7] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[8] * this.props.style.objectScale.ground}, ${d[9] * this.props.style.objectScale.ground} ${(d[10] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[11] * this.props.style.objectScale.ground}, ${d[0] * this.props.style.objectScale.ground} ${(d[1] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[2] * this.props.style.objectScale.ground};face:true;faceColor: ${color};faceOpacity: ${this.props.mark.style.fill.opacity};stroke:false`} />     
+      let dataFormatted1 = [], faces = [], colorList = [], strokevert = []
+      for (let i = 0; i < this.state.data.length - 1; i++) {
+        for (let k = 0; k < this.state.data[i].length - 1; k++) {
+          let point = {"x": i * this.props.style.objectScale.ground, "y": (this.state.data[i][k]  - this.props.heightThreshold) * this.props.style.objectScale.height, "z": k * this.props.style.objectScale.ground}
+          dataFormatted1.push(point)
+          strokevert.push(point)
+          let pt1 = dataFormatted1.length - 1, col1 = colorScale(this.state.data[i][k])
+          point = {"x": (i + 1) * this.props.style.objectScale.ground, "y": (this.state.data[i + 1][k] - this.props.heightThreshold) * this.props.style.objectScale.height, "z": k * this.props.style.objectScale.ground}
+          dataFormatted1.push(point)
+          strokevert.push(point)
+          strokevert.push(point)
+          let pt2 = dataFormatted1.length - 1, col2 = colorScale(this.state.data[i + 1][k])
+          point = {"x": (i + 1) * this.props.style.objectScale.ground, "y": (this.state.data[i + 1][k + 1] - this.props.heightThreshold) * this.props.style.objectScale.height, "z": (k + 1) * this.props.style.objectScale.ground}
+          dataFormatted1.push(point)
+          strokevert.push(point)
+          strokevert.push(point)
+          let pt3 = dataFormatted1.length - 1, col3 = colorScale(this.state.data[i + 1][k + 1])
+          point = {"x": i * this.props.style.objectScale.ground, "y": (this.state.data[i][k + 1] - this.props.heightThreshold) * this.props.style.objectScale.height, "z": (k + 1) * this.props.style.objectScale.ground}
+          dataFormatted1.push(point)
+          strokevert.push(point)
+          strokevert.push(point)
+          point = {"x": i * this.props.style.objectScale.ground, "y": (this.state.data[i][k]  - this.props.heightThreshold) * this.props.style.objectScale.height, "z": k * this.props.style.objectScale.ground}
+          strokevert.push(point)
+          let pt4 = dataFormatted1.length - 1, col4 = colorScale(this.state.data[i][k + 1])
+          faces.push([pt1,pt2,pt3]);
+          faces.push([pt1,pt3,pt4]);
+          colorList.push([col1,col2,col3]);
+          colorList.push([col1,col3,col4]);
+          
         }
-        else {
-          if (this.props.mark.style.stroke)
-            return <a-entity key={`${i}`} plane-from-vertices={`path:${d[0] * this.props.style.objectScale.ground} ${(d[1] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[2] * this.props.style.objectScale.ground}, ${d[3] * this.props.style.objectScale.ground} ${(d[4] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[5] * this.props.style.objectScale.ground}, ${d[6] * this.props.style.objectScale.ground} ${(d[7] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[8] * this.props.style.objectScale.ground}, ${d[9] * this.props.style.objectScale.ground} ${(d[10] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[11] * this.props.style.objectScale.ground}, ${d[0] * this.props.style.objectScale.ground} ${(d[1] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[2] * this.props.style.objectScale.ground};face:false;stroke:true;strokeWidth:${this.props.mark.style.stroke.width};strokeColor:${this.props.mark.style.stroke.color}`} />
-          else
-            return <a-entity key={`${i}`} plane-from-vertices={`path:${d[0] * this.props.style.objectScale.ground} ${(d[1] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[2] * this.props.style.objectScale.ground}, ${d[3] * this.props.style.objectScale.ground} ${(d[4] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[5] * this.props.style.objectScale.ground}, ${d[6] * this.props.style.objectScale.ground} ${(d[7] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[8] * this.props.style.objectScale.ground}, ${d[9] * this.props.style.objectScale.ground} ${(d[10] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[11] * this.props.style.objectScale.ground}, ${d[0] * this.props.style.objectScale.ground} ${(d[1] - this.props.heightThreshold) * this.props.style.objectScale.height} ${d[2] * this.props.style.objectScale.ground};face:false;stroke:false`} />     
-        } 
-      })
-
+      }
+      let points = JSON.stringify(dataFormatted1)
+      let facesList = JSON.stringify(faces)
+      let vertexColor = JSON.stringify(colorList)
+      let strokeVertList = JSON.stringify(strokevert)
       let  clickRotation = 'true',animation;
       if(this.props.animateRotation){
         clickRotation='false'
@@ -186,10 +194,20 @@ class ContourMap extends Component {
             repeat="indefinite"
           />
       }
+      let stroke_bool = false, stroke_width = 1, stroke_color = '#000000', stroke_opacity = 1
+      if (this.props.mark.style.stroke){
+        stroke_bool = true;
+        if (this.props.mark.style.stroke.color)
+          stroke_color = this.props.mark.style.stroke.color
+        if (this.props.mark.style.stroke.opacity)
+          stroke_opacity = this.props.mark.style.stroke.opacity
+        if (this.props.mark.style.stroke.width)
+          stroke_width = this.props.mark.style.stroke.width
+      }
       return (
-        <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
+        <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`xPosition:${this.props.style.origin[0]};yPosition:${this.props.style.origin[1]};zPosition:${this.props.style.origin[2]};pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
           {animation}
-          {shapes}
+          <a-frame-mesh-from-points points={points} faces={facesList} stroke_vertices={strokeVertList} stroke_bool={stroke_bool} stroke_color={stroke_color} stroke_width={stroke_width} stroke_opacity={stroke_opacity} color={vertexColor} opacity={this.props.mark.style.fill.opacity} />
         </a-entity>
       )
     }

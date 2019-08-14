@@ -307,8 +307,11 @@ class ConnectedScatterPlot extends Component {
           labels = this.state.data.map((d, i) => <a-text key={`${this.props.index}_Label${i}`} opacity={this.props.mark.label.style.opacity} color={this.props.mark.label.style.color} width={this.props.mark.label.style.fontSize} value={`${d[this.props.mark.label.field]}`} anchor='align' side='double' align='left' position={`${xScale(d[this.props.mark.position.x.field]) + 0.05 + this.props.mark.points.style.radius.value} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} billboard={this.props.mark.label.billboarding}/>);
       }
 
-      let points = this.state.data.map((d, i) => <a-curve-point key={`${this.props.index}_Point${i}`} position={`${xScale(d[this.props.mark.position.x.field])} ${yScale(d[this.props.mark.position.y.field])} ${zScale(d[this.props.mark.position.z.field])}`} />);
+      let pointList = []
 
+      this.state.data.forEach((d , i) => {
+        pointList.push({"x":`${xScale(d[this.props.mark.position.x.field])}`,"y":`${yScale(d[this.props.mark.position.y.field])}`,"z":`${zScale(d[this.props.mark.position.z.field])}`})
+      })
       let  clickRotation = 'true',animation;
       if(this.props.animateRotation){
         clickRotation='false'
@@ -321,13 +324,11 @@ class ConnectedScatterPlot extends Component {
           repeat="indefinite"
           />
       }
+      
       return (
-        <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
+        <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`xPosition:${this.props.style.origin[0]};yPosition:${this.props.style.origin[1]};zPosition:${this.props.style.origin[2]};pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
           {animation}
-          <a-curve id={'lineGraph'}>
-            {points}
-          </a-curve>
-          <a-draw-curve curveref='#lineGraph' material={`shader: line; color: ${this.props.mark.line.style.stroke.color}; opacity: ${this.props.mark.line.style.stroke.opacity}`} />
+          <a-frame-curve-line points={JSON.stringify(pointList)} type={this.props.mark.line.style.stroke.curveType} stroke_width={this.props.mark.line.style.stroke.width} color={this.props.mark.line.style.stroke.color} opacity={this.props.mark.line.style.stroke.opacity} resolution={this.props.mark.line.style.stroke.resolution} />
           {marks}
           {labels}
           {xAxis}

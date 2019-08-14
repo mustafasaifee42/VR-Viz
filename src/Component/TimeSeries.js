@@ -211,25 +211,35 @@ class TimeSeries extends Component {
         />
       }
 
+      
+    
+    let dataFormatted1 = [], strokevert = [], faces = [], colorList = [];
+    for (let i = 0; i < this.state.data.length - 1; i++) {
+      let point = {"x": xScale(this.state.data[i][this.props.mark.position.x.field]), "y": yScale(this.state.data[i][this.props.mark.position.y.field]), "z": zScale(this.state.data[i][this.props.mark.position.z.field])}
+      dataFormatted1.push(point)
+      let pt1 = dataFormatted1.length - 1;
+      point = {"x": xScale(this.state.data[i + 1][this.props.mark.position.x.field]), "y": yScale(this.state.data[i + 1][this.props.mark.position.y.field]), "z": zScale(this.state.data[i + 1][this.props.mark.position.z.field])}
+      dataFormatted1.push(point)
+      let pt2 = dataFormatted1.length - 1;
+      point = {"x": xScale(this.state.data[i + 1][this.props.mark.position.x.field]), "y": yScale(this.state.data[i + 1][this.props.mark.position.y.field]), "z": 0}
+      dataFormatted1.push(point)
+      let pt3 = dataFormatted1.length - 1;
+      point = {"x": xScale(this.state.data[i][this.props.mark.position.x.field]), "y": yScale(this.state.data[i][this.props.mark.position.y.field]), "z": 0}
+      dataFormatted1.push(point)
+      let pt4 = dataFormatted1.length - 1;
+      faces.push([pt1,pt2,pt3]);
+      faces.push([pt1,pt3,pt4]);
+      let col1, col2, col3, col4;
+      col1 = this.props.mark.style.fill.color;
+      col2 = this.props.mark.style.fill.color;
+      col3 = this.props.mark.style.fill.color;
+      col4 = this.props.mark.style.fill.color;
+      colorList.push([col1,col2,col3]);
+      colorList.push([col1,col3,col4]);
+    }
+    
       //Adding marks
-      let marks;
-      let dataCoordinate = [], borderCoordinate = [];
-      for (let i = 0; i < this.state.data.length - 1; i++) {
-        let tempData = [];
-        tempData.push(xScale(this.state.data[i][this.props.mark.position.x.field]));
-        tempData.push(yScale(this.state.data[i][this.props.mark.position.y.field]));
-        tempData.push(zScale(this.state.data[i][this.props.mark.position.z.field]));
-        tempData.push(xScale(this.state.data[i + 1][this.props.mark.position.x.field]));
-        tempData.push(yScale(this.state.data[i + 1][this.props.mark.position.y.field]));
-        tempData.push(zScale(this.state.data[i + 1][this.props.mark.position.z.field]));
-        tempData.push(xScale(this.state.data[i + 1][this.props.mark.position.x.field]));
-        tempData.push(yScale(this.state.data[i + 1][this.props.mark.position.y.field]));
-        tempData.push(0);
-        tempData.push(xScale(this.state.data[i][this.props.mark.position.x.field]));
-        tempData.push(yScale(this.state.data[i][this.props.mark.position.y.field]));
-        tempData.push(0);
-        dataCoordinate.push(tempData);
-      }
+      let borderCoordinate = [];
       for (let i = 0; i < this.state.data.length; i++) {
         let tempData = [];
         tempData.push(xScale(this.state.data[i][this.props.mark.position.x.field]));
@@ -244,21 +254,19 @@ class TimeSeries extends Component {
         tempData.push(0);
         borderCoordinate.push(tempData);
       }
-      marks = dataCoordinate.map((d, i) => <a-entity key={`${i}`} plane-from-vertices={`path:${d[0]} ${d[1]} ${d[2]}, ${d[3]} ${d[4]} ${d[5]}, ${d[6]} ${d[7]} ${d[8]}, ${d[9]} ${d[10]} ${d[11]}, ${d[0]} ${d[1]} ${d[2]};face:true;faceColor: ${this.props.mark.style.fill.color};faceOpacity: ${this.props.mark.style.fill.opacity};stroke:false`} />);
-
-      let path = ''
-
+      
       borderCoordinate.forEach((d, i) => {
-        path = path + `${d[0]} ${d[1]} ${d[2]},`
+        strokevert.push({"x": d[0], "y": d[1], "z": d[2]})
+        if(i > 0)
+          strokevert.push({"x": d[0], "y": d[1], "z": d[2]})
       })
+      strokevert.push({"x": borderCoordinate[0][0], "y": borderCoordinate[0][1], "z": borderCoordinate[0][2]})
 
-      path = path + `${borderCoordinate[0][0]} ${borderCoordinate[0][1]} ${borderCoordinate[0][2]}`
-
-      let border
-      if (this.props.mark.style.stroke)
-        border = <a-entity plane-from-vertices={`path:${path};face:false;stroke:true;strokeWidth:${this.props.mark.style.stroke.width};strokeColor:${this.props.mark.style.stroke.color}`} />;
-
-
+      let points = JSON.stringify(dataFormatted1)
+      let facesList = JSON.stringify(faces)
+      let vertexColor = JSON.stringify(colorList)
+      let strokeVertList = JSON.stringify(strokevert)
+  
       let  clickRotation = 'true',animation;
       if(this.props.animateRotation){
         clickRotation='false'
@@ -271,11 +279,21 @@ class TimeSeries extends Component {
             repeat="indefinite"
           />
       }
+    
+      let stroke_bool = false, stroke_width = 1, stroke_color = '#000000', stroke_opacity = 1
+      if (this.props.mark.style.stroke){
+        stroke_bool = true;
+        if (this.props.mark.style.stroke.color)
+          stroke_color = this.props.mark.style.stroke.color
+        if (this.props.mark.style.stroke.opacity)
+          stroke_opacity = this.props.mark.style.stroke.opacity
+        if (this.props.mark.style.stroke.width)
+          stroke_width = this.props.mark.style.stroke.width
+      }
       return (
-        <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
+        <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`xPosition:${this.props.style.origin[0]};yPosition:${this.props.style.origin[1]};zPosition:${this.props.style.origin[2]};pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
           {animation}
-          {marks}
-          {border}
+          <a-frame-mesh-from-points points={points} faces={facesList} stroke_vertices={strokeVertList} stroke_bool={stroke_bool} stroke_color={stroke_color} stroke_width={stroke_width} stroke_opacity={stroke_opacity} color={vertexColor} opacity={this.props.mark.style.fill.opacity} />
           {xAxis}
           {yAxis}
           {zAxis}

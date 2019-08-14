@@ -155,14 +155,28 @@ class FlowMap extends Component {
 
       let geoData = GetMapShape(this.props.mark.map.data, this.props.mark.map.projection, this.props.mark.mapScale, this.props.mark.mapOrigin, this.props.mark.map.shapeIdentifier, this.props.mark.map.shapeKey);
 
-      let shapes = geoData.map((d, i) => {
-        let primitive = `primitive: map; vertices: ${d.vertices}; extrude: ${this.props.mark.map.style.extrusion.value}`;
-        return (<a-entity geometry={primitive} material={`color: ${this.props.mark.map.style.fill.color}; metalness: 0.2; opacity:${this.props.mark.map.style.fill.opacity}`} />)
+      let pointsArray = geoData.map((d, i) => {
+        let points = d.vertices.split(', ')
+        let pntArray = points.map(d => {
+          let pnts = d.split(' ') 
+          let obj = {'x':pnts[0],'y':pnts[1]}
+          return obj
+        })
+        return pntArray
       })
 
-      let border;
-      if (this.props.mark.map.style.stroke)
-        border = geoData.map((d, i) => <a-entity meshline={`lineWidth: ${this.props.mark.map.style.stroke.width}; path:${`${d.vertices.replace(/,/g, " 0,")} 0`}; color:${this.props.mark.map.style.stroke.color}`} />);
+      let extrusionHeight = this.props.mark.map.style.extrusion.value
+        
+      let stroke = false, strokeColor = '#000000'
+      if (this.props.mark.map.style.stroke){
+        stroke = true;
+        strokeColor = this.props.mark.map.style.stroke.color
+      }
+
+      let mapShape = <a-frame-map points={JSON.stringify(pointsArray)} stroke_bool={stroke} stroke_color={strokeColor} extrude={extrusionHeight} color={this.props.mark.map.style.fill.color} opacity={this.props.mark.map.style.fill.opacity} />
+    
+
+      let mapOutline = <a-frame-map-outline points={JSON.stringify(pointsArray)} stroke_bool={stroke} stroke_color={strokeColor} extrude={extrusionHeight}  />
 
       //Adding Bars
       let sourceNode, targetNode;
@@ -237,17 +251,12 @@ class FlowMap extends Component {
         }
 
         let pointsData = [source_position, middle_point, target_position]
-        let points = pointsData.map((d, i) => <a-curve-point key={`${this.props.index}_Point${i}`} position={`${d[0]} ${d[1]} ${d[2]}`} />);
+        let pointList = []
+    
+        pointsData.forEach((d , i) => {
+          pointList.push({"x":`${d[0]}`,"y":`${d[1]}`,"z":`${d[2]}`})
+        })
 
-        let curve = <a-curve id={`lineGraph${i}`}>
-          {points}
-        </a-curve>
-
-        return curve
-
-      });
-
-      let flowLines = this.state.data.map((d, i) => {
         let opacity = this.props.mark.flowlines.style.opacity.value;
         if (this.props.mark.flowlines.style.opacity.scaleType) {
           opacity = opacityScale(d[this.props.mark.flowlines.style.opacity.field])
@@ -258,10 +267,21 @@ class FlowMap extends Component {
           color = colorScale(d[this.props.mark.flowlines.style.stroke.field])
         }
 
-        let flowLine = <a-draw-curve curveref={`#lineGraph${i}`} material={`shader: line; color: ${color}; opacity: ${opacity}`} />
+        let curviness = 0.67;
+        if (this.props.mark.flowlines.style.stroke.curviness) {
+          curviness = this.props.mark.flowlines.style.stroke.curviness
+        }
 
-        return flowLine
-      })
+        let resolution = 500;
+        if (this.props.mark.flowlines.style.stroke.resolution) {
+          resolution = this.props.mark.flowlines.style.stroke.resolution
+        }
+
+        let curve = <a-frame-flowLine  key = {i} points={JSON.stringify(pointList)} color={color} opacity={opacity} curviness={curviness} resolution={resolution}/>
+
+        return curve
+
+      });
 
       let  clickRotation = 'true',animation;
       if(this.props.animateRotation){
@@ -276,14 +296,13 @@ class FlowMap extends Component {
           />
       }
       return (
-        <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  rotation={this.props.mark.rotation} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} id={this.props.index}>
+        <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`xPosition:${this.props.style.origin[0]};yPosition:${this.props.style.origin[1]};zPosition:${this.props.style.origin[2]};pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  rotation={this.props.mark.rotation} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} id={this.props.index}>
           {animation}
-          {shapes}
-          {curves}
-          {border}
+          {mapShape}
+          {mapOutline}
           {sourceNode}
           {targetNode}
-          {flowLines}
+          {curves}
         </a-entity>
       )
     }

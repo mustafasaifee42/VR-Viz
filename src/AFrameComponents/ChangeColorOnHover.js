@@ -11,6 +11,7 @@ AFRAME.registerComponent('change-color-on-hover', {
     nonFocusedObjectOpacity: { type: 'string', default: '0.2' },
     labelWidth: { type: 'string', default: 'auto' },
     labelHeight: { type: 'string', default: 'auto' },
+    lineHeight: {type:'string', default: 'auto'},
     labelAlign: { type: 'string', default: 'center' },
     wrapCount: { type: 'string', default: '4' },
     labelBackgroundColor: { type: 'string', default: 'black' },

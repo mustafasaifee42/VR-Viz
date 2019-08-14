@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import VRViz from './Component/Visualization.js'
-import mapData from './mapData/mapData.json'
 
 class App extends Component {
   render() {
@@ -54,7 +53,7 @@ class App extends Component {
                 'fieldDesc': [['Year', 'text'], ['Cars', 'number'], ['Trucks', 'number'], ['Bikes', 'number']]
               },
               'style': {
-                'origin': [0, 0, 0],
+                'origin': [5, 0, 0],
                 'dimensions': {
                   'width': 10,
                   'height': 10,
@@ -115,7 +114,6 @@ class App extends Component {
                 },
                 'label': {
                   'field': 'Year',
-                  'billboarding':true,
                   'style': {
                     'color': 'black',
                     'fontSize': 2,
@@ -197,3 +195,4 @@ class App extends Component {
 }
 
 export default App;
+

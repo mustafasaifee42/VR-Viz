@@ -62,22 +62,31 @@ class Axis extends Component {
                     titlePosition = `${this.props.dimensions.width / 2} ${this.props.dimensions.height} ${this.props.dimensions.depth + this.props.tick['size'] + titlePadding}`
                   else
                     titlePosition = this.props.title.position
-                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.value}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding} />;
+                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.text}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding} />;
 
                 }
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => <a-entity key={`Axis_Grid_X${i}`} line={`start:${this.props.scale(d) + padding}, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} ${this.props.dimensions.height} 0; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
-
+                  let gridObj = []
+                  tickValues.forEach((d, i) =>{
+                    gridObj.push({"x":this.props.scale(d) + padding , "y":this.props.dimensions.height ,"z":this.props.dimensions.depth })
+                    gridObj.push({"x":this.props.scale(d) + padding , "y":this.props.dimensions.height ,"z":0})
+                  })
+                  grid = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 }
+                axis = <a-entity line={`start:0, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} ${this.props.dimensions.height} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
+                  
+                let gridObj = []
+                tickValues.forEach((d, i) =>{
+                  gridObj.push({"x":this.props.scale(d) + padding , "y":this.props.dimensions.height ,"z":this.props.dimensions.depth })
+                  gridObj.push({"x":this.props.scale(d) + padding , "y":this.props.dimensions.height ,"z":this.props.dimensions.depth + this.props.tick['size']})
+                })
+                ticks = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
+                
                 if (!this.props.tick.format) {
-                  axis = <a-entity line={`start:0, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} ${this.props.dimensions.height} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i}  line={`start:${this.props.scale(d) + padding}, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} ${this.props.dimensions.height} ${this.props.dimensions.depth + this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${this.props.scale(d) + padding} ${this.props.dimensions.height} ${this.props.dimensions.depth + this.props.tick['size'] + 0.05}`} />);
                   break;
                 }
                 else {
-                  axis = <a-entity line={`start:0, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} ${this.props.dimensions.height} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i}  line={`start:${this.props.scale(d) + padding}, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} ${this.props.dimensions.height} ${this.props.dimensions.depth + this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
                     return <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${this.props.scale(d) + padding} ${this.props.dimensions.height} ${this.props.dimensions.depth + this.props.tick['size'] + 0.05}`} />
@@ -92,21 +101,31 @@ class Axis extends Component {
                     titlePosition = `${this.props.dimensions.width / 2} 0.001 ${0 - this.props.tick['size'] - titlePadding}`
                   else
                     titlePosition = this.props.title.position
-                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.value}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
+                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.text}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
 
                 }
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => <a-entity  key={`Axis_Grid_X${i}`} line={`start:${this.props.scale(d) + padding}, 0.001, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} 0.001 0; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
+                  let gridObj = []
+                  tickValues.forEach((d, i) =>{
+                    gridObj.push({"x":this.props.scale(d) + padding , "y":0.001 ,"z":this.props.dimensions.depth })
+                    gridObj.push({"x":this.props.scale(d) + padding , "y":0.001 ,"z":0})
+                  })
+                  grid = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 }
+                axis = <a-entity line={`start:0, 0.001, 0; end:${this.props.dimensions.width} 0.001 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
+                  
+                let gridObj = []
+                tickValues.forEach((d, i) =>{
+                  gridObj.push({"x":this.props.scale(d) + padding , "y":0.001 ,"z":0 })
+                  gridObj.push({"x":this.props.scale(d) + padding , "y":0.001 ,"z":0 - this.props.tick['size']})
+                })
+                ticks = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
+                
                 if (!this.props.tick.format) {
-                  axis = <a-entity line={`start:0, 0.001, 0; end:${this.props.dimensions.width} 0.001 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, 0.001, 0; end:${this.props.scale(d) + padding} 0.001 ${0 - this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${this.props.scale(d) + padding} 0.001 ${0 - this.props.tick['size'] - 0.05}`} />);
                   break;
                 }
                 else {
-                  axis = <a-entity line={`start:0, 0.001, 0; end:${this.props.dimensions.width} 0.001 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, 0.001, 0; end:${this.props.scale(d) + padding} 0.001 ${0 - this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
                     return <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${this.props.scale(d) + padding} 0.001 ${0 - this.props.tick['size'] - 0.05}`} />
@@ -121,22 +140,32 @@ class Axis extends Component {
                     titlePosition = `${this.props.dimensions.width / 2} ${this.props.dimensions.height} ${0 - this.props.tick['size'] - titlePadding}`
                   else
                     titlePosition = this.props.title.position
-                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.value}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
+                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.text}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
 
                 }
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => <a-entity key={`Axis_Grid_X${i}`} line={`start:${this.props.scale(d) + padding}, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} ${this.props.dimensions.height} 0; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
-
+                  let gridObj = []
+                  tickValues.forEach((d, i) =>{
+                    gridObj.push({"x":this.props.scale(d) + padding , "y":this.props.dimensions.height ,"z":this.props.dimensions.depth })
+                    gridObj.push({"x":this.props.scale(d) + padding , "y":this.props.dimensions.height ,"z":0})
+                  })
+                  grid = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 }
+                
+                axis = <a-entity line={`start:0, ${this.props.dimensions.height}, 0; end:${this.props.dimensions.width} ${this.props.dimensions.height} 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
+                
+                let gridObj = []
+                tickValues.forEach((d, i) =>{
+                  gridObj.push({"x":this.props.scale(d) + padding , "y":this.props.dimensions.height ,"z":0 })
+                  gridObj.push({"x":this.props.scale(d) + padding , "y":this.props.dimensions.height ,"z":0 - this.props.tick['size']})
+                })
+                ticks = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
+                
                 if (!this.props.tick.format) {
-                  axis = <a-entity line={`start:0, ${this.props.dimensions.height}, 0; end:${this.props.dimensions.width} ${this.props.dimensions.height} 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, ${this.props.dimensions.height}, 0; end:${this.props.scale(d) + padding} ${this.props.dimensions.height} ${0 - this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${this.props.scale(d) + padding} ${this.props.dimensions.height} ${0 - this.props.tick['size'] - 0.05}`} />);
                   break;
                 }
                 else {
-                  axis = <a-entity line={`start:0, ${this.props.dimensions.height}, 0; end:${this.props.dimensions.width} ${this.props.dimensions.height} 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, ${this.props.dimensions.height}, 0; end:${this.props.scale(d) + padding} ${this.props.dimensions.height} ${0 - this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
                     return <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${this.props.scale(d) + padding} ${this.props.dimensions.height} ${0 - this.props.tick['size'] - 0.05}`} />
@@ -151,20 +180,30 @@ class Axis extends Component {
                     titlePosition = `${this.props.dimensions.width / 2} 0.001 ${this.props.dimensions.depth + this.props.tick['size'] + titlePadding}`
                   else
                     titlePosition = this.props.title.position
-                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.value}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
+                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.text}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
                 }
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => <a-entity key={`Axis_Grid_X${i}`} line={`start:${this.props.scale(d) + padding}, 0.001, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} 0.001 0; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
+                  let gridObj = []
+                  tickValues.forEach((d, i) =>{
+                    gridObj.push({"x":this.props.scale(d) + padding , "y":0.001 ,"z":this.props.dimensions.depth })
+                    gridObj.push({"x":this.props.scale(d) + padding , "y":0.001 ,"z":0})
+                  })
+                  grid = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 }
+                axis = <a-entity line={`start:0, 0.001, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
+                
+                let gridObj = []
+                tickValues.forEach((d, i) =>{
+                  gridObj.push({"x":this.props.scale(d) + padding , "y":0.001 ,"z":this.props.dimensions.depth })
+                  gridObj.push({"x":this.props.scale(d) + padding , "y":0.001 ,"z":this.props.dimensions.depth + this.props.tick['size']})
+                })
+                ticks = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
+                
                 if (!this.props.tick.format) {
-                  axis = <a-entity line={`start:0, 0.001, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, 0.001, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} 0.001 ${this.props.dimensions.depth + this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${this.props.scale(d) + padding} 0.001 ${this.props.dimensions.depth + this.props.tick['size'] + 0.05}`} />);
                   break;
                 }
                 else {
-                  axis = <a-entity line={`start:0, 0.001, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, 0.001, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} 0.001 ${this.props.dimensions.depth + this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
                     return <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${this.props.scale(d) + padding} 0.001 ${this.props.dimensions.depth + this.props.tick['size'] + 0.05}`} />
@@ -179,20 +218,31 @@ class Axis extends Component {
                     titlePosition = `${this.props.dimensions.width / 2} 0.001 ${this.props.dimensions.depth + this.props.tick['size'] + titlePadding}`
                   else
                     titlePosition = this.props.title.position
-                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.value}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
+                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.text}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
                 }
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => <a-entity key={`Axis_Grid_X${i}`} line={`start:${this.props.scale(d) + padding}, 0.001, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} 0.001 0; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
+                  let gridObj = []
+                  tickValues.forEach((d, i) =>{
+                    gridObj.push({"x":this.props.scale(d) + padding , "y":0.001 ,"z":this.props.dimensions.depth })
+                    gridObj.push({"x":this.props.scale(d) + padding , "y":0.001 ,"z":0})
+                  })
+                  grid = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 }
+                
+                axis = <a-entity line={`start:0, 0.001, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
+                
+                let gridObj = []
+                tickValues.forEach((d, i) =>{
+                  gridObj.push({"x":this.props.scale(d) + padding , "y":0.001 ,"z":this.props.dimensions.depth })
+                  gridObj.push({"x":this.props.scale(d) + padding , "y":0.001 ,"z":this.props.dimensions.depth + this.props.tick['size']})
+                })
+                ticks = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
+                
                 if (!this.props.tick.format) {
-                  axis = <a-entity line={`start:0, 0.001, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, 0.001, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} 0.001 ${this.props.dimensions.depth + this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${this.props.scale(d) + padding} 0.001 ${this.props.dimensions.depth + this.props.tick['size'] + 0.05}`} />);
                   break;
                 }
                 else {
-                  axis = <a-entity line={`start:0, 0.001, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.scale(d) + padding}, 0.001, ${this.props.dimensions.depth}; end:${this.props.scale(d) + padding} 0.001 ${this.props.dimensions.depth + this.props.tick['size']}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
                     return <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${this.props.scale(d) + padding} 0.001 ${this.props.dimensions.depth + this.props.tick['size'] + 0.05}`} />
@@ -230,7 +280,12 @@ class Axis extends Component {
               {
 
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => <a-entity  key={`Axis_Grid_Y${i}`} line={`start:0, ${this.props.scale(d) + padding}, 0; end:0 ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
+                  let gridObj = []
+                  tickValues.forEach((d, i) =>{
+                    gridObj.push({"x":0 , "y":this.props.scale(d) + padding ,"z":0})
+                    gridObj.push({"x":0 , "y":this.props.scale(d) + padding ,"z":this.props.dimensions.depth })
+                  })
+                  grid = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 }
                 if (this.props.title) {
                   if (!this.props.title.align)
@@ -241,18 +296,23 @@ class Axis extends Component {
                     titlePosition = `${0 - this.props.tick['size'] - titlePadding} ${this.props.dimensions.height / 2} ${this.props.dimensions.depth}`
                   else
                     titlePosition = this.props.title.position
-                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.value}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
+                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.text}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
 
                 }
+                axis = <a-entity line={`start:0, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:0 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
+                
+                let gridObj = []
+                tickValues.forEach((d, i) =>{
+                  gridObj.push({"x":0 , "y":this.props.scale(d) + padding ,"z":this.props.dimensions.depth })
+                  gridObj.push({"x":0 - this.props.tick['size'] , "y":this.props.scale(d) + padding ,"z":this.props.dimensions.depth })
+                })
+                ticks = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
+                
                 if (!this.props.tick.format) {
-                  axis = <a-entity line={`start:0, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:0 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, ${this.props.scale(d) + padding}, ${this.props.dimensions.depth}; end:${0 - this.props.tick['size']} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}`} />);
                   break;
                 }
                 else {
-                  axis = <a-entity line={`start:0, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:0 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, ${this.props.scale(d) + padding}, ${this.props.dimensions.depth}; end:${0 - this.props.tick['size']} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
                     return <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}`} />
@@ -264,7 +324,12 @@ class Axis extends Component {
               {
 
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => <a-entity key={`Axis_Grid_Y${i}`} line={`start:0, ${this.props.scale(d) + padding}, 0; end:0 ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
+                  let gridObj = []
+                  tickValues.forEach((d, i) =>{
+                    gridObj.push({"x":0 , "y":this.props.scale(d) + padding ,"z":0})
+                    gridObj.push({"x":0 , "y":this.props.scale(d) + padding ,"z":this.props.dimensions.depth })
+                  })
+                  grid = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 }
                 if (this.props.title) {
                   if (!this.props.title.align)
@@ -275,18 +340,22 @@ class Axis extends Component {
                     titlePosition = `${0 - this.props.tick['size'] - titlePadding} ${this.props.dimensions.height / 2} 0`
                   else
                     titlePosition = this.props.title.position
-                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.value}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
+                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.text}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
 
                 }
+                axis = <a-entity line={`start:0, ${this.props.dimensions.height}, 0; end:0 0.001 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
+                
+                let gridObj = []
+                tickValues.forEach((d, i) =>{
+                  gridObj.push({"x":0 , "y":this.props.scale(d) + padding ,"z":0 })
+                  gridObj.push({"x":0 - this.props.tick['size'] , "y":this.props.scale(d) + padding ,"z":0 })
+                })
+                ticks = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 if (!this.props.tick.format) {
-                  axis = <a-entity line={`start:0, ${this.props.dimensions.height}, 0; end:0 0.001 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, ${this.props.scale(d) + padding}, 0; end:${0 - this.props.tick['size']} ${this.props.scale(d) + padding} 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} ${this.props.scale(d) + padding} 0`} />);
                   break;
                 }
                 else {
-                  axis = <a-entity line={`start:0, ${this.props.dimensions.height}, 0; end:0 0.001 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, ${this.props.scale(d) + padding}, 0; end:${0 - this.props.tick['size']} ${this.props.scale(d) + padding} 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
                     return <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} ${this.props.scale(d) + padding} 0`} />
@@ -298,7 +367,12 @@ class Axis extends Component {
               {
 
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => <a-entity  key={`Axis_Grid_Y${i}`} line={`start:${this.props.dimensions.width}, ${this.props.scale(d) + padding}, 0; end:${this.props.dimensions.width} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
+                  let gridObj = []
+                  tickValues.forEach((d, i) =>{
+                    gridObj.push({"x":this.props.dimensions.width , "y":this.props.scale(d) + padding ,"z":0})
+                    gridObj.push({"x":this.props.dimensions.width , "y":this.props.scale(d) + padding ,"z":this.props.dimensions.depth })
+                  })
+                  grid = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 }
                 if (this.props.title) {
                   if (!this.props.title.align)
@@ -309,18 +383,22 @@ class Axis extends Component {
                     titlePosition = `${this.props.dimensions.width + this.props.tick['size'] + 0.05} ${this.props.dimensions.height / 2} ${this.props.dimensions.depth}`
                   else
                     titlePosition = this.props.title.position
-                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.value}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
+                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.text}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
 
                 }
+                axis = <a-entity line={`start:${this.props.dimensions.width}, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
+                
+                let gridObj = []
+                tickValues.forEach((d, i) =>{
+                  gridObj.push({"x":this.props.dimensions.width , "y":this.props.scale(d) + padding ,"z":this.props.dimensions.depth })
+                  gridObj.push({"x":this.props.dimensions.width + this.props.tick['size'] , "y":this.props.scale(d) + padding ,"z":this.props.dimensions.depth })
+                })
+                ticks = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 if (!this.props.tick.format) {
-                  axis = <a-entity line={`start:${this.props.dimensions.width}, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.dimensions.width}, ${this.props.scale(d) + padding}, ${this.props.dimensions.depth}; end:${this.props.dimensions.width + this.props.tick['size']} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${d}`} anchor='align' side='double' align='left' rotation={rotation} position={`${this.props.dimensions.width + this.props.tick['size'] + 0.05} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}`} />);
                   break;
                 }
                 else {
-                  axis = <a-entity line={`start:${this.props.dimensions.width}, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.dimensions.width}, ${this.props.scale(d) + padding}, ${this.props.dimensions.depth}; end:${this.props.dimensions.width + this.props.tick['size']} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
                     return <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${txt}`} anchor='align' side='double' align='left' rotation={rotation} position={`${this.props.dimensions.width + this.props.tick['size'] + 0.05} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}`} />
@@ -331,7 +409,12 @@ class Axis extends Component {
             case 'back-right':
               {
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => <a-entity  key={`Axis_Grid_Y${i}`} line={`start:${this.props.dimensions.width}, ${this.props.scale(d) + padding}, 0; end:${this.props.dimensions.width} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
+                  let gridObj = []
+                  tickValues.forEach((d, i) =>{
+                    gridObj.push({"x":this.props.dimensions.width , "y":this.props.scale(d) + padding ,"z":0})
+                    gridObj.push({"x":this.props.dimensions.width , "y":this.props.scale(d) + padding ,"z":this.props.dimensions.depth })
+                  })
+                  grid = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 }
                 if (this.props.title) {
                   if (!this.props.title.align)
@@ -342,18 +425,22 @@ class Axis extends Component {
                     titlePosition = `${this.props.dimensions.width + this.props.tick['size'] + titlePadding} ${this.props.dimensions.height / 2} 0`
                   else
                     titlePosition = this.props.title.position
-                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.value}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
+                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.text}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
 
                 }
+                axis = <a-entity line={`start:${this.props.dimensions.width}, ${this.props.dimensions.height}, 0; end:${this.props.dimensions.width} 0.001 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
+                
+                let gridObj = []
+                tickValues.forEach((d, i) =>{
+                  gridObj.push({"x":this.props.dimensions.width , "y":this.props.scale(d) + padding ,"z":0 })
+                  gridObj.push({"x":this.props.dimensions.width + this.props.tick['size'] , "y":this.props.scale(d) + padding ,"z":0 })
+                })
+                ticks = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 if (!this.props.tick.format) {
-                  axis = <a-entity line={`start:${this.props.dimensions.width}, ${this.props.dimensions.height}, 0; end:${this.props.dimensions.width} 0.001 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.dimensions.width}, ${this.props.scale(d) + padding}, 0; end:${this.props.dimensions.width + this.props.tick['size']} ${this.props.scale(d) + padding} 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${d}`} anchor='align' side='double' align='left' rotation={rotation} position={`${this.props.dimensions.width + this.props.tick['size'] + 0.05} ${this.props.scale(d) + padding} 0`} />);
                   break;
                 }
                 else {
-                  axis = <a-entity line={`start:${this.props.dimensions.width}, ${this.props.dimensions.height}, 0; end:${this.props.dimensions.width} 0.001 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.dimensions.width}, ${this.props.scale(d) + padding}, 0; end:${this.props.dimensions.width + this.props.tick['size']} ${this.props.scale(d) + padding} 0; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
                     return <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${txt}`} anchor='align' side='double' align='left' rotation={rotation} position={`${this.props.dimensions.width + this.props.tick['size'] + 0.05} ${this.props.scale(d) + padding} 0`} />
@@ -364,7 +451,12 @@ class Axis extends Component {
             default:
               {
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => <a-entity key={`Axis_Grid_Y${i}`} line={`start:0, ${this.props.scale(d) + padding}, 0; end:0 ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />);
+                  let gridObj = []
+                  tickValues.forEach((d, i) =>{
+                    gridObj.push({"x":0 , "y":this.props.scale(d) + padding ,"z":0})
+                    gridObj.push({"x":0 , "y":this.props.scale(d) + padding ,"z":this.props.dimensions.depth })
+                  })
+                  grid = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 }
                 if (this.props.title) {
                   if (!this.props.title.align)
@@ -375,18 +467,22 @@ class Axis extends Component {
                     titlePosition = `${0 - this.props.tick['size'] - titlePadding} ${this.props.dimensions.height / 2} ${this.props.dimensions.depth}`
                   else
                     titlePosition = this.props.title.position
-                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.value}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
+                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.text}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
 
                 }
+                axis = <a-entity line={`start:0, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:0 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
+                
+                let gridObj = []
+                tickValues.forEach((d, i) =>{
+                  gridObj.push({"x":0 , "y":this.props.scale(d) + padding ,"z":this.props.dimensions.depth })
+                  gridObj.push({"x":0 - this.props.tick['size'] , "y":this.props.scale(d) + padding ,"z":this.props.dimensions.depth })
+                })
+                ticks = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 if (!this.props.tick.format) {
-                  axis = <a-entity line={`start:0, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:0 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, ${this.props.scale(d) + padding}, ${this.props.dimensions.depth}; end:${0 - this.props.tick['size']} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}`} />);
                   break;
                 }
                 else {
-                  axis = <a-entity line={`start:0, ${this.props.dimensions.height}, ${this.props.dimensions.depth}; end:0 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, ${this.props.scale(d) + padding}, ${this.props.dimensions.depth}; end:${0 - this.props.tick['size']} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
                     return <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} ${this.props.scale(d) + padding} ${this.props.dimensions.depth}`} />
@@ -423,12 +519,14 @@ class Axis extends Component {
               {
 
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => {
-                    return <a-entity key={i}>
-                      <a-entity key={`Line1_${i}`} line={`start:0, 0.001, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
-                      <a-entity key={`Line2_${i}`} line={`start:0.001, 0, ${this.props.scale(d) + padding}; end:0.001 ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
-                    </a-entity>
-                  });
+                  let gridObj = []
+                  tickValues.forEach((d, i) =>{
+                    gridObj.push({"x":0 , "y":0.001 ,"z":this.props.scale(d) + padding})
+                    gridObj.push({"x":this.props.dimensions.width , "y":0.001,"z":this.props.scale(d) + padding })
+                    gridObj.push({"x":0.001 , "y":0 ,"z":this.props.scale(d) + padding})
+                    gridObj.push({"x":0.001 , "y":this.props.dimensions.height,"z":this.props.scale(d) + padding })
+                  })
+                  grid = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 }
                 if (this.props.title) {
                   if (!this.props.title.align)
@@ -439,18 +537,22 @@ class Axis extends Component {
                     titlePosition = `${0 - this.props.tick['size'] - titlePadding} 0.001 ${this.props.dimensions.depth / 2}`
                   else
                     titlePosition = this.props.title.position
-                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.value}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
+                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.text}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
 
                 }
+                axis = <a-entity line={`start:0, 0.001, 0; end:0 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
+                
+                let gridObj = []
+                tickValues.forEach((d, i) =>{
+                  gridObj.push({"x":0 , "y":0.001 ,"z":this.props.scale(d) + padding })
+                  gridObj.push({"x":0 - this.props.tick['size'] , "y":0.001 ,"z":this.props.scale(d) + padding })
+                })
+                ticks = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 if (!this.props.tick.format) {
-                  axis = <a-entity line={`start:0, 0.001, 0; end:0 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, 0.001, ${this.props.scale(d) + padding}; end:${0 - this.props.tick['size']} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} 0.001 ${this.props.scale(d) + padding}`} />);
                   break;
                 }
                 else {
-                  axis = <a-entity line={`start:0, 0.001, 0; end:0 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, 0.001, ${this.props.scale(d) + padding}; end:${0 - this.props.tick['size']} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
                     return <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} 0.001 ${this.props.scale(d) + padding}`} />
@@ -462,12 +564,14 @@ class Axis extends Component {
               {
 
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => {
-                    return <a-entity key={i}>
-                      <a-entity key={`Line1_${i}`} line={`start:0, ${this.props.dimensions.height}, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width} ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
-                      <a-entity key={`Line2_${i}`} line={`start:0.001, 0, ${this.props.scale(d) + padding}; end:0.001 ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
-                    </a-entity>
-                  });
+                  let gridObj = []
+                  tickValues.forEach((d, i) =>{
+                    gridObj.push({"x":0 , "y":this.props.dimensions.height ,"z":this.props.scale(d) + padding})
+                    gridObj.push({"x":this.props.dimensions.width , "y":this.props.dimensions.height,"z":this.props.scale(d) + padding })
+                    gridObj.push({"x":0.001 , "y":0 ,"z":this.props.scale(d) + padding})
+                    gridObj.push({"x":0.001 , "y":this.props.dimensions.height,"z":this.props.scale(d) + padding })
+                  })
+                  grid = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 }
                 if (this.props.title) {
                   if (!this.props.title.align)
@@ -478,18 +582,22 @@ class Axis extends Component {
                     titlePosition = `${0 - this.props.tick['size'] - titlePadding} ${this.props.dimensions.height} ${this.props.dimensions.depth / 2}`
                   else
                     titlePosition = this.props.title.position
-                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.value}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
+                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.text}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
 
                 }
+                axis = <a-entity line={`start:0, ${this.props.dimensions.height}, 0; end:0 ${this.props.dimensions.height} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
+                
+                let gridObj = []
+                tickValues.forEach((d, i) =>{
+                  gridObj.push({"x":0 , "y":this.props.dimensions.height ,"z":this.props.scale(d) + padding })
+                  gridObj.push({"x":0 - this.props.tick['size'] , "y":this.props.dimensions.height ,"z":this.props.scale(d) + padding })
+                })
+                ticks = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 if (!this.props.tick.format) {
-                  axis = <a-entity line={`start:0, ${this.props.dimensions.height}, 0; end:0 ${this.props.dimensions.height} ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, ${this.props.dimensions.height}, ${this.props.scale(d) + padding}; end:${0 - this.props.tick['size']} ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} ${this.props.dimensions.height} ${this.props.scale(d) + padding}`} />);
                   break;
                 }
                 else {
-                  axis = <a-entity line={`start:0, 0.001, 0; end:0 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, 0.001, ${this.props.scale(d) + padding}; end:${0 - this.props.tick['size']} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
                     return <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} 0.001 ${this.props.scale(d) + padding}`} />
@@ -501,12 +609,14 @@ class Axis extends Component {
               {
 
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => {
-                    return <a-entity key={i}>
-                      <a-entity key={`Line1_${i}`} line={`start:0, ${this.props.dimensions.height}, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width} ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
-                      <a-entity key={`Line2_${i}`} line={`start:${this.props.dimensions.width}, 0, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width} ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
-                    </a-entity>
-                  });
+                  let gridObj = []
+                  tickValues.forEach((d, i) =>{
+                    gridObj.push({"x":0 , "y":0.001 ,"z":this.props.scale(d) + padding})
+                    gridObj.push({"x":this.props.dimensions.width , "y":0.001,"z":this.props.scale(d) + padding })
+                    gridObj.push({"x":this.props.dimensions.width , "y":0 ,"z":this.props.scale(d) + padding})
+                    gridObj.push({"x":this.props.dimensions.width , "y":this.props.dimensions.height,"z":this.props.scale(d) + padding })
+                  })
+                  grid = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 }
                 if (this.props.title) {
                   if (!this.props.title.align)
@@ -517,18 +627,22 @@ class Axis extends Component {
                     titlePosition = `${this.props.dimensions.width + this.props.tick['size'] + titlePadding} ${this.props.dimensions.height} ${this.props.dimensions.depth / 2}`
                   else
                     titlePosition = this.props.title.position
-                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.value}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
+                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.text}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
 
                 }
+                axis = <a-entity line={`start:${this.props.dimensions.width}, 0.001, 0; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
+                
+                let gridObj = []
+                tickValues.forEach((d, i) =>{
+                  gridObj.push({"x":this.props.dimensions.width , "y":this.props.dimensions.height ,"z":this.props.scale(d) + padding })
+                  gridObj.push({"x":this.props.dimensions.width + this.props.tick['size'] , "y":this.props.dimensions.height ,"z":this.props.scale(d) + padding })
+                })
+                ticks = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 if (!this.props.tick.format) {
-                  axis = <a-entity line={`start:${this.props.dimensions.width}, 0.001, 0; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.dimensions.width}, ${this.props.dimensions.height}, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width + this.props.tick['size']} ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${d}`} anchor='align' side='double' align='left' rotation={rotation} position={`${this.props.dimensions.width + this.props.tick['size'] + 0.05} ${this.props.dimensions.height} ${this.props.scale(d) + padding}`} />);
                   break;
                 }
                 else {
-                  axis = <a-entity line={`start:0, 0.001, 0; end:0 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, 0.001, ${this.props.scale(d) + padding}; end:${0 - this.props.tick['size']} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
                     return <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} ${this.props.dimensions.height} ${this.props.scale(d) + padding}`} />
@@ -540,12 +654,14 @@ class Axis extends Component {
               {
 
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => {
-                    return <a-entity key={i}>
-                      <a-entity key={`Line1_${i}`} line={`start:0, 0.001, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
-                      <a-entity key={`Line2_${i}`} line={`start:${this.props.dimensions.width}, 0, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width} ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
-                    </a-entity>
-                  });
+                  let gridObj = []
+                  tickValues.forEach((d, i) =>{
+                    gridObj.push({"x":0 , "y":0.001 ,"z":this.props.scale(d) + padding})
+                    gridObj.push({"x":this.props.dimensions.width , "y":0.001,"z":this.props.scale(d) + padding })
+                    gridObj.push({"x":this.props.dimensions.width , "y":0 ,"z":this.props.scale(d) + padding})
+                    gridObj.push({"x":this.props.dimensions.width , "y":this.props.dimensions.height,"z":this.props.scale(d) + padding })
+                  })
+                  grid = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 }
 
                 if (this.props.title) {
@@ -557,18 +673,22 @@ class Axis extends Component {
                     titlePosition = `${this.props.dimensions.width + this.props.tick['size'] + titlePadding} 0.001 ${this.props.dimensions.depth / 2}`
                   else
                     titlePosition = this.props.title.position
-                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.value}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
+                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.text}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
 
                 }
+                axis = <a-entity line={`start:${this.props.dimensions.width}, 0.001, 0; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
+                
+                let gridObj = []
+                tickValues.forEach((d, i) =>{
+                  gridObj.push({"x":this.props.dimensions.width , "y":0.001 ,"z":this.props.scale(d) + padding })
+                  gridObj.push({"x":this.props.dimensions.width + this.props.tick['size'] , "y":0.001 ,"z":this.props.scale(d) + padding })
+                })
+                ticks = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 if (!this.props.tick.format) {
-                  axis = <a-entity line={`start:${this.props.dimensions.width}, 0.001, 0; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.dimensions.width}, 0.001, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width + this.props.tick['size']} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${d}`} anchor='align' side='double' align='left' rotation={rotation} position={`${this.props.dimensions.width + this.props.tick['size'] + 0.05} 0.001 ${this.props.scale(d) + padding}`} />);
                   break;
                 }
                 else {
-                  axis = <a-entity line={`start:${this.props.dimensions.width}, 0.001, 0; end:${this.props.dimensions.width} 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:${this.props.dimensions.width}, 0.001, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width + this.props.tick['size']} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
                     return <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} 0.001 ${this.props.scale(d) + padding}`} />
@@ -580,12 +700,14 @@ class Axis extends Component {
               {
 
                 if (this.props.grid) {
-                  grid = tickValues.map((d, i) => {
-                    return <a-entity key={i}>
-                      <a-entity key={`Line1_${i}`} line={`start:0, 0.001, ${this.props.scale(d) + padding}; end:${this.props.dimensions.width} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
-                      <a-entity key={`Line2_${i}`} line={`start:0.001, 0, ${this.props.scale(d) + padding}; end:0.001 ${this.props.dimensions.height} ${this.props.scale(d) + padding}; opacity:${this.props.grid['opacity']}; color:${this.props.grid['color']}`} />
-                    </a-entity>
-                  });
+                  let gridObj = []
+                  tickValues.forEach((d, i) =>{
+                    gridObj.push({"x":0 , "y":0.001 ,"z":this.props.scale(d) + padding})
+                    gridObj.push({"x":this.props.dimensions.width , "y":0.001,"z":this.props.scale(d) + padding })
+                    gridObj.push({"x":0.001 , "y":0 ,"z":this.props.scale(d) + padding})
+                    gridObj.push({"x":0.001 , "y":this.props.dimensions.height,"z":this.props.scale(d) + padding })
+                  })
+                  grid = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 }
 
                 if (this.props.title) {
@@ -597,18 +719,22 @@ class Axis extends Component {
                     titlePosition = `${0 - this.props.tick['size'] - titlePadding} 0.001 ${this.props.dimensions.depth / 2}`
                   else
                     titlePosition = this.props.title.position
-                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.value}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
+                  title = <a-text opacity={this.props.title['opacity']} color={`${this.props.title['color']}`} width={this.props.title['fontSize']} value={`${this.props.title.text}`} anchor='align' side='double' align={titleAlign} rotation={titleRotation} position={titlePosition} billboard={this.props.title.billboarding}/>;
 
                 }
+                axis = <a-entity line={`start:0, 0.001, 0; end:0 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
+                
+                let gridObj = []
+                tickValues.forEach((d, i) =>{
+                  gridObj.push({"x":0 , "y":0.001 ,"z":this.props.scale(d) + padding })
+                  gridObj.push({"x":0 - this.props.tick['size'] , "y":0.001 ,"z":this.props.scale(d) + padding })
+                })
+                ticks = <a-frame-curve-line points={JSON.stringify(gridObj)} type={'lineSegment'} color={this.props.grid['color']} opacity={this.props.grid['opacity']} />
                 if (!this.props.tick.format) {
-                  axis = <a-entity line={`start:0, 0.001, 0; end:0 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, 0.001, ${this.props.scale(d) + padding}; end:${0 - this.props.tick['size']} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${d}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} 0.001 ${this.props.scale(d) + padding}`} />);
                   break;
                 }
                 else {
-                  axis = <a-entity line={`start:0, 0.001, 0; end:0 0.001 ${this.props.dimensions.depth}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />
-                  ticks = tickValues.map((d, i) => <a-entity key={i} line={`start:0, 0.001, ${this.props.scale(d) + padding}; end:${0 - this.props.tick['size']} 0.001 ${this.props.scale(d) + padding}; opacity:${this.props.tick['opacity']}; color:${this.props.tick['color']}`} />);
                   tickText = tickValues.map((d, i) => {
                     let txt = moment(d).format(this.props.tick.format)
                     return <a-text key={i} billboard={this.props.tick.billboarding} opacity={this.props.tick['opacity']} color={`${this.props.tick['color']}`} width={this.props.tick['fontSize']} value={`${txt}`} anchor='align' side='double' align={align} rotation={rotation} position={`${0 - this.props.tick['size'] - 0.05} 0.001 ${this.props.scale(d) + padding}`} />

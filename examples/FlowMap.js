@@ -6,118 +6,116 @@ import mapData from './mapData/mapData.json'
 class App extends Component {
   render() {
     return (
-      <VRViz
-        scene={
-          {
-            'sky': {
-              'style': {
-                'color': '#ccc',
-                'texture': false,
-              }
-            },
-            'lights': [
-              {
-                'type': 'directional',
-                'color': '#fff',
-                'position': '0 1 1',
-                'intensity': 1,
-                "decay": 1,
-              },
-              {
-                'type': 'ambient',
-                'color': '#fff',
-                'intensity': 1,
-                "decay": 1,
-              }
-            ],
-            'camera': {
-              'position': '0 0 10',
-              'rotation': '0 0 0',
-            },
-          }
-        }
-        graph={
-          [
+      
+<VRViz
+      scene={
+        {
+          'sky': {
+            'style': {
+              'color': '#333',
+              'texture': false,
+            }
+          },
+          'lights': [
             {
-              'type': 'FlowMap',
-              'data': {
-                'dataFile': "data/flowMap.csv",
-                'fileType': 'csv',
-                'fieldDesc': [['source_latitude', 'number'], ['source_longitude', 'number'], ['target_latitude', 'number'], ['target_longitude', 'number'], ['value', 'number']]
+              'type': 'directional',
+              'color': '#fff',
+              'position': '0 1 1',
+              'intensity': 1,
+              "decay": 1,
+            },
+            {
+              'type': 'ambient',
+              'color': '#fff',
+              'intensity': 1,
+              "decay": 1,
+            }
+          ],
+          'camera': {
+            'position': '5 5 20',
+            'rotation': '0 0 0',
+          },
+          'reloadPageOnExitVR':true
+        }
+      }
+      graph={
+        [
+          {
+            'type': 'FlowMap',
+            'data': {
+              'dataFile': "data/flowMap.csv",
+              'fileType': 'csv',
+              'fieldDesc': [['source_latitude', 'number'], ['source_longitude', 'number'], ['target_latitude', 'number'], ['target_longitude', 'number']]
+            },
+            'style': {
+              'origin': [0, 0, 0],
+            },
+            'mark': {
+              'mapScale': 20,
+              'mapOrigin': [5, 5],
+              'rotation': '-90 0 0',
+              'map': {
+                'data': mapData,
+                'projection': 'Mercator',
+                'shapeIdentifier': 'id',
+                'shapeKey': 'countries',
+                'style': {
+                  'extrusion': {
+                    'value': 0.000001,
+                  },
+                  'fill': {
+                    'color': '#111',
+                    'opacity': 1,
+                  },
+                  'stroke': {
+                    'width': 1,
+                    'color': '#444',
+                  },
+                },
               },
-              'style': {
-                'origin': [0, 0, 0],
+              'flowlines': {
+                'style': {
+                  'opacity': {
+                    'value': 0.4,
+                  },
+                  'stroke': {
+                    'color': '#2196f3',
+                  },
+                },
               },
-              'mark': {
-                'mapScale': 20,
-                'mapOrigin': [5, 5],
-                'rotation': '-90 0 0',
-                'map': {
-                  'data': mapData,
-                  'projection': 'Mercator',
-                  'shapeIdentifier': 'id',
+              'nodes': {
+                'source': {
+                  'type': 'sphere',
                   'style': {
-                    'extrusion': {
-                      'value': 0.000001,
+                    'radius': {
+                      'value': 0.05,
                     },
                     'fill': {
-                      'color': 'red',
-                      'opacity': 0,
+                      'color': '#b71c1c',
+                      'opacity': 0.5,
                     },
-                    'stroke': {
-                      'width': 1,
-                      'color': 'black',
-                    },
-                  },
+                  }
                 },
-                'flowlines': {
+                'target': {
+                  'type': 'sphere',
                   'style': {
-                    'opacity': {
-                      'value': 0.4,
+                    'radius': {
+                      'value': 0.05,
                     },
-                    'stroke': {
-                      'color': 'red',
+                    'fill': {
+                      'color': '#0f9d5b',
+                      'opacity': 0.5,
                     },
-                  },
-                  'height': {
-                    'field': 'value',
-                    'scaleFactor': 1,
                   }
-                },
-                'nodes': {
-                  'source': {
-                    'type': 'sphere',
-                    'style': {
-                      'radius': {
-                        'value': 0.1,
-                      },
-                      'fill': {
-                        'color': 'blue',
-                        'opacity': 1,
-                      },
-                    }
-                  },
-                  'target': {
-                    'type': 'sphere',
-                    'style': {
-                      'radius': {
-                        'value': 0.1,
-                      },
-                      'fill': {
-                        'color': 'green',
-                        'opacity': 1,
-                      },
-                    }
-                  }
-                },
+                }
               },
-            }
-          ]
-        }
-      />
+            },
+          }
+        ]
+      }
+    />
     );
   }
 }
 
 export default App;
-

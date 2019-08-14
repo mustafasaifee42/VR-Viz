@@ -1,4 +1,5 @@
 import AFRAME from 'aframe';
+import * as THREE from 'three';
 
 AFRAME.registerComponent("click-rotation", {
   schema: {
@@ -34,14 +35,16 @@ AFRAME.registerComponent("click-rotation", {
       {
         var temp_x = event.clientX-this.x_cord;
         var temp_y = event.clientY-this.y_cord;
-        if(Math.abs(temp_y)<Math.abs(temp_x))
-        {
-          this.el.object3D.rotateY(temp_x*this.data.speed/50);
-        }
-        else
-        {
-          this.el.object3D.rotateX(temp_y*this.data.speed/50);
-        }
+            
+        var deltaRotationQuaternion = new THREE.Quaternion()
+            .setFromEuler(new THREE.Euler(
+                (temp_y*this.data.speed) * (Math.PI / 180),
+                (temp_x*this.data.speed) * (Math.PI / 180),
+                0,
+                'XYZ'
+            ));
+        
+        this.el.object3D.quaternion.multiplyQuaternions(deltaRotationQuaternion, this.el.object3D.quaternion);
         this.x_cord = event.clientX;
         this.y_cord = event.clientY;
       }

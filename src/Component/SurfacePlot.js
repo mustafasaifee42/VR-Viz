@@ -15,36 +15,19 @@ class SurfacePlot extends Component {
     // Data manipulation
 
 
-    let dataCoordinate = [], dataSphere = [];
+    let dataSphere = [];
     let xStep = (this.props.mark.position.x.domain[1] - this.props.mark.position.x.domain[0]) / this.props.mark.position.x.steps;
     let zStep = (this.props.mark.position.z.domain[1] - this.props.mark.position.z.domain[0]) / this.props.mark.position.z.steps;
-    for (let i = 0; i < this.props.mark.position.x.steps - 1; i++) {
-      for (let j = 0; j < this.props.mark.position.z.steps - 1; j++) {
-        let tempData = [];
-        tempData.push(this.props.mark.position.x.domain[0] + xStep * i)
-        tempData.push(this.props.mark.position.y.function(this.props.mark.position.x.domain[0] + xStep * i, this.props.mark.position.z.domain[0] + zStep * j))
-        tempData.push(this.props.mark.position.z.domain[0] + zStep * j)
-        tempData.push(this.props.mark.position.x.domain[0] + xStep * (i + 1))
-        tempData.push(this.props.mark.position.y.function(this.props.mark.position.x.domain[0] + xStep * (i + 1), this.props.mark.position.z.domain[0] + zStep * j))
-        tempData.push(this.props.mark.position.z.domain[0] + zStep * j)
-        tempData.push(this.props.mark.position.x.domain[0] + xStep * (i + 1))
-        tempData.push(this.props.mark.position.y.function(this.props.mark.position.x.domain[0] + xStep * (i + 1), this.props.mark.position.z.domain[0] + zStep * (j + 1)))
-        tempData.push(this.props.mark.position.z.domain[0] + zStep * (j + 1))
-        tempData.push(this.props.mark.position.x.domain[0] + xStep * i)
-        tempData.push(this.props.mark.position.y.function(this.props.mark.position.x.domain[0] + xStep * i, this.props.mark.position.z.domain[0] + zStep * (j + 1)))
-        tempData.push(this.props.mark.position.z.domain[0] + zStep * (j + 1))
-        if(this.props.mark.style.fill)
-          if (this.props.mark.style.fill.function)
-            tempData.push(this.props.mark.style.fill.function(this.props.mark.position.x.domain[0] + xStep * i, this.props.mark.position.z.domain[0] + zStep * j))
-        dataCoordinate.push(tempData);
-      }
-    }
+
     for (let i = 0; i < this.props.mark.position.x.steps; i++) {
       for (let j = 0; j < this.props.mark.position.z.steps; j++) {
         let tempData = [];
         tempData.push(this.props.mark.position.x.domain[0] + xStep * i)
         tempData.push(this.props.mark.position.y.function(this.props.mark.position.x.domain[0] + xStep * i, this.props.mark.position.z.domain[0] + zStep * j))
         tempData.push(this.props.mark.position.z.domain[0] + zStep * j);
+        if(this.props.mark.style.fill)
+          if (this.props.mark.style.fill.function)
+            tempData.push(this.props.mark.style.fill.function(this.props.mark.position.x.domain[0] + xStep * i, this.props.mark.position.z.domain[0] + zStep * j))
         dataSphere.push(tempData);
       }
     }
@@ -87,10 +70,64 @@ class SurfacePlot extends Component {
             .range(colorRange)
         else
           colorScale = d3.scaleLinear()
-            .domain([d3.min(dataCoordinate, d => d[12]), d3.max(dataCoordinate, d => d[12])])
+            .domain([d3.min(dataSphere, d => d[3]), d3.max(dataSphere, d => d[3])])
             .range(colorRange)
       }
     }
+
+    
+    let dataFormatted1 = [], strokevert = [], faces = [], colorList = [];
+    for (let i = 0; i < this.props.mark.position.x.steps - 1; i++) {
+      for (let j = 0; j < this.props.mark.position.z.steps - 1; j++) {
+        let point = {"x": xScale(this.props.mark.position.x.domain[0] + xStep * i), "y": yScale(this.props.mark.position.y.function(this.props.mark.position.x.domain[0] + xStep * i, this.props.mark.position.z.domain[0] + zStep * j)), "z": zScale(this.props.mark.position.z.domain[0] + zStep * j)}
+        dataFormatted1.push(point)
+        strokevert.push(point)
+        let pt1 = dataFormatted1.length - 1;
+        point = {"x": xScale(this.props.mark.position.x.domain[0] + xStep * (i + 1)), "y": yScale(this.props.mark.position.y.function(this.props.mark.position.x.domain[0] + xStep * (i + 1), this.props.mark.position.z.domain[0] + zStep * j)), "z": zScale(this.props.mark.position.z.domain[0] + zStep * j)}
+        dataFormatted1.push(point)
+        strokevert.push(point)
+        strokevert.push(point)
+        let pt2 = dataFormatted1.length - 1;
+        point = {"x": xScale(this.props.mark.position.x.domain[0] + xStep * (i + 1)), "y": yScale(this.props.mark.position.y.function(this.props.mark.position.x.domain[0] + xStep * (i + 1), this.props.mark.position.z.domain[0] + zStep * (j + 1))), "z": zScale(this.props.mark.position.z.domain[0] + zStep * (j + 1))}
+        dataFormatted1.push(point)
+        strokevert.push(point)
+        strokevert.push(point)
+        let pt3 = dataFormatted1.length - 1;
+        point = {"x": xScale(this.props.mark.position.x.domain[0] + xStep * i), "y": yScale(this.props.mark.position.y.function(this.props.mark.position.x.domain[0] + xStep * i, this.props.mark.position.z.domain[0] + zStep * (j + 1))), "z": zScale(this.props.mark.position.z.domain[0] + zStep * (j + 1))}
+        dataFormatted1.push(point)
+        strokevert.push(point)
+        strokevert.push(point)
+        point = {"x": xScale(this.props.mark.position.x.domain[0] + xStep * i), "y": yScale(this.props.mark.position.y.function(this.props.mark.position.x.domain[0] + xStep * i, this.props.mark.position.z.domain[0] + zStep * j)), "z": zScale(this.props.mark.position.z.domain[0] + zStep * j)}
+        strokevert.push(point)
+        let pt4 = dataFormatted1.length - 1;
+        faces.push([pt1,pt2,pt3]);
+        faces.push([pt1,pt3,pt4]);
+        let col1, col2, col3, col4;
+        if(this.props.mark.style.fill){
+          if (this.props.mark.style.fill.function) {
+            col1 = colorScale(this.props.mark.style.fill.function(this.props.mark.position.x.domain[0] + xStep * i, this.props.mark.position.z.domain[0] + zStep * j));
+            col2 = colorScale(this.props.mark.style.fill.function(this.props.mark.position.x.domain[0] + xStep * (i + 1), this.props.mark.position.z.domain[0] + zStep * j));
+            col3 = colorScale(this.props.mark.style.fill.function(this.props.mark.position.x.domain[0] + xStep * (i + 1), this.props.mark.position.z.domain[0] + zStep * (j + 1)));
+            col4 = colorScale(this.props.mark.style.fill.function(this.props.mark.position.x.domain[0] + xStep * i, this.props.mark.position.z.domain[0] + zStep * (j + 1)));
+          }
+          else {
+            col1 = this.props.mark.style.fill.color;
+            col2 = this.props.mark.style.fill.color;
+            col3 = this.props.mark.style.fill.color;
+            col4 = this.props.mark.style.fill.color;
+          }
+        }
+        colorList.push([col1,col2,col3]);
+        colorList.push([col1,col3,col4]);
+      }
+    }
+    
+    let points = JSON.stringify(dataFormatted1)
+    let facesList = JSON.stringify(faces)
+    let vertexColor = JSON.stringify(colorList)
+    let strokeVertList = JSON.stringify(strokevert)
+
+
     //Axis
     let xAxis, yAxis, zAxis;
 
@@ -147,25 +184,6 @@ class SurfacePlot extends Component {
       />
     }
 
-    //Adding marks
-    let marks;
-    if(this.props.mark.style.fill){
-      if (this.props.mark.style.stroke) {
-        if (this.props.mark.style.fill.function)
-          marks = dataCoordinate.map((d, i) => <a-entity key={`${this.props.index}_Mark${i}`} plane-from-vertices={`path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}, ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])};face:true;faceColor: ${colorScale(d[12])};faceOpacity: ${this.props.mark.style.fill.opacity};stroke:true;strokeWidth:${this.props.mark.style.stroke.width};strokeColor:${this.props.mark.style.stroke.color}`} />);
-        else
-          marks = dataCoordinate.map((d, i) => <a-entity key={`${this.props.index}_Mark${i}`} plane-from-vertices={`path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}, ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])};face:true;faceColor: ${this.props.mark.style.fill.color};faceOpacity: ${this.props.mark.style.fill.opacity};stroke:true;strokeWidth:${this.props.mark.style.stroke.width};strokeColor:${this.props.mark.style.stroke.color}`} />);
-      } 
-      else {
-        if (this.props.mark.style.fill.function)
-          marks = dataCoordinate.map((d, i) => <a-entity key={`${this.props.index}_Mark${i}`} plane-from-vertices={`path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}, ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])};face:true;faceColor: ${colorScale(d[12])};faceOpacity: ${this.props.mark.style.fill.opacity};stroke:false`} />);
-        else
-          marks = dataCoordinate.map((d, i) => <a-entity key={`${this.props.index}_Mark${i}`} plane-from-vertices={`path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}, ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])};face:true;faceColor: ${this.props.mark.style.fill.color};faceOpacity: ${this.props.mark.style.fill.opacity};stroke:false`} />);
-      }
-    }
-    else {
-      marks = dataCoordinate.map((d, i) => <a-entity key={`${this.props.index}_Mark${i}`} plane-from-vertices={`path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}, ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])};face:false;stroke:true;strokeWidth:${this.props.mark.style.stroke.width};strokeColor:${this.props.mark.style.stroke.color}`} />);
-    }
     let  clickRotation = 'true',animation;
     if(this.props.animateRotation){
       clickRotation='false'
@@ -178,10 +196,22 @@ class SurfacePlot extends Component {
           repeat="indefinite"
         />
     }
+
+    
+    let stroke_bool = false, stroke_width = 1, stroke_color = '#000000', stroke_opacity = 1
+    if (this.props.mark.style.stroke){
+      stroke_bool = true;
+      if (this.props.mark.style.stroke.color)
+        stroke_color = this.props.mark.style.stroke.color
+      if (this.props.mark.style.stroke.opacity)
+        stroke_opacity = this.props.mark.style.stroke.opacity
+      if (this.props.mark.style.stroke.width)
+        stroke_width = this.props.mark.style.stroke.width
+    }
     return (
-      <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} >
+      <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`xPosition:${this.props.style.origin[0]};yPosition:${this.props.style.origin[1]};zPosition:${this.props.style.origin[2]};pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} >
         {animation}
-        {marks}
+        <a-frame-mesh-from-points points={points} faces={facesList} stroke_vertices={strokeVertList} stroke_bool={stroke_bool} stroke_color={stroke_color} stroke_width={stroke_width} stroke_opacity={stroke_opacity} color={vertexColor} opacity={this.props.mark.style.fill.opacity} />
         {xAxis}
         {yAxis}
         {zAxis}

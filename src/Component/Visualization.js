@@ -32,12 +32,20 @@ import '../AFrameComponents/ChangeColorOnHover.js';
 import '../AFrameComponents/CursorListener.js';
 import '../AFrameComponents/PlayAllModelAnimations.js';
 import '../AFrameComponents/BIllboard.js';
-import '../AFrameComponents/PlaneFromVertices.js';
 import '../AFrameComponents/DragRotateComponent.js';
 import '../AFrameComponents/PivotCenter.js';
-import '../AFrameComponents/MaterialModificationAndPivotingForModel.js';
+import '../AFrameComponents/PivotCenterForModel.js';
+import '../AFrameComponents/MaterialModification.js';
+import '../AFrameComponents/HighlightOnClick.js';
 
-import '../AFrameGeometries/Map.js';
+
+import '../AFrameGeometries/AFrameFlowLine.js';
+import '../AFrameGeometries/AFrameCurveLine.js';
+import '../AFrameGeometries/AFrameMeshFromPoints.js';
+import '../AFrameGeometries/AFrameContourLines.js';
+import '../AFrameGeometries/AFrameMap.js';
+import '../AFrameGeometries/AFrameMapOutline.js';
+import '../AFrameGeometries/AFrameShape.js';
 
 
 require('aframe-teleport-controls');

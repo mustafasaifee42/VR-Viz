@@ -117,9 +117,11 @@ class ContourPlot extends Component {
 
 
     //Adding marks
-    let points = dataCoordinate.map((d, i) => <a-curve-point key={`${this.props.index}_Point${i}`} position={`${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}`} />);
+    let pointList = []
 
-
+    dataCoordinate.forEach((d , i) => {
+      pointList.push({"x":`${xScale(d[0])}`,"y":`${yScale(d[1])}`,"z":`${zScale(d[2])}`})
+    })
     let  clickRotation = 'true',animation;
     if(this.props.animateRotation){
       clickRotation='false'
@@ -133,16 +135,13 @@ class ContourPlot extends Component {
         />
     }
     return (
-      <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
+      <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`xPosition:${this.props.style.origin[0]};yPosition:${this.props.style.origin[1]};zPosition:${this.props.style.origin[2]};pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
         {animation}
         {xAxis}
         {yAxis}
         {zAxis}
         {box}
-        <a-curve id={'lineGraph'}>
-          {points}
-        </a-curve>
-        <a-draw-curve curveref='#lineGraph' material={`shader: line; color: ${this.props.mark.style.color}; opacity: ${this.props.mark.style.opacity};`} />
+        <a-frame-curve-line points={JSON.stringify(pointList)} type={this.props.mark.style.curveType} color={this.props.mark.style.color} opacity={this.props.mark.style.opacity} resolution={this.props.mark.style.resolution} />
       </a-entity>
     )
   }

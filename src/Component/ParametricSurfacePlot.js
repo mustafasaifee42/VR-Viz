@@ -18,27 +18,6 @@ class ParametricSurfacePlot extends Component {
     let dataCoordinate = [], dataSphere = [];
     let parameterStep1 = (this.props.parameter.parameter1.domain[1] - this.props.parameter.parameter1.domain[0]) / this.props.parameter.parameter1.steps;
     let parameterStep2 = (this.props.parameter.parameter2.domain[1] - this.props.parameter.parameter2.domain[0]) / this.props.parameter.parameter2.steps;
-    for (let i = this.props.parameter.parameter1.domain[0]; i <= this.props.parameter.parameter1.domain[1]; i = i + parameterStep1) {
-      for (let j = this.props.parameter.parameter2.domain[0]; j <= this.props.parameter.parameter2.domain[1]; j = j + parameterStep2) {
-        let tempData = [];
-        tempData.push(this.props.mark.position.x.function(i, j));
-        tempData.push(this.props.mark.position.y.function(i, j));
-        tempData.push(this.props.mark.position.z.function(i, j));
-        tempData.push(this.props.mark.position.x.function(i + parameterStep1, j));
-        tempData.push(this.props.mark.position.y.function(i + parameterStep1, j));
-        tempData.push(this.props.mark.position.z.function(i + parameterStep1, j));
-        tempData.push(this.props.mark.position.x.function(i + parameterStep1, j + parameterStep2));
-        tempData.push(this.props.mark.position.y.function(i + parameterStep1, j + parameterStep2));
-        tempData.push(this.props.mark.position.z.function(i + parameterStep1, j + parameterStep2));
-        tempData.push(this.props.mark.position.x.function(i, j + parameterStep2));
-        tempData.push(this.props.mark.position.y.function(i, j + parameterStep2));
-        tempData.push(this.props.mark.position.z.function(i, j + parameterStep2));
-        if(this.props.mark.style.fill)
-          if (this.props.mark.style.fill.function)
-            tempData.push(this.props.mark.style.fill.function(i, j))
-        dataCoordinate.push(tempData);
-      }
-    }
 
     for (let i = this.props.parameter.parameter1.domain[0]; i <= this.props.parameter.parameter1.domain[1]; i = i + parameterStep1) {
       for (let j = this.props.parameter.parameter2.domain[0]; j <= this.props.parameter.parameter2.domain[1]; j = j + parameterStep2) {
@@ -103,7 +82,58 @@ class ParametricSurfacePlot extends Component {
             .domain([d3.min(dataCoordinate, d => d[12]), d3.max(dataCoordinate, d => d[12])])
             .range(colorRange)
       }
+    
+    let dataFormatted1 = [], strokevert = [], faces = [], colorList = [];
+    for (let i = this.props.parameter.parameter1.domain[0]; i <= this.props.parameter.parameter1.domain[1]; i = i + parameterStep1) {
+      for (let j = this.props.parameter.parameter2.domain[0]; j <= this.props.parameter.parameter2.domain[1]; j = j + parameterStep2) {
+        let point = {"x": xScale(this.props.mark.position.x.function(i, j)), "y": yScale(this.props.mark.position.y.function(i, j)), "z": zScale(this.props.mark.position.z.function(i, j))}
+        dataFormatted1.push(point)
+        strokevert.push(point)
+        let pt1 = dataFormatted1.length - 1;
+        point = {"x": xScale(this.props.mark.position.x.function(i + parameterStep1, j )), "y": yScale(this.props.mark.position.y.function(i + parameterStep1, j)), "z": zScale(this.props.mark.position.z.function(i + parameterStep1, j))}
+        dataFormatted1.push(point)
+        strokevert.push(point)
+        strokevert.push(point)
+        let pt2 = dataFormatted1.length - 1;
+        point = {"x": xScale(this.props.mark.position.x.function(i + parameterStep1, j + parameterStep2)), "y": yScale(this.props.mark.position.y.function(i + parameterStep1, j + parameterStep2)), "z": zScale(this.props.mark.position.z.function(i + parameterStep1, j + parameterStep2))}
+        dataFormatted1.push(point)
+        strokevert.push(point)
+        strokevert.push(point)
+        let pt3 = dataFormatted1.length - 1;
+        point = {"x": xScale(this.props.mark.position.x.function(i, j + parameterStep2)), "y": yScale(this.props.mark.position.y.function(i, j + parameterStep2)), "z": zScale(this.props.mark.position.z.function(i, j + parameterStep2))}
+        dataFormatted1.push(point)
+        strokevert.push(point)
+        strokevert.push(point)
+        point = {"x": xScale(this.props.mark.position.x.function(i, j)), "y": yScale(this.props.mark.position.y.function(i, j)), "z": zScale(this.props.mark.position.z.function(i, j))}
+        strokevert.push(point)
+        let pt4 = dataFormatted1.length - 1;
+        faces.push([pt1,pt2,pt3]);
+        faces.push([pt1,pt3,pt4]);
+        let col1, col2, col3, col4;
+        if(this.props.mark.style.fill){
+          if (this.props.mark.style.fill.function) {
+            col1 = colorScale(this.props.mark.style.fill.function(i, j));
+            col2 = colorScale(this.props.mark.style.fill.function(i + parameterStep1, j));
+            col3 = colorScale(this.props.mark.style.fill.function(i + parameterStep1, j + parameterStep2));
+            col4 = colorScale(this.props.mark.style.fill.function(i, j + parameterStep2));
+          }
+          else {
+            col1 = this.props.mark.style.fill.color;
+            col2 = this.props.mark.style.fill.color;
+            col3 = this.props.mark.style.fill.color;
+            col4 = this.props.mark.style.fill.color;
+          }
+        }
+        colorList.push([col1,col2,col3]);
+        colorList.push([col1,col3,col4]);
+      }
+    }
 
+    let points = JSON.stringify(dataFormatted1)
+    let facesList = JSON.stringify(faces)
+    let vertexColor = JSON.stringify(colorList)
+    let strokeVertList = JSON.stringify(strokevert)
+    
     //Axis
     let xAxis, yAxis, zAxis;
 
@@ -161,23 +191,6 @@ class ParametricSurfacePlot extends Component {
     }
 
     //Adding marks
-    let marks;
-    if (this.props.mark.style.stroke){
-      if(this.props.mark.style.fill) {
-        if (this.props.mark.style.fill.function)
-          marks = dataCoordinate.map((d, i) => <a-entity key={`${i}`} plane-from-vertices={`path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}, ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])};face:true;faceColor: ${colorScale(d[12])};faceOpacity: ${this.props.mark.style.fill.opacity};stroke:true;strokeWidth:${this.props.mark.style.stroke.width};strokeColor:${this.props.mark.style.stroke.color}`} />);
-        else
-          marks = dataCoordinate.map((d, i) => <a-entity key={`${i}`} plane-from-vertices={`path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}, ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])};face:true;faceColor: ${this.props.mark.style.fill.color};faceOpacity: ${this.props.mark.style.fill.opacity};stroke:true;strokeWidth:${this.props.mark.style.stroke.width};strokeColor:${this.props.mark.style.stroke.color}`} />);
-      }
-      else
-        marks = dataCoordinate.map((d, i) => <a-entity key={`${i}`} plane-from-vertices={`path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}, ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])};face:false;stroke:true;strokeWidth:${this.props.mark.style.stroke.width};strokeColor:${this.props.mark.style.stroke.color}`} />);
-    }
-    else {
-      if (this.props.mark.style.fill.function)
-        marks = dataCoordinate.map((d, i) => <a-entity key={`${i}`} plane-from-vertices={`path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}, ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])};face:true;faceColor: ${colorScale(d[12])};faceOpacity: ${this.props.mark.style.fill.opacity};stroke:false`} />);
-      else
-        marks = dataCoordinate.map((d, i) => <a-entity key={`${i}`} plane-from-vertices={`path:${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])}, ${xScale(d[3])} ${yScale(d[4])} ${zScale(d[5])}, ${xScale(d[6])} ${yScale(d[7])} ${zScale(d[8])}, ${xScale(d[9])} ${yScale(d[10])} ${zScale(d[11])}, ${xScale(d[0])} ${yScale(d[1])} ${zScale(d[2])};face:true;faceColor: ${this.props.mark.style.fill.color};faceOpacity: ${this.props.mark.style.fill.opacity};stroke:false`} />);
-    }
     let  clickRotation = 'true',animation;
     if(this.props.animateRotation){
       clickRotation='false'
@@ -190,10 +203,23 @@ class ParametricSurfacePlot extends Component {
           repeat="indefinite"
         />
     }
+
+    
+    let stroke_bool = false, stroke_width = 1, stroke_color = '#000000', stroke_opacity = 1
+    if (this.props.mark.style.stroke){
+      stroke_bool = true;
+      if (this.props.mark.style.stroke.color)
+        stroke_color = this.props.mark.style.stroke.color
+      if (this.props.mark.style.stroke.opacity)
+        stroke_opacity = this.props.mark.style.stroke.opacity
+      if (this.props.mark.style.stroke.width)
+        stroke_width = this.props.mark.style.stroke.width
+    }
+
     return (
-      <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
+      <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`xPosition:${this.props.style.origin[0]};yPosition:${this.props.style.origin[1]};zPosition:${this.props.style.origin[2]};pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
         {animation}
-        {marks}
+        <a-frame-mesh-from-points points={points} faces={facesList} stroke_vertices={strokeVertList} stroke_bool={stroke_bool} stroke_color={stroke_color} stroke_width={stroke_width} stroke_opacity={stroke_opacity} color={vertexColor} opacity={this.props.mark.style.fill.opacity} />
         {xAxis}
         {yAxis}
         {zAxis}

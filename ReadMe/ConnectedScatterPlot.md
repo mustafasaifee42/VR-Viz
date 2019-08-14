@@ -108,6 +108,8 @@ line|object|Defines the style of the connecting line in connected scatter plot. 
 line.style|object|Defines the style of the line. __Required.__ 
 line.style.stroke.color|string|Defines the color for line. __Required.__
 line.style.stroke.opacity|float|Defines the opacity for line. __Required.__ _Value must be between 0 and 1._
+line.style.stroke.curveType|string|Defines the type of curver for line. Available vaules: `line` for straight line and `CatmullRomCurve` for curve.  __Not Required.__ _Default Value: `line`_
+line.style.stroke.width|number|Defines the stroke width of line. __Not Required.__ _Default Value: `1`_
 label|object|Defines the style of the connecting line in connected scatter plot. __Not Required.__ _If not present the labels are not shown close to the point._
 label.field|string|Defines the field in the data that will be used as the text for the labels. __Required.__
 label.style|object|Defines the style of the label. __Required.__

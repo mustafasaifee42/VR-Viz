@@ -293,39 +293,52 @@ class WaterFallPlot extends Component {
       }
 
       //Adding marks
-      let marks, line;
-      if (this.props.mark.style.stroke)
-        line = this.state.data.map((d, i) => {
-          let path = ''
-          for (let j = 0; j < xDomain.length; j++) {
-            if (j !== xDomain.length - 1)
-              path = path + ` ${xScale(xDomain[j])} ${yScale(d[xDomain[j].toString()])} ${zScale(d[this.props.mark.position.z.field])},`
-            else
-              path = path + ` ${xScale(xDomain[j])} ${yScale(d[xDomain[j].toString()])} ${zScale(d[this.props.mark.position.z.field])}`
-          }
-          if(this.props.mark.style.stroke.scaleType){
-            return <a-entity key={`${this.props.index}_Mark${i}`} plane-from-vertices={`path:${path};face:false;stroke:true;strokeColor:${strokeColorScale(d[this.props.mark.style.stroke.field])};strokeWidth:${this.props.mark.style.stroke.width}`} />
-          }
-          else
-            return <a-entity key={`${this.props.index}_Mark${i}`} plane-from-vertices={`path:${path};face:false;stroke:true;strokeColor:${this.props.mark.style.stroke.color};strokeWidth:${this.props.mark.style.stroke.width}`} />
-        })
+      let marks;
 
-      if (this.props.mark.style.fill)
-        marks = this.state.data.map((d, i) => {
-          let path = `0 0,`
-          for (let j = 0; j < xDomain.length; j++) {
-            if (j !== xDomain.length - 1)
-              path = path + ` ${xScale(xDomain[j])} ${yScale(d[xDomain[j].toString()])},`
-            else
-              path = path + ` ${xScale(xDomain[j])} ${yScale(d[xDomain[j].toString()])}`
-          }
-          path = path + `, ${xScale(xDomain[xDomain.length - 1])} 0`
-          let primitive = `primitive: map; vertices: ${path}; extrude: 0.00000001`;
-          if(this.props.mark.style.fill.scaleType) 
-            return <a-entity key={`${this.props.index}_Map${i}`} position={`0 0 ${zScale(d[this.props.mark.position.z.field])}`} geometry={primitive} material={`color: ${fillColorScale(d[this.props.mark.style.fill.field])}; side: double; opacity: ${this.props.mark.style.fill.opacity};metalness: 0.2;`} />
+      marks = this.state.data.map((d, i) => {
+        let mapShape, mapOutline
+        let path = `0 0,`
+        for (let j = 0; j < xDomain.length; j++) {
+          if (j !== xDomain.length - 1)
+            path = path + ` ${xScale(xDomain[j])} ${yScale(d[xDomain[j].toString()])},`
           else
-            return <a-entity key={`${this.props.index}_Map${i}`} position={`0 0 ${zScale(d[this.props.mark.position.z.field])} `} geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; side: double; opacity: ${this.props.mark.style.fill.opacity};metalness: 0.2;`} />
+            path = path + ` ${xScale(xDomain[j])} ${yScale(d[xDomain[j].toString()])}`
+        }
+        path = path + `, ${xScale(xDomain[xDomain.length - 1])} 0`
+        let points = path.split(', ')
+        let pntArray = points.map(el => {
+          let pnts = el.split(' ') 
+          let obj = {'x':pnts[0],'y':pnts[1], 'z':`${zScale(d[this.props.mark.position.z.field])}`}
+          return obj
         })
+        let outlineArray = []
+        pntArray.forEach((el,i) => {
+          if(i !== 0 && i !== pntArray.length - 1)
+            outlineArray.push(el)
+        })
+        if (this.props.mark.style.fill)
+          if(this.props.mark.style.fill.scaleType) 
+            mapShape = <a-frame-shape points={JSON.stringify(pntArray)} key={i} color={fillColorScale(d[this.props.mark.style.fill.field])} opacity={this.props.mark.style.fill.opacity} /> 
+          else
+            mapShape = <a-frame-shape points={JSON.stringify(pntArray)} key={i} color={this.props.mark.style.fill.color} opacity={this.props.mark.style.fill.opacity} />
+        
+        if (this.props.mark.style.stroke){
+          if(this.props.mark.style.stroke.scaleType){
+            mapOutline = <a-frame-curve-line points={JSON.stringify(outlineArray)} type={this.props.mark.style.stroke.curveType} color={strokeColorScale(d[this.props.mark.style.stroke.field])} opacity={1} stroke_width={this.props.mark.style.stroke.width} />
+          }
+          else
+            mapOutline = <a-frame-curve-line points={JSON.stringify(outlineArray)} type={this.props.mark.style.stroke.curveType} color={this.props.mark.style.stroke.color} opacity={1} stroke_width={this.props.mark.style.stroke.width} />
+        }
+        return (
+          <a-entity  key={i} >
+            {mapOutline}
+            <a-entity position={`0 0 ${zScale(d[this.props.mark.position.z.field])}`} >
+              {mapShape} 
+            </a-entity>
+          </a-entity>
+        )
+
+      })
 
       let  clickRotation = 'true',animation;
       if(this.props.animateRotation){
@@ -340,14 +353,13 @@ class WaterFallPlot extends Component {
           />
       }
       return (
-        <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]} `} rotation={this.props.style.rotation} id={this.props.index}>
+        <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`xPosition:${this.props.style.origin[0]};yPosition:${this.props.style.origin[1]};zPosition:${this.props.style.origin[2]};pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]} `} rotation={this.props.style.rotation} id={this.props.index}>
           {animation}
           {xAxis}
           {yAxis}
           {zAxis}
           {box}
           {marks}
-          {line}
         </a-entity>
       )
     }

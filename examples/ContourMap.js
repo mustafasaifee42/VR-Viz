@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import VRViz from './Component/Visualization.js'
-import mapData from './mapData/mapData.json'
 
 class App extends Component {
   render() {

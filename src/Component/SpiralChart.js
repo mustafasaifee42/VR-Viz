@@ -177,18 +177,9 @@ class SpiralChart extends Component {
 
       //Drawing SpiralCoordinates
 
-      let spiralCoordinates, shapeCoordinates;
+      let shapeCoordinates;
 
       let yPos = this.props.style.height / this.state.data.length;
-      spiralCoordinates = this.state.data.map((d, i) => {
-        let coordinates = ''
-        let angle = Math.PI * 2 / scales.length;
-        scales.forEach((d1, j) => {
-          coordinates = coordinates + ` ${d1(d[this.props.mark.vertices[j].title]) * Math.sin(j * angle)} ${i * yPos} ${0 - d1(d[this.props.mark.vertices[j].title]) * Math.cos(j * angle)} ,`
-        })
-        coordinates = coordinates + ` ${scales[0](d[this.props.mark.vertices[0].title]) * Math.sin(0)} ${i * yPos} ${0 - scales[0](d[this.props.mark.vertices[0].title]) * Math.cos(0)}`
-        return coordinates;
-      })
       shapeCoordinates = this.state.data.map((d, i) => {
         let coordinates = ''
         let angle = Math.PI * 2 / scales.length;
@@ -202,23 +193,37 @@ class SpiralChart extends Component {
 
       //Adding curves
 
-      let spiral, shapes;
-      if (this.props.mark.style.stroke)
-        spiral = this.state.data.map((d, i) => {
+      let shapes;
+      shapes = this.state.data.map((d, i) => {
+        let points = shapeCoordinates[i].split(',')
+        let pntArray = points.map(d => {
+          let pnts = d.split(' ') 
+          let obj = {'x':pnts[0],'y':pnts[1], 'z':0}
+          return obj
+        })
+        let mapShape, mapOutline
+        if (this.props.mark.style.stroke)
           if (this.props.mark.style.stroke.scaleType)
-            return <a-entity key={i} plane-from-vertices={`path:${spiralCoordinates[i]};face:false;stroke:true;strokeWidth:${this.props.mark.style.stroke.width};strokeColor:${colorScale(d[this.props.mark.style.stroke.field])}`} />
+            mapOutline = <a-frame-curve-line points={JSON.stringify(pntArray)} type={'line'} color={colorScale(d[this.props.mark.style.stroke.field])} opacity={1} stroke_width={this.props.mark.style.stroke.width} />
           else
-            return <a-entity key={i} plane-from-vertices={`path:${spiralCoordinates[i]};face:false;stroke:true;strokeWidth:${this.props.mark.style.stroke.width};strokeColor:${this.props.mark.style.stroke.color}`} />
-        })
-
-      if (this.props.mark.style.fill)
-        shapes = this.state.data.map((d, i) => {
-          let primitive = `primitive: map; vertices: ${shapeCoordinates[i]}; extrude: ${0.00001}`;
-          if (this.props.mark.style.fill.scaleType)
-            return (<a-entity key={i} geometry={primitive} material={`color: ${fillColorScale(d[this.props.mark.style.fill.field])}; metalness: 0.2; opacity:${this.props.mark.style.fill.opacity}`} position={`0 ${i * yPos} 0`} rotation={`90 0 0`} />)
-          else
-            return (<a-entity key={i}  geometry={primitive} material={`color: ${this.props.mark.style.fill.color}; metalness: 0.2; opacity:${this.props.mark.style.fill.opacity}`} position={`0 ${i * yPos} 0`} rotation={`90 0 0`} />)
-        })
+            mapOutline = <a-frame-curve-line points={JSON.stringify(pntArray)} type={'line'} color={this.props.mark.style.stroke.color} opacity={1} stroke_width={this.props.mark.style.stroke.width} />
+        
+        if (this.props.mark.style.fill){
+          if (this.props.mark.style.fill.scaleType){
+            mapShape = ( <a-frame-shape points={JSON.stringify(pntArray)} key={i} color={fillColorScale(d[this.props.mark.style.fill.field])} opacity={this.props.mark.style.fill.opacity} /> )
+          }
+          else{
+            mapShape = ( <a-frame-shape points={JSON.stringify(pntArray)} color={this.props.mark.style.fill.color} opacity={this.props.mark.style.fill.opacity} /> )
+          }
+        }
+        let mark =  (
+          <a-entity rotation='90 0 0' position={`0 ${i * yPos} 0`}  key={i}  >
+            {mapShape}
+            {mapOutline}  
+          </a-entity>
+        )
+        return mark
+      })
 
       let  clickRotation = 'true',animation;
       if(this.props.animateRotation){
@@ -233,10 +238,10 @@ class SpiralChart extends Component {
           />
       }
       return (
-        <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
+        <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`xPosition:${this.props.style.origin[0]};yPosition:${this.props.style.origin[1]};zPosition:${this.props.style.origin[2]};pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
           {animation}
-          {spiral}
           {shapes}
+          <a-box position = {`${this.props.style.origin[0]} ${this.props.style.origin[1] + this.props.style.height / 2} ${this.props.style.origin[2]}`} opacity='0' height={this.props.style.height} depth={this.props.style.width * 2} width={this.props.style.width * 2} />
         </a-entity>
       )
     }
