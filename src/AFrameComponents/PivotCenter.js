@@ -3,6 +3,9 @@ import AFRAME from 'aframe';
 
 AFRAME.registerComponent("pivot-center", {
   schema: {
+    ignoreX: {type: 'boolean', default: false},
+    ignoreY: {type: 'boolean', default: false},
+    ignoreZ: {type: 'boolean', default: false},
     pivotX: {type: 'number', default: Infinity},
     pivotY: {type: 'number', default: Infinity},
     pivotZ: {type: 'number', default: Infinity},
@@ -47,6 +50,12 @@ AFRAME.registerComponent("pivot-center", {
         yPivot = `${this.min.y + (this.max.y - this.min.y) / 2}`
       if(isNaN(this.data.pivotZ))
         zPivot = `${this.min.z + (this.max.z - this.min.z) / 2}`
+      if(this.data.ignoreX)
+        xPivot = `0`
+      if(this.data.ignoreY)
+        yPivot = `0`
+      if(this.data.ignoreZ)
+        zPivot = `0`
       this.el.setAttribute('pivot',`${xPivot - this.data.xPosition} ${yPivot - this.data.yPosition} ${zPivot - this.data.zPosition}`)
     })
   }

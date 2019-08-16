@@ -334,6 +334,7 @@ class ConnectedScatterPlot extends Component {
           {yAxis}
           {zAxis}
           {box}
+          <a-box width={this.props.style.dimensions.width} height={this.props.style.dimensions.height} depth={this.props.style.dimensions.depth} position={`${this.props.style.dimensions.width / 2} ${this.props.style.dimensions.height / 2} ${this.props.style.dimensions.depth / 2}`} opacity ={0}/>
         </a-entity>
       )
     }

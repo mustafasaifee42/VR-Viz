@@ -111,15 +111,7 @@ class FlowMap extends Component {
 
       // Getting domain
 
-      let colorDomain, opacityDomain;
-
-      if (this.props.mark.flowlines.style.opacity.scaleType) {
-        if (!this.props.mark.flowlines.style.opacity.domain) {
-          opacityDomain = GetDomain(this.state.data, this.props.mark.flowlines.style.opacity.field, this.props.mark.flowlines.style.opacity.scaleType, this.props.mark.flowlines.style.opacity.startFromZero)
-        } else
-          opacityDomain = this.props.mark.flowlines.style.opacity.domain
-      }
-
+      let colorDomain;
       if (this.props.mark.flowlines.style.stroke.scaleType) {
         if (!this.props.mark.flowlines.style.stroke.color) {
           colorDomain = GetDomain(this.state.data, this.props.mark.flowlines.style.stroke.field, this.props.mark.flowlines.style.stroke.scaleType, this.props.mark.flowlines.style.stroke.startFromZero)
@@ -129,11 +121,7 @@ class FlowMap extends Component {
 
       //Adding scales
 
-      let colorScale, opacityScale;
-      if (this.props.mark.flowlines.style.opacity.scaleType)
-        opacityScale = d3.scaleLinear()
-          .domain(opacityDomain)
-          .range(this.props.mark.flowlines.style.opacity.value)
+      let colorScale;
 
       if (this.props.mark.flowlines.style.stroke.scaleType) {
         let colorRange = d3.schemeCategory10;
@@ -151,28 +139,35 @@ class FlowMap extends Component {
 
 
       //Drawing Map
-
+      let extrusionArr = [], colorArray = [], boundingBox = [];
       let geoData = GetMapShape(this.props.mark.map.data, this.props.mark.map.projection, this.props.mark.mapScale, this.props.mark.mapOrigin, this.props.mark.map.shapeIdentifier, this.props.mark.map.shapeKey);
-
-      let pointsArray = geoData.map((d, i) => {
-        let points = d.vertices.split(', ')
+      let extrusionHeight = this.props.mark.map.style.extrusion.value
+      let pointsArray = geoData.map((el, i) => {
+        let points = el.vertices.split(', ')
         let pntArray = points.map(d => {
           let pnts = d.split(' ') 
-          let obj = {'x':pnts[0],'y':pnts[1]}
+          let obj = {'x':parseFloat(pnts[0]),'y':parseFloat(pnts[1])}
           return obj
         })
+        extrusionArr.push(extrusionHeight)
+        colorArray.push(this.props.mark.map.style.fill.color)
+
+        let min = {"x": d3.min(pntArray, d => d["x"]), "y": d3.min(pntArray, d => d["y"])}
+        let max = {"x": d3.max(pntArray, d => d["x"]), "y": d3.max(pntArray, d => d["y"])}
+        let box = <a-box key ={i} width={max.x - min.x} height={max.y - min.y} depth={extrusionHeight} position={`${(max.x + min.x) / 2} ${(max.y + min.y) / 2} ${extrusionHeight / 2}`} opacity={0}/>
+        boundingBox.push(box)
         return pntArray
       })
 
-      let extrusionHeight = this.props.mark.map.style.extrusion.value
-        
+      
+      
       let stroke = false, strokeColor = '#000000'
       if (this.props.mark.map.style.stroke){
         stroke = true;
         strokeColor = this.props.mark.map.style.stroke.color
       }
 
-      let mapShape = <a-frame-map points={JSON.stringify(pointsArray)} stroke_bool={stroke} stroke_color={strokeColor} extrude={extrusionHeight} color={this.props.mark.map.style.fill.color} opacity={this.props.mark.map.style.fill.opacity} />
+      let mapShape = <a-frame-map points={JSON.stringify(pointsArray)} stroke_bool={stroke} stroke_color={strokeColor} extrude={JSON.stringify(extrusionArr)} color={JSON.stringify(colorArray)} opacity={this.props.mark.map.style.fill.opacity} />
     
 
       let mapOutline = <a-frame-map-outline points={JSON.stringify(pointsArray)} stroke_bool={stroke} stroke_color={strokeColor} extrude={extrusionHeight}  />
@@ -229,7 +224,20 @@ class FlowMap extends Component {
         }
       }
 
-      let curves = this.state.data.map((d, i) => {
+
+      let curviness = 0.67;
+      if (this.props.mark.flowlines.style.stroke.curviness) {
+        curviness = this.props.mark.flowlines.style.stroke.curviness
+      }
+
+      let resolution = 20;
+      if (this.props.mark.flowlines.style.stroke.resolution) {
+        resolution = this.props.mark.flowlines.style.stroke.resolution
+      }
+
+      let opacity = this.props.mark.flowlines.style.opacity, vertexColorArray = [];
+      
+      let curvesPoints = this.state.data.map((d, i) => {
 
         let source_position = GetMapCoordinates(d.source_longitude, d.source_latitude, this.props.mark.map.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
 
@@ -256,31 +264,15 @@ class FlowMap extends Component {
           pointList.push({"x":`${d[0]}`,"y":`${d[1]}`,"z":`${d[2]}`})
         })
 
-        let opacity = this.props.mark.flowlines.style.opacity.value;
-        if (this.props.mark.flowlines.style.opacity.scaleType) {
-          opacity = opacityScale(d[this.props.mark.flowlines.style.opacity.field])
-        }
-
         let color = this.props.mark.flowlines.style.stroke.color;
         if (this.props.mark.flowlines.style.stroke.scaleType) {
           color = colorScale(d[this.props.mark.flowlines.style.stroke.field])
         }
-
-        let curviness = 0.67;
-        if (this.props.mark.flowlines.style.stroke.curviness) {
-          curviness = this.props.mark.flowlines.style.stroke.curviness
-        }
-
-        let resolution = 500;
-        if (this.props.mark.flowlines.style.stroke.resolution) {
-          resolution = this.props.mark.flowlines.style.stroke.resolution
-        }
-
-        let curve = <a-frame-flowLine  key = {i} points={JSON.stringify(pointList)} color={color} opacity={opacity} curviness={curviness} resolution={resolution}/>
-
-        return curve
+        vertexColorArray.push(color)
+        return pointList
 
       });
+      let curves = <a-frame-flowLine points={JSON.stringify(curvesPoints)} color={JSON.stringify(vertexColorArray)} opacity={opacity} curviness={curviness} resolution={resolution}/>
 
       let  clickRotation = 'true',animation;
       if(this.props.animateRotation){
@@ -302,6 +294,7 @@ class FlowMap extends Component {
           {sourceNode}
           {targetNode}
           {curves}
+          {boundingBox}
         </a-entity>
       )
     }

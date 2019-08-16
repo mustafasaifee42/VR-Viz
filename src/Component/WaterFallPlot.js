@@ -293,7 +293,10 @@ class WaterFallPlot extends Component {
       }
 
       //Adding marks
-      let marks;
+      let marks, resolution = 20;
+
+      if(this.props.mark.style.stroke.resolution)
+        resolution = this.props.mark.style.stroke.resolution
 
       marks = this.state.data.map((d, i) => {
         let mapShape, mapOutline
@@ -324,10 +327,10 @@ class WaterFallPlot extends Component {
         
         if (this.props.mark.style.stroke){
           if(this.props.mark.style.stroke.scaleType){
-            mapOutline = <a-frame-curve-line points={JSON.stringify(outlineArray)} type={this.props.mark.style.stroke.curveType} color={strokeColorScale(d[this.props.mark.style.stroke.field])} opacity={1} stroke_width={this.props.mark.style.stroke.width} />
+            mapOutline = <a-frame-curve-line points={JSON.stringify(outlineArray)} type={this.props.mark.style.stroke.curveType} resolution={resolution} color={strokeColorScale(d[this.props.mark.style.stroke.field])} opacity={1} stroke_width={this.props.mark.style.stroke.width} />
           }
           else
-            mapOutline = <a-frame-curve-line points={JSON.stringify(outlineArray)} type={this.props.mark.style.stroke.curveType} color={this.props.mark.style.stroke.color} opacity={1} stroke_width={this.props.mark.style.stroke.width} />
+            mapOutline = <a-frame-curve-line points={JSON.stringify(outlineArray)} type={this.props.mark.style.stroke.curveType} resolution={resolution} color={this.props.mark.style.stroke.color} opacity={1} stroke_width={this.props.mark.style.stroke.width} />
         }
         return (
           <a-entity  key={i} >
@@ -360,6 +363,7 @@ class WaterFallPlot extends Component {
           {zAxis}
           {box}
           {marks}
+          <a-box width={this.props.style.dimensions.width} height={this.props.style.dimensions.height} depth={this.props.style.dimensions.depth} position={`${this.props.style.dimensions.width / 2} ${this.props.style.dimensions.height / 2} ${this.props.style.dimensions.depth / 2}`} opacity ={0}/>
         </a-entity>
       )
     }

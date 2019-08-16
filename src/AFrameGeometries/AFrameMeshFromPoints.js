@@ -10,7 +10,7 @@ AFRAME.registerPrimitive('a-frame-mesh-from-points', {
     faces: 'aframemeshfrompoints.faces',
     color:'aframemeshfrompoints.color',
     opacity: 'aframemeshfrompoints.opacity',
-    materialType: 'aframemeshfrompoints.materialType',
+    material_type: 'aframemeshfrompoints.material_type',
     stroke_vertices: 'aframemeshfrompoints.stroke_vertices',
     stroke_bool: 'aframemeshfrompoints.stroke_bool',
     stroke_width: 'aframemeshfrompoints.stroke_width',
@@ -25,7 +25,7 @@ AFRAME.registerComponent("aframemeshfrompoints", {
     faces:{type:'string',default:'[]'},
     color:{type:'string',default:'[]'},
     opacity:{type:'number',default:1},
-    materialType:{type:'string',default:'standard'},
+    material_type:{type:'string',default:'standard'},
     stroke_vertices:{type:'string'},
     stroke_bool: {type:'boolean',default:false},
     stroke_width: {type:'number',default:1},
@@ -63,7 +63,6 @@ AFRAME.registerComponent("aframemeshfrompoints", {
     geometry.mergeVertices();
     let meshObj =  new THREE.Mesh( geometry, material ) 
     meshObj.geometry.computeBoundingBox();
-    let cent = meshObj.geometry.boundingBox.getCenter(), size = meshObj.geometry.boundingBox.getSize()
     meshObj.geometry = new THREE.BufferGeometry().fromGeometry(meshObj.geometry)
     this.model.add( meshObj )
     let lineGeometry = new THREE.Geometry();
@@ -78,12 +77,5 @@ AFRAME.registerComponent("aframemeshfrompoints", {
     } ) );
     if(this.data.stroke_bool)
       this.model.add(line)
-    let box = document.createElement('a-box');
-    box.setAttribute('position',`${cent.x} ${cent.y} ${cent.z}`)
-    box.setAttribute('width',`${size.x}`)
-    box.setAttribute('height',`${size.y}`)
-    box.setAttribute('depth',`${size.z}`)
-    box.setAttribute('opacity',0)
-    this.el.appendChild(box);
   }
 });

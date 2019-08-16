@@ -78,6 +78,8 @@ flowlines.style.stroke.domain|array|Defines the domain for fill. __Not Required.
 flowlines.style.stroke.color|array or string|Defines the color for fill. __Not Required if flowlines.style.stroke.scaleType is present, else required. Default value: d3.schemeCategory10__ _If flowlines.style.stroke.scaleType is not present the this needs to be a string otherwise an array._
 flowlines.style.stroke.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if flowlines.style.stroke.scaleType is `linear`._
 flowlines.style.stroke.color|string or array of string|Defines the stroke of the flowlines. __Not Required if flowlines.style.stroke.scaleType is present, else required. Default value: d3.schemeCategory10__ _If flowlines.style.stroke.scaleType is not present the this needs to be a string otherwise an array._
+flowlines.style.stroke.resolution|number|Defines how edgy the curve for the flow is. __Not Required. Default value: 20__ _Smaller number is recommended for better performance._
+flowlines.style.stroke.curviness|number|Defines the curve of the flow line. __Not Required. Default value: 0.67__ _Must range form 0 to 1._
 flowline.height|object|Defines the peak height which flowlines can achieve. __Not Required. If not present the height is calculated depending upon the distance between the source and target.__
 flowline.height.field|string|Defines the field in the data that will be mapped as height of the flowline. __Required.__
 flowline.height.scaleFactor|float|Defines the factor with which the height is scaled. __Required.__

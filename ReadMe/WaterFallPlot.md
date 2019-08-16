@@ -55,6 +55,8 @@ style.fill.color|string|Defines the color for fill. __Required.__
 style.stroke|object|Defines the stroke for the mesh. __Not Required. If not present the mesh are not stroked.__ _This can be used to design a mesh to make the mesh more readable._
 style.stroke.width|float|Defines the stroke of the mesh.  __Required.__
 style.stroke.color|string|Defines the stroke color for  mesh. __Required.__
+style.stroke.curveType|string|Defines the type of curver for line. Available vaules: `line` for straight line, `CatmullRomCurve` for curve and `lineSegment` for discontinuos line segments.  __Not Required.__ _Default Value: `line`._ Even if the stroke is curved the fill will remain edgy, therefore it is advisable to use `style.fill.opacity` to `0` if `curveType` is `CatmullRomCurve`. 
+style.stroke.resolution|number|Defines how edgy the curve for the flow is. __Not Required. Default value: 20__ _Smaller number is recommended for better performance. Only applicable if `style.stroke.curveType` is `CatmullRomCurve`_
 
 ### [Example JS of the Visualization](../examples/WaterfallPlot.js)
 

@@ -146,17 +146,24 @@ class MapStackedBarChart extends Component {
 
       let geoData = GetMapShape(this.props.mark.map.data, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin, this.props.mark.map.shapeIdentifier, this.props.mark.map.shapeKey);
 
+      let extrusionHeight = this.props.mark.map.style.extrusion.value, extrusionArr = [], colorArray = [], boundingBox = [];
+      
       let pointsArray = geoData.map((d, i) => {
         let points = d.vertices.split(', ')
         let pntArray = points.map(d => {
           let pnts = d.split(' ') 
-          let obj = {'x':pnts[0],'y':pnts[1]}
+          let obj = {'x':parseFloat(pnts[0]),'y':parseFloat(pnts[1])}
           return obj
         })
+        extrusionArr.push(extrusionHeight)
+        colorArray.push(this.props.mark.map.style.fill.color)
+
+        let min = {"x": d3.min(pntArray, d => d["x"]), "y": d3.min(pntArray, d => d["y"])}
+        let max = {"x": d3.max(pntArray, d => d["x"]), "y": d3.max(pntArray, d => d["y"])}
+        let box = <a-box key ={i} width={max.x - min.x} height={max.y - min.y} depth={extrusionHeight} position={`${max.x / 2 + min.x / 2} ${(max.y + min.y) / 2} ${extrusionHeight / 2}`} opacity={0}/>
+        boundingBox.push(box)
         return pntArray
       })
-
-      let extrusionHeight = this.props.mark.map.style.extrusion.value
         
       let stroke = false, strokeColor = '#000000'
       if (this.props.mark.map.style.stroke){
@@ -164,7 +171,7 @@ class MapStackedBarChart extends Component {
         strokeColor = this.props.mark.map.style.stroke.color
       }
 
-      let mapShape = <a-frame-map points={JSON.stringify(pointsArray)} stroke_bool={stroke} stroke_color={strokeColor} extrude={extrusionHeight} color={this.props.mark.map.style.fill.color} opacity={this.props.mark.map.style.fill.opacity} />
+      let mapShape = <a-frame-map points={JSON.stringify(pointsArray)} stroke_bool={stroke} stroke_color={strokeColor} extrude={JSON.stringify(extrusionArr)} color={JSON.stringify(colorArray)} opacity={this.props.mark.map.style.fill.opacity} />
     
 
       let mapOutline = <a-frame-map-outline points={JSON.stringify(pointsArray)} stroke_bool={stroke} stroke_color={strokeColor} extrude={extrusionHeight}  />
@@ -186,7 +193,7 @@ class MapStackedBarChart extends Component {
               hoverText = this.props.mark.bars.mouseOver.label.value(d1.data).replace('Label', `${d.key}`).replace('LabelValue', `${d1.data[d.key]}`)
           }
           return <Shape
-            key={`${this.props.index}_Shape${i}`}
+            key={`${j}`}
             type={this.props.mark.bars.type}
             color={`${color}`}
             opacity={this.props.mark.bars.style.fill.opacity}
@@ -222,7 +229,8 @@ class MapStackedBarChart extends Component {
           {animation}
           {mapShape}
           {mapOutline}
-          {marks}
+          {marks}    
+          {boundingBox}      
         </a-entity>
       )
     }

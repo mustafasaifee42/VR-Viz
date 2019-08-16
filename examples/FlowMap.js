@@ -75,9 +75,7 @@ class App extends Component {
               },
               'flowlines': {
                 'style': {
-                  'opacity': {
-                    'value': 0.4,
-                  },
+                  'opacity': 0.4,
                   'stroke': {
                     'color': '#2196f3',
                   },

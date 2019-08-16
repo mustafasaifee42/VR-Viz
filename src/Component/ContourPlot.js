@@ -134,6 +134,10 @@ class ContourPlot extends Component {
           repeat="indefinite"
         />
     }
+    let resolution = 20;
+    if (this.props.mark.style.resolution) {
+      resolution = this.props.mark.style.resolution
+    }
     return (
       <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`xPosition:${this.props.style.origin[0]};yPosition:${this.props.style.origin[1]};zPosition:${this.props.style.origin[2]};pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
         {animation}
@@ -141,7 +145,7 @@ class ContourPlot extends Component {
         {yAxis}
         {zAxis}
         {box}
-        <a-frame-curve-line points={JSON.stringify(pointList)} type={this.props.mark.style.curveType} color={this.props.mark.style.color} opacity={this.props.mark.style.opacity} resolution={this.props.mark.style.resolution} />
+        <a-frame-curve-line points={JSON.stringify(pointList)} type={this.props.mark.style.curveType} color={this.props.mark.style.color} opacity={this.props.mark.style.opacity} resolution={resolution} />
       </a-entity>
     )
   }

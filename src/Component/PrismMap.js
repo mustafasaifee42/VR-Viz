@@ -159,33 +159,45 @@ class PrismMap extends Component {
 
       //Adding marks
 
-      let shapes;
+      let pts, extrusionArr = [], colorArray = [], boundingBox = [];
+      let stroke = false, strokeColor = '#000000'
+      if (this.props.mark.style.stroke){
+        stroke = true;
+        strokeColor = this.props.mark.style.stroke.color
+      }
       let geoData = GetMapShape(this.props.mark.data, this.props.mark.projection, this.props.mark.mapScale, this.props.mark.mapOrigin, this.props.mark.shapeIdentifier, this.props.mark.shapeKey);
       if (this.props.mark.projection){
-        shapes = geoData.map((d, i) => {
+        pts = geoData.map((d, i) => {
           let points = d.vertices.split(', ')
           let pointsArray = points.map(d => {
             let pnts = d.split(' ') 
-            let obj = {'x':pnts[0],'y':pnts[1]}
+            let obj = {'x':parseFloat(pnts[0]),'y':parseFloat(pnts[1])}
             return obj
           })
           let extrusionHeight = extrusionScale(data[d['code']]['value'])
           if (extrusionHeight === 0)
             extrusionHeight = 0.000000000001;
-          
-          let stroke = false, strokeColor = '#000000'
-          if (this.props.mark.style.stroke){
-            stroke = true;
-            strokeColor = this.props.mark.style.stroke.color
-          }
+          extrusionArr.push(extrusionHeight)
           if (this.props.mark.style.fill.scaleType)
-            return (<a-frame-map points={JSON.stringify([pointsArray])} stroke_bool={stroke} stroke_color={strokeColor} key={i} extrude={extrusionHeight} color={colorScale(data[d['code']]['colorField'])} opacity={this.props.mark.style.fill.opacity} />)
+            colorArray.push(colorScale(data[d['code']]['colorField']))
           else
-            return (<a-frame-map points={JSON.stringify([pointsArray])} stroke_bool={stroke} stroke_color={strokeColor} key={i} extrude={extrusionHeight} color={this.props.mark.style.fill.color} opacity={this.props.mark.style.fill.opacity} />)
+            colorArray.push(this.props.mark.style.fill.color)
+
+          let min = {"x": d3.min(pointsArray, d => d["x"]), "y": d3.min(pointsArray, d => d["y"])}
+          let max = {"x": d3.max(pointsArray, d => d["x"]), "y": d3.max(pointsArray, d => d["y"])}
+          let box = <a-box key ={i} width={max.x - min.x} height={max.y - min.y} depth={extrusionHeight} position={`${(max.x + min.x) / 2} ${(max.y + min.y) / 2} ${extrusionHeight / 2}`} opacity={0}/>
+          boundingBox.push(box)
+          return pointsArray
         })
       } else {
 
       }
+      let shapes;
+      if (this.props.mark.style.fill.scaleType)
+        shapes = (<a-entity aframemap={`points:${JSON.stringify(pts)};stroke_bool:${stroke};stroke_color:${strokeColor};extrude:${JSON.stringify(extrusionArr)};color:${JSON.stringify(colorArray)};opacity:${this.props.mark.style.fill.opacity}`} />)
+      else
+        shapes = (<a-frame-map points={JSON.stringify(pts)} stroke_bool={stroke} stroke_color={strokeColor} extrude={JSON.stringify(extrusionArr)} color={JSON.stringify(colorArray)} opacity={this.props.mark.style.fill.opacity} />)
+  
       let  clickRotation = 'true',animation;
       if(this.props.animateRotation){
         clickRotation='false'
@@ -202,6 +214,7 @@ class PrismMap extends Component {
         <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`xPosition:${this.props.style.origin[0]};yPosition:${this.props.style.origin[1]};zPosition:${this.props.style.origin[2]};pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  rotation={this.props.mark.rotation} position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} id={this.props.index}>
           {animation}
           {shapes}
+          {boundingBox}
         </a-entity>
       )
     }

@@ -47,6 +47,8 @@ position.z.function|function|Defines the function for z position. __Required.__
 style|object|Defines the style of the contour. __Required__
 style.opacity|float|Defines the opacity of the contour. __Required.__ _Value must be between 0 and 1._
 style.color|string|Defines the color for contour. __Required.__
+style.curveType|string|Defines the type of curver for line. Available vaules: `line` for straight line, `CatmullRomCurve` for curve and `lineSegment` for discontinuos line segments.  __Not Required.__ _Default Value: `line`_
+style.resolution|number|Defines how edgy the curve for the flow is. __Not Required. Default value: 20__ _Smaller number is recommended for better performance. Only applicable if `style.curveType` is `CatmullRomCurve`_
 
 ## `parameter` Object in Graph Props (Required)
 

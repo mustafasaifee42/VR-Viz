@@ -204,16 +204,16 @@ class SpiralChart extends Component {
         let mapShape, mapOutline
         if (this.props.mark.style.stroke)
           if (this.props.mark.style.stroke.scaleType)
-            mapOutline = <a-frame-curve-line points={JSON.stringify(pntArray)} type={'line'} color={colorScale(d[this.props.mark.style.stroke.field])} opacity={1} stroke_width={this.props.mark.style.stroke.width} />
+            mapOutline = <a-frame-curve-line points={JSON.stringify(pntArray)} key={i} type={'line'} color={colorScale(d[this.props.mark.style.stroke.field])} opacity={1} stroke_width={this.props.mark.style.stroke.width} />
           else
-            mapOutline = <a-frame-curve-line points={JSON.stringify(pntArray)} type={'line'} color={this.props.mark.style.stroke.color} opacity={1} stroke_width={this.props.mark.style.stroke.width} />
+            mapOutline = <a-frame-curve-line points={JSON.stringify(pntArray)} key={i} type={'line'} color={this.props.mark.style.stroke.color} opacity={1} stroke_width={this.props.mark.style.stroke.width} />
         
         if (this.props.mark.style.fill){
           if (this.props.mark.style.fill.scaleType){
             mapShape = ( <a-frame-shape points={JSON.stringify(pntArray)} key={i} color={fillColorScale(d[this.props.mark.style.fill.field])} opacity={this.props.mark.style.fill.opacity} /> )
           }
           else{
-            mapShape = ( <a-frame-shape points={JSON.stringify(pntArray)} color={this.props.mark.style.fill.color} opacity={this.props.mark.style.fill.opacity} /> )
+            mapShape = ( <a-frame-shape points={JSON.stringify(pntArray)} key={i} color={this.props.mark.style.fill.color} opacity={this.props.mark.style.fill.opacity} /> )
           }
         }
         let mark =  (
@@ -241,7 +241,7 @@ class SpiralChart extends Component {
         <a-entity click-rotation={`enabled:${clickRotation}`} pivot-center={`xPosition:${this.props.style.origin[0]};yPosition:${this.props.style.origin[1]};zPosition:${this.props.style.origin[2]};pivotX:${this.props.style.xPivot};pivotY:${this.props.style.yPivot};pivotZ:${this.props.style.zPivot}`}  position={`${this.props.style.origin[0]} ${this.props.style.origin[1]} ${this.props.style.origin[2]}`} rotation={this.props.style.rotation} id={this.props.index}>
           {animation}
           {shapes}
-          <a-box position = {`${this.props.style.origin[0]} ${this.props.style.origin[1] + this.props.style.height / 2} ${this.props.style.origin[2]}`} opacity='0' height={this.props.style.height} depth={this.props.style.width * 2} width={this.props.style.width * 2} />
+          <a-box position = {`0 ${this.props.style.height / 2} 0`} opacity='0' height={this.props.style.height} depth={this.props.style.width * 2} width={this.props.style.width * 2} />
         </a-entity>
       )
     }
