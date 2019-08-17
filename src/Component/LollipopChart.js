@@ -353,7 +353,6 @@ class LollipopChart extends Component {
           color = stemColorScale(d[this.props.mark.droplines.style.fill.field])
         }
         let position = `${xScale(d[this.props.mark.position.x.field]) + width / 2} ${yScale(d[this.props.mark.position.y.field]) / 2} ${zScale(d[this.props.mark.position.z.field]) + depth / 2}`
-        
         return <Shape
           key={`${this.props.index}_Shape${i}`}
           type={'cylinder'}

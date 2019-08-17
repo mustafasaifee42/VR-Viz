@@ -41,33 +41,34 @@ class App extends Component {
             {
               'type': 'LollipopChart',
               'data': {
-                'dataFile': 'data/population.csv',
+                'dataFile': "data/barGraph.csv",
                 'fileType': 'csv',
-                'fieldDesc': [['State', 'text'], ['AgeGroup', 'text'], ['Population', 'number']]
+                'fieldDesc': [['Year', 'text'], ['Month', 'text'], ['Tornadoes', 'number'], ['Deaths', 'number']]
               },
               'style': {
                 'origin': [0, 0, 0],
                 'dimensions': {
                   'width': 10,
-                  'height': 2,
-                  'depth': 2,
+                  'height': 10,
+                  'depth': 10,
                 },
               },
               'mark': {
                 'type': 'box',
                 'position': {
-                  'x': {
-                    'scaleType': 'ordinal',
-                    'field': 'State',
-                  },
                   'y': {
                     'scaleType': 'linear',
                     'startFromZero': true,
-                    'field': 'Population',
+                    'field': 'Tornadoes',
+                  },
+                  'x': {
+                    'scaleType': 'ordinal',
+                    'field': 'Month',
+                    'domain': ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
                   },
                   'z': {
                     'scaleType': 'ordinal',
-                    'field': 'AgeGroup',
+                    'field': 'Year',
                   }
                 },
                 'style': {
@@ -81,8 +82,8 @@ class App extends Component {
                   'fill': {
                     'opacity': 0.8,
                     'scaleType': 'linear',
-                    'field': 'Population',
-                    'color': ['#b71c1c', '#2196f3'],
+                    'field': 'Deaths',
+                    'color': ['red', 'green'],
                   },
                 },
                 'droplines': {
@@ -91,28 +92,9 @@ class App extends Component {
                     'fill': {
                       'opacity': 0.8,
                       'scaleType': 'linear',
-                      'field': 'Population',
-                      'color': ['#b71c1c', '#2196f3'],
+                      'field': 'Deaths',
+                      'color': ['red', 'green'],
                     },
-                  }
-                },
-                'mouseOver': {
-                  'focusedObject': {
-                    'opacity': 1,
-                  },
-                  'nonFocusedObject': {
-                    'opacity': 0.2,
-                  },
-                  'label': {
-                    'value': (d) => `State:${d.State}\nAge Group:${d.AgeGroup}\nPopulation:${d.Population}`,
-                    'align': 'center',
-                    'width': 0.5,
-                    'height': 0.5,
-                    'wrapCount': 30,
-                    'lineHeight': 50,
-                    'backgroundColor': '#fff',
-                    'backgroundOpacity': 0.9,
-                    'fontColor': '#333',
                   }
                 }
               },
