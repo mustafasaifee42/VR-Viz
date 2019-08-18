@@ -519,5 +519,6 @@ duration|int|Defines the timeperiod of the animation. The value is in millisecon
 * Multiple a-frame screens cannot be embedded in the same page [(https://github.com/aframevr/aframe/issues/916)](https://github.com/aframevr/aframe/issues/916)
 * Ticks in Spiral chart is not working
 * Holes in the maps don't work (for example Lesotho in South Africa)
+* While using multiple graphs there is a possibility that rotation on drag might not rotate the graph from there center point in that case user might have to add the pivot points manually in json specification.
 * ~~Grid in the axes doesnt work right now~~
 * ~~Titles of the axes doesnt work right now~~
