@@ -331,6 +331,14 @@ class LollipopChart extends Component {
         }
         else
           radiusValue = this.props.mark.style.radius.value
+        
+        let className = 'clickable', idName
+        if (typeof this.props.mark.class === "function"){
+          className =  `clickable ${this.props.mark.class(d,i)}`
+        }
+        if (typeof this.props.mark.id === "function"){
+          idName =  this.props.mark.id(d,i)
+        }
         return <Shape
           key={`${this.props.index}_Shape${i}`}
           type={this.props.mark.type}
@@ -345,6 +353,8 @@ class LollipopChart extends Component {
           hover={this.props.mark.mouseOver}
           hoverText={hoverText}
           graphID={this.props.index}
+          class={className}
+          id={idName}
         />
       });
       let stem = this.state.data.map((d, i) => {
@@ -353,6 +363,14 @@ class LollipopChart extends Component {
           color = stemColorScale(d[this.props.mark.droplines.style.fill.field])
         }
         let position = `${xScale(d[this.props.mark.position.x.field]) + width / 2} ${yScale(d[this.props.mark.position.y.field]) / 2} ${zScale(d[this.props.mark.position.z.field]) + depth / 2}`
+        
+        let className = 'clickable', idName
+        if (typeof this.props.mark.droplines.class === "function"){
+          className =  `clickable ${this.props.mark.class(d,i)}`
+        }
+        if (typeof this.props.mark.id === "function"){
+          idName =  this.props.mark.droplines.id(d,i)
+        }
         return <Shape
           key={`${this.props.index}_Shape${i}`}
           type={'cylinder'}
@@ -367,10 +385,14 @@ class LollipopChart extends Component {
           hover={false}
           hoverText={''}
           graphID={this.props.index}
+          class={className}
+          id={idName}
         />
       });
 
-      let  clickRotation = 'true',animation;
+      let  clickRotation = 'false',animation;
+      if(this.props.rotationOnDrag)
+        clickRotation = 'true'
       if(this.props.animateRotation){
         clickRotation='false'
         animation  = <a-animation
@@ -391,7 +413,6 @@ class LollipopChart extends Component {
           {yAxis}
           {zAxis}
           {box}
-          <a-box width={this.props.style.dimensions.width} height={this.props.style.dimensions.height} depth={this.props.style.dimensions.depth} position={`${this.props.style.dimensions.width / 2} ${this.props.style.dimensions.height / 2} ${this.props.style.dimensions.depth / 2}`} opacity ={0}/>
         </a-entity>
       )
     }

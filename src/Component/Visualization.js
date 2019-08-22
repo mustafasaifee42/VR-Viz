@@ -176,7 +176,7 @@ class VRViz extends Component {
       if (this.props.scene['3D-objects']) {
         obj = this.props.scene['3D-objects'].map((item, i) => {
           return (
-            <a-assets>
+            <a-assets key={i}>
               <a-asset-item id={item.objectID} src={item.objectFile} />
               <a-asset-item id={item.materialID} src={item.materialFile} />
             </a-assets>
@@ -205,6 +205,7 @@ class VRViz extends Component {
                 <BarGraph
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -224,6 +225,7 @@ class VRViz extends Component {
                 <BarGraph
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -245,6 +247,7 @@ class VRViz extends Component {
                 <ConnectedScatterPlot
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -264,6 +267,7 @@ class VRViz extends Component {
                 <ConnectedScatterPlot
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -290,6 +294,7 @@ class VRViz extends Component {
                 <ContourMap
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -307,6 +312,7 @@ class VRViz extends Component {
                 <ContourMap
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -329,6 +335,7 @@ class VRViz extends Component {
                 <ContourPlot
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   style={d.style}
                   mark={d.mark}
                   xAxis={d.axis['x-axis']}
@@ -347,6 +354,7 @@ class VRViz extends Component {
                 <ContourPlot
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   style={d.style}
                   mark={d.mark}
                   index={`Graph${i}`}
@@ -367,6 +375,7 @@ class VRViz extends Component {
                 <FlowMap
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -383,6 +392,7 @@ class VRViz extends Component {
                 <FlowMap
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -404,6 +414,7 @@ class VRViz extends Component {
                 <ForceDirectedGraph
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -420,6 +431,7 @@ class VRViz extends Component {
                 <ForceDirectedGraph
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -441,6 +453,7 @@ class VRViz extends Component {
                 <MapBarChart
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -457,6 +470,7 @@ class VRViz extends Component {
                 <MapBarChart
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -478,6 +492,7 @@ class VRViz extends Component {
                 <MapStackedBarChart
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -494,6 +509,7 @@ class VRViz extends Component {
                 <MapStackedBarChart
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -515,6 +531,7 @@ class VRViz extends Component {
                 <ParametricCurvePlot
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   style={d.style}
                   mark={d.mark}
                   xAxis={d.axis['x-axis']}
@@ -534,6 +551,7 @@ class VRViz extends Component {
                 <ParametricCurvePlot
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   style={d.style}
                   mark={d.mark}
                   parameter={d.parameter}
@@ -555,6 +573,7 @@ class VRViz extends Component {
                 <ParametricSurfacePlot
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   style={d.style}
                   mark={d.mark}
                   xAxis={d.axis['x-axis']}
@@ -574,6 +593,7 @@ class VRViz extends Component {
                 <ParametricSurfacePlot
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   style={d.style}
                   mark={d.mark}
                   parameter={d.parameter}
@@ -595,6 +615,7 @@ class VRViz extends Component {
                 <PointCloud
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -611,6 +632,7 @@ class VRViz extends Component {
                 <PointCloud
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -632,6 +654,7 @@ class VRViz extends Component {
                 <PrismMap
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -648,6 +671,7 @@ class VRViz extends Component {
                 <PrismMap
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -669,6 +693,7 @@ class VRViz extends Component {
                 <ScatterPlot
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -688,6 +713,7 @@ class VRViz extends Component {
                 <ScatterPlot
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -709,6 +735,7 @@ class VRViz extends Component {
                 <StackedBarGraph
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -728,6 +755,7 @@ class VRViz extends Component {
                 <StackedBarGraph
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -749,6 +777,7 @@ class VRViz extends Component {
                 <SurfacePlot
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   style={d.style}
                   mark={d.mark}
                   xAxis={d.axis['x-axis']}
@@ -767,6 +796,7 @@ class VRViz extends Component {
                 <SurfacePlot
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   style={d.style}
                   mark={d.mark}
                   index={`Graph${i}`}
@@ -787,6 +817,7 @@ class VRViz extends Component {
                 <TreeMap
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -803,6 +834,7 @@ class VRViz extends Component {
                 <TreeMap
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -824,6 +856,7 @@ class VRViz extends Component {
                 <WaterFallPlot
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -843,6 +876,7 @@ class VRViz extends Component {
                 <WaterFallPlot
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -864,6 +898,7 @@ class VRViz extends Component {
                 <MeshPlot
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -883,6 +918,7 @@ class VRViz extends Component {
                 <MeshPlot
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -904,6 +940,7 @@ class VRViz extends Component {
                 <RectangleChart
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -923,6 +960,7 @@ class VRViz extends Component {
                 <RectangleChart
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -944,6 +982,7 @@ class VRViz extends Component {
                 <LollipopChart
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -963,6 +1002,7 @@ class VRViz extends Component {
                 <LollipopChart
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -984,6 +1024,7 @@ class VRViz extends Component {
                 <TimeSeries
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -1003,6 +1044,7 @@ class VRViz extends Component {
                 <TimeSeries
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -1024,6 +1066,7 @@ class VRViz extends Component {
                 <MapTimeBars
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -1040,6 +1083,7 @@ class VRViz extends Component {
                 <MapTimeBars
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -1061,6 +1105,7 @@ class VRViz extends Component {
                 <MapContourLines
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -1076,6 +1121,7 @@ class VRViz extends Component {
                 <MapContourLines
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -1097,6 +1143,7 @@ class VRViz extends Component {
                 <SpiralChart
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   mark={d.mark}
@@ -1113,6 +1160,7 @@ class VRViz extends Component {
                 <SpiralChart
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   data={d.data}
                   style={d.style}
                   index={`Graph${i}`}
@@ -1133,6 +1181,7 @@ class VRViz extends Component {
                 <CrossSectionView
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   object={d.mark.object}
                   material={d.mark.material}
                   style={d.style}
@@ -1147,6 +1196,7 @@ class VRViz extends Component {
                 <CrossSectionView
                   key={i}
                   animateRotation={d.animateRotation}
+                  rotationOnDrag={d.rotationOnDrag}
                   object={d.mark.object}
                   material={d.mark.material}
                   style={d.style}

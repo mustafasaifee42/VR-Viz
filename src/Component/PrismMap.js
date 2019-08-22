@@ -194,11 +194,13 @@ class PrismMap extends Component {
       }
       let shapes;
       if (this.props.mark.style.fill.scaleType)
-        shapes = (<a-entity aframemap={`points:${JSON.stringify(pts)};stroke_bool:${stroke};stroke_color:${strokeColor};extrude:${JSON.stringify(extrusionArr)};color:${JSON.stringify(colorArray)};opacity:${this.props.mark.style.fill.opacity}`} />)
+        shapes = (<a-entity class='clickable' aframemap={`points:${JSON.stringify(pts)};stroke_bool:${stroke};stroke_color:${strokeColor};extrude:${JSON.stringify(extrusionArr)};color:${JSON.stringify(colorArray)};opacity:${this.props.mark.style.fill.opacity}`} />)
       else
-        shapes = (<a-frame-map points={JSON.stringify(pts)} stroke_bool={stroke} stroke_color={strokeColor} extrude={JSON.stringify(extrusionArr)} color={JSON.stringify(colorArray)} opacity={this.props.mark.style.fill.opacity} />)
+        shapes = (<a-frame-map class='clickable' points={JSON.stringify(pts)} stroke_bool={stroke} stroke_color={strokeColor} extrude={JSON.stringify(extrusionArr)} color={JSON.stringify(colorArray)} opacity={this.props.mark.style.fill.opacity} />)
   
-      let  clickRotation = 'true',animation;
+      let  clickRotation = 'false',animation;
+      if(this.props.rotationOnDrag)
+        clickRotation = 'true'
       if(this.props.animateRotation){
         clickRotation='false'
         animation  = <a-animation

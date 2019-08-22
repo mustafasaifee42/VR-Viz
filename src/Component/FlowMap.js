@@ -274,7 +274,9 @@ class FlowMap extends Component {
       });
       let curves = <a-frame-flowLine points={JSON.stringify(curvesPoints)} color={JSON.stringify(vertexColorArray)} opacity={opacity} curviness={curviness} resolution={resolution}/>
 
-      let  clickRotation = 'true',animation;
+      let  clickRotation = 'false',animation;
+      if(this.props.rotationOnDrag)
+        clickRotation = 'true'
       if(this.props.animateRotation){
         clickRotation='false'
         animation  = <a-animation

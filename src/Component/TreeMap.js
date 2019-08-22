@@ -171,6 +171,13 @@ class TreeMap extends Component {
           if (this.props.mark.mouseOver.label)
             hoverText = this.props.mark.mouseOver.label.value(d.data)
         }
+        let className = 'clickable', idName
+        if (typeof this.props.mark.class === "function"){
+          className =  `clickable ${this.props.mark.class(d,i)}`
+        }
+        if (typeof this.props.mark.id === "function"){
+          idName =  this.props.mark.id(d,i)
+        }
         return <Shape
           key={`${this.props.index}_Shape${i}`}
           type={'box'}
@@ -184,9 +191,13 @@ class TreeMap extends Component {
           hover={this.props.mark.mouseOver}
           hoverText={hoverText}
           graphID={this.props.index}
+          class={className}
+          id={idName}
         />
       });
-      let  clickRotation = 'true',animation;
+      let  clickRotation = 'false',animation;
+      if(this.props.rotationOnDrag)
+        clickRotation = 'true'
       if(this.props.animateRotation){
         clickRotation='false'
         animation  = <a-animation

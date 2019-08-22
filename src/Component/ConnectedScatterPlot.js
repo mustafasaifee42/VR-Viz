@@ -282,6 +282,13 @@ class ConnectedScatterPlot extends Component {
           if (this.props.mark.points.mouseOver.label)
             hoverText = this.props.mark.points.mouseOver.label.value(d)
         }
+        let className = 'clickable', idName
+        if (typeof this.props.mark.class === "function"){
+          className =  `clickable ${this.props.mark.class(d,i)}`
+        }
+        if (typeof this.props.mark.id === "function"){
+          idName =  this.props.mark.id(d,i)
+        }
         return <Shape
           key={`${this.props.index}_Shape${i}`}
           type={shape}
@@ -295,6 +302,8 @@ class ConnectedScatterPlot extends Component {
           hover={this.props.mark.points.mouseOver}
           hoverText={hoverText}
           graphID={this.props.index}
+          class={className}
+          id={idName}
         />
       });
 
@@ -311,7 +320,9 @@ class ConnectedScatterPlot extends Component {
       this.state.data.forEach((d , i) => {
         pointList.push({"x":`${xScale(d[this.props.mark.position.x.field])}`,"y":`${yScale(d[this.props.mark.position.y.field])}`,"z":`${zScale(d[this.props.mark.position.z.field])}`})
       })
-      let  clickRotation = 'true',animation;
+      let  clickRotation = 'false',animation;
+      if(this.props.rotationOnDrag)
+        clickRotation = 'true'
       if(this.props.animateRotation){
         clickRotation='false'
         animation  = <a-animation
@@ -334,7 +345,6 @@ class ConnectedScatterPlot extends Component {
           {yAxis}
           {zAxis}
           {box}
-          <a-box width={this.props.style.dimensions.width} height={this.props.style.dimensions.height} depth={this.props.style.dimensions.depth} position={`${this.props.style.dimensions.width / 2} ${this.props.style.dimensions.height / 2} ${this.props.style.dimensions.depth / 2}`} opacity ={0}/>
         </a-entity>
       )
     }

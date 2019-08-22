@@ -127,7 +127,9 @@ class ParametricCurvePlot extends Component {
     dataCoordinate.forEach((d , i) => {
       pointList.push({"x":`${xScale(d[0])}`,"y":`${yScale(d[1])}`,"z":`${zScale(d[2])}`})
     })
-    let  clickRotation = 'true',animation;
+    let  clickRotation = 'false',animation;
+    if(this.props.rotationOnDrag)
+      clickRotation = 'true'
     if(this.props.animateRotation){
       clickRotation='false'
       animation  = <a-animation

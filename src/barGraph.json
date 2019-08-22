@@ -1,0 +1,290 @@
+[
+ {
+   "Year": 1996,
+   "Month": "January",
+   "Tornadoes": 35,
+   "Deaths": 1
+ },
+ {
+   "Year": 1996,
+   "Month": "February",
+   "Tornadoes": 14,
+   "Deaths": 1
+ },
+ {
+   "Year": 1996,
+   "Month": "March",
+   "Tornadoes": 71,
+   "Deaths": 6
+ },
+ {
+   "Year": 1996,
+   "Month": "April",
+   "Tornadoes": 177,
+   "Deaths": 12
+ },
+ {
+   "Year": 1996,
+   "Month": "May",
+   "Tornadoes": 235,
+   "Deaths": 1
+ },
+ {
+   "Year": 1996,
+   "Month": "June",
+   "Tornadoes": 128,
+   "Deaths": 0
+ },
+ {
+   "Year": 1996,
+   "Month": "July",
+   "Tornadoes": 202,
+   "Deaths": 1
+ },
+ {
+   "Year": 1996,
+   "Month": "August",
+   "Tornadoes": 72,
+   "Deaths": 0
+ },
+ {
+   "Year": 1996,
+   "Month": "September",
+   "Tornadoes": 101,
+   "Deaths": 0
+ },
+ {
+   "Year": 1996,
+   "Month": "October",
+   "Tornadoes": 68,
+   "Deaths": 0
+ },
+ {
+   "Year": 1996,
+   "Month": "November",
+   "Tornadoes": 55,
+   "Deaths": 2
+ },
+ {
+   "Year": 1996,
+   "Month": "December",
+   "Tornadoes": 15,
+   "Deaths": 1
+ },
+ {
+   "Year": 1997,
+   "Month": "January",
+   "Tornadoes": 50,
+   "Deaths": 2
+ },
+ {
+   "Year": 1997,
+   "Month": "February",
+   "Tornadoes": 23,
+   "Deaths": 1
+ },
+ {
+   "Year": 1997,
+   "Month": "March",
+   "Tornadoes": 102,
+   "Deaths": 28
+ },
+ {
+   "Year": 1997,
+   "Month": "April",
+   "Tornadoes": 114,
+   "Deaths": 1
+ },
+ {
+   "Year": 1997,
+   "Month": "May",
+   "Tornadoes": 225,
+   "Deaths": 29
+ },
+ {
+   "Year": 1997,
+   "Month": "June",
+   "Tornadoes": 193,
+   "Deaths": 0
+ },
+ {
+   "Year": 1997,
+   "Month": "July",
+   "Tornadoes": 188,
+   "Deaths": 4
+ },
+ {
+   "Year": 1997,
+   "Month": "August",
+   "Tornadoes": 84,
+   "Deaths": 1
+ },
+ {
+   "Year": 1997,
+   "Month": "September",
+   "Tornadoes": 32,
+   "Deaths": 1
+ },
+ {
+   "Year": 1997,
+   "Month": "October",
+   "Tornadoes": 100,
+   "Deaths": 0
+ },
+ {
+   "Year": 1997,
+   "Month": "November",
+   "Tornadoes": 25,
+   "Deaths": 0
+ },
+ {
+   "Year": 1997,
+   "Month": "December",
+   "Tornadoes": 12,
+   "Deaths": 0
+ },
+ {
+   "Year": 1998,
+   "Month": "January",
+   "Tornadoes": 47,
+   "Deaths": 0
+ },
+ {
+   "Year": 1998,
+   "Month": "February",
+   "Tornadoes": 72,
+   "Deaths": 42
+ },
+ {
+   "Year": 1998,
+   "Month": "March",
+   "Tornadoes": 72,
+   "Deaths": 16
+ },
+ {
+   "Year": 1998,
+   "Month": "April",
+   "Tornadoes": 182,
+   "Deaths": 55
+ },
+ {
+   "Year": 1998,
+   "Month": "May",
+   "Tornadoes": 312,
+   "Deaths": 10
+ },
+ {
+   "Year": 1998,
+   "Month": "June",
+   "Tornadoes": 376,
+   "Deaths": 3
+ },
+ {
+   "Year": 1998,
+   "Month": "July",
+   "Tornadoes": 80,
+   "Deaths": 0
+ },
+ {
+   "Year": 1998,
+   "Month": "August",
+   "Tornadoes": 61,
+   "Deaths": 0
+ },
+ {
+   "Year": 1998,
+   "Month": "September",
+   "Tornadoes": 104,
+   "Deaths": 2
+ },
+ {
+   "Year": 1998,
+   "Month": "October",
+   "Tornadoes": 86,
+   "Deaths": 2
+ },
+ {
+   "Year": 1998,
+   "Month": "November",
+   "Tornadoes": 26,
+   "Deaths": 0
+ },
+ {
+   "Year": 1998,
+   "Month": "December",
+   "Tornadoes": 6,
+   "Deaths": 0
+ },
+ {
+   "Year": 1999,
+   "Month": "January",
+   "Tornadoes": 212,
+   "Deaths": 18
+ },
+ {
+   "Year": 1999,
+   "Month": "February",
+   "Tornadoes": 22,
+   "Deaths": 0
+ },
+ {
+   "Year": 1999,
+   "Month": "March",
+   "Tornadoes": 56,
+   "Deaths": 1
+ },
+ {
+   "Year": 1999,
+   "Month": "April",
+   "Tornadoes": 176,
+   "Deaths": 15
+ },
+ {
+   "Year": 1999,
+   "Month": "May",
+   "Tornadoes": 311,
+   "Deaths": 53
+ },
+ {
+   "Year": 1999,
+   "Month": "June",
+   "Tornadoes": 289,
+   "Deaths": 4
+ },
+ {
+   "Year": 1999,
+   "Month": "July",
+   "Tornadoes": 100,
+   "Deaths": 0
+ },
+ {
+   "Year": 1999,
+   "Month": "August",
+   "Tornadoes": 79,
+   "Deaths": 1
+ },
+ {
+   "Year": 1999,
+   "Month": "September",
+   "Tornadoes": 56,
+   "Deaths": 0
+ },
+ {
+   "Year": 1999,
+   "Month": "October",
+   "Tornadoes": 18,
+   "Deaths": 0
+ },
+ {
+   "Year": 1999,
+   "Month": "November",
+   "Tornadoes": 9,
+   "Deaths": 0
+ },
+ {
+   "Year": 1999,
+   "Month": "December",
+   "Tornadoes": 15,
+   "Deaths": 2
+ }
+]

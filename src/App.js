@@ -1,195 +1,237 @@
 import React, { Component } from 'react';
 import './App.css';
 import VRViz from './Component/Visualization.js'
+import AFRAME from 'aframe';
+import data from './barGraph.json'
 
 class App extends Component {
   render() {
     return (
+      <a-scene>
       <VRViz
-        scene={
+        graph={[
           {
-            'sky': {
-              'style': {
-                'color': '#ccc',
-                'texture': false,
-              }
-            },
-            'lights': [
-              {
-                'type': 'directional',
-                'color': '#fff',
-                'position': '0 1 1',
-                'intensity': 1,
-                "decay": 1,
+            axis: {
+              'axis-box': {
+                color: 'white'
               },
-              {
-                'type': 'ambient',
-                'color': '#fff',
-                'intensity': 1,
-                "decay": 1,
+              'x-axis': {
+                grid: {
+                  color: 'white',
+                  opacity: 0.3
+                },
+                orient: 'back-bottom',
+                ticks: {
+                  color: 'white',
+                  fontSize: 3,
+                  noOfTicks: 10,
+                  opacity: 0.3,
+                  size: 0.01
+                },
+                title: {
+                  color: 'white',
+                  fontSize: 3,
+                  opacity: 0.3,
+                  value: ''
+                }
+              },
+              'y-axis': {
+                grid: {
+                  color: 'white',
+                  opacity: 0.3
+                },
+                orient: 'back-left',
+                ticks: {
+                  color: 'white',
+                  fontSize: 3,
+                  noOfTicks: 10,
+                  opacity: 0.3,
+                  size: 0.01
+                },
+                title: {
+                  color: 'white',
+                  fontSize: 3,
+                  opacity: 0.3,
+                  value: ''
+                }
+              },
+              'z-axis': {
+                grid: {
+                  color: 'white',
+                  opacity: 0.3
+                },
+                ticks: {
+                  color: 'white',
+                  fontSize: 3,
+                  noOfTicks: 10,
+                  opacity: 0.3,
+                  size: 0.01
+                },
+                title: {
+                  color: 'white',
+                  fontSize: 3,
+                  opacity: 0.3,
+                  value: ''
+                }
               }
-            ],
-            'camera': {
-              'position': '0 0 10',
-              'rotation': '0 0 0',
             },
-            'floor': {
-              'style': {
-                'color': '#ccc',
-                'texture': false,
-                'width': 100,
-                'depth': 100,
-              }
-            }
+            data: {
+              dataFile: 'data/scatterPlot.csv',
+              fieldDesc: [
+                [
+                  'sepal_length',
+                  'number'
+                ],
+                [
+                  'sepal_width',
+                  'number'
+                ],
+                [
+                  'petal_length',
+                  'number'
+                ],
+                [
+                  'petal_width',
+                  'number'
+                ],
+                [
+                  'species',
+                  'text'
+                ]
+              ],
+              fileType: 'csv'
+            },
+            mark: {
+              droplines: {
+                style: {
+                  fill: {
+                    color: [
+                      '#db4877',
+                      '#0F9D58',
+                      '#4285F4'
+                    ],
+                    domain: [
+                      'setosa',
+                      'versicolor',
+                      'virginica'
+                    ],
+                    field: 'species',
+                    opacity: 0.4,
+                    scaleType: 'ordinal'
+                  }
+                },
+                xy: false,
+                xz: false,
+                yz: false
+              },
+              mouseOver: {
+                focusedObject: {
+                  opacity: 1
+                },
+                label: {
+                  align: 'center',
+                  backgroundColor: '#fff',
+                  backgroundOpacity: 0.9,
+                  fontColor: '#333',
+                  height: 0.35,
+                  lineHeight: 75,
+                  value: function value(d){return"Sepal Length:"+d.sepal_length+"\nSepal Width:"+d.sepal_width+"\nPetal Length:"+d.petal_length+"\nPetal Width:"+d.petal_width+"\nSpecies:"+d.species},
+                  width: 1,
+                  wrapCount: 50
+                },
+                nonFocusedObject: {
+                  opacity: 0.2
+                }
+              },
+              position: {
+                x: {
+                  field: 'sepal_length',
+                  scaleType: 'linear'
+                },
+                y: {
+                  field: 'sepal_width',
+                  scaleType: 'linear'
+                },
+                z: {
+                  field: 'petal_length',
+                  scaleType: 'linear'
+                }
+              },
+              projections: {
+                style: {
+                  fill: {
+                    color: [
+                      'red',
+                      'green',
+                      'blue'
+                    ],
+                    domain: [
+                      'setosa',
+                      'versicolor',
+                      'virginica'
+                    ],
+                    field: 'species',
+                    opacity: 0.4,
+                    scaleType: 'ordinal'
+                  },
+                  radius: {
+                    field: 'petal_width',
+                    scaleType: 'linear',
+                    value: [
+                      0,
+                      0.2
+                    ]
+                  }
+                },
+                xy: false,
+                xz: false,
+                yz: false
+              },
+              style: {
+                fill: {
+                  color: [
+                    '#db4877',
+                    '#0F9D58',
+                    '#4285F4'
+                  ],
+                  domain: [
+                    'setosa',
+                    'versicolor',
+                    'virginica'
+                  ],
+                  field: 'species',
+                  opacity: 0.9,
+                  scaleType: 'ordinal'
+                },
+                radius: {
+                  field: 'petal_width',
+                  scaleType: 'linear',
+                  startFromZero: true,
+                  value: [
+                    0,
+                    0.5
+                  ]
+                }
+              },
+              type: 'sphere'
+            },
+            style: {
+              dimensions: {
+                depth: 10,
+                height: 10,
+                width: 10
+              },
+              origin: [
+                0,
+                0,
+                0
+              ]
+            },
+            type: 'ScatterPlot'
           }
-        }
-        graph={
-          [
-            {
-              'type': 'ConnectedScatterPlot',
-              'data': {
-                'dataFile': "data/ConnectedScatterPlot.csv",
-                'fileType': 'csv',
-                'fieldDesc': [['Year', 'text'], ['Cars', 'number'], ['Trucks', 'number'], ['Bikes', 'number']]
-              },
-              'style': {
-                'origin': [5, 0, 0],
-                'dimensions': {
-                  'width': 10,
-                  'height': 10,
-                  'depth': 10,
-                },
-              },
-              'mark': {
-                'position': {
-                  'x': {
-                    'scaleType': 'linear',
-                    'field': 'Cars',
-                  },
-                  'y': {
-                    'scaleType': 'linear',
-                    'field': 'Trucks',
-                  },
-                  'z': {
-                    'scaleType': 'linear',
-                    'field': 'Bikes',
-                  }
-                },
-                'points': {
-                  'type': 'sphere',
-                  'style': {
-                    'radius': {
-                      'value': 0.05,
-                    },
-                    'fill': {
-                      'opacity': 1,
-                      'color': 'red',
-                    },
-                  },
-                  'mouseOver': {
-                    'focusedObject': {
-                      'opacity': 1,
-                      'fill': '#333',
-                    },
-                    'nonFocusedObject': {
-                      'opacity': 0.1,
-                    },
-                    'label': {
-                      'value': (d) => `Year:${d.Year}\nCars:${d.Cars}\nTrucks:${d.Trucks}\nBikes:${d.Bikes}`,
-                      'align': 'center',
-                      'fontSize': 1,
-                      'backgroundColor': '#333',
-                      'backgroundOpacity': 1,
-                      'fontColor': '#fff',
-                    }
-                  }
-                },
-                'line': {
-                  'style': {
-                    'stroke': {
-                      'color': 'black',
-                      'opacity': 1,
-                    },
-                  },
-                },
-                'label': {
-                  'field': 'Year',
-                  'style': {
-                    'color': 'black',
-                    'fontSize': 2,
-                    'opacity': 1,
-                  },
-                }
-              },
-              'axis': {
-                'axis-box': {
-                  'color': 'black',
-                },
-                'x-axis': {
-                  'orient': 'bottom-back',
-                  'title': {
-                    'text': '',
-                    'fontSize': 10,
-                    'color': 'black',
-                    'opacity': 1,
-                  },
-                  'ticks': {
-                    'noOfTicks': 10,
-                    'size': 0.1,
-                    'color': 'black',
-                    'opacity': 1,
-                    'fontSize': 10,
-                  },
-                  'grid': {
-                    'color': 'black',
-                    'opacity': 1,
-                  }
-                },
-                'y-axis': {
-                  'orient': 'bottom-back',
-                  'title': {
-                    'text': '',
-                    'fontSize': 10,
-                    'color': 'black',
-                    'opacity': 1,
-                  },
-                  'ticks': {
-                    'noOfTicks': 10,
-                    'size': 0.1,
-                    'color': 'black',
-                    'opacity': 1,
-                    'fontSize': 10,
-                  },
-                  'grid': {
-                    'color': 'black',
-                    'opacity': 1,
-                  }
-                },
-                'z-axis': {
-                  'orient': 'bottom-back',
-                  'title': {
-                    'text': '',
-                    'fontSize': 10,
-                    'color': 'black',
-                    'opacity': 1,
-                  },
-                  'ticks': {
-                    'noOfTicks': 10,
-                    'size': 0.1,
-                    'color': 'black',
-                    'opacity': 1,
-                    'fontSize': 10,
-                  },
-                  'grid': {
-                    'color': 'black',
-                    'opacity': 1,
-                  }
-                }
-              }
-            }
-          ]
-        }
+        ]}
       />
+      </a-scene>
     );
   }
 }

@@ -64,6 +64,8 @@ class App extends Component {
               },
               'mark': {
                 'type': 'cone',
+                'class':(d, i) => `boxes`,
+                'id':(d, i) => `boxes_${d.Month}_${d.Year}`,
                 'position': {
                   'x': {
                     'scaleType': 'ordinal',

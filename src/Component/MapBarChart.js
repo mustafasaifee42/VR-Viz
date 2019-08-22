@@ -203,6 +203,13 @@ class MapBarChart extends Component {
           if (this.props.mark.bars.mouseOver.label)
             hoverText = this.props.mark.bars.mouseOver.label.value(d)
         }
+        let className = 'clickable', idName
+        if (typeof this.props.mark.bars.class === "function"){
+          className =  `clickable ${this.props.mark.class(d,i)}`
+        }
+        if (typeof this.props.mark.id === "function"){
+          idName =  this.props.mark.bars.id(d,i)
+        }
         return <Shape
           key={`${this.props.index}_Shape${i}`}
           type={this.props.mark.bars.type}
@@ -218,9 +225,13 @@ class MapBarChart extends Component {
           hoverText={hoverText}
           graphID={this.props.index}
           rotation={'90 0 0'}
+          class={className}
+          id={idName}
         />
       });
-      let  clickRotation = 'true',animation;
+      let  clickRotation = 'false',animation;
+      if(this.props.rotationOnDrag)
+        clickRotation = 'true'
       if(this.props.animateRotation){
         clickRotation='false'
         animation  = <a-animation
