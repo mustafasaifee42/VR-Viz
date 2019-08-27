@@ -204,7 +204,7 @@ class StackedBarGraph extends Component {
             dimensions={this.props.style.dimensions}
             scaleType={this.props.mark.position.x.scaleType}
             padding={width}
-            grid={this.props.zAxis.grid}
+            grid={this.props.xAxis.grid}
           />
       }
 
@@ -219,7 +219,6 @@ class StackedBarGraph extends Component {
           dimensions={this.props.style.dimensions}
           scaleType={this.props.mark.style.height.scaleType}
           grid={this.props.yAxis.grid}
-          grid={this.props.zAxis.grid}
         />
       }
 

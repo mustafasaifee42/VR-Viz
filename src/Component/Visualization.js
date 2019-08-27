@@ -125,7 +125,7 @@ class VRViz extends Component {
         nearClipping = this.props.scene.camera.nearClipping;
       if(this.state.headset)
       camera = <a-entity id="cameraRig" position={this.props.scene.camera.position} rotation={this.props.scene.camera.rotation}>
-          <a-camera id="head" fov={fov} near={nearClipping} position="0 1.6 0" />
+          <a-camera id="head" fov={fov} near={nearClipping} position="0 1.6 0"/>
           <a-entity id="left-hand" windows-motion-controls="hand: left" vive-controls="hand: left" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;" />
           <a-entity id="right-hand" laser-controls="hand: right" raycaster="objects: .clickable;" line="color: red; opacity: 0.75" windows-motion-controls="hand: right" vive-controls="hand: right" gearvr-controls daydream-controls teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;">
             <a-entity cursor="fuse: false"
@@ -1219,7 +1219,7 @@ class VRViz extends Component {
         if(this.props.scene.parentDiv.width)
           divWidth = `${this.props.scene.parentDiv.width}px`
         if(this.props.scene.parentDiv.class)
-          divClass = `${this.props.scene.parentDiv.class}px`
+          divClass = `${this.props.scene.parentDiv.class}`
       }
       return (
         <a-scene  class={divClass} embedded cursor="rayOrigin: mouse"
