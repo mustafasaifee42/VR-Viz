@@ -269,6 +269,7 @@ class RectangleChart extends Component {
           graphID={this.props.index}
           class={className}
           id={idName}
+          data={JSON.stringify(d)}
         />
       });
 

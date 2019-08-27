@@ -227,6 +227,7 @@ class MapBarChart extends Component {
           rotation={'90 0 0'}
           class={className}
           id={idName}
+          data={JSON.stringify(d)}
         />
       });
       let  clickRotation = 'false',animation;

@@ -44,7 +44,7 @@ AFRAME.registerComponent("aframemap", {
     let extrusionsettingArray = JSON.parse(this.data.extrude).map(d => {
       let obj = {
         steps: 1,
-        amount : parseFloat(d),
+        depth : parseFloat(d),
         bevelEnabled: false, 
       }
       return obj

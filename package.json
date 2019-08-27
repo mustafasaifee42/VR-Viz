@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "aframe": "^0.8.2",
+    "aframe": "^0.9.0",
     "aframe-click-drag-component": "^3.0.1",
     "aframe-event-set-component": "^4.1.1",
     "aframe-mouse-dragndrop-component": "^1.0.10",
@@ -18,6 +18,7 @@
     "react-dom": "^16.3.2",
     "react-scripts": "1.1.4",
     "super-hands": "^2.1.0",
+    "three": "^0.107.0",
     "topojson": "^3.0.2"
   },
   "scripts": {

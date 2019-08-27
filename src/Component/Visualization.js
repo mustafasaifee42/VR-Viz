@@ -123,10 +123,9 @@ class VRViz extends Component {
         nearClipping = 0.005
       else
         nearClipping = this.props.scene.camera.nearClipping;
-      let cameraSettings = `active: true;near:${nearClipping};fov:${fov}`
       if(this.state.headset)
       camera = <a-entity id="cameraRig" position={this.props.scene.camera.position} rotation={this.props.scene.camera.rotation}>
-          <a-entity id="head" camera={cameraSettings} position="0 1.6 0" wasd-controls="#cameraRig;"/>
+          <a-camera id="head" fov={fov} near={nearClipping} position="0 1.6 0" />
           <a-entity id="left-hand" windows-motion-controls="hand: left" vive-controls="hand: left" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;" />
           <a-entity id="right-hand" laser-controls="hand: right" raycaster="objects: .clickable;" line="color: red; opacity: 0.75" windows-motion-controls="hand: right" vive-controls="hand: right" gearvr-controls daydream-controls teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head;">
             <a-entity cursor="fuse: false"
@@ -146,7 +145,7 @@ class VRViz extends Component {
         </a-entity>
       else
         camera = <a-entity id="cameraRig" position={this.props.scene.camera.position} rotation={this.props.scene.camera.rotation} >
-          <a-entity id="head" camera={cameraSettings} position="0 1.6 0"  look-controls='enabled: true' wasd-controls="#cameraRig;">
+          <a-camera id="head" fov={fov} near={nearClipping} position="0 1.6 0"  look-controls='enabled: true'>
             <a-entity
               id="hover"
               geometry="primitive: plane; height: auto; width: auto"
@@ -155,7 +154,7 @@ class VRViz extends Component {
               rotation='0 0 0'
               text="align: center; color: #fff; anchor: center; value: "
               visible={false} />
-          </a-entity>
+          </a-camera>
         </a-entity>
       //Sky
       sky = this.props.scene.sky.style.texture === false ? <a-sky id="bg" color={this.props.scene.sky.style.color} /> : <a-sky id="bg" src={this.props.scene.sky.style.img} />;

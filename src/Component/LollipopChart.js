@@ -355,6 +355,7 @@ class LollipopChart extends Component {
           graphID={this.props.index}
           class={className}
           id={idName}
+          data={JSON.stringify(d)}
         />
       });
       let stem = this.state.data.map((d, i) => {
@@ -387,6 +388,7 @@ class LollipopChart extends Component {
           graphID={this.props.index}
           class={className}
           id={idName}
+          data={JSON.stringify(d)}
         />
       });
 
