@@ -179,7 +179,6 @@ class StackedBarGraph extends Component {
 
       //Axis
       let xAxis, yAxis, zAxis;
-
       if (this.props.xAxis) {
         if ((this.props.mark.type === 'cylinder') || (this.props.mark.type === 'cone'))
           xAxis = <Axis
@@ -205,6 +204,7 @@ class StackedBarGraph extends Component {
             dimensions={this.props.style.dimensions}
             scaleType={this.props.mark.position.x.scaleType}
             padding={width}
+            grid={this.props.zAxis.grid}
           />
       }
 
@@ -219,6 +219,7 @@ class StackedBarGraph extends Component {
           dimensions={this.props.style.dimensions}
           scaleType={this.props.mark.style.height.scaleType}
           grid={this.props.yAxis.grid}
+          grid={this.props.zAxis.grid}
         />
       }
 
@@ -247,6 +248,7 @@ class StackedBarGraph extends Component {
             dimensions={this.props.style.dimensions}
             scaleType={this.props.mark.position.z.scaleType}
             padding={depth}
+            grid={this.props.zAxis.grid}
           />
 
       }
@@ -262,6 +264,7 @@ class StackedBarGraph extends Component {
       }
 
       //Adding marks
+      console.log(data)
       let marks = data.map((d, i) => {
         let markTemp = d.map((d1, j) => {
           let hght = yScale(d1[1] - d1[0]);
@@ -280,7 +283,7 @@ class StackedBarGraph extends Component {
               hoverText = this.props.mark.mouseOver.label.value(d1.data).replace('Label', `${d.key}`).replace('LabelValue', `${d1.data[d.key]}`)
           }
           return <Shape
-            key={`${this.props.index}_Shape${i}`}
+            key={`${this.props.index}_Shape${i}_${j}`}
             type={this.props.mark.type}
             color={`${color}`}
             opacity={this.props.mark.style.fill.opacity}

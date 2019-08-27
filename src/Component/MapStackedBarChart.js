@@ -193,7 +193,7 @@ class MapStackedBarChart extends Component {
               hoverText = this.props.mark.bars.mouseOver.label.value(d1.data).replace('Label', `${d.key}`).replace('LabelValue', `${d1.data[d.key]}`)
           }
           return <Shape
-            key={`${j}`}
+            key={`${i}_${j}`}
             type={this.props.mark.bars.type}
             color={`${color}`}
             opacity={this.props.mark.bars.style.fill.opacity}
