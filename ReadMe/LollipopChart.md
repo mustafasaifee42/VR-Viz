@@ -55,6 +55,8 @@ __Properties for `mark` for Bar Graph__
 Property|Type|Description
 ---|---|---
 type|string|Defines type of bar that would be created. __Not Required. Default value: box__. _Available values: box, cone or cylinder._
+class|function|Returns the class (html class) for the point as a function of the data. If space in present then the 2 string with space in between will be taken as different classes. Classes cannot begin with a number and nust not contain any special characters expect _. This can be used for animating or creating interactions with the point. __Not Required.__
+id|function|Returns the id (html id) for the point as a function of the data. If space in present then the 2 string with space in between will be taken as different id. ids cannot begin with a number and nust not contain any special characters expect _. No 2 ids must be same as id acts as a unique identifier. This can be used for animating or creating interactions with the point. __Required.__ 
 position|object|Defines the how the position of bars will be mapped. __Required.__
 position.x|object|__Required.__
 position.x.scaleType|float|Defines the scale type for x position of the bar. __Required.__ _Available values: ordinal._
@@ -83,6 +85,8 @@ style.fill.domain|array|Defines the domain for fill. __Not Required.__ _If not p
 style.fill.color|array or string|Defines the color for fill. __Not Required if style.fill.scaleType is present, else required. Default value: d3.schemeCategory10__ _If style.fill.scaleType is not present the this needs to be a string otherwise an array._
 style.fill.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if style.fill.domain is not given and style.fill.scaleType is `linear`._
 droplines|object|Defines the droplines / stem of the lollipop mark. __Required.__
+droplines.class|function|Returns the class (html class) for the bars as a function of the data. If space in present then the 2 string with space in between will be taken as different classes. Classes cannot begin with a number and nust not contain any special characters expect _. This can be used for animating or creating interactions with the bars. __Not Required.__
+droplines.id|function|Returns the id (html id) for the bars as a function of the data. If space in present then the 2 string with space in between will be taken as different id. ids cannot begin with a number and nust not contain any special characters expect _. No 2 ids must be same as id acts as a unique identifier. This can be used for animating or creating interactions with the bars. __Not Required.__ 
 droplines.style|object|Defines the style for the droplines. __Required.__
 droplines.style.radius|float|Defines the radius of the droplines. __Required.__
 droplines.style.fill|object|Defines the fill of the droplines. __Required.__

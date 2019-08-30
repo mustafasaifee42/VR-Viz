@@ -71,6 +71,8 @@ map.style.stroke.width|float|Defines the stroke of the map. __Required.__
 map.style.stroke.color|string|Defines the stroke color for map. __Required.__
 bars|object|Defines style of the bars. __Required__
 bars.type|string|Defines type of bar that would be created. __Not Required. Default value: box__. _Available values: box, cone or cylinder._
+bars.class|function|Returns the class (html class) for the bars as a function of the data. If space in present then the 2 string with space in between will be taken as different classes. Classes cannot begin with a number and nust not contain any special characters expect _. This can be used for animating or creating interactions with the bars. __Not Required.__
+bars.id|function|Returns the id (html id) for the bars as a function of the data. If space in present then the 2 string with space in between will be taken as different id. ids cannot begin with a number and nust not contain any special characters expect _. No 2 ids must be same as id acts as a unique identifier. This can be used for animating or creating interactions with the bars. __Not Required.__ 
 bars.style|object|Defines the style for the bar. __Required.__
 bars.style.width|float|Defines the width of the bar. __Required if `type` is `box`.__ 
 bars.style.depth|float|Defines the depth of the bar.  __Required if `type` is `box`.__ 

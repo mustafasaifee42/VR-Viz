@@ -75,6 +75,8 @@ __Properties for `mark` for Prism Map__
 Property|Type|Description
 ---|---|---
 type|string|Defines type of point that would be created. __Not Required. Default value: sphere__. _Available values: box, sphere._
+class|function|Returns the class (html class) for the points as a function of the data. If space in present then the 2 string with space in between will be taken as different classes. Classes cannot begin with a number and nust not contain any special characters expect _. This can be used for animating or creating interactions with the points. __Not Required.__
+id|function|Returns the id (html id) for the points as a function of the data. If space in present then the 2 string with space in between will be taken as different id. ids cannot begin with a number and nust not contain any special characters expect _. No 2 ids must be same as id acts as a unique identifier. This can be used for animating or creating interactions with the points. __not Required.__ 
 position|object|Defines the how the position of points will be mapped. __Required.__
 position.x|object|__Required.__
 position.x.scaleType|string|Defines the scale type for x position of the points. __Required.__ _Available values: linear or ordinal._

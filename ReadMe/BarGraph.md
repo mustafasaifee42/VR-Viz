@@ -42,6 +42,8 @@ __Properties for `mark` for Bar Graph__
 Property|Type|Description
 ---|---|---
 type|string|Defines type of bar that would be created. __Not Required. Default value: box__. _Available values: box, cone or cylinder._
+class|function|Returns the class (html class) for the bars as a function of the data. If space in present then the 2 string with space in between will be taken as different classes. Classes cannot begin with a number and nust not contain any special characters expect _. This can be used for animating or creating interactions with the bars. __Not Required.__
+id|function|Returns the id (html id) for the bars as a function of the data. If space in present then the 2 string with space in between will be taken as different id. ids cannot begin with a number and nust not contain any special characters expect _. No 2 ids must be same as id acts as a unique identifier. This can be used for animating or creating interactions with the bars. __not Required.__ 
 position|object|Defines the how the position of bars will be mapped. __Required.__
 position.x|object|__Required.__
 position.x.scaleType|float|Defines the scale type for x position of the bar. __Required.__ _Available values: ordinal._
