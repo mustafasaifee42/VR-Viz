@@ -146,6 +146,11 @@ class VRViz extends Component {
       else
         camera = <a-entity id="cameraRig" position={this.props.scene.camera.position} rotation={this.props.scene.camera.rotation} >
           <a-camera id="head" fov={fov} near={nearClipping} position="0 1.6 0"  look-controls='enabled: true'>
+          <a-entity cursor="fuse: false; rayOrigin: mouse"
+              position="0 0 0"
+              geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+              material="color: black; shader: flat"
+              raycaster="objects: .clickable;showLine: true;" />
             <a-entity
               id="hover"
               geometry="primitive: plane; height: auto; width: auto"
@@ -1222,7 +1227,7 @@ class VRViz extends Component {
           divClass = `${this.props.scene.parentDiv.class}`
       }
       return (
-        <a-scene  class={divClass} embedded cursor="rayOrigin: mouse"
+        <a-scene  class={divClass} embedded
           style={
             {
               height: divHeight,
