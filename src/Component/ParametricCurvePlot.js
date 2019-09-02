@@ -153,7 +153,7 @@ class ParametricCurvePlot extends Component {
         {zAxis}
         {box}
         <a-frame-curve-line points={JSON.stringify(pointList)} type={this.props.mark.style.curveType} color={this.props.mark.style.color} opacity={this.props.mark.style.opacity} resolution={resolution} />
-        <a-box width={this.props.style.dimensions.width} height={this.props.style.dimensions.height} depth={this.props.style.dimensions.depth} position={`${this.props.style.dimensions.width / 2} ${this.props.style.dimensions.height / 2} ${this.props.style.dimensions.depth / 2}`} opacity ={0}/>
+        <a-box class='clickable' width={this.props.style.dimensions.width} height={this.props.style.dimensions.height} depth={this.props.style.dimensions.depth} position={`${this.props.style.dimensions.width / 2} ${this.props.style.dimensions.height / 2} ${this.props.style.dimensions.depth / 2}`} opacity ={0}/>
       </a-entity>
     )
   }

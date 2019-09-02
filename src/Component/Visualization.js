@@ -46,6 +46,7 @@ import '../AFrameGeometries/AFrameContourLines.js';
 import '../AFrameGeometries/AFrameMap.js';
 import '../AFrameGeometries/AFrameMapOutline.js';
 import '../AFrameGeometries/AFrameShape.js';
+import '../AFrameGeometries/AFrameFlowLineAnimationDot.js';
 
 
 require('aframe-teleport-controls');

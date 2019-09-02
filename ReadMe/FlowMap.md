@@ -80,9 +80,21 @@ flowlines.style.stroke.startFromZero|boolean|Defines if the domain starts from 0
 flowlines.style.stroke.color|string or array of string|Defines the stroke of the flowlines. __Not Required if flowlines.style.stroke.scaleType is present, else required. Default value: d3.schemeCategory10__ _If flowlines.style.stroke.scaleType is not present the this needs to be a string otherwise an array._
 flowlines.style.stroke.resolution|number|Defines how edgy the curve for the flow is. __Not Required. Default value: 20__ _Smaller number is recommended for better performance._
 flowlines.style.stroke.curviness|number|Defines the curve of the flow line. __Not Required. Default value: 0.67__ _Must range form 0 to 1._
-flowline.height|object|Defines the peak height which flowlines can achieve. __Not Required. If not present the height is calculated depending upon the distance between the source and target.__
-flowline.height.field|string|Defines the field in the data that will be mapped as height of the flowline. __Required.__
-flowline.height.scaleFactor|float|Defines the factor with which the height is scaled. __Required.__
+flowlines.height|object|Defines the peak height which flowlines can achieve. __Not Required. If not present the height is calculated depending upon the distance between the source and target.__
+flowlines.height.field|string|Defines the field in the data that will be mapped as height of the flowlines. __Required.__
+flowlines.height.scaleFactor|float|Defines the factor with which the height is scaled. __Required.__
+flowlines.flowAnimation.duration|object|Defines the speed of animation of the dot. __Required.__
+flowlines.flowAnimation.duration.scaleType|string|Defines the scale type for duration. __Not Required. If not present then a constant duration that is defined is used.__ _Available values: linear._
+flowlines.flowAnimation.duration.value|array of number or number|Defines the value of the duration of animation. __Required__ _If flowlines.flowAnimation.duration.scaleType is not present the this needs to be a number otherwise an array._
+flowlines.flowAnimation.duration.field|string|Defines the field in the data that will be mapped as opacity of the link. __Required if `flowlines.flowAnimation.duration.scaleType` is present.__
+flowlines.flowAnimation.duration.domain|array|Defines the domain for opacity. __Not Required.__ _If not present the domain is calculated from the provide data depending on the flowlines.flowAnimation.duration.scaleType_
+flowlines.flowAnimation.duration.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__
+flowlines.flowAnimation.radius|object|Defines the radius of the animating dot. __Required.__
+flowlines.flowAnimation.radius.scaleType|string|Defines the scale type for radius. __Not Required. If not present then a constant radius that is defined is used.__ _Available values: linear._
+flowlines.flowAnimation.radius.value|array of number or number|Defines the value of the radius. __Required__ _If flowlines.flowAnimation.radius.scaleType is not present the this needs to be a number otherwise an array._
+flowlines.flowAnimation.radius.field|string|Defines the field in the data that will be mapped as opacity of the link. __Required if `flowlines.flowAnimation.radius.scaleType` is present.__
+flowlines.flowAnimation.radius.domain|array|Defines the domain for opacity. __Not Required.__ _If not present the domain is calculated from the provide data depending on the flowlines.flowAnimation.radius.scaleType_
+flowlines.flowAnimation.radius.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__
 nodes|object|Defines style of the source and target nodes. __Not Required. If not defined the nodes are not drawn.__
 nodes.source|object|Defines style of the source nodes. __Not Required. If not defined the source nodes are not drawn.__
 nodes.source.type|string|Defines shape of the source nodes. __Not Required. Default value: sphere__. _Available values: box, sphere._

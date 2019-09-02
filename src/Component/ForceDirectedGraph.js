@@ -122,7 +122,7 @@ class ForceDirectedGraph extends Component {
 
 
       // Adding Domain
-      let nodeRadiusDomain, linkColorDomain, nodeColorDomain, linkOpacityDomain;
+      let nodeRadiusDomain, linkColorDomain, nodeColorDomain, linkOpacityDomain, linkAnimatedDotRadiusDomain, linkanimatedDotDurationDomain;
 
       if (this.props.mark.nodes.style.radius.scaleType) {
         if (!this.props.mark.nodes.style.radius.domain) {
@@ -153,11 +153,27 @@ class ForceDirectedGraph extends Component {
       }
 
 
+      
+      if (this.props.mark.links.flowAnimation){
+        if (this.props.mark.links.flowAnimation.radius.scaleType){
+          if (!this.props.mark.links.flowAnimation.radius.domain) {
+            linkAnimatedDotRadiusDomain = GetDomain(this.state.data.link, this.props.mark.links.flowAnimation.radius.field, this.props.mark.links.flowAnimation.radius.scaleType, this.props.mark.links.flowAnimation.radius.startFromZero)
+          } else
+            linkAnimatedDotRadiusDomain = this.props.mark.links.flowAnimation.radius.domain
+        }
+
+        if (this.props.mark.links.flowAnimation.duration.scaleType){
+          if (!this.props.mark.links.flowAnimation.duration.domain) {
+            linkanimatedDotDurationDomain = GetDomain(this.state.data.link, this.props.mark.links.flowAnimation.duration.field, this.props.mark.links.flowAnimation.duration.scaleType, this.props.mark.links.flowAnimation.duration.startFromZero)
+          } else
+            linkanimatedDotDurationDomain = this.props.mark.links.flowAnimation.duration.domain
+        }
+      }
 
 
       // Scales
 
-      let nodeRadiusScale, nodeColorScale, linkColorScale, linkOpacityScale;
+      let nodeRadiusScale, nodeColorScale, linkColorScale, linkOpacityScale, animatedDotRadiusScale, animatedDotDurationScale;
 
       if (this.props.mark.nodes.style.radius.scaleType)
         nodeRadiusScale = d3.scaleLinear()
@@ -196,7 +212,17 @@ class ForceDirectedGraph extends Component {
         linkOpacityScale = d3.scaleLinear()
           .domain(linkOpacityDomain)
           .range(this.props.mark.links.style.fill.opacity.value)
-
+      
+      if (this.props.mark.links.flowAnimation){
+        if (this.props.mark.links.flowAnimation.radius.scaleType)
+          animatedDotRadiusScale = d3.scaleLinear()
+            .domain(linkAnimatedDotRadiusDomain)
+            .range(this.props.mark.links.flowAnimation.radius.value)
+        if (this.props.mark.links.flowAnimation.duration.scaleType)
+          animatedDotDurationScale = d3.scaleLinear()
+            .domain(linkanimatedDotDurationDomain)
+            .range(this.props.mark.links.flowAnimation.duration.value)
+      }
 
 
 
@@ -231,7 +257,7 @@ class ForceDirectedGraph extends Component {
 
 
       for (let i = 0; i < this.state.data.links.length; i++) {
-        let col, op;
+        let col, op, animatedDotRadius = 0, animatedDotDuration = 0;
         if (this.props.mark.links.style.fill.opacity.scaleType)
           op = linkOpacityScale(this.state.data.links[i][this.props.mark.links.style.fill.opacity.field])
         else
@@ -240,28 +266,57 @@ class ForceDirectedGraph extends Component {
           col = linkColorScale(this.state.data.links[i][this.props.mark.links.style.fill.field])
         else
           col = this.props.mark.links.style.fill.color
+        if (this.props.mark.links.flowAnimation){
+          if (this.props.mark.links.flowAnimation.radius.scaleType)
+            animatedDotRadius = animatedDotRadiusScale(this.state.data.links[i][this.props.mark.links.flowAnimation.radius.field])
+          else
+            animatedDotRadius = this.props.mark.links.flowAnimation.radius.value
+          if (this.props.mark.links.flowAnimation.duration.scaleType)
+            animatedDotDuration = animatedDotDurationScale(this.state.data.links[i][this.props.mark.links.flowAnimation.duration.field])
+          else
+            animatedDotDuration = this.props.mark.links.flowAnimation.duration.value
+        }
 
         g.addLink(this.state.data.links[i].fromId, this.state.data.links[i].toId, {
           color: col,
-          opacity: op
+          opacity: op,
+          animatedDotRadius: animatedDotRadius,
+          animatedDotDuration: animatedDotDuration,
+          data: this.state.data.links[i]
         })
       }
 
       var layout = require('ngraph.forcelayout3d')(g, physicsSettings);
-
-      for (var i = 0; i < 1000; ++i) {
+      let i;
+      for (i = 0; i < 1000; ++i) {
         layout.step();
       }
       let sphere = [], lines = [], label = []
+      i = 0
       g.forEachNode((node) => {
         let hoverText
         if (this.props.mark.nodes.mouseOver) {
           if (this.props.mark.nodes.mouseOver.label)
             hoverText = this.props.mark.nodes.mouseOver.label.value(node.data.data)
         }
+        let className = 'clickable', idName
+        if (typeof this.props.mark.nodes.class === "function"){
+          className =  `clickable ${this.props.mark.nodes.class(node.data.data,i)}`
+        }
+        if (typeof this.props.mark.nodes.id === "function"){
+          idName =  this.props.mark.nodes.id(node.data.data,i)
+        }
+        let labelClassName, labelIdName
+        if (typeof this.props.mark.labels.class === "function"){
+          labelClassName =  `clickable ${this.props.mark.labels.class(node.data.data,i)}`
+        }
+        if (typeof this.props.mark.labels.id === "function"){
+          labelIdName =  this.props.mark.labels.id(node.data.data,i)
+        }
         sphere.push(
           <Shape
             type={nodeType}
+            key={i}
             color={`${node.data.color}`}
             opacity={1}
             depth={`${node.data.radius}`}
@@ -273,13 +328,37 @@ class ForceDirectedGraph extends Component {
             hover={this.props.mark.nodes.mouseOver}
             hoverText={hoverText}
             graphID={this.props.index}
+            class={className}
+            id={idName}
+            data={JSON.stringify(node.data.data)}
           />
         )
         if (ifLabel)
-          label.push(<a-text color={node.data.color} width={labelWidth} value={node.data.text} anchor='align' side='double' align='left' billboard={this.props.mark.labels.billboarding} position={`${layout.getNodePosition(node.id).x * scale + node.data.radius / 2 + labelPadding} ${layout.getNodePosition(node.id).y * scale} ${layout.getNodePosition(node.id).z * scale}`} />)
+          label.push(<a-text key={i} class={labelClassName} id={labelIdName} data={JSON.stringify(node.data.data)} color={node.data.color} width={labelWidth} value={node.data.text} anchor='align' side='double' align='left' billboard={this.props.mark.labels.billboarding} position={`${layout.getNodePosition(node.id).x * scale + node.data.radius / 2 + labelPadding} ${layout.getNodePosition(node.id).y * scale} ${layout.getNodePosition(node.id).z * scale}`} />)
+        i++;
       });
+      let animatedSphere = []
+      i = 0
       g.forEachLink((link) => {
-        lines.push(<a-entity line={`start: ${layout.getLinkPosition(link.id).from.x * scale}, ${layout.getLinkPosition(link.id).from.y * scale}, ${layout.getLinkPosition(link.id).from.z * scale}; end: ${layout.getLinkPosition(link.id).to.x * scale} ${layout.getLinkPosition(link.id).to.y * scale} ${layout.getLinkPosition(link.id).to.z * scale}; color: ${link.data.color}; opacity: ${link.data.opacity}`} />)
+        let linkClassName, linkIdName
+        if (typeof this.props.mark.links.class === "function"){
+          linkClassName =  `${this.props.mark.links.class(link.data.data,i)}`
+        }
+        if (typeof this.props.mark.links.id === "function"){
+          linkIdName =  this.props.mark.links.id(link.data.data,i)
+        }
+        if(this.props.mark.links.flowAnimation){
+          let animatedDotClassName, animatedDotIdName
+          if (typeof this.props.mark.links.flowAnimation.class === "function"){
+            animatedDotClassName =  `${this.props.mark.links.flowAnimation.class(link.data.data,i)}`
+          }
+          if (typeof this.props.mark.links.flowAnimation.id === "function"){
+            animatedDotIdName =  this.props.mark.links.flowAnimation.id(link.data.data,i)
+          }
+          animatedSphere.push(<a-sphere key={i} class={animatedDotClassName} id={animatedDotIdName}  data={JSON.stringify(link.data.data)} position={`${layout.getLinkPosition(link.id).from.x * scale} ${layout.getLinkPosition(link.id).from.y * scale} ${layout.getLinkPosition(link.id).from.z * scale}`} radius={link.data.animatedDotRadius} opacity={this.props.mark.links.flowAnimation.opacity} color={this.props.mark.links.flowAnimation.color} animation={`property:position; to:${layout.getLinkPosition(link.id).to.x * scale} ${layout.getLinkPosition(link.id).to.y * scale} ${layout.getLinkPosition(link.id).to.z * scale}; loop: true; dur:${link.data.animatedDotDuration}; easing:linear`} />)
+        }
+        lines.push(<a-entity key={i} class={linkClassName} id={linkIdName}  data={JSON.stringify(link.data.data)} line={`start: ${layout.getLinkPosition(link.id).from.x * scale}, ${layout.getLinkPosition(link.id).from.y * scale}, ${layout.getLinkPosition(link.id).from.z * scale}; end: ${layout.getLinkPosition(link.id).to.x * scale} ${layout.getLinkPosition(link.id).to.y * scale} ${layout.getLinkPosition(link.id).to.z * scale}; color: ${link.data.color}; opacity: ${link.data.opacity}`} />)
+        i++
       })
 
 
@@ -303,6 +382,7 @@ class ForceDirectedGraph extends Component {
           {sphere}
           {lines}
           {label}
+          {animatedSphere}
         </a-entity>
       );
     }

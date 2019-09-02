@@ -154,7 +154,7 @@ class FlowMap extends Component {
 
         let min = {"x": d3.min(pntArray, d => d["x"]), "y": d3.min(pntArray, d => d["y"])}
         let max = {"x": d3.max(pntArray, d => d["x"]), "y": d3.max(pntArray, d => d["y"])}
-        let box = <a-box key ={i} width={max.x - min.x} height={max.y - min.y} depth={extrusionHeight} position={`${(max.x + min.x) / 2} ${(max.y + min.y) / 2} ${extrusionHeight / 2}`} opacity={0}/>
+        let box = <a-box class='clickable' key ={i} width={max.x - min.x} height={max.y - min.y} depth={extrusionHeight} position={`${(max.x + min.x) / 2} ${(max.y + min.y) / 2} ${extrusionHeight / 2}`} opacity={0}/>
         boundingBox.push(box)
         return pntArray
       })
@@ -234,9 +234,35 @@ class FlowMap extends Component {
       if (this.props.mark.flowlines.style.stroke.resolution) {
         resolution = this.props.mark.flowlines.style.stroke.resolution
       }
+      let linkAnimatedDotRadiusDomain, linkanimatedDotDurationDomain, animatedDotRadiusScale, animatedDotDurationScale;
+      if (this.props.mark.flowlines.flowAnimation){
+        if (this.props.mark.flowlines.flowAnimation.radius.scaleType){
+          if (!this.props.mark.flowlines.flowAnimation.radius.domain) {
+            linkAnimatedDotRadiusDomain = GetDomain(this.state.data, this.props.mark.flowlines.flowAnimation.radius.field, this.props.mark.flowlines.flowAnimation.radius.scaleType, this.props.mark.flowlines.flowAnimation.radius.startFromZero)
+          } else
+            linkAnimatedDotRadiusDomain = this.props.mark.flowlines.flowAnimation.radius.domain
+        }
 
+        if (this.props.mark.flowlines.flowAnimation.duration.scaleType){
+          if (!this.props.mark.flowlines.flowAnimation.duration.domain) {
+            linkanimatedDotDurationDomain = GetDomain(this.state.data, this.props.mark.flowlines.flowAnimation.duration.field, this.props.mark.flowlines.flowAnimation.duration.scaleType, this.props.mark.flowlines.flowAnimation.duration.startFromZero)
+          } else
+            linkanimatedDotDurationDomain = this.props.mark.flowlines.flowAnimation.duration.domain
+        }
+      }
+
+      if (this.props.mark.flowlines.flowAnimation){
+        if (this.props.mark.flowlines.flowAnimation.radius.scaleType)
+          animatedDotRadiusScale = d3.scaleLinear()
+            .domain(linkAnimatedDotRadiusDomain)
+            .range(this.props.mark.flowlines.flowAnimation.radius.value)
+        if (this.props.mark.flowlines.flowAnimation.duration.scaleType)
+          animatedDotDurationScale = d3.scaleLinear()
+            .domain(linkanimatedDotDurationDomain)
+            .range(this.props.mark.flowlines.flowAnimation.duration.value)
+      }
       let opacity = this.props.mark.flowlines.style.opacity, vertexColorArray = [];
-      
+      let animationDot = [], curves = []
       let curvesPoints = this.state.data.map((d, i) => {
 
         let source_position = GetMapCoordinates(d.source_longitude, d.source_latitude, this.props.mark.map.projection, this.props.mark.mapScale, this.props.mark.mapOrigin);
@@ -269,11 +295,29 @@ class FlowMap extends Component {
           color = colorScale(d[this.props.mark.flowlines.style.stroke.field])
         }
         vertexColorArray.push(color)
+        if(this.props.mark.flowlines.flowAnimation){
+          let animatedDotDuration = this.props.mark.flowlines.flowAnimation.duration.value;
+          let animatedDotRadius = this.props.mark.flowlines.flowAnimation.radius.value;
+          if (this.props.mark.flowlines.flowAnimation.radius.scaleType)
+            animatedDotRadius = animatedDotRadiusScale(d[this.props.mark.flowlines.flowAnimation.radius.field])
+          else
+            animatedDotRadius = this.props.mark.flowlines.flowAnimation.radius.value
+          if (this.props.mark.flowlines.flowAnimation.duration.scaleType)
+            animatedDotDuration = animatedDotDurationScale(d[this.props.mark.flowlines.flowAnimation.duration.field])
+          else
+            animatedDotDuration = this.props.mark.flowlines.flowAnimation.duration.value
+          animationDot.push(<a-sphere key={i} animate-points-on-curve={`points:${JSON.stringify(pointList)};curviness:${curviness};resolution:${resolution};duration:${animatedDotDuration}`} radius={animatedDotRadius} opacity={this.props.mark.flowlines.flowAnimation.opacity} color={this.props.mark.flowlines.flowAnimation.color} position={`${source_position[0]} ${source_position[1]} ${source_position[2]}`} />)
+        }
+        if(!this.props.mark.flowlines.optimizePerformance){
+          curves.push( <a-frame-flowLine key={i} points={JSON.stringify([pointList])} color={JSON.stringify(vertexColorArray)} opacity={opacity} curviness={curviness} resolution={resolution}/>)
+        }
         return pointList
 
       });
-      let curves = <a-frame-flowLine points={JSON.stringify(curvesPoints)} color={JSON.stringify(vertexColorArray)} opacity={opacity} curviness={curviness} resolution={resolution}/>
-
+      if(this.props.mark.flowlines.optimizePerformance){
+        curves = <a-frame-flowLine points={JSON.stringify(curvesPoints)} color={JSON.stringify(vertexColorArray)} opacity={opacity} curviness={curviness} resolution={resolution}/>
+      }
+      console.log(curves)
       let  clickRotation = 'false',animation;
       if(this.props.rotationOnDrag)
         clickRotation = 'true'
@@ -296,6 +340,7 @@ class FlowMap extends Component {
           {sourceNode}
           {targetNode}
           {curves}
+          {animationDot}
           {boundingBox}
         </a-entity>
       )

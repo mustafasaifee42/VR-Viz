@@ -164,7 +164,7 @@ class MapBarChart extends Component {
 
         let min = {"x": d3.min(pntArray, d => d["x"]), "y": d3.min(pntArray, d => d["y"])}
         let max = {"x": d3.max(pntArray, d => d["x"]), "y": d3.max(pntArray, d => d["y"])}
-        let box = <a-box key ={i} width={max.x - min.x} height={max.y - min.y} depth={extrusionHeight} position={`${(max.x + min.x) / 2} ${(max.y + min.y) / 2} ${extrusionHeight / 2}`} opacity={0}/>
+        let box = <a-box class='clickable' key ={i} width={max.x - min.x} height={max.y - min.y} depth={extrusionHeight} position={`${(max.x + min.x) / 2} ${(max.y + min.y) / 2} ${extrusionHeight / 2}`} opacity={0}/>
         boundingBox.push(box)
         return pntArray
       })
@@ -201,6 +201,7 @@ class MapBarChart extends Component {
       let contourList = JSON.stringify(path)
       let colorList = JSON.stringify(colorArray)
       let  clickRotation = 'false',animation;
+      let contours = <a-frame-contour-lines points={contourList} color={colorList} opacity={this.props.mark.isoLines.style.stroke.opacity} />
       if(this.props.rotationOnDrag)
         clickRotation = 'true'
       if(this.props.animateRotation){
@@ -219,7 +220,7 @@ class MapBarChart extends Component {
           {animation}
           {mapShape}
           {mapOutline}
-          <a-frame-contour-lines points={contourList} color={colorList} opacity={0.7} />
+          {contours}
           {boundingBox}
         </a-entity>
       )

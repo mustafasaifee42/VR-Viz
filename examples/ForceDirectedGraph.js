@@ -96,6 +96,16 @@ class App extends Component {
                       'domain': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                     },
                   },
+                  'flowAnimation':{
+                    'opacity':0.8,
+                    'color':'white',
+                    'duration':{
+                      "value":5000,
+                    },
+                    'radius':{
+                      "value":0.04,
+                    }
+                  }
                 },
                 'labels': {
                   'field': 'id',

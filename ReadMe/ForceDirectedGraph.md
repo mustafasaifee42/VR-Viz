@@ -95,10 +95,25 @@ links.style.fill.color|array of string or string|Defines the color for fill. __N
 links.style.fill.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if links.style.fill.color is not given and links.style.fill.scaleType is `linear`._
 links.style.fill.opacity|object|Defines the opacity of the link. __Required.__ 
 links.style.fill.opacity.scaleType|string|Defines the scale type for opacity of the link. __Not Required. If not present then a constant color that is defined is filled in the link.__ _Available values: linear or ordinal._
+links.style.fill.opacity.value|array of number or number|Defines the value of the duration of animation. __Required__ _If links.style.fill.opacity.scaleType is not present the this needs to be a number otherwise an array._
 links.style.fill.opacity.field|string|Defines the field in the data that will be mapped as opacity of the link. __Required if `links.style.fill.opacity.scaleType` is present.__
 links.style.fill.opacity.domain|array|Defines the domain for opacity. __Not Required.__ _If not present the domain is calculated from the provide data depending on the links.style.fill.opacity.scaleType_
 links.style.fill.opacity.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__ _Only applicable if links.style.fill.opacity.color is not given and links.style.fill.opacity.scaleType is `linear`._
-links.style.fill.opacity.value|array of float or float|Defines the range of opacity value of links. __Required.__ _If links.style.fill.opacity.scaleType is not present the this needs to be a float otherwise an array. Value must be between 0 and 1._
+links.flowAnimation|object|Defines the flow animation on the link. __Not Required.__ 
+links.flowAnimation.opacity|number|Defines the opacity of the dot in the flow animation. __Required.__ _.Values must be between 0 and 1._
+links.flowAnimation.color|string|Defines the color of the dot in the flow animation. __Required.__
+links.flowAnimation.duration|object|Defines the speed of animation of the dot. __Required.__
+links.flowAnimation.duration.scaleType|string|Defines the scale type for duration. __Not Required. If not present then a constant duration that is defined is used.__ _Available values: linear._
+links.flowAnimation.duration.value|array of number or number|Defines the value of the duration of animation. __Required__ _If links.flowAnimation.duration.scaleType is not present the this needs to be a number otherwise an array._
+links.flowAnimation.duration.field|string|Defines the field in the data that will be mapped as opacity of the link. __Required if `links.flowAnimation.duration.scaleType` is present.__
+links.flowAnimation.duration.domain|array|Defines the domain for opacity. __Not Required.__ _If not present the domain is calculated from the provide data depending on the links.flowAnimation.duration.scaleType_
+links.flowAnimation.duration.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__
+links.flowAnimation.radius|object|Defines the radius of the animating dot. __Required.__
+links.flowAnimation.radius.scaleType|string|Defines the scale type for radius. __Not Required. If not present then a constant radius that is defined is used.__ _Available values: linear._
+links.flowAnimation.radius.value|array of number or number|Defines the value of the radius. __Required__ _If links.flowAnimation.radius.scaleType is not present the this needs to be a number otherwise an array._
+links.flowAnimation.radius.field|string|Defines the field in the data that will be mapped as opacity of the link. __Required if `links.flowAnimation.radius.scaleType` is present.__
+links.flowAnimation.radius.domain|array|Defines the domain for opacity. __Not Required.__ _If not present the domain is calculated from the provide data depending on the links.flowAnimation.radius.scaleType_
+links.flowAnimation.radius.startFromZero|boolean|Defines if the domain starts from 0 or not. __Not Required. Default value: false__
 labels|object|Defines the style of the label. __Not Required.__ _If not present the labels are not shown close to the nodes._
 label.field|string|Defines the field in the data that will be used as the text for the labels. __Required.__
 tabel.billboarding|bool|Defines if the text always face the camera. __Not Required. Default value:false.__

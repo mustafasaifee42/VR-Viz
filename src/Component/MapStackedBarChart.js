@@ -160,7 +160,7 @@ class MapStackedBarChart extends Component {
 
         let min = {"x": d3.min(pntArray, d => d["x"]), "y": d3.min(pntArray, d => d["y"])}
         let max = {"x": d3.max(pntArray, d => d["x"]), "y": d3.max(pntArray, d => d["y"])}
-        let box = <a-box key ={i} width={max.x - min.x} height={max.y - min.y} depth={extrusionHeight} position={`${max.x / 2 + min.x / 2} ${(max.y + min.y) / 2} ${extrusionHeight / 2}`} opacity={0}/>
+        let box = <a-box class='clickable' key ={i} width={max.x - min.x} height={max.y - min.y} depth={extrusionHeight} position={`${max.x / 2 + min.x / 2} ${(max.y + min.y) / 2} ${extrusionHeight / 2}`} opacity={0}/>
         boundingBox.push(box)
         return pntArray
       })
