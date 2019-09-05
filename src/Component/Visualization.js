@@ -44,6 +44,7 @@ import '../AFrameGeometries/AFrameCurveLine.js';
 import '../AFrameGeometries/AFrameMeshFromPoints.js';
 import '../AFrameGeometries/AFrameContourLines.js';
 import '../AFrameGeometries/AFrameMap.js';
+import '../AFrameGeometries/AFrameGlobe.js';
 import '../AFrameGeometries/AFrameMapOutline.js';
 import '../AFrameGeometries/AFrameShape.js';
 import '../AFrameGeometries/AFrameFlowLineAnimationDot.js';
