@@ -4,7 +4,7 @@
 
 VR-Viz provide a high-level react components to generate 3D visualization in webVR. It combines A-Frame with React (for DOM manipulation) and D3 (for data visualizations) to generate visualization in VR. It provides a JSON syntax for generating visualizations (the concept is inspired from Vega-Lite)
 
-__Interactive examples can be seen and explored [here](https://vr-viz.netlify.com).__
+__Interactive examples can be seen and explored [here](https://vr-viz.netlify.com).__ _Known issues: Doesnt work in chrome, works in safari, firefox and edge_
 
 __Boilerplate for using VR-Viz can be found [here](https://github.com/mustafasaifee42/vr-viz-boilerplate).__
 
@@ -516,6 +516,7 @@ duration|int|Defines the timeperiod of the animation. The value is in millisecon
 * Add vase plot and map vase plot
 
 ## Known Issues
+* Doesnt work on chrome
 * Multiple a-frame screens cannot be embedded in the same page [(https://github.com/aframevr/aframe/issues/916)](https://github.com/aframevr/aframe/issues/916)
 * Ticks in Spiral chart is not working
 * Holes in the maps don't work (for example Lesotho in South Africa)
