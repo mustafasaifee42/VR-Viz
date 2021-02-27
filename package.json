@@ -3,32 +3,48 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "aframe": "^0.9.0",
-    "aframe-click-drag-component": "^3.0.1",
-    "aframe-event-set-component": "^4.1.1",
-    "aframe-mouse-dragndrop-component": "^1.0.10",
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/react": "^11.2.5",
+    "@testing-library/user-event": "^12.7.3",
+    "aframe": "^1.2.0",
     "aframe-teleport-controls": "^0.3.1",
-    "d3": "^5.1.0",
-    "d3-geo-projection": "^2.4.0",
+    "d3": "^6.5.0",
+    "d3-geo-projection": "^3.0.0",
     "d3-request": "^1.0.6",
-    "moment": "^2.22.1",
-    "ngraph.forcelayout3d": "0.0.16",
-    "ngraph.graph": "0.0.14",
-    "react": "^16.3.2",
-    "react-dom": "^16.3.2",
-    "react-scripts": "1.1.4",
-    "super-hands": "^2.1.0",
-    "three": "^0.107.0",
-    "three-conic-polygon-geometry": "^1.1.0",
-    "topojson": "^3.0.2"
+    "fs": "0.0.1-security",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.1",
+    "ngraph.forcelayout3d": "^1.2.0",
+    "ngraph.graph": "^19.1.0",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "4.0.3",
+    "three": "^0.126.0",
+    "topojson": "^3.0.2",
+    "web-vitals": "^1.1.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "devDependencies": {
-    "aframe-mouse-cursor-component": "^0.5.2"
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

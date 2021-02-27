@@ -1,102 +1,209 @@
-import React, { Component } from 'react';
-import './App.css';
-import VRViz from './Component/Visualization.js'
-import mapData from './mapData/mapData.json'
-import sfMapData from './mapData/sfMapData.json'
 
-class App extends Component {
-  render() {
-    return (
-      <VRViz
-        scene={
-          {
-            'sky': {
-              'style': {
-                'color': '#333',
-                'texture': false,
-              }
-            },
-            'lights': [
-              {
-                'type': 'directional',
-                'color': '#fff',
-                'position': '0 1 1',
-                'intensity': 1,
-                "decay": 1,
-              },
-              {
-                'type': 'ambient',
-                'color': '#fff',
-                'intensity': 1,
-                "decay": 1,
-              }
-            ],
-            'camera': {
-              'position': '0 0 0',
-              'rotation': '0 0 0',
-            },
+import VRViz from './VRViz';
+
+function App() {
+  return (
+    <VRViz
+      scene={
+        {
+          'sky': {
+            'style': {
+              'color': '#fff',
+              'texture': false,
+            }
+          },
+          'lights': [
+            {
+              'type': 'ambient',
+              'color': '#fff',
+              'intensity': 1,
+              "decay": 1,
+            }
+          ],
+          'camera': {
+            'position': '0 5 10',
+            'rotation': '0 0 0',
+            'nearClipping': 0.5,
+            'fov': 80,
+          },
+          'floor': {
+            'style': {
+              'color': '#fff',
+              'texture': false,
+              'width': 100,
+              'depth': 100,
+            }
           }
         }
-        graph={
-          [
-            {
-              'type': 'MapContourLines',
-              'style': {
-                'origin': [0, 0, 0],
+      }
+      graph={        
+        [
+          {
+            'type': 'ScatterPlot',
+            'style': {
+              'origin': [0, 0, 0],
+              'dimensions': {
+                'width': 10,
+                'height': 10,
+                'depth': 10,
               },
-              'data': {
-                'dataFile': "data/mapContourLines.csv",
-                'fileType': 'csv',
-                'fieldDesc': [['geojson', 'jsonObject'], ['objectid', 'number'], ['isoline_ty', 'text'], ['shape_len', 'text'], ['elevation', 'number']]
-              },
-              'style': {
-                'origin': [0, 0, 0],
-              },
-              'mark': {
-                'mapScale': 2500,
-                'mapOrigin': [4978.205, 1862.288],
-                'rotation': '-90 0 0',
-                'map': {
-                  'data': sfMapData,
-                  'projection': 'Mercator',
-                  'shapeIdentifier': 'id',
-                  'shapeKey': 'neighbourhood',
-                  'style': {
-                    'extrusion': {
-                      'value': 0.0000001,
-                    },
-                    'fill': {
-                      'opacity': 1,
-                      'color': 'red',
-                    },
-                    'stroke': {
-                      'width': 1,
-                      'color': 'black',
-                    },
-                  },
+            },
+            'data': {
+              'dataFile': "data/scatterPlot.csv",
+              'fileType': 'csv',
+              'fieldDesc': [['sepal_length', 'number'], ['sepal_width', 'number'], ['petal_length', 'number'], ['petal_width', 'number'], ['species', 'text']]
+            },
+            'mark': {
+              'position': {
+                'x': {
+                  'scaleType': 'linear',
+                  'field': 'sepal_length',
                 },
-                'isoLines': {
-                  'elevation': {
-                    'field': 'elevation',
-                    'value': [0, 2],
-                  },
-                  'style': {
-                    'stroke': {
-                      'width': 1,
-                      'scaleType': 'linear',
-                      'field': 'elevation',
-                      'color': ['green', 'blue'],
-                    },
-                  }
+                'y': {
+                  'scaleType': 'linear',
+                  'field': 'sepal_width',
+                },
+                'z': {
+                  'scaleType': 'linear',
+                  'field': 'petal_length',
+                }
+              },
+              'type': 'sphere',
+              'style': {
+                'radius': {
+                  'scaleType': 'linear',
+                  'field': 'petal_width',
+                  'value': [0, 0.2],
+                },
+                'fill': {
+                  'scaleType': 'ordinal',
+                  'opacity': 0.4,
+                  'field': 'species',
+                  'color': ['red', 'green', 'blue'],
+                  'domain': ['setosa', 'versicolor', 'virginica'],
                 },
               },
+              'mouseOver': {
+                'focusedObject': {
+                  'opacity': 1,
+                  'fill': '#333',
+                },
+                'nonFocusedObject': {
+                  'opacity': 0,
+                },
+                'label': {
+                  'value': (d) => `sepal_length:${d.sepal_length}\nsepal_width:${d.sepal_width}\npetal_length:${d.petal_length}\npetal_width:${d.petal_width}\nspecies:${d.species}`,
+                  'align': 'center',
+                  'fontSize': 1,
+                  'backgroundColor': '#333',
+                  'backgroundOpacity': 1,
+                  'fontColor': '#fff',
+                }
+              },
+              'droplines': {
+                'xz': true,
+                'yz': false,
+                'xy': false,
+                'style': {
+                  'fill': {
+                    'scaleType': 'ordinal',
+                    'field': 'species',
+                    'color': ['red', 'green', 'blue'],
+                    'opacity': 0.4,
+                    'domain': ['setosa', 'versicolor', 'virginica'],
+                  },
+                }
+              },
+              'projections': {
+                'xz': true,
+                'yz': true,
+                'xy': true,
+                'style': {
+                  'fill': {
+                    'scaleType': 'ordinal',
+                    'field': 'species',
+                    'color': ['red', 'green', 'blue'],
+                    'opacity': 0.4,
+                    'domain': ['setosa', 'versicolor', 'virginica'],
+                  },
+                  'radius': {
+                    'scaleType': 'linear',
+                    'field': 'petal_width',
+                    'value': [0, 0.2],
+                  },
+                }
+              }
+            },
+            'axis': {
+              'axis-box': {
+                'color': 'black',
+              },
+              'x-axis': {
+                'orient': 'bottom-back',
+                'title': {
+                  'text': '',
+                  'fontSize': 10,
+                  'color': 'black',
+                  'opacity': 1,
+                },
+                'ticks': {
+                  'noOfTicks': 10,
+                  'size': 0.1,
+                  'color': 'black',
+                  'opacity': 1,
+                  'fontSize': 10,
+                },
+                'grid': {
+                  'color': 'black',
+                  'opacity': 1,
+                }
+              },
+              'y-axis': {
+                'orient': 'bottom-back',
+                'title': {
+                  'text': '',
+                  'fontSize': 10,
+                  'color': 'black',
+                  'opacity': 1,
+                },
+                'ticks': {
+                  'noOfTicks': 10,
+                  'size': 0.1,
+                  'color': 'black',
+                  'opacity': 1,
+                  'fontSize': 10,
+                },
+                'grid': {
+                  'color': 'black',
+                  'opacity': 1,
+                }
+              },
+              'z-axis': {
+                'orient': 'bottom-back',
+                'title': {
+                  'text': '',
+                  'fontSize': 10,
+                  'color': 'black',
+                  'opacity': 1,
+                },
+                'ticks': {
+                  'noOfTicks': 10,
+                  'size': 0.1,
+                  'color': 'black',
+                  'opacity': 1,
+                  'fontSize': 10,
+                },
+                'grid': {
+                  'color': 'black',
+                  'opacity': 1,
+                }
+              }
             }
-          ]
-        }
-      />
-    );
-  }
+          }
+        ]
+      }
+    />
+  );
 }
 
 export default App;
-

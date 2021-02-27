@@ -1,25 +1,28 @@
-import * as AFRAME from 'aframe';
-import * as THREE from 'three';
+import * as AFRAME from "aframe";
+import * as THREE from "three";
 
-AFRAME.registerComponent('play-all-model-animations', {
+AFRAME.registerComponent("play-all-model-animations", {
   init: function () {
     this.model = null;
     this.mixer = null;
 
-    var model = this.el.getObject3D('mesh');
+    var model = this.el.getObject3D("mesh");
     if (model) {
       this.load(model);
     } else {
-      this.el.addEventListener('model-loaded', function (e) {
-        this.load(e.detail.model);
-      }.bind(this));
+      this.el.addEventListener(
+        "model-loaded",
+        function (e) {
+          this.load(e.detail.model);
+        }.bind(this)
+      );
     }
   },
 
   load: function (model) {
     this.model = model;
     this.mixer = new THREE.AnimationMixer(model);
-    this.model.animations.forEach(animation => {
+    this.model.animations.forEach((animation) => {
       this.mixer.clipAction(animation, model).play();
     });
   },
@@ -28,5 +31,5 @@ AFRAME.registerComponent('play-all-model-animations', {
     if (this.mixer && !isNaN(dt)) {
       this.mixer.update(dt / 1000);
     }
-  }
+  },
 });
