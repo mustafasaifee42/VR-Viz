@@ -178,7 +178,11 @@ const RectangleChart = (props) => {
 
   const zAxis = props.graphSettings.axis["z-axis"] ? (
     <ZAxis
-      domain={zDomain}
+      domain={zScale.ticks(
+        props.graphSettings.axis["z-axis"].ticks?.noOfTicks
+          ? props.graphSettings.axis["z-axis"].ticks.noOfTicks
+          : 5
+      )}
       tick={props.graphSettings.axis["z-axis"].ticks}
       scale={zScale}
       orient={props.graphSettings.axis["z-axis"].orient}

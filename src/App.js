@@ -35,102 +35,37 @@ function App() {
       }}
       graph={[
         {
-          type: "ContourPlot",
+          type: "CrossSectionView",
           style: {
-            origin: [0, 0, 0],
-            dimensions: {
-              width: 10,
-              height: 10,
-              depth: 10,
-            },
+            position: [-10, 5, 0],
+            scale: [1, 1, 1],
           },
           mark: {
-            type: "line",
-            position: {
-              x: {
-                scaleType: "linear",
-                function: (y) => Math.sin(y),
+            material: {
+              type: "phong",
+              fill: {
+                opacity: 0.4,
+                color: "#ff0000",
+                shininess: 30,
+                emissive: "#000000",
+                specular: "#ffffff",
               },
-              y: {
-                scaleType: "linear",
-                domain: [0, 6 * Math.PI],
-                range: [0, 10],
-                steps: 150,
+              stroke: {
+                width: 1,
+                color: "#ffff00",
+                edgeThresholdAngle: 10,
               },
-              z: {
-                scaleType: "linear",
-                function: (y) => Math.cos(y),
+              emphasisMaterial: {
+                opacity: 0.8,
+                color: "#ffff00",
+                meshes: ["Adam", "Eyelid"],
               },
-            },
-            style: {
-              opacity: 1,
-              color: "red",
-            },
-          },
-          axis: {
-            "axis-box": {
-              color: "black",
-            },
-            "x-axis": {
-              orient: "bottom-back",
-              title: {
-                text: "",
-                fontSize: 10,
-                color: "black",
-                opacity: 1,
-              },
-              ticks: {
-                noOfTicks: 10,
-                size: 0.1,
-                color: "black",
-                opacity: 1,
-                fontSize: 10,
-              },
-              grid: {
-                color: "black",
-                opacity: 1,
+              highlightOnClick: {
+                opacity: 0.8,
+                color: "#ff0000",
               },
             },
-            "y-axis": {
-              orient: "bottom-back",
-              title: {
-                text: "",
-                fontSize: 10,
-                color: "black",
-                opacity: 1,
-              },
-              ticks: {
-                noOfTicks: 10,
-                size: 0.1,
-                color: "black",
-                opacity: 1,
-                fontSize: 10,
-              },
-              grid: {
-                color: "black",
-                opacity: 1,
-              },
-            },
-            "z-axis": {
-              orient: "bottom-back",
-              title: {
-                text: "",
-                fontSize: 10,
-                color: "black",
-                opacity: 1,
-              },
-              ticks: {
-                noOfTicks: 10,
-                size: 0.1,
-                color: "black",
-                opacity: 1,
-                fontSize: 10,
-              },
-              grid: {
-                color: "black",
-                opacity: 1,
-              },
-            },
+            object: "data/Duck.gltf",
           },
         },
       ]}

@@ -239,7 +239,11 @@ const ConnectedScatterPlot = (props) => {
   //Axis
   const xAxis = props.graphSettings.axis["x-axis"] ? (
     <XAxis
-      domain={xDomain}
+      domain={xScale.ticks(
+        props.graphSettings.axis["x-axis"].ticks?.noOfTicks
+          ? props.graphSettings.axis["x-axis"].ticks.noOfTicks
+          : 5
+      )}
       tick={props.graphSettings.axis["x-axis"].ticks}
       scale={xScale}
       orient={props.graphSettings.axis["x-axis"].orient}
@@ -267,7 +271,11 @@ const ConnectedScatterPlot = (props) => {
 
   const zAxis = props.graphSettings.axis["z-axis"] ? (
     <ZAxis
-      domain={zDomain}
+      domain={zScale.ticks(
+        props.graphSettings.axis["z-axis"].ticks?.noOfTicks
+          ? props.graphSettings.axis["z-axis"].ticks.noOfTicks
+          : 5
+      )}
       tick={props.graphSettings.axis["z-axis"].ticks}
       scale={zScale}
       orient={props.graphSettings.axis["z-axis"].orient}

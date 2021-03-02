@@ -188,8 +188,8 @@ const BarGraph = (props) => {
   });
 
   const stem = props.data.map((d, i) => {
-    const color = colorScale
-      ? colorScale(d[props.graphSettings.mark.droplines.style.fill.field])
+    const color = stemColorScale
+      ? stemColorScale(d[props.graphSettings.mark.droplines.style.fill.field])
       : props.graphSettings.mark.droplines.style.fill.color
       ? props.graphSettings.mark.droplines.style.fill.color
       : "#000000";

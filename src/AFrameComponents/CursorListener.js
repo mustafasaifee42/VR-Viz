@@ -8,8 +8,8 @@ AFRAME.registerComponent("cursor-listener", {
     text: { type: "string" },
   },
 
-  init: function (data) {
-    this.el.addEventListener("mouseenter", function (evt) {
+  init: function (_data) {
+    this.el.addEventListener("mouseenter", function (_evt) {
       d3.selectAll("#mouseHover")
         .append("a-entity")
         .attr("class", "hover")
@@ -21,7 +21,7 @@ AFRAME.registerComponent("cursor-listener", {
           "anchor: center; width: 1.5; color: white; value: \n[CENTER ANCHOR]\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam"
         );
     });
-    this.el.addEventListener("mouseleave", function (evt) {
+    this.el.addEventListener("mouseleave", function (_evt) {
       d3.selectAll(".hover").remove();
     });
   },

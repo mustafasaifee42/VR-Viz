@@ -67,9 +67,6 @@ AFRAME.registerComponent("modify-material", {
           material.opacity = this.data.materialOpacity;
           material.transparent = true;
           if (this.data.modifyMaterial) node.material = material;
-          let geometry = new THREE.BufferGeometry(node.geometry);
-          geometry.mergeVertices();
-          node.geometry = geometry;
           if (this.data.stroke) {
             let edges = new THREE.EdgesGeometry(
               node.geometry,
@@ -124,7 +121,6 @@ AFRAME.registerComponent("modify-material", {
               });
             }
           }
-          node.geometry = new THREE.BufferGeometry().fromGeometry(geometry);
         }
       });
     });
