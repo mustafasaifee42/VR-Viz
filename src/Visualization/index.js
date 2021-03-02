@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { csv, json, text } from "d3-request";
 import * as moment from "moment";
 import * as d3 from "d3";
-import ScatterPlot from "./Charts/ScatterPlot";
+import ContourPlot from "./Plots/ContourPlot";
 import ReadPLY from "../utils/ReadPLY.js";
 
 const Visualization = (props) => {
@@ -74,7 +74,11 @@ const Visualization = (props) => {
         break;
       }
       default: {
-        setData(props.graphSettings.data.dataFile);
+        setData(
+          props.graphSettings.data?.dataFile
+            ? props.graphSettings.data?.dataFile
+            : "NR"
+        );
         break;
       }
     }
@@ -129,7 +133,7 @@ const Visualization = (props) => {
         id={props.graphID}
       >
         {animation}
-        <ScatterPlot
+        <ContourPlot
           data={data}
           graphSettings={props.graphSettings}
           graphID={props.graphID}

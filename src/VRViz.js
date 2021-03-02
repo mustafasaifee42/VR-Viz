@@ -12,7 +12,8 @@ import "./AFrameComponents/PivotCenterForModel";
 import "./AFrameComponents/MaterialModification";
 import "./AFrameComponents/HighlightOnClick";
 
-import "./AFrameGeometries/AFrameCurveLine.js";
+import "./AFrameGeometries/AFrameCurveLine";
+import "./AFrameGeometries/AFrameMeshFromPoints";
 
 require("aframe-teleport-controls");
 

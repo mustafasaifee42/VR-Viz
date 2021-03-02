@@ -31,13 +31,11 @@ AFRAME.registerComponent("curveline", {
     let dataPoints = JSON.parse(this.data.points);
     let pointVecs = [];
     for (let i = 0; i < dataPoints.length; i++) {
-      let vec = new THREE.Vector3(
-        parseFloat(dataPoints[i].x),
-        parseFloat(dataPoints[i].y),
-        parseFloat(dataPoints[i].z)
-      );
-      pointVecs.push(vec);
+      pointVecs.push(dataPoints[i].x);
+      pointVecs.push(dataPoints[i].y);
+      pointVecs.push(dataPoints[i].z);
     }
+    const vertices = new Float32Array(pointVecs);
     let curveObject, curve, geometry, points;
     let material = new THREE.LineBasicMaterial({
       color: this.data.color,
@@ -50,16 +48,22 @@ AFRAME.registerComponent("curveline", {
     switch (this.data.type) {
       case "line":
         geometry = new THREE.BufferGeometry();
-        geometry.vertices = pointVecs;
+        geometry.setAttribute(
+          "position",
+          new THREE.BufferAttribute(vertices, 3)
+        );
         curveObject = new THREE.Line(geometry, material);
         break;
       case "lineSegment":
         geometry = new THREE.BufferGeometry();
-        geometry.vertices = pointVecs;
+        geometry.setAttribute(
+          "position",
+          new THREE.BufferAttribute(vertices, 3)
+        );
         curveObject = new THREE.LineSegments(geometry, material);
         break;
       case "CatmullRomCurve":
-        curve = new THREE.CatmullRomCurve3(pointVecs);
+        curve = new THREE.CatmullRomCurve3(vertices);
         points = curve.getPoints(this.data.resolution);
         geometry = new THREE.BufferGeometry().setFromPoints(points);
         // Create the final object to add to the scene
@@ -67,7 +71,10 @@ AFRAME.registerComponent("curveline", {
         break;
       default:
         geometry = new THREE.BufferGeometry();
-        geometry.vertices = pointVecs;
+        geometry.setAttribute(
+          "position",
+          new THREE.BufferAttribute(vertices, 3)
+        );
         curveObject = new THREE.Line(geometry, material);
         break;
     }

@@ -2,8 +2,7 @@ import React from "react";
 import * as d3 from "d3";
 import GetDomain from "../../utils/GetDomain";
 import Shape from "../Components/Shape";
-import AxisBox from "../Components/AxisBox";
-import { XAxis, YAxis, ZAxis } from "../Components/Axis";
+import { XAxis, YAxis, ZAxis, AxisBox } from "../Components/Axis";
 
 const ScatterPlot = (props) => {
   if (!props.data || !props.graphSettings.style || !props.graphSettings.mark) {
@@ -302,7 +301,11 @@ const ScatterPlot = (props) => {
   //Axis
   const xAxis = props.graphSettings.axis["x-axis"] ? (
     <XAxis
-      domain={xDomain}
+      domain={xScale.ticks(
+        props.graphSettings.axis["x-axis"].ticks?.noOfTicks
+          ? props.graphSettings.axis["x-axis"].ticks.noOfTicks
+          : 5
+      )}
       tick={props.graphSettings.axis["x-axis"].ticks}
       scale={xScale}
       orient={props.graphSettings.axis["x-axis"].orient}
@@ -330,7 +333,11 @@ const ScatterPlot = (props) => {
 
   const zAxis = props.graphSettings.axis["z-axis"] ? (
     <ZAxis
-      domain={zDomain}
+      domain={zScale.ticks(
+        props.graphSettings.axis["z-axis"].ticks?.noOfTicks
+          ? props.graphSettings.axis["z-axis"].ticks.noOfTicks
+          : 5
+      )}
       tick={props.graphSettings.axis["z-axis"].ticks}
       scale={zScale}
       orient={props.graphSettings.axis["z-axis"].orient}

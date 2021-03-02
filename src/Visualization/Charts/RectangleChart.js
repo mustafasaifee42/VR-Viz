@@ -2,8 +2,7 @@ import React from "react";
 import * as d3 from "d3";
 import GetDomain from "../../utils/GetDomain";
 import Shape from "../Components/Shape";
-import AxisBox from "../Components/AxisBox";
-import { XAxis, YAxis, ZAxis } from "../Components/Axis";
+import { XAxis, YAxis, ZAxis, AxisBox } from "../Components/Axis";
 
 const RectangleChart = (props) => {
   if (!props.data || !props.graphSettings.style || !props.graphSettings.mark) {
