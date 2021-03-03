@@ -275,7 +275,7 @@ const Viz = (props) => {
       );
       break;
     default:
-      console.error(
+      console.warn(
         `The visualization type ${props.graphType} does not match the set in the library.`
       );
       chart = null;
@@ -298,7 +298,7 @@ const Viz = (props) => {
       </a-entity>
     );
 
-  return { entity };
+  return <>{entity} </>;
 };
 
 export default Viz;

@@ -6,7 +6,7 @@ import { XAxis, YAxis, ZAxis, AxisBox } from "../Components/Axis";
 
 const RectangleChart = (props) => {
   if (!props.data || !props.graphSettings.style || !props.graphSettings.mark) {
-    console.error(
+    console.warn(
       `Error: Some necessary attributes missing for ${props.graphSettings.type}`
     );
     return null;
@@ -129,7 +129,7 @@ const RectangleChart = (props) => {
         depth={`${depth}`}
         height={`${hght}`}
         width={`${width}`}
-        radius={`${radius}`}
+        radius={"0"}
         segments={
           props.graphSettings.mark.style.segments
             ? `${props.graphSettings.mark.style.segments}`

@@ -3,7 +3,8 @@ import * as d3 from "d3";
 import _ from "lodash";
 import GetMapShape from "../../utils/GetMapShape";
 import GetMapCoordinates from "../../utils/GetMapCoordinates";
-import Shape from "./Components/Shape";
+import GetDomain from "../../utils/GetDomain";
+import Shape from "../Components/Shape";
 
 const MapStackedBarChart = (props) => {
   // Data manipulation

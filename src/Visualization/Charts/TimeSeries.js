@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import * as d3 from "d3";
 import GetDomain from "../../utils/GetDomain";
 import { XAxis, YAxis, ZAxis, AxisBox } from "../Components/Axis";
 
 const TimeSeries = (props) => {
   if (!props.graphSettings.style || !props.graphSettings.mark) {
-    console.error(
+    console.warn(
       `Error: Some necessary attributes missing for ${props.graphSettings.type}`
     );
     return null;
@@ -168,9 +168,6 @@ const TimeSeries = (props) => {
       orient={props.graphSettings.axis["x-axis"].orient}
       title={props.graphSettings.axis["x-axis"].title}
       dimensions={props.graphSettings.style.dimensions}
-      padding={
-        props.graphSettings.mark.position.z.scaleType === "linear" ? 0 : width
-      }
       grid={props.graphSettings.axis["x-axis"].grid}
     />
   ) : null;

@@ -2,7 +2,7 @@ import * as d3GeoProjection from "d3-geo-projection";
 import * as d3 from "d3";
 import * as topojson from "topojson";
 
-export default (mapData, proj, scale, position, identifier, shapeKey) => {
+const GetMapShape = (mapData, proj, scale, position, identifier, shapeKey) => {
   let projection = "sphere";
   switch (proj) {
     case "Mercator":
@@ -54,7 +54,7 @@ export default (mapData, proj, scale, position, identifier, shapeKey) => {
     let path = d3.geoPath().projection(projection_scale);
     let featureNew = [];
     features.forEach((d, i) => {
-      if (!path(d)) console.log(`Path doesn't exist in ${d}`);
+      if (!path(d)) console.warn(`Path doesn't exist in ${d}`);
       else featureNew.push(d);
     });
     let countries = featureNew.map((d, i) => d[identifier]);
@@ -111,3 +111,5 @@ export default (mapData, proj, scale, position, identifier, shapeKey) => {
     return geoData;
   }
 };
+
+export default GetMapShape;

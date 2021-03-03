@@ -6,7 +6,7 @@ import { XAxis, YAxis, ZAxis, AxisBox } from "../Components/Axis";
 
 const BarGraph = (props) => {
   if (!props.data || !props.graphSettings.style || !props.graphSettings.mark) {
-    console.error(
+    console.warn(
       `Error: Some necessary attributes missing for ${props.graphSettings.type}`
     );
     return null;
@@ -91,6 +91,8 @@ const BarGraph = (props) => {
     .domain(zDomain)
     .range([0, props.graphSettings.style.dimensions.depth])
     .paddingInner(props.graphSettings.mark.style.padding.z);
+
+  const depth = zScale.bandwidth();
 
   const radiusScale = props.graphSettings.mark.style.radius.scaleType
     ? d3

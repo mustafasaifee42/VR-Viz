@@ -4,7 +4,7 @@ import Shape from "../Components/Shape";
 
 const TreeMap = (props) => {
   if (!props.data || !props.graphSettings.style || !props.graphSettings.mark) {
-    console.error(
+    console.warn(
       `Error: Some necessary attributes missing for ${props.graphSettings.type}`
     );
     return null;
@@ -27,7 +27,7 @@ const TreeMap = (props) => {
 
   const parent = tree
     .leaves()
-    .map((d, i) =>
+    .map((d) =>
       parent.indexOf(d.parent.data.name) === -1 && d.parent.data.name !== null
         ? d.parent.data.name
         : null
@@ -76,7 +76,7 @@ const TreeMap = (props) => {
     : null;
 
   //Adding marks
-  const marks = props.data.map((d, i) => {
+  const marks = tree.leaves().map((d, i) => {
     const width = (d.x1 - d.x0).toFixed(3);
 
     const depth = (d.y1 - d.y0).toFixed(3);
@@ -95,12 +95,6 @@ const TreeMap = (props) => {
       : props.graphSettings.mark.style.fill.color
       ? props.graphSettings.mark.style.fill.color
       : "#000000";
-
-    const position = `${
-      xScale(d[props.graphSettings.mark.position.x.field]) + width / 2
-    } ${hght / 2} ${
-      zScale(d[props.graphSettings.mark.position.z.field]) + depth / 2
-    }`;
 
     const hoverText = props.graphSettings.mark.mouseOver?.label
       ? props.graphSettings.mark.mouseOver.label.value(d)
@@ -129,7 +123,7 @@ const TreeMap = (props) => {
         depth={`${depth}`}
         height={`${hght}`}
         width={`${width}`}
-        radius={`${radius}`}
+        radius={"0"}
         segments={
           props.graphSettings.mark.style.segments
             ? `${props.graphSettings.mark.style.segments}`

@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import GetDomain from "../../utils/GetDomain";
 import GetMapShape from "../../utils/GetMapShape";
 import GetMapCoordinates from "../../utils/GetMapCoordinates";
-import Shape from "./Components/Shape";
+import Shape from "../Components/Shape";
 
 const MapBarChart = (props) => {
   // Getting domain
@@ -154,7 +154,7 @@ const MapBarChart = (props) => {
 
     const idName =
       typeof props.graphSettings.mark.id === "function"
-        ? (idName = props.graphSettings.mark.bars.id(d, i))
+        ? props.graphSettings.mark.bars.id(d, i)
         : null;
     return (
       <Shape

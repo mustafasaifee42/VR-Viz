@@ -3,7 +3,7 @@ import * as d3 from "d3";
 
 const ContourMap = (props) => {
   if (!props.data || !props.graphSettings.style || !props.graphSettings.mark) {
-    console.error(
+    console.warn(
       `Error: Some necessary attributes missing for ${props.graphSettings.type}`
     );
     return null;

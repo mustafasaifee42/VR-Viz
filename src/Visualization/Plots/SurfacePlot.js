@@ -1,10 +1,11 @@
 import React from "react";
 import * as d3 from "d3";
+import GetDomain from "../../utils/GetDomain";
 import { XAxis, YAxis, ZAxis, AxisBox } from "../Components/Axis";
 
 const SurfacePlot = (props) => {
   if (!props.graphSettings.style || !props.graphSettings.mark) {
-    console.error(
+    console.warn(
       `Error: Some necessary attributes missing for ${props.graphSettings.type}`
     );
     return null;

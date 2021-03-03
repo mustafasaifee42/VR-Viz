@@ -6,17 +6,16 @@ import GetMapShape from "../../utils/GetMapShape";
 import GetMapCoordinates from "../../utils/GetMapCoordinates";
 
 const IsolineMap = (props) => {
-  // Getting domain
-  let colorDomain, elevationDomain;
+  // Getting domain]
 
   const colorDomain = props.graphSettings.mark.isoLines.style.stroke.domain
     ? props.graphSettings.mark.isoLines.style.stroke.domain
-    : (colorDomain = GetDomain(
+    : GetDomain(
         props.data,
         props.graphSettings.mark.isoLines.style.stroke.field,
         props.graphSettings.mark.isoLines.style.stroke.scaleType,
         props.graphSettings.mark.isoLines.style.stroke.startFromZero
-      ));
+      );
 
   const elevationDomain = props.graphSettings.mark.isoLines.elevation.domain
     ? props.graphSettings.mark.isoLines.elevation.domain

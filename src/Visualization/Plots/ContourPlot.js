@@ -5,7 +5,7 @@ import { XAxis, YAxis, ZAxis, AxisBox } from "../Components/Axis";
 
 const ContourPlot = (props) => {
   if (!props.graphSettings.style || !props.graphSettings.mark) {
-    console.error(
+    console.warn(
       `Error: Some necessary attributes missing for ${props.graphSettings.type}`
     );
     return null;

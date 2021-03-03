@@ -21,7 +21,6 @@ const PrismMap = (props) => {
   });
 
   // Getting domain
-  let colorDomain, extrusionDomain;
 
   const extrusionDomain = props.graphSettings.mark.style.extrusion.domain
     ? props.graphSettings.mark.style.extrusion.domain
@@ -32,37 +31,35 @@ const PrismMap = (props) => {
         props.graphSettings.mark.style.extrusion.startFromZero
       );
 
-  if (props.graphSettings.mark.style.fill.scaleType) {
-    if (!props.graphSettings.mark.style.fill.domain) {
-      colorDomain = GetDomain(
-        props.data,
-        props.graphSettings.mark.style.fill.field,
-        props.graphSettings.mark.style.fill.scaleType,
-        props.graphSettings.mark.style.fill.startFromZero
-      );
-    } else colorDomain = props.graphSettings.mark.style.fill.domain;
-  }
+  const colorDomain = props.graphSettings.mark.style.fill.scaleType
+    ? props.graphSettings.mark.style.fill.scaleType
+      ? props.graphSettings.mark.style.fill.scaleType
+      : GetDomain(
+          props.data,
+          props.graphSettings.mark.style.fill.field,
+          props.graphSettings.mark.style.fill.scaleType,
+          props.graphSettings.mark.style.fill.startFromZero
+        )
+    : null;
 
   //Adding scales
-
-  let colorScale;
 
   const extrusionScale = d3
     .scaleLinear()
     .domain(extrusionDomain)
     .range(props.graphSettings.mark.style.extrusion.value);
 
-  if (props.graphSettings.mark.style.fill.scaleType) {
-    let colorRange = d3.schemeCategory10;
-    if (props.graphSettings.mark.style.fill.color)
-      colorRange = props.graphSettings.mark.style.fill.color;
-    if (props.graphSettings.mark.style.fill.scaleType === "ordinal")
-      colorScale = d3.scaleOrdinal().domain(colorDomain).range(colorRange);
-    else colorScale = d3.scaleLinear().domain(colorDomain).range(colorRange);
-  }
+  const colorRange = props.graphSettings.mark.style.fill.color
+    ? props.graphSettings.mark.style.fill.color
+    : d3.schemeCategory10;
+
+  const colorScale = props.graphSettings.mark.style.fill.scaleType
+    ? props.graphSettings.mark.style.fill.scaleType === "ordinal"
+      ? d3.scaleOrdinal().domain(colorDomain).range(colorRange)
+      : d3.scaleLinear().domain(colorDomain).range(colorRange)
+    : null;
 
   //Adding marks
-  let shapes;
   const stroke = props.graphSettings.mark.style.stroke ? true : false;
   const strokeColor = props.graphSettings.mark.style.stroke?.color
     ? props.graphSettings.mark.style.stroke.color

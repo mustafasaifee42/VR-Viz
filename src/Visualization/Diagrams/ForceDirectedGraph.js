@@ -5,15 +5,19 @@ import Shape from "../Components/Shape";
 
 const BarGraph = (props) => {
   if (!props.data || !props.graphSettings.style || !props.graphSettings.mark) {
-    console.error(
+    console.warn(
       `Error: Some necessary attributes missing for ${props.graphSettings.type}`
     );
     return null;
   }
 
-  const  nodeType = props.graphSettings.mark.nodes.type ? props.graphSettings.mark.nodes.type : 'sphere', 
-  
-  const scale = props.graphSettings.style.scale ? props.graphSettings.style.scale : 1;
+  const nodeType = props.graphSettings.mark.nodes.type
+    ? props.graphSettings.mark.nodes.type
+    : "sphere";
+
+  const scale = props.graphSettings.style.scale
+    ? props.graphSettings.style.scale
+    : 1;
 
   const labelWidth = props.graphSettings.mark.labels?.style.fontSize;
   const labelPadding = props.graphSettings.mark.labels?.style.padding;
@@ -51,7 +55,8 @@ const BarGraph = (props) => {
         )
     : null;
 
-  const linkOpacityDomain = props.graphSettings.mark.links.style.fill.opacity?.scaleType
+  const linkOpacityDomain = props.graphSettings.mark.links.style.fill.opacity
+    ?.scaleType
     ? props.graphSettings.mark.links.style.fill.opacity?.domain
       ? props.graphSettings.mark.links.style.fill.opacity?.domain
       : GetDomain(
@@ -155,7 +160,7 @@ const BarGraph = (props) => {
       ? props.graphSettings.mark.nodes.style.radius.value
       : 5;
 
-    const r = nodeColorScale
+    const col = nodeColorScale
       ? nodeColorScale(
           props.data.nodes[i][props.graphSettings.mark.nodes.style.fill.field]
         )
@@ -176,10 +181,6 @@ const BarGraph = (props) => {
   }
 
   for (let i = 0; i < props.data.links.length; i++) {
-    let col,
-      op,
-      animatedDotRadius = 0,
-      animatedDotDuration = 0;
     const op = linkOpacityScale
       ? linkOpacityScale(
           props.data.links[i][
@@ -205,7 +206,7 @@ const BarGraph = (props) => {
       : props.graphSettings.mark.links.flowAnimation?.duration?.value
       ? props.graphSettings.mark.links.flowAnimation.duration.value
       : 0;
-    const animatedDotDuration = animatedDotRadiusScale
+    const animatedDotRadius = animatedDotRadiusScale
       ? animatedDotRadiusScale(
           props.data.links[i][
             props.graphSettings.mark.links.flowAnimation.radius.field
@@ -233,16 +234,9 @@ const BarGraph = (props) => {
     label = [];
   i = 0;
   g.forEachNode((node) => {
-    let hoverText;
-
     const hoverText = props.graphSettings.mark.nodes.mouseOver?.label
-      ? props.graphSettings.mark.nodes.mouseOver.label.value(dnode.data.data)
+      ? props.graphSettings.mark.nodes.mouseOver.label.value(node.data.data)
       : null;
-
-    const className =
-      typeof props.graphSettings.mark.nodes.class === "function"
-        ? `clickable ${props.graphSettings.mark.nodes.class(node.data.data, i)}`
-        : "clickable";
 
     const idName =
       typeof props.graphSettings.mark.nodes.id === "function"
@@ -281,7 +275,11 @@ const BarGraph = (props) => {
         height={`${node.data.radius}`}
         width={`${node.data.radius}`}
         radius={`${node.data.radius}`}
-        segments={props.graphSettings.mark.nodes.style.segments ? `${props.graphSettings.mark.nodes.style.segments}` : "16"}
+        segments={
+          props.graphSettings.mark.nodes.style.segments
+            ? `${props.graphSettings.mark.nodes.style.segments}`
+            : "16"
+        }
         position={`${layout.getNodePosition(node.id).x * scale} ${
           layout.getNodePosition(node.id).y * scale
         } ${layout.getNodePosition(node.id).z * scale}`}
@@ -320,14 +318,12 @@ const BarGraph = (props) => {
   let animatedSphere = [];
   i = 0;
   g.forEachLink((link) => {
-    let linkClassName, linkIdName;
-
-    const idName =
+    const linkIdName =
       typeof props.graphSettings.mark.links.id === "function"
         ? props.graphSettings.mark.links.id(link.data.data, i)
         : null;
 
-    const className =
+    const linkClassName =
       typeof props.graphSettings.mark.links.class === "function"
         ? `clickable ${props.graphSettings.mark.links.class(link.data.data, i)}`
         : "clickable";
@@ -347,7 +343,7 @@ const BarGraph = (props) => {
       typeof props.graphSettings.mark.links.flowAnimation?.id === "function" &&
       props.graphSettings.mark.links.flowAnimation?.id !== undefined &&
       props.graphSettings.mark.links.flowAnimation?.id !== null
-        ? props.graphSettings.mark.links.flowAnimation.id(node.data.data, i)
+        ? props.graphSettings.mark.links.flowAnimation.id(link.data.data, i)
         : null;
 
     animatedSphere.push(
@@ -373,8 +369,8 @@ const BarGraph = (props) => {
     lines.push(
       <a-entity
         key={i}
-        class={className}
-        id={idName}
+        class={linkClassName}
+        id={linkIdName}
         data={JSON.stringify(link.data.data)}
         line={`start: ${layout.getLinkPosition(link.id).from.x * scale} ${
           layout.getLinkPosition(link.id).from.y * scale

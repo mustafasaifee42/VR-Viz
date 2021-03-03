@@ -1,7 +1,7 @@
 import * as d3GeoProjection from "d3-geo-projection";
 import * as d3 from "d3";
 
-export default (long, lat, proj, scale, position) => {
+const GetMapCoordinates = (long, lat, proj, scale, position) => {
   let projection;
   switch (proj) {
     case "Mercator":
@@ -32,3 +32,5 @@ export default (long, lat, proj, scale, position) => {
 
   return projection_scale([long, lat]);
 };
+
+export default GetMapCoordinates;

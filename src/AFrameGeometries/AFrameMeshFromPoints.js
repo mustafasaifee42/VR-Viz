@@ -53,7 +53,6 @@ AFRAME.registerComponent("aframemeshfrompoints", {
 
     const vertices = new Float32Array(pointVecs);
     const vertexColor = new Float32Array(vertColor);
-    console.log(new THREE.BufferAttribute(vertexColor, 3));
     geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));
     geometry.setAttribute("color", new THREE.BufferAttribute(vertexColor, 3));
     let meshObj = new THREE.Mesh(geometry, material);

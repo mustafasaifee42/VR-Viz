@@ -23,7 +23,6 @@ const VRViz = (props) => {
 
   useEffect(() => {
     document.querySelector("a-scene").addEventListener("enter-vr", (e) => {
-      console.log("enter");
       if (AFRAME.utils.device.checkHeadsetConnected()) {
         setIsHeadset(true);
         if (AFRAME.utils.device.isMobile()) {
@@ -34,7 +33,6 @@ const VRViz = (props) => {
       }
     });
     document.querySelector("a-scene").addEventListener("exit-vr", (e) => {
-      console.log("exit");
       if (props.scene?.reloadPageOnExitVR) {
         window.location.reload();
       } else {

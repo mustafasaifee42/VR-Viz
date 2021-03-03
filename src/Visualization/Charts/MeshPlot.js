@@ -6,7 +6,7 @@ import { XAxis, YAxis, ZAxis, AxisBox } from "../Components/Axis";
 
 const MeshPlot = (props) => {
   if (!props.data || !props.graphSettings.style || !props.graphSettings.mark) {
-    console.error(
+    console.warn(
       `Error: Some necessary attributes missing for ${props.graphSettings.type}`
     );
     return null;
@@ -74,14 +74,14 @@ const MeshPlot = (props) => {
           .domain(xDomain)
       : d3
           .scaleOrdinal()
-          .range(xRange)
-          .domain(
+          .range(
             xDomain.map(
               (_d, i) =>
                 (i * props.graphSettings.style.dimensions.width) /
                 (xDomain.length - 1)
             )
-          );
+          )
+          .domain(xDomain);
 
   const yScale = d3
     .scaleLinear()
@@ -96,14 +96,14 @@ const MeshPlot = (props) => {
           .domain(zDomain)
       : d3
           .scaleOrdinal()
-          .range(xRange)
-          .domain(
+          .range(
             zDomain.map(
               (_d, i) =>
                 (i * props.graphSettings.style.dimensions.depth) /
                 (zDomain.length - 1)
             )
-          );
+          )
+          .domain(zDomain);
 
   const colorRange = props.graphSettings.mark.style.fill.color
     ? props.graphSettings.mark.style.fill.color
@@ -210,7 +210,7 @@ const MeshPlot = (props) => {
       meshVertices.push(zScale(zDomain[j + 1]));
       colorMatrix.push(
         colorScale
-          ? ccolorScale(
+          ? colorScale(
               props.graphSettings.mark.style.fill.axis === 1
                 ? colorScale(props.data[i][zDomain[j]])
                 : props.graphSettings.mark.style.fill.axis === 2

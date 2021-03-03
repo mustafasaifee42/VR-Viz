@@ -6,7 +6,7 @@ import { XAxis, YAxis, ZAxis, AxisBox } from "../Components/Axis";
 
 const ConnectedScatterPlot = (props) => {
   if (!props.data || !props.graphSettings.style || !props.graphSettings.mark) {
-    console.error(
+    console.warn(
       `Error: Some necessary attributes missing for ${props.graphSettings.type}`
     );
     return null;
@@ -113,10 +113,6 @@ const ConnectedScatterPlot = (props) => {
       d[props.graphSettings.mark.position.z.field]
     )}`;
 
-    const color = colorScale
-      ? colorScale(d[props.graphSettings.mark.style.fill.field])
-      : props.graphSettings.mark.style.fill.color;
-
     const hoverText = props.graphSettings.mark.mouseOver?.label
       ? props.graphSettings.mark.mouseOver.label.value(d)
       : null;
@@ -145,9 +141,9 @@ const ConnectedScatterPlot = (props) => {
             ? props.graphSettings.mark.style.fill.opacity
             : 1
         }
-        depth={`${depth}`}
-        height={`${hght}`}
-        width={`${width}`}
+        depth={`${radius}`}
+        height={`${radius}`}
+        width={`${radius}`}
         radius={`${radius}`}
         segments={
           props.graphSettings.mark.style.segments

@@ -9,12 +9,12 @@ const FlowMap = (props) => {
   // Getting domain
   const colorDomain = props.graphSettings.mark.flowlines.style.stroke.domain
     ? props.graphSettings.mark.flowlines.style.stroke.domain
-    : (colorDomain = GetDomain(
+    : GetDomain(
         props.data,
         props.graphSettings.mark.flowlines.style.stroke.field,
         props.graphSettings.mark.flowlines.style.stroke.scaleType,
         props.graphSettings.mark.flowlines.style.stroke.startFromZero
-      ));
+      );
 
   //Adding scales
 
@@ -92,7 +92,7 @@ const FlowMap = (props) => {
       stroke_bool={stroke}
       stroke_color={strokeColor}
       extrude={JSON.stringify(extrusionArr)}
-      color={JSON.stringify(colorArray)}
+      color={JSON.stringify(mapColorArray)}
       opacity={props.graphSettings.mark.map.style.fill.opacity}
     />
   );

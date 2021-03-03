@@ -1,6 +1,6 @@
 import React from "react";
 import * as d3 from "d3";
-import Shape from "./Components/Shape";
+import Shape from "../Components/Shape";
 import GetMapShape from "../../utils/GetMapShape";
 import GetMapCoordinates from "../../utils/GetMapCoordinates";
 
@@ -19,16 +19,16 @@ const MapTimeBars = (props) => {
   }
   // Getting domain
 
-  const radiusDomain = props.graphSettings.mark.timeLayers.style.radius.domain 
-    ? props.graphSettings.mark.timeLayers.style.radius.domain 
-    : props.graphSettings.mark.timeLayers.style.radius.startFromZero 
-    ? [0, d3.max(dataset)] 
+  const radiusDomain = props.graphSettings.mark.timeLayers.style.radius.domain
+    ? props.graphSettings.mark.timeLayers.style.radius.domain
+    : props.graphSettings.mark.timeLayers.style.radius.startFromZero
+    ? [0, d3.max(dataset)]
     : [d3.min(dataset), d3.max(dataset)];
 
   const colorDomain = props.graphSettings.mark.timeLayers.style.fill.domain
     ? props.graphSettings.mark.timeLayers.style.fill.domain
-    : props.graphSettings.mark.timeLayers.style.fill.startFromZero 
-    ? [0, d3.max(dataset)] 
+    : props.graphSettings.mark.timeLayers.style.fill.startFromZero
+    ? [0, d3.max(dataset)]
     : [d3.min(dataset), d3.max(dataset)];
 
   //Adding Scale
@@ -49,7 +49,9 @@ const MapTimeBars = (props) => {
     : null;
   //Drawing Map
 
-  const extrusionHeight = props.graphSettings.mark.map.style.extrusion.value ? props.graphSettings.mark.map.style.extrusion.value : 0.001;
+  const extrusionHeight = props.graphSettings.mark.map.style.extrusion.value
+    ? props.graphSettings.mark.map.style.extrusion.value
+    : 0.001;
   let extrusionArr = [],
     mapColorArray = [],
     boundingBox = [];
@@ -98,8 +100,10 @@ const MapTimeBars = (props) => {
     return pntArray;
   });
 
-  const stroke = props.graphSettings.mark.map.style.stroke ? true : false,
-  const strokeColor = props.graphSettings.mark.map.style.stroke?.color ? props.graphSettings.mark.map.style.stroke.color :  "#000000";
+  const stroke = props.graphSettings.mark.map.style.stroke ? true : false;
+  const strokeColor = props.graphSettings.mark.map.style.stroke?.color
+    ? props.graphSettings.mark.map.style.stroke.color
+    : "#000000";
 
   const mapShape = (
     <a-frame-map
@@ -122,9 +126,11 @@ const MapTimeBars = (props) => {
   );
   //Adding marks
 
-  let marks = props.data.map((d, i) =>  props.graphSettings.mark.timeLayers.position.y.domain.map(
-    (d1, j) => {
-      const color = colorScale ?  colorScale(d[d1]) : props.graphSettings.mark.timeLayers.style.fill.color;
+  let marks = props.data.map((d, i) =>
+    props.graphSettings.mark.timeLayers.position.y.domain.map((d1, j) => {
+      const color = colorScale
+        ? colorScale(d[d1])
+        : props.graphSettings.mark.timeLayers.style.fill.color;
 
       const coordinates = GetMapCoordinates(
         d[props.graphSettings.mark.timeLayers.position.x.field],
@@ -133,7 +139,7 @@ const MapTimeBars = (props) => {
         props.graphSettings.mark.mapScale,
         props.graphSettings.mark.mapOrigin
       );
-      
+
       const position = `${coordinates[0]} ${0 - coordinates[1]} ${
         (j + 1 / 2) * props.graphSettings.mark.timeLayers.style.height +
         j * props.graphSettings.mark.timeLayers.style.padding
@@ -141,11 +147,11 @@ const MapTimeBars = (props) => {
 
       const radius = radiusScale(d[d1]);
 
-      const hoverText = props.graphSettings.mark.timeLayers.mouseOver?.label 
+      const hoverText = props.graphSettings.mark.timeLayers.mouseOver?.label
         ? props.graphSettings.mark.timeLayers.mouseOver.label
-          .value(d)
-          .replace("Label", `${d1}`)
-          .replace("LabelValue", `${d[d1]}`)
+            .value(d)
+            .replace("Label", `${d1}`)
+            .replace("LabelValue", `${d[d1]}`)
         : null;
       return (
         <Shape
@@ -165,8 +171,8 @@ const MapTimeBars = (props) => {
           rotation={"90 0 0"}
         />
       );
-    }
-  ));
+    })
+  );
 
   return (
     <>

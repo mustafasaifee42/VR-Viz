@@ -35,37 +35,153 @@ function App() {
       }}
       graph={[
         {
-          type: "CrossSectionView",
+          type: "BarGraph",
+          data: {
+            dataFile: "data/barGraph.csv",
+            fileType: "csv",
+            fieldDesc: [
+              ["Year", "text"],
+              ["Month", "text"],
+              ["Tornadoes", "number"],
+              ["Deaths", "number"],
+            ],
+          },
           style: {
-            position: [-10, 5, 0],
-            scale: [1, 1, 1],
+            origin: [0, 0, 0],
+            dimensions: {
+              width: 10,
+              height: 10,
+              depth: 10,
+            },
           },
           mark: {
-            material: {
-              type: "phong",
-              fill: {
-                opacity: 0.4,
-                color: "#ff0000",
-                shininess: 30,
-                emissive: "#000000",
-                specular: "#ffffff",
+            type: "cone",
+            class: (d, i) => `boxes`,
+            id: (d, i) => `boxes_${d.Month}_${d.Year}`,
+            position: {
+              x: {
+                scaleType: "ordinal",
+                field: "Month",
+                domain: [
+                  "January",
+                  "February",
+                  "March",
+                  "April",
+                  "May",
+                  "June",
+                  "July",
+                  "August",
+                  "September",
+                  "October",
+                  "November",
+                  "December",
+                ],
               },
-              stroke: {
-                width: 1,
-                color: "#ffff00",
-                edgeThresholdAngle: 10,
-              },
-              emphasisMaterial: {
-                opacity: 0.8,
-                color: "#ffff00",
-                meshes: ["Adam", "Eyelid"],
-              },
-              highlightOnClick: {
-                opacity: 0.8,
-                color: "#ff0000",
+              z: {
+                scaleType: "ordinal",
+                field: "Year",
               },
             },
-            object: "data/Duck.gltf",
+            style: {
+              padding: {
+                x: 0.1,
+                z: 0.1,
+              },
+              height: {
+                scaleType: "linear",
+                startFromZero: true,
+                field: "Tornadoes",
+              },
+              fill: {
+                opacity: 0.4,
+                scaleType: "linear",
+                field: "Deaths",
+                color: ["red", "green"],
+              },
+            },
+            mouseOver: {
+              focusedObject: {
+                opacity: 1,
+                fill: "#333",
+              },
+              nonFocusedObject: {
+                opacity: 0,
+              },
+              label: {
+                value: (d) =>
+                  `Year:${d.Year}\nMonth:${d.Month}\nDeaths:${d.Deaths}\nTornadoes:${d.Tornadoes}\n`,
+                align: "center",
+                fontSize: 1,
+                backgroundColor: "#333",
+                backgroundOpacity: 1,
+                fontColor: "#fff",
+              },
+            },
+          },
+          axis: {
+            "axis-box": {
+              color: "black",
+            },
+            "x-axis": {
+              orient: "bottom-back",
+              title: {
+                text: "",
+                fontSize: 10,
+                color: "black",
+                opacity: 1,
+              },
+              ticks: {
+                noOfTicks: 10,
+                size: 0.1,
+                color: "black",
+                opacity: 1,
+                fontSize: 10,
+              },
+              grid: {
+                color: "black",
+                opacity: 1,
+              },
+            },
+            "y-axis": {
+              orient: "bottom-back",
+              title: {
+                text: "",
+                fontSize: 10,
+                color: "black",
+                opacity: 1,
+              },
+              ticks: {
+                noOfTicks: 10,
+                size: 0.1,
+                color: "black",
+                opacity: 1,
+                fontSize: 10,
+              },
+              grid: {
+                color: "black",
+                opacity: 1,
+              },
+            },
+            "z-axis": {
+              orient: "bottom-back",
+              title: {
+                text: "",
+                fontSize: 10,
+                color: "black",
+                opacity: 1,
+              },
+              ticks: {
+                noOfTicks: 10,
+                size: 0.1,
+                color: "black",
+                opacity: 1,
+                fontSize: 10,
+              },
+              grid: {
+                color: "black",
+                opacity: 1,
+              },
+            },
           },
         },
       ]}
