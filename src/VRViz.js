@@ -18,7 +18,7 @@ import "./AFrameGeometries/AFrameShape";
 
 require("aframe-teleport-controls");
 
-const Scene = (props) => {
+const VRViz = (props) => {
   const [isHeadset, setIsHeadset] = useState(false);
 
   useEffect(() => {
@@ -197,7 +197,12 @@ const Scene = (props) => {
     : "aframeBox";
 
   const graphs = props.graph?.map((d, i) => (
-    <Visualization graphSettings={d} key={i} graphID={`graph_${i}`} />
+    <Visualization
+      graphType={d.type}
+      graphSettings={d}
+      key={i}
+      graphID={`graph_${i}`}
+    />
   ));
 
   return props.scene ? (
@@ -221,4 +226,4 @@ const Scene = (props) => {
   );
 };
 
-export default Scene;
+export default VRViz;
