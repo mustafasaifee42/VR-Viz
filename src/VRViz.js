@@ -14,6 +14,7 @@ import "./AFrameComponents/HighlightOnClick";
 
 import "./AFrameGeometries/AFrameCurveLine";
 import "./AFrameGeometries/AFrameMeshFromPoints";
+import "./AFrameGeometries/AFrameShape";
 
 require("aframe-teleport-controls");
 

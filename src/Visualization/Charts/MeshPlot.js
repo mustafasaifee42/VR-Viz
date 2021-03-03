@@ -2,7 +2,6 @@ import React from "react";
 import * as d3 from "d3";
 import _ from "lodash";
 import GetDomain from "../../utils/GetDomain";
-import Shape from "../Components/Shape";
 import { XAxis, YAxis, ZAxis, AxisBox } from "../Components/Axis";
 
 const MeshPlot = (props) => {

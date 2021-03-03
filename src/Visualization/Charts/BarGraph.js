@@ -98,17 +98,11 @@ const BarGraph = (props) => {
       ? props.graphSettings.mark.style.fill.color
       : "#000000";
 
-    const position =
-      props.graphSettings.mark.type === "cone" ||
-      props.graphSettings.mark.type === "cylinder"
-        ? `${xScale(d[props.graphSettings.mark.position.x.field]) + radius} ${
-            hght / 2
-          } ${zScale(d[props.graphSettings.mark.position.z.field]) + radius}`
-        : `${
-            xScale(d[props.graphSettings.mark.position.x.field]) + width / 2
-          } ${hght / 2} ${
-            zScale(d[props.graphSettings.mark.position.z.field]) + depth / 2
-          }`;
+    const position = `${
+      xScale(d[props.graphSettings.mark.position.x.field]) + width / 2
+    } ${hght / 2} ${
+      zScale(d[props.graphSettings.mark.position.z.field]) + depth / 2
+    }`;
 
     const hoverText = props.graphSettings.mark.mouseOver?.label
       ? props.graphSettings.mark.mouseOver.label.value(d)
@@ -165,12 +159,7 @@ const BarGraph = (props) => {
       orient={props.graphSettings.axis["x-axis"].orient}
       title={props.graphSettings.axis["x-axis"].title}
       dimensions={props.graphSettings.style.dimensions}
-      padding={
-        props.graphSettings.mark.type === "cylinder" ||
-        props.graphSettings.mark.type === "cone"
-          ? radius * 2
-          : width
-      }
+      padding={width}
       grid={props.graphSettings.axis["x-axis"].grid}
     />
   ) : null;
@@ -199,12 +188,7 @@ const BarGraph = (props) => {
       orient={props.graphSettings.axis["z-axis"].orient}
       title={props.graphSettings.axis["z-axis"].title}
       dimensions={props.graphSettings.style.dimensions}
-      padding={
-        props.graphSettings.mark.type === "cylinder" ||
-        props.graphSettings.mark.type === "cone"
-          ? radius * 2
-          : width
-      }
+      padding={depth}
       grid={props.graphSettings.axis["z-axis"].grid}
     />
   ) : null;

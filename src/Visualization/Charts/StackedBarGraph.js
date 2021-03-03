@@ -75,22 +75,11 @@ const StackedBarGraph = (props) => {
       const hght =
         yScale(d1[1] - d1[0]) !== 0 ? yScale(d1[1] - d1[0]) : 0.000000000001;
       const color = props.graphSettings.mark.style.fill.color[i];
-      const position =
-        props.graphSettings.mark.type === "cylinder"
-          ? `${
-              xScale(d1.data[props.graphSettings.mark.position.x.field]) +
-              radius
-            } ${yScale(d1[0]) + hght / 2} ${
-              zScale(d1.data[props.graphSettings.mark.position.z.field]) +
-              radius
-            }`
-          : `${
-              xScale(d1.data[props.graphSettings.mark.position.x.field]) +
-              width / 2
-            } ${yScale(d1[0]) + hght / 2} ${
-              zScale(d1.data[props.graphSettings.mark.position.z.field]) +
-              depth / 2
-            }`;
+      const position = `${
+        xScale(d1.data[props.graphSettings.mark.position.x.field]) + width / 2
+      } ${yScale(d1[0]) + hght / 2} ${
+        zScale(d1.data[props.graphSettings.mark.position.z.field]) + depth / 2
+      }`;
       const hoverText = props.graphSettings.mark.mouseOver?.label
         ? props.graphSettings.mark.mouseOver.label
             .value(d1.data)
@@ -130,12 +119,7 @@ const StackedBarGraph = (props) => {
       orient={props.graphSettings.axis["x-axis"].orient}
       title={props.graphSettings.axis["x-axis"].title}
       dimensions={props.graphSettings.style.dimensions}
-      padding={
-        props.graphSettings.mark.type === "cylinder" ||
-        props.graphSettings.mark.type === "cone"
-          ? radius * 2
-          : width
-      }
+      padding={width}
       grid={props.graphSettings.axis["x-axis"].grid}
     />
   ) : null;
@@ -164,12 +148,7 @@ const StackedBarGraph = (props) => {
       orient={props.graphSettings.axis["z-axis"].orient}
       title={props.graphSettings.axis["z-axis"].title}
       dimensions={props.graphSettings.style.dimensions}
-      padding={
-        props.graphSettings.mark.type === "cylinder" ||
-        props.graphSettings.mark.type === "cone"
-          ? radius * 2
-          : width
-      }
+      padding={depth}
       grid={props.graphSettings.axis["z-axis"].grid}
     />
   ) : null;

@@ -261,12 +261,7 @@ const BarGraph = (props) => {
       orient={props.graphSettings.axis["x-axis"].orient}
       title={props.graphSettings.axis["x-axis"].title}
       dimensions={props.graphSettings.style.dimensions}
-      padding={
-        props.graphSettings.mark.type === "cylinder" ||
-        props.graphSettings.mark.type === "cone"
-          ? radius * 2
-          : width
-      }
+      padding={width}
       grid={props.graphSettings.axis["x-axis"].grid}
     />
   ) : null;
@@ -295,12 +290,7 @@ const BarGraph = (props) => {
       orient={props.graphSettings.axis["z-axis"].orient}
       title={props.graphSettings.axis["z-axis"].title}
       dimensions={props.graphSettings.style.dimensions}
-      padding={
-        props.graphSettings.mark.type === "cylinder" ||
-        props.graphSettings.mark.type === "cone"
-          ? radius * 2
-          : width
-      }
+      padding={depth}
       grid={props.graphSettings.axis["z-axis"].grid}
     />
   ) : null;
