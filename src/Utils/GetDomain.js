@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 
 const GetDomain = (data, field, type, startFromZero) => {
+  if (!data || !field || !type) return null;
   let domain = [];
   if (type === "ordinal") {
     for (let i = 0; i < data.length; i++) {

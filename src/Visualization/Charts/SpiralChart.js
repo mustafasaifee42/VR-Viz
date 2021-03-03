@@ -1,6 +1,6 @@
 import React from "react";
 import * as d3 from "d3";
-import GetDomain from "../Utils/GetDomain.js";
+import GetDomain from "../../utils/GetDomain";
 
 const SpiralChart = (props) => {
   // Getting domain

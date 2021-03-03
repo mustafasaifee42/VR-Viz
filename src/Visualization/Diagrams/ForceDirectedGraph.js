@@ -28,6 +28,7 @@ const BarGraph = (props) => {
           props.graphSettings.mark.nodes.style.radius.startFromZero
         )
     : null;
+
   const nodeColorDomain = props.graphSettings.mark.nodes.style.fill.scaleType
     ? props.graphSettings.mark.nodes.style.fill.domain
       ? props.graphSettings.mark.nodes.style.fill.domain
@@ -38,6 +39,7 @@ const BarGraph = (props) => {
           props.graphSettings.mark.nodes.style.fill.startFromZero
         )
     : null;
+
   const linkColorDomain = props.graphSettings.mark.links.style.fill.scaleType
     ? props.graphSettings.mark.links.style.fill.domain
       ? props.graphSettings.mark.links.style.fill.domain
@@ -48,39 +50,39 @@ const BarGraph = (props) => {
           props.graphSettings.mark.links.style.fill.startFromZero
         )
     : null;
-  const linkOpacityDomain = props.graphSettings.mark.links.style.fill.opacity
-    .scaleType
-    ? props.graphSettings.mark.links.style.fill.opacity.domain
-      ? props.graphSettings.mark.links.style.fill.opacity.domain
+
+  const linkOpacityDomain = props.graphSettings.mark.links.style.fill.opacity?.scaleType
+    ? props.graphSettings.mark.links.style.fill.opacity?.domain
+      ? props.graphSettings.mark.links.style.fill.opacity?.domain
       : GetDomain(
           props.data.links,
-          props.graphSettings.mark.links.style.fill.opacity.field,
+          props.graphSettings.mark.links.style.fill.opacity?.field,
           "linear",
-          props.graphSettings.mark.links.style.fill.opacity.startFromZero
+          props.graphSettings.mark.links.style.fill.opacity?.startFromZero
         )
     : null;
 
   const linkAnimatedDotRadiusDomain = props.graphSettings.mark.links
     .flowAnimation?.radius?.scaleType
-    ? props.graphSettings.mark.links.flowAnimation.radius.domain
-      ? props.graphSettings.mark.links.flowAnimation.radius.domain
+    ? props.graphSettings.mark.links.flowAnimation?.radius?.domain
+      ? props.graphSettings.mark.links.flowAnimation?.radius?.domain
       : GetDomain(
           props.data.link,
-          props.graphSettings.mark.links.flowAnimation.radius.field,
-          props.graphSettings.mark.links.flowAnimation.radius.scaleType,
-          props.graphSettings.mark.links.flowAnimation.radius.startFromZero
+          props.graphSettings.mark.links.flowAnimation?.radius?.field,
+          "linear",
+          props.graphSettings.mark.links.flowAnimation?.radius?.startFromZero
         )
     : null;
 
   const linkanimatedDotDurationDomain = props.graphSettings.mark.links
     .flowAnimation?.duration?.scaleType
-    ? props.graphSettings.mark.links.flowAnimation.duration.domain
-      ? props.graphSettings.mark.links.flowAnimation.duration.domain
+    ? props.graphSettings.mark.links.flowAnimation?.duration?.domain
+      ? props.graphSettings.mark.links.flowAnimation?.duration?.domain
       : GetDomain(
           props.data.link,
-          props.graphSettings.mark.links.flowAnimation.duration.field,
-          props.graphSettings.mark.links.flowAnimation.duration.scaleType,
-          props.graphSettings.mark.links.flowAnimation.duration.startFromZero
+          props.graphSettings.mark.links.flowAnimation?.duration?.field,
+          "linear",
+          props.graphSettings.mark.links.flowAnimation?.duration?.startFromZero
         )
     : null;
 

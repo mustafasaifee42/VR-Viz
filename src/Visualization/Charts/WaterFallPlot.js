@@ -1,7 +1,7 @@
 import React from "react";
 import * as d3 from "d3";
 import _ from "lodash";
-import GetDomain from "../Utils/GetDomain.js";
+import GetDomain from "../../utils/GetDomain";
 
 const WaterFallPlot = (props) => {
   if (!props.data || !props.graphSettings.style || !props.graphSettings.mark) {
