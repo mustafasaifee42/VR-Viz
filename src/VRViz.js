@@ -18,7 +18,7 @@ import "./AFrameGeometries/AFrameShape";
 
 require("aframe-teleport-controls");
 
-const VRViz = (props) => {
+const Scene = (props) => {
   const [isHeadset, setIsHeadset] = useState(false);
 
   useEffect(() => {
@@ -221,4 +221,4 @@ const VRViz = (props) => {
   );
 };
 
-export default VRViz;
+export default Scene;

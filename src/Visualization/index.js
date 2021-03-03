@@ -3,7 +3,7 @@ import { csv, json, text } from "d3-request";
 import * as moment from "moment";
 import * as d3 from "d3";
 import ReadPLY from "../utils/ReadPLY";
-import CrossSectionView from "./Models/CrossSectionView";
+import Viz from "./Viz";
 
 const Visualization = (props) => {
   const [data, setData] = useState(undefined);
@@ -85,21 +85,6 @@ const Visualization = (props) => {
     // eslint-disable-next-line
   }, []);
 
-  const clickRotation =
-    props.graphSettings.rotationOnDrag && !props.graphSettings.animateRotation
-      ? "true"
-      : "false";
-
-  const animation = props.graphSettings.animateRotation ? (
-    <a-animation
-      attribute="rotation"
-      easing="linear"
-      dur={`${props.graphSettings.animateRotation.duration}`}
-      from={props.graphSettings.animateRotation.initialAngles}
-      to={props.graphSettings.animateRotation.finalAngles}
-      repeat="indefinite"
-    />
-  ) : null;
   return data === undefined || error ? null : (
     <>
       {props.graphSettings.title ? (
@@ -125,20 +110,12 @@ const Visualization = (props) => {
           billboard={props.graphSettings.title?.billboarding}
         />
       ) : null}
-      <a-entity
-        click-rotation={`enabled:${clickRotation}`}
-        pivot-center={`xPosition:${props.graphSettings.style.origin[0]};yPosition:${props.graphSettings.style.origin[1]};zPosition:${props.graphSettings.style.origin[2]};pivotX:${props.graphSettings.style.xPivot};pivotY:${props.graphSettings.style.yPivot};pivotZ:${props.graphSettings.style.zPivot}`}
-        position={`${props.graphSettings.style.origin[0]} ${props.graphSettings.style.origin[1]} ${props.graphSettings.style.origin[2]}`}
-        rotation={props.graphSettings.style.rotation}
-        id={props.graphID}
-      >
-        {animation}
-        <CrossSectionView
-          data={data}
-          graphSettings={props.graphSettings}
-          graphID={props.graphID}
-        />
-      </a-entity>
+      <Viz
+        data={data}
+        type={props.graphType}
+        graphSettings={props.graphSettings}
+        graphID={props.graphID}
+      />
     </>
   );
 };
