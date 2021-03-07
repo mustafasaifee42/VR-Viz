@@ -39,25 +39,25 @@ const ScatterPlot = (props) => {
         props.graphSettings.mark.position.z.startFromZero
       );
 
-  const colorDomain = props.graphSettings.mark.style.fill.scaleType
-    ? props.graphSettings.mark.style.fill.domain
-      ? props.graphSettings.mark.style.fill.domain
+  const colorDomain = props.graphSettings.mark.style?.fill?.scaleType
+    ? props.graphSettings.mark.style?.fill?.domain
+      ? props.graphSettings.mark.style?.fill?.domain
       : GetDomain(
           props.data,
-          props.graphSettings.mark.style.fill.field,
-          props.graphSettings.mark.style.fill.scaleType,
-          props.graphSettings.mark.style.fill.startFromZero
+          props.graphSettings.mark.style?.fill?.field,
+          props.graphSettings.mark.style?.fill?.scaleType,
+          props.graphSettings.mark.style?.fill?.startFromZero
         )
     : null;
 
-  const radiusDomain = !props.graphSettings.mark.style.radius.domain
+  const radiusDomain = !props.graphSettings.mark.style?.radius?.domain
     ? GetDomain(
         props.data,
-        props.graphSettings.mark.style.radius.field,
+        props.graphSettings.mark.style?.radius?.field,
         "linear",
-        props.graphSettings.mark.style.radius.startFromZero
+        props.graphSettings.mark.style?.radius?.startFromZero
       )
-    : props.graphSettings.mark.style.radius.domain;
+    : props.graphSettings.mark.style?.radius?.domain;
 
   //Adding Scale
 
@@ -76,36 +76,41 @@ const ScatterPlot = (props) => {
     .domain(zDomain)
     .range([0, props.graphSettings.style.dimensions.depth]);
 
-  const colorRange = props.graphSettings.mark.style.fill.color
-    ? props.graphSettings.mark.style.fill.color
+  const colorRange = props.graphSettings.mark.style?.fill?.color
+    ? props.graphSettings.mark.style?.fill?.color
     : d3.schemeCategory10;
 
-  const colorScale = props.graphSettings.mark.style.fill.scaleType
-    ? props.graphSettings.mark.style.fill.scaleType === "linear"
+  const colorScale = props.graphSettings.mark.style?.fill?.scaleType
+    ? props.graphSettings.mark.style?.fill?.scaleType === "linear"
       ? d3.scaleLinear().domain(colorDomain).range(colorRange)
       : d3.scaleOrdinal().domain(colorDomain).range(colorRange)
     : null;
 
-  const radiusScale = props.graphSettings.mark.style.radius.scaleType
+  const radiusScale = props.graphSettings.mark.style?.radius?.scaleType
     ? d3
         .scaleLinear()
         .domain(radiusDomain)
-        .range(props.graphSettings.mark.style.radius.value)
+        .range(
+          props.graphSettings.mark.style?.radius?.value
+            ? props.graphSettings.mark.style?.radius?.value
+            : [0, 1]
+        )
     : null;
 
   //Adding marks
   const marks = props.data.map((d, i) => {
-    const color = colorScale
-      ? colorScale(d[props.graphSettings.mark.style.fill.field])
-      : props.graphSettings.mark.style.fill.color
-      ? props.graphSettings.mark.style.fill.color
-      : "#000000";
+    const color =
+      colorScale && props.graphSettings.mark.style?.fill?.field
+        ? colorScale(d[props.graphSettings.mark.style?.fill?.field])
+        : props.graphSettings.mark.style?.fill?.color
+        ? props.graphSettings.mark.style?.fill?.color
+        : "#ff0000";
 
     const radius = radiusScale
-      ? radiusScale(d[props.graphSettings.mark.style.radius.field])
-      : props.graphSettings.mark.style.radius.value
-      ? props.graphSettings.mark.style.radius.value
-      : 5;
+      ? radiusScale(d[props.graphSettings.mark.style?.radius?.field])
+      : props.graphSettings.mark.style?.radius?.value
+      ? props.graphSettings.mark.style?.radius?.value
+      : 0.5;
 
     const position = `${xScale(
       d[props.graphSettings.mark.position.x.field]
@@ -114,7 +119,7 @@ const ScatterPlot = (props) => {
     )}`;
 
     const hoverText = props.graphSettings.mark.mouseOver?.label
-      ? props.graphSettings.mark.mouseOver.label.value(d)
+      ? props.graphSettings.mark.mouseOver?.label.value(d)
       : null;
 
     const className =
@@ -137,8 +142,8 @@ const ScatterPlot = (props) => {
         }
         color={color}
         opacity={
-          props.graphSettings.mark.style.fill.opacity
-            ? props.graphSettings.mark.style.fill.opacity
+          props.graphSettings.mark.style?.fill?.opacity
+            ? props.graphSettings.mark.style?.fill?.opacity
             : 1
         }
         depth={`${radius}`}
@@ -146,14 +151,14 @@ const ScatterPlot = (props) => {
         width={`${radius}`}
         radius={`${radius}`}
         segments={
-          props.graphSettings.mark.style.segments
-            ? `${props.graphSettings.mark.style.segments}`
+          props.graphSettings.mark.style?.segments
+            ? `${props.graphSettings.mark.style?.segments}`
             : "16"
         }
         position={position}
         hover={props.graphSettings.mark.mouseOver}
         hoverText={hoverText}
-        graphID={props.graphSettings.index}
+        graphID={props.graphID}
         class={className}
         id={idName}
         data={JSON.stringify(d)}
@@ -165,11 +170,13 @@ const ScatterPlot = (props) => {
 
   const droplines = props.graphSettings.mark.droplines
     ? props.data.map((d, i) => {
-        const color = colorScale
-          ? colorScale(d[props.graphSettings.mark.style.fill.field])
-          : props.graphSettings.mark.style.fill.color
-          ? props.graphSettings.mark.style.fill.color
-          : "#000000";
+        const color = props.graphSettings.mark.droplines?.style?.color
+          ? props.graphSettings.mark.droplines?.style?.color
+          : colorScale && props.graphSettings.mark.style?.fill?.field
+          ? colorScale(d[props.graphSettings.mark.style?.fill?.field])
+          : props.graphSettings.mark.style?.fill?.color
+          ? props.graphSettings.mark.style?.fill?.color
+          : "#ff0000";
         const xz = props.graphSettings.mark.droplines.xz ? (
           <a-entity
             key={`xz_${i}`}
@@ -182,7 +189,9 @@ const ScatterPlot = (props) => {
             )} ${yScale(d[props.graphSettings.mark.position.y.field])} ${zScale(
               d[props.graphSettings.mark.position.z.field]
             )}; opacity:${
-              props.graphSettings.mark.droplines.style.fill.opacity
+              props.graphSettings.mark.droplines?.style?.opacity
+                ? props.graphSettings.mark.droplines?.style?.opacity
+                : 1
             }; color:${color}`}
           />
         ) : null;
@@ -198,7 +207,9 @@ const ScatterPlot = (props) => {
             )} ${yScale(d[props.graphSettings.mark.position.y.field])} ${zScale(
               d[props.graphSettings.mark.position.z.field]
             )}; opacity:${
-              props.graphSettings.mark.droplines.style.fill.opacity
+              props.graphSettings.mark.droplines?.style?.opacity
+                ? props.graphSettings.mark.droplines?.style?.opacity
+                : 1
             }; color:${color}`}
           />
         ) : null;
@@ -212,7 +223,9 @@ const ScatterPlot = (props) => {
             )} ${yScale(d[props.graphSettings.mark.position.y.field])} ${zScale(
               d[props.graphSettings.mark.position.z.field]
             )}; opacity:${
-              props.graphSettings.mark.droplines.style.fill.opacity
+              props.graphSettings.mark.droplines?.style?.opacity
+                ? props.graphSettings.mark.droplines?.style?.opacity
+                : 1
             }; color:${color}`}
           />
         ) : null;
@@ -234,12 +247,12 @@ const ScatterPlot = (props) => {
           ? colorScale(d[props.graphSettings.mark.style.fill.field])
           : props.graphSettings.mark.style.fill.color
           ? props.graphSettings.mark.style.fill.color
-          : "#000000";
+          : "#ff0000";
         const radius = radiusScale
           ? radiusScale(d[props.graphSettings.mark.style.radius.field])
           : props.graphSettings.mark.style.radius.value
           ? props.graphSettings.mark.style.radius.value
-          : 5;
+          : 0.5;
         const xz = props.graphSettings.mark.projections.xz ? (
           <a-circle
             key={`xz_${i}`}
@@ -247,8 +260,8 @@ const ScatterPlot = (props) => {
               d[props.graphSettings.mark.position.x.field]
             )} 0 ${zScale(d[props.graphSettings.mark.position.z.field])}`}
             opacity={
-              props.graphSettings.mark.projections.style.fill.opacity
-                ? props.graphSettings.mark.projections.style.fill.opacity
+              props.graphSettings.mark.projections.style?.opacity
+                ? props.graphSettings.mark.projections.style?.opacity
                 : 1
             }
             color={`${color}`}
@@ -263,8 +276,8 @@ const ScatterPlot = (props) => {
               d[props.graphSettings.mark.position.x.field]
             )} ${yScale(d[props.graphSettings.mark.position.y.field])} 0`}
             opacity={
-              props.graphSettings.mark.projections.style.fill.opacity
-                ? props.graphSettings.mark.projections.style.fill.opacity
+              props.graphSettings.mark.projections.style?.opacity
+                ? props.graphSettings.mark.projections.style?.opacity
                 : 1
             }
             color={`${color}`}
@@ -279,8 +292,8 @@ const ScatterPlot = (props) => {
               d[props.graphSettings.mark.position.y.field]
             )} ${zScale(d[props.graphSettings.mark.position.z.field])}`}
             opacity={
-              props.graphSettings.mark.projections.style.fill.opacity
-                ? props.graphSettings.mark.projections.style.fill.opacity
+              props.graphSettings.mark.projections.style?.opacity
+                ? props.graphSettings.mark.projections.style?.opacity
                 : 1
             }
             color={`${color}`}

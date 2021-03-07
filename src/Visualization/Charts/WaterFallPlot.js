@@ -33,21 +33,24 @@ const WaterFallPlot = (props) => {
   let yDomain = props.graphSettings.mark.position.y?.domain;
   if (!yDomain) {
     let dataList = [];
-    for (let k = 0; k < zDomain.length; k++) {
+    for (let k = 0; k < xDomain.length; k++) {
       for (let i = 0; i < props.data.length; i++) {
-        dataList.push(props.data[i][zDomain[k]]);
+        dataList.push(props.data[i][xDomain[k]]);
       }
     }
     yDomain = props.graphSettings.mark.position.y.startFromZero
       ? [0, _.max(dataList)]
       : [_.min(dataList), _.max(dataList)];
   }
-
   //Adding Scale
-  let zRange = zDomain.map(
-    (_d, i) =>
-      (i * props.graphSettings.style.dimensions.depth) / (zDomain.length - 1)
-  );
+  let zRange =
+    props.graphSettings.mark.position.z.scaleType === "linear"
+      ? [0, props.graphSettings.style.dimensions.depth]
+      : zDomain.map(
+          (_d, i) =>
+            (i * props.graphSettings.style.dimensions.depth) /
+            (zDomain.length - 1)
+        );
   let xRange = xDomain.map(
     (_d, i) =>
       (i * props.graphSettings.style.dimensions.width) / (xDomain.length - 1)
@@ -62,22 +65,22 @@ const WaterFallPlot = (props) => {
 
   const zScale = d3.scaleOrdinal().domain(zDomain).range(zRange);
 
-  const fillColorDomain = props.graphSettings.mark.style.fill?.domain
-    ? props.graphSettings.mark.style.fill.domain
+  const fillColorDomain = props.graphSettings.mark.style?.fill?.domain
+    ? props.graphSettings.mark.style?.fill?.domain
     : GetDomain(
         props.data,
-        props.graphSettings.mark.style.fill.field,
-        props.graphSettings.mark.style.fill.scaleType
+        props.graphSettings.mark.style?.fill?.field,
+        props.graphSettings.mark.style?.fill?.scaleType
           ? props.graphSettings.mark.style.fill.scaleType
           : "ordinal",
         false
       );
-  const fillColorRange = props.graphSettings.mark.style.fill.color
-    ? props.graphSettings.mark.style.fill.color
+  const fillColorRange = props.graphSettings.mark.style?.fill?.color
+    ? props.graphSettings.mark.style?.fill?.color
     : d3.schemeCategory10;
 
-  const fillColorScale = props.graphSettings.mark.style.fill.scaleType
-    ? props.graphSettings.mark.style.fill.scaleType === "linear"
+  const fillColorScale = props.graphSettings.mark.style?.fill?.scaleType
+    ? props.graphSettings.mark.style?.fill?.scaleType === "linear"
       ? d3.scaleLinear().domain(fillColorDomain).range(fillColorRange)
       : d3.scaleOrdinal().domain(fillColorDomain).range(fillColorRange)
     : null;
@@ -138,8 +141,8 @@ const WaterFallPlot = (props) => {
 
   //Adding marks
 
-  const resolution = props.graphSettings.mark.style.stroke.resolution
-    ? props.graphSettings.mark.style.stroke.resolution
+  const resolution = props.graphSettings.mark.style?.stroke?.resolution
+    ? props.graphSettings.mark.style?.stroke?.resolution
     : 20;
 
   const marks = props.data.map((d, i) => {
@@ -159,23 +162,25 @@ const WaterFallPlot = (props) => {
       return {
         x: pnts[0],
         y: pnts[1],
-        z: `${zScale(d[this.props.mark.position.z.field])}`,
+        z: `${zScale(d[props.graphSettings.mark.position.z.field])}`,
       };
     });
-    const outlineArray = pntArray.map((el, i) =>
-      i !== 0 && i !== pntArray.length - 1 ? el : null
-    );
+
+    let outlineArray = [];
+    pntArray.forEach((el, i) => {
+      if (i !== 0 && i !== pntArray.length - 1) outlineArray.push(el);
+    });
 
     const mapShape = (
       <a-frame-shape
         points={JSON.stringify(pntArray)}
         key={i}
         color={
-          fillColorScale
-            ? fillColorScale(d[props.graphSettings.mark.style.fill?.field])
-            : props.graphSettings.mark.style.fill?.color
-            ? props.graphSettings.mark.style.fill?.color
-            : "#000000"
+          fillColorScale && props.graphSettings.mark.style?.fill?.field
+            ? fillColorScale(d[props.graphSettings.mark.style?.fill?.field])
+            : props.graphSettings.mark.style?.fill?.color
+            ? props.graphSettings.mark.style?.fill?.color
+            : "#ff0000"
         }
         opacity={
           props.graphSettings.mark.style.fill?.opacity
@@ -191,18 +196,18 @@ const WaterFallPlot = (props) => {
         type={props.graphSettings.mark.style.stroke.curveType}
         resolution={resolution}
         color={
-          props.graphSettings.mark.style.stroke?.color
-            ? props.graphSettings.mark.style.stroke.color
+          props.graphSettings.mark.style?.stroke?.color
+            ? props.graphSettings.mark.style?.stroke?.color
             : "#ffffff"
         }
         opacity={
-          props.graphSettings.mark.style.stroke?.opacity
-            ? props.graphSettings.mark.style.stroke.opacity
+          props.graphSettings.mark.style?.stroke?.opacity
+            ? props.graphSettings.mark.style?.stroke.opacity
             : 1
         }
         stroke_width={
-          props.graphSettings.mark.style.stroke?.width
-            ? props.graphSettings.mark.style.stroke.width
+          props.graphSettings.mark.style?.stroke?.width
+            ? props.graphSettings.mark.style?.stroke?.width
             : 1
         }
       />

@@ -19,51 +19,56 @@ const BarGraph = (props) => {
     ? props.graphSettings.style.scale
     : 1;
 
-  const labelWidth = props.graphSettings.mark.labels?.style.fontSize;
-  const labelPadding = props.graphSettings.mark.labels?.style.padding;
+  const labelWidth = props.graphSettings.mark.labels?.style?.fontSize
+    ? props.graphSettings.mark.labels?.style?.fontSize
+    : 1;
+  const labelPadding = props.graphSettings.mark.labels?.style?.padding
+    ? props.graphSettings.mark.labels?.style?.padding
+    : 0.1;
 
-  const nodeRadiusDomain = props.graphSettings.mark.nodes.style.radius.scaleType
-    ? props.graphSettings.mark.nodes.style.radius.domain
-      ? props.graphSettings.mark.nodes.style.radius.domain
-      : GetDomain(
-          props.data.nodes,
-          props.graphSettings.mark.nodes.style.radius.field,
-          "linear",
-          props.graphSettings.mark.nodes.style.radius.startFromZero
-        )
-    : null;
-
-  const nodeColorDomain = props.graphSettings.mark.nodes.style.fill.scaleType
-    ? props.graphSettings.mark.nodes.style.fill.domain
-      ? props.graphSettings.mark.nodes.style.fill.domain
-      : GetDomain(
-          props.data.nodes,
-          props.graphSettings.mark.nodes.style.fill.field,
-          props.graphSettings.mark.nodes.style.fill.scaleType,
-          props.graphSettings.mark.nodes.style.fill.startFromZero
-        )
-    : null;
-
-  const linkColorDomain = props.graphSettings.mark.links.style.fill.scaleType
-    ? props.graphSettings.mark.links.style.fill.domain
-      ? props.graphSettings.mark.links.style.fill.domain
-      : GetDomain(
-          props.data.links,
-          props.graphSettings.mark.links.style.fill.field,
-          props.graphSettings.mark.links.style.fill.scaleType,
-          props.graphSettings.mark.links.style.fill.startFromZero
-        )
-    : null;
-
-  const linkOpacityDomain = props.graphSettings.mark.links.style.fill.opacity
+  const nodeRadiusDomain = props.graphSettings.mark.nodes.style?.radius
     ?.scaleType
-    ? props.graphSettings.mark.links.style.fill.opacity?.domain
-      ? props.graphSettings.mark.links.style.fill.opacity?.domain
+    ? props.graphSettings.mark.nodes.style?.radius?.domain
+      ? props.graphSettings.mark.nodes.style?.radius?.domain
+      : GetDomain(
+          props.data.nodes,
+          props.graphSettings.mark.nodes.style?.radius?.field,
+          "linear",
+          props.graphSettings.mark.nodes.style?.radius?.startFromZero
+        )
+    : null;
+
+  const nodeColorDomain = props.graphSettings.mark.nodes.style?.fill?.scaleType
+    ? props.graphSettings.mark.nodes.style?.fill?.domain
+      ? props.graphSettings.mark.nodes.style?.fill?.domain
+      : GetDomain(
+          props.data.nodes,
+          props.graphSettings.mark.nodes.style?.fill?.field,
+          props.graphSettings.mark.nodes.style?.fill?.scaleType,
+          props.graphSettings.mark.nodes.style?.fill?.startFromZero
+        )
+    : null;
+
+  const linkColorDomain = props.graphSettings.mark.links.style?.fill?.scaleType
+    ? props.graphSettings.mark.links.style?.fill?.domain
+      ? props.graphSettings.mark.links.style?.fill?.domain
       : GetDomain(
           props.data.links,
-          props.graphSettings.mark.links.style.fill.opacity?.field,
+          props.graphSettings.mark.links.style?.fill?.field,
+          props.graphSettings.mark.links.style?.fill?.scaleType,
+          props.graphSettings.mark.links.style?.fill?.startFromZero
+        )
+    : null;
+
+  const linkOpacityDomain = props.graphSettings.mark.links.style?.fill?.opacity
+    ?.scaleType
+    ? props.graphSettings.mark.links.style?.fill?.opacity?.domain
+      ? props.graphSettings.mark.links.style?.fill?.opacity?.domain
+      : GetDomain(
+          props.data.links,
+          props.graphSettings.mark.links.style?.fill?.opacity?.field,
           "linear",
-          props.graphSettings.mark.links.style.fill.opacity?.startFromZero
+          props.graphSettings.mark.links.style?.fill?.opacity?.startFromZero
         )
     : null;
 
@@ -93,39 +98,40 @@ const BarGraph = (props) => {
 
   // Scales
 
-  const nodeRadiusScale = props.graphSettings.mark.nodes.style.radius.scaleType
+  const nodeRadiusScale = props.graphSettings.mark.nodes.style?.radius
+    ?.scaleType
     ? d3
         .scaleLinear()
         .domain(nodeRadiusDomain)
-        .range(props.graphSettings.mark.nodes.style.radius.value)
+        .range(props.graphSettings.mark.nodes.style?.radius?.value)
     : null;
 
-  const nodeColorRange = props.graphSettings.mark.nodes.style.fill.color
-    ? props.graphSettings.mark.nodes.style.fill.color
+  const nodeColorRange = props.graphSettings.mark.nodes?.style?.fill?.color
+    ? props.graphSettings.mark.nodes.style?.fill?.color
     : d3.schemeCategory10;
 
-  const nodeColorScale = props.graphSettings.mark.nodes.style.fill.scaleType
-    ? props.graphSettings.mark.nodes.style.fill.scaleType === "linear"
+  const nodeColorScale = props.graphSettings.mark.nodes?.style?.fill?.scaleType
+    ? props.graphSettings.mark.nodes?.style?.fill?.scaleType === "linear"
       ? d3.scaleLinear().domain(nodeColorDomain).range(nodeColorRange)
       : d3.scaleOrdinal().domain(nodeColorDomain).range(nodeColorRange)
     : null;
 
-  const linkColorRange = props.graphSettings.mark.links.style.fill.color
-    ? props.graphSettings.mark.links.style.fill.color
+  const linkColorRange = props.graphSettings.mark.links.style?.fill?.color
+    ? props.graphSettings.mark.links.style?.fill?.color
     : d3.schemeCategory10;
 
-  const linkColorScale = props.graphSettings.mark.links.style.fill.scaleType
-    ? props.graphSettings.mark.links.style.fill.scaleType === "linear"
+  const linkColorScale = props.graphSettings.mark.links.style?.fill?.scaleType
+    ? props.graphSettings.mark.links.style?.fill?.scaleType === "linear"
       ? d3.scaleLinear().domain(linkColorDomain).range(linkColorRange)
       : d3.scaleOrdinal().domain(linkColorDomain).range(linkColorRange)
     : null;
 
-  const linkOpacityScale = props.graphSettings.mark.links.style.fill.opacity
+  const linkOpacityScale = props.graphSettings.mark.links.style?.fill?.opacity
     .scaleType
     ? d3
         .scaleLinear()
         .domain(linkOpacityDomain)
-        .range(props.graphSettings.mark.links.style.fill.opacity.value)
+        .range(props.graphSettings.mark.links.style?.fill?.opacity.value)
     : null;
 
   const animatedDotRadiusScale = props.graphSettings.mark.links.flowAnimation
@@ -152,21 +158,27 @@ const BarGraph = (props) => {
   let physicsSettings = { integrator: "verlet" };
 
   for (let i = 0; i < props.data.nodes.length; i++) {
-    const r = nodeRadiusScale
-      ? nodeRadiusScale(
-          props.data.nodes[i][props.graphSettings.mark.nodes.style.radius.field]
-        )
-      : props.graphSettings.mark.nodes.style.radius.value
-      ? props.graphSettings.mark.nodes.style.radius.value
-      : 5;
+    const r =
+      nodeRadiusScale && props.graphSettings.mark.nodes.style?.radius?.field
+        ? nodeRadiusScale(
+            props.data.nodes[i][
+              props.graphSettings.mark.nodes.style?.radius?.field
+            ]
+          )
+        : props.graphSettings.mark.nodes.style?.radius?.value
+        ? props.graphSettings.mark.nodes.style?.radius?.value
+        : 5;
 
-    const col = nodeColorScale
-      ? nodeColorScale(
-          props.data.nodes[i][props.graphSettings.mark.nodes.style.fill.field]
-        )
-      : props.graphSettings.mark.nodes.style.fill.color
-      ? props.graphSettings.mark.nodes.style.fill.color
-      : "#000000";
+    const col =
+      nodeColorScale && props.graphSettings.mark.nodes.style?.fill?.field
+        ? nodeColorScale(
+            props.data.nodes[i][
+              props.graphSettings.mark.nodes.style?.fill?.field
+            ]
+          )
+        : props.graphSettings.mark.nodes.style?.fill?.color
+        ? props.graphSettings.mark.nodes.style?.fill?.color
+        : "#ff0000";
 
     const lab = props.graphSettings.mark.labels
       ? props.data.nodes[i][props.graphSettings.mark.labels.field]
@@ -181,22 +193,28 @@ const BarGraph = (props) => {
   }
 
   for (let i = 0; i < props.data.links.length; i++) {
-    const op = linkOpacityScale
-      ? linkOpacityScale(
-          props.data.links[i][
-            props.graphSettings.mark.links.style.fill.opacity.field
-          ]
-        )
-      : props.graphSettings.mark.links.style.fill.opacity.value
-      ? props.graphSettings.mark.links.style.fill.opacity.value
-      : 1;
-    const col = linkColorScale
-      ? linkColorScale(
-          props.data.links[i][props.graphSettings.mark.links.style.fill.field]
-        )
-      : props.graphSettings.mark.links.style.fill.color
-      ? props.graphSettings.mark.links.style.fill.color
-      : "#000000";
+    const op =
+      linkOpacityScale &&
+      props.graphSettings.mark.links.style?.fill?.opacity?.field
+        ? linkOpacityScale(
+            props.data.links[i][
+              props.graphSettings.mark.links.style?.fill?.opacity?.field
+            ]
+          )
+        : props.graphSettings.mark.links.style?.fill?.opacity?.value
+        ? props.graphSettings.mark.links.style?.fill?.opacity?.value
+        : 1;
+    const col =
+      linkColorScale && props.graphSettings.mark.links.style?.fill?.field
+        ? linkColorScale(
+            props.data.links[i][
+              props.graphSettings.mark.links.style?.fill?.field
+            ]
+          )
+        : props.graphSettings.mark.links.style?.fill?.color
+        ? props.graphSettings.mark.links.style?.fill?.color
+        : "#000000";
+
     const animatedDotDuration = animatedDotDurationScale
       ? animatedDotDurationScale(
           props.data.links[i][
@@ -300,10 +318,19 @@ const BarGraph = (props) => {
         color={node.data.color}
         width={labelWidth}
         value={node.data.text}
+        opacity={
+          props.graphSettings.mark.labels?.style?.opacity
+            ? props.graphSettings.mark.labels?.style?.opacity
+            : 1
+        }
         anchor="align"
         side="double"
         align="left"
-        billboard={props.graphSettings.mark.labels.billboarding}
+        billboard={
+          props.graphSettings.mark.labels?.billboarding
+            ? props.graphSettings.mark.labels?.billboarding
+            : true
+        }
         position={`${
           layout.getNodePosition(node.id).x * scale +
           node.data.radius / 2 +

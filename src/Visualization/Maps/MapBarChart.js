@@ -17,36 +17,42 @@ const MapBarChart = (props) => {
         props.graphSettings.mark.bars.style.height.startFromZero
       );
 
-  const colorDomain = props.graphSettings.mark.bars.style.fill.scaleType
-    ? props.graphSettings.mark.bars.style.fill.domain
-    : GetDomain(
-        props.data,
-        props.graphSettings.mark.bars.style.fill.field,
-        props.graphSettings.mark.bars.style.fill.scaleType,
-        props.graphSettings.mark.bars.style.fill.startFromZero
-      );
+  const colorDomain = props.graphSettings.mark.bars.style.fill?.scaleType
+    ? props.graphSettings.mark.bars.style.fill?.domain
+      ? props.graphSettings.mark.bars.style.fill?.domain
+      : GetDomain(
+          props.data,
+          props.graphSettings.mark.bars.style.fill?.field,
+          props.graphSettings.mark.bars.style.fill?.scaleType,
+          props.graphSettings.mark.bars.style.fill?.startFromZero
+        )
+    : null;
 
   //Adding scales
 
   const heightScale = d3
     .scaleLinear()
     .domain(heightDomain)
-    .range(props.graphSettings.mark.bars.style.height.value);
+    .range(
+      props.graphSettings.mark.bars.style.height.value
+        ? props.graphSettings.mark.bars.style.height.value
+        : [0, 5]
+    );
 
-  const colorRange = props.graphSettings.mark.bars.style.fill.color
-    ? props.graphSettings.mark.bars.style.fill.color
+  const colorRange = props.graphSettings.mark.bars.style.fill?.color
+    ? props.graphSettings.mark.bars.style.fill?.color
     : d3.schemeCategory10;
 
-  const colorScale = props.graphSettings.mark.bars.style.fill.scaleType
-    ? props.graphSettings.mark.bars.style.fill.scaleType === "ordinal"
+  const colorScale = props.graphSettings.mark.bars.style.fill?.scaleType
+    ? props.graphSettings.mark.bars.style.fill?.scaleType === "ordinal"
       ? d3.scaleOrdinal().domain(colorDomain).range(colorRange)
       : d3.scaleLinear().domain(colorDomain).range(colorRange)
     : null;
 
   //Drawing Map
 
-  const extrusionHeight = props.graphSettings.mark.map.style.extrusion.value
-    ? props.graphSettings.mark.map.style.extrusion.value
+  const extrusionHeight = props.graphSettings.mark.map.style?.extrusion?.value
+    ? props.graphSettings.mark.map.style?.extrusion?.value
     : 0.001;
   let extrusionArr = [],
     colorArray = [],
@@ -54,7 +60,9 @@ const MapBarChart = (props) => {
 
   let geoData = GetMapShape(
     props.graphSettings.mark.map.data,
-    props.graphSettings.mark.map.projection,
+    props.graphSettings.mark.map.projection
+      ? props.graphSettings.mark.map.projection
+      : "Mercator",
     props.graphSettings.mark.mapScale,
     props.graphSettings.mark.mapOrigin,
     props.graphSettings.mark.map.shapeIdentifier,
@@ -68,7 +76,11 @@ const MapBarChart = (props) => {
       return { x: parseFloat(pnts[0]), y: parseFloat(pnts[1]) };
     });
     extrusionArr.push(extrusionHeight);
-    colorArray.push(props.graphSettings.mark.map.style.fill.color);
+    colorArray.push(
+      props.graphSettings.mark.map?.style?.fill?.color
+        ? props.graphSettings.mark.map?.style?.fill?.color
+        : "#ff0000"
+    );
 
     const min = {
       x: d3.min(pntArray, (d) => d["x"]),
@@ -95,9 +107,9 @@ const MapBarChart = (props) => {
     return pntArray;
   });
 
-  let stroke = props.graphSettings.mark.map.style.stroke ? true : false,
-    strokeColor = props.graphSettings.mark.map.style.stroke?.color
-      ? props.graphSettings.mark.map.style.stroke.color
+  let stroke = props.graphSettings.mark.map.style?.stroke ? true : false,
+    strokeColor = props.graphSettings.mark.map.style?.stroke?.color
+      ? props.graphSettings.mark.map.style?.stroke?.color
       : "#000000";
 
   const mapShape = (
@@ -107,7 +119,11 @@ const MapBarChart = (props) => {
       stroke_color={strokeColor}
       extrude={JSON.stringify(extrusionArr)}
       color={JSON.stringify(colorArray)}
-      opacity={props.graphSettings.mark.map.style.fill.opacity}
+      opacity={
+        props.graphSettings.mark.map.style?.fill?.opacity
+          ? props.graphSettings.mark.map.style?.fill?.opacity
+          : 1
+      }
     />
   );
 
@@ -128,15 +144,17 @@ const MapBarChart = (props) => {
         : heightScale(d[props.graphSettings.mark.bars.style.height.field]);
 
     const color = colorScale
-      ? colorScale(d[props.graphSettings.mark.bars.style.fill.field])
-      : props.graphSettings.mark.bars.style.fill.color
-      ? props.graphSettings.mark.bars.style.fill.color
-      : "#000000";
+      ? colorScale(d[props.graphSettings.mark.bars.style.fill?.field])
+      : props.graphSettings.mark.bars.style.fill?.color
+      ? props.graphSettings.mark.bars.style.fill?.color
+      : "#ffff00";
 
     const coordinates = GetMapCoordinates(
       d.longitude,
       d.latitude,
-      props.graphSettings.mark.projection,
+      props.graphSettings.mark.map.projection
+        ? props.graphSettings.mark.map.projection
+        : "Mercator",
       props.graphSettings.mark.mapScale,
       props.graphSettings.mark.mapOrigin
     );
@@ -158,15 +176,39 @@ const MapBarChart = (props) => {
         : null;
     return (
       <Shape
-        key={`${props.graphSettings.index}_Shape${i}`}
-        type={props.graphSettings.mark.bars.type}
+        key={`${props.graphID}_Shape${i}`}
+        type={
+          props.graphSettings.mark.bars.type
+            ? props.graphSettings.mark.bars.type
+            : "box"
+        }
         color={`${color}`}
-        opacity={props.graphSettings.mark.bars.style.fill.opacity}
-        depth={`${props.graphSettings.mark.bars.style.depth}`}
+        opacity={
+          props.graphSettings.mark.bars.style.fill?.opacity
+            ? props.graphSettings.mark.bars.style.fill?.opacity
+            : 1
+        }
+        depth={
+          props.graphSettings.mark.bars.style.depth
+            ? `${props.graphSettings.mark.bars.style.depth}`
+            : "0.2"
+        }
         height={`${hght}`}
-        width={`${props.graphSettings.mark.bars.style.width}`}
-        radius={`${props.graphSettings.mark.bars.style.radius}`}
-        segments={`${props.graphSettings.mark.bars.style.segments}`}
+        width={
+          props.graphSettings.mark.bars.style.width
+            ? `${props.graphSettings.mark.bars.style.width}`
+            : "0.2"
+        }
+        radius={
+          props.graphSettings.mark.bars.style.radius
+            ? `${props.graphSettings.mark.bars.style.radius}`
+            : "0.2"
+        }
+        segments={
+          props.graphSettings.mark.bars.style.segments
+            ? `${props.graphSettings.mark.bars.style.segments}`
+            : "16"
+        }
         position={position}
         hover={props.graphSettings.mark.bars.mouseOver}
         hoverText={hoverText}

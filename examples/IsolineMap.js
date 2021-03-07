@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./App.css";
 import VRViz from "./Component/Visualization.js";
 import mapData from "./mapData/mapData.json";
+import sfMapData from "./mapData/sfMapData.json";
 
 class App extends Component {
   render() {
@@ -10,7 +11,7 @@ class App extends Component {
         scene={{
           sky: {
             style: {
-              color: "#ccc",
+              color: "#333",
               texture: false,
             },
           },
@@ -30,41 +31,46 @@ class App extends Component {
             },
           ],
           camera: {
-            position: "0 0 10",
+            position: "0 0 0",
             rotation: "0 0 0",
           },
         }}
         graph={[
           {
-            type: "MapBarChart",
+            type: "IsolineMap",
+            style: {
+              origin: [0, 0, 0],
+            },
             data: {
-              dataFile: "data/mapBarChart.csv",
+              dataFile: "data/mapContourLines.csv",
               fileType: "csv",
               fieldDesc: [
-                ["latitude", "number"],
-                ["longitude", "number"],
-                ["value", "number"],
+                ["geojson", "jsonObject"],
+                ["objectid", "number"],
+                ["isoline_ty", "text"],
+                ["shape_len", "text"],
+                ["elevation", "number"],
               ],
             },
             style: {
               origin: [0, 0, 0],
             },
             mark: {
-              mapScale: 20,
-              mapOrigin: [5, 5],
+              mapScale: 2500,
+              mapOrigin: [4978.205, 1862.288],
               rotation: "-90 0 0",
               map: {
-                data: mapData,
+                data: sfMapData,
                 projection: "Mercator",
                 shapeIdentifier: "id",
-                shapeKey: "countries",
+                shapeKey: "neighbourhood",
                 style: {
                   extrusion: {
                     value: 0.0000001,
                   },
                   fill: {
-                    color: "red",
                     opacity: 1,
+                    color: "red",
                   },
                   stroke: {
                     width: 1,
@@ -72,38 +78,17 @@ class App extends Component {
                   },
                 },
               },
-              bars: {
-                type: "box",
-                style: {
-                  depth: 0.2,
-                  width: 0.2,
-                  height: {
-                    scaleType: "linear",
-                    field: "value",
-                    value: [0, 5],
-                  },
-                  fill: {
-                    scaleType: "linear",
-                    opacity: 0.9,
-                    field: "value",
-                    color: ["green", "blue"],
-                  },
+              isoLines: {
+                elevation: {
+                  field: "elevation",
+                  value: [0, 2],
                 },
-                mouseOver: {
-                  focusedObject: {
-                    opacity: 1,
-                    fill: "#333",
-                  },
-                  nonFocusedObject: {
-                    opacity: 0,
-                  },
-                  label: {
-                    value: (d) => `value:${d.value}`,
-                    align: "center",
-                    fontSize: 1,
-                    backgroundColor: "#333",
-                    backgroundOpacity: 1,
-                    fontColor: "#fff",
+                style: {
+                  stroke: {
+                    width: 1,
+                    scaleType: "linear",
+                    field: "elevation",
+                    color: ["green", "blue"],
                   },
                 },
               },

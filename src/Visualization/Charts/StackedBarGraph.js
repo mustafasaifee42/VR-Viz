@@ -50,7 +50,11 @@ const StackedBarGraph = (props) => {
     .scaleBand()
     .range([0, props.graphSettings.style.dimensions.width])
     .domain(xDomain)
-    .paddingInner(props.graphSettings.mark.style.padding.x);
+    .paddingInner(
+      props.graphSettings.mark.style?.padding?.x
+        ? props.graphSettings.mark.style?.padding?.x
+        : 0.1
+    );
 
   const width = xScale.bandwidth();
 
@@ -63,7 +67,11 @@ const StackedBarGraph = (props) => {
     .scaleBand()
     .domain(zDomain)
     .range([0, props.graphSettings.style.dimensions.depth])
-    .paddingInner(props.graphSettings.mark.style.padding.z);
+    .paddingInner(
+      props.graphSettings.mark.style?.padding?.z
+        ? props.graphSettings.mark.style?.padding?.z
+        : 0.1
+    );
 
   const depth = zScale.bandwidth();
 
@@ -91,14 +99,18 @@ const StackedBarGraph = (props) => {
           key={`${i}_${j}`}
           type={props.graphSettings.mark.type}
           color={`${color}`}
-          opacity={props.graphSettings.mark.style.fill.opacity}
+          opacity={
+            props.graphSettings.mark.style?.fill?.opacity
+              ? props.graphSettings.mark.style?.fill?.opacity
+              : 1
+          }
           depth={`${depth}`}
           height={`${hght}`}
           width={`${width}`}
           radius={`${radius}`}
           segments={
-            props.graphSettings.mark.style.segments
-              ? `${props.graphSettings.mark.style.segments}`
+            props.graphSettings.mark.style?.segments
+              ? `${props.graphSettings.mark.style?.segments}`
               : "16"
           }
           position={position}

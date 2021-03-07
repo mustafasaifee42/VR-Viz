@@ -16,6 +16,7 @@ const ContourPlot = (props) => {
     (props.graphSettings.mark.position.y.domain[1] -
       props.graphSettings.mark.position.y.domain[0]) /
     props.graphSettings.mark.position.y.steps;
+
   for (
     let k = props.graphSettings.mark.position.y.domain[0];
     k <= props.graphSettings.mark.position.y.domain[1];
@@ -27,18 +28,28 @@ const ContourPlot = (props) => {
       props.graphSettings.mark.position.z.function(k),
     ]);
   }
+
   const xDomain = props.graphSettings.mark.position.x.domain
     ? props.graphSettings.mark.position.x.domain
-    : GetDomain(dataCoordinate, 0, "linear", false);
+    : props.graphSettings.mark.position.x.startFromZero
+    ? [0, d3.max(dataCoordinate, (d) => d[0])]
+    : [
+        d3.min(dataCoordinate, (d) => d[0]),
+        d3.max(dataCoordinate, (d) => d[0]),
+      ];
 
   const yDomain = props.graphSettings.mark.position.y.domain;
 
   const zDomain = props.graphSettings.mark.position.z.domain
     ? props.graphSettings.mark.position.z.domain
-    : GetDomain(dataCoordinate, 2, "linear", false);
+    : GetDomain(
+        dataCoordinate,
+        2,
+        "linear",
+        props.graphSettings.mark.position.z.startFromZero
+      );
 
   //Adding Scale
-
   const xScale = d3
     .scaleLinear()
     .range([0, props.graphSettings.style.dimensions.width])
@@ -129,20 +140,24 @@ const ContourPlot = (props) => {
       {box}
       <a-frame-curve-line
         points={JSON.stringify(pointList)}
-        type={props.graphSettings.mark.style.curveType}
+        type={
+          props.graphSettings.mark.style?.curveType
+            ? props.graphSettings.mark.style?.curveType
+            : "line"
+        }
         color={
-          props.graphSettings.mark.style.color
-            ? props.graphSettings.mark.style.color
-            : "#000000"
+          props.graphSettings.mark.style?.color
+            ? props.graphSettings.mark.style?.color
+            : "#ff0000"
         }
         opacity={
-          props.graphSettings.mark.style.opacity
-            ? props.graphSettings.mark.style.opacity
+          props.graphSettings.mark.style?.opacity
+            ? props.graphSettings.mark.style?.opacity
             : 1
         }
         resolution={
-          props.graphSettings.mark.style.resolution
-            ? props.graphSettings.mark.style.resolution
+          props.graphSettings.mark.style?.resolution
+            ? props.graphSettings.mark.style?.resolution
             : 20
         }
       />

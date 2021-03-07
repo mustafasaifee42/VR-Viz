@@ -18,17 +18,19 @@ const TimeSeries = (props) => {
     : GetDomain(
         props.data,
         props.graphSettings.mark.position.x.field,
-        "linear",
+        props.graphSettings.mark.position.x.scaleType
+          ? props.graphSettings.mark.position.x.scaleType
+          : "linear",
         props.graphSettings.mark.position.x.startFromZero
       );
 
-  const yDomain = props.graphSettings.mark.style.height.domain
-    ? props.graphSettings.mark.style.height.domain
+  const yDomain = props.graphSettings.mark.position.y.domain
+    ? props.graphSettings.mark.position.y.domain
     : GetDomain(
         props.data,
-        props.graphSettings.mark.style.height.field,
+        props.graphSettings.mark.position.y.field,
         "linear",
-        props.graphSettings.mark.style.height.startFromZero
+        props.graphSettings.mark.position.y.startFromZero
       );
 
   const zDomain = props.graphSettings.mark.position.z.domain
@@ -40,7 +42,6 @@ const TimeSeries = (props) => {
         props.graphSettings.mark.position.z.startFromZero
       );
   //Adding Scale
-
   const xScale =
     props.graphSettings.mark.position.x.scaleType === "ordinal"
       ? d3
@@ -67,6 +68,9 @@ const TimeSeries = (props) => {
   let meshVertices = [],
     colorMatrix = [];
   for (let i = 0; i < props.data.length - 1; i++) {
+    const vertColor = props.graphSettings.mark.style?.fill?.color
+      ? props.graphSettings.mark.style?.fill?.color
+      : "#ff0000";
     meshVertices.push(
       xScale(props.data[i][props.graphSettings.mark.position.x.field])
     );
@@ -76,7 +80,7 @@ const TimeSeries = (props) => {
     meshVertices.push(
       zScale(props.data[i][props.graphSettings.mark.position.z.field])
     );
-    colorMatrix.push(props.graphSettings.mark.style.fill.color);
+    colorMatrix.push(vertColor);
 
     meshVertices.push(
       xScale(props.data[i + 1][props.graphSettings.mark.position.x.field])
@@ -87,7 +91,7 @@ const TimeSeries = (props) => {
     meshVertices.push(
       zScale(props.data[i + 1][props.graphSettings.mark.position.z.field])
     );
-    colorMatrix.push(props.graphSettings.mark.style.fill.color);
+    colorMatrix.push(vertColor);
 
     meshVertices.push(
       xScale(props.data[i + 1][props.graphSettings.mark.position.x.field])
@@ -96,7 +100,7 @@ const TimeSeries = (props) => {
       yScale(props.data[i + 1][props.graphSettings.mark.position.y.field])
     );
     meshVertices.push(zScale(0));
-    colorMatrix.push(props.graphSettings.mark.style.fill.color);
+    colorMatrix.push(vertColor);
 
     meshVertices.push(
       xScale(props.data[i + 1][props.graphSettings.mark.position.x.field])
@@ -105,7 +109,7 @@ const TimeSeries = (props) => {
       yScale(props.data[i + 1][props.graphSettings.mark.position.y.field])
     );
     meshVertices.push(zScale(0));
-    colorMatrix.push(props.graphSettings.mark.style.fill.color);
+    colorMatrix.push(vertColor);
 
     meshVertices.push(
       xScale(props.data[i][props.graphSettings.mark.position.x.field])
@@ -114,7 +118,7 @@ const TimeSeries = (props) => {
       yScale(props.data[i][props.graphSettings.mark.position.y.field])
     );
     meshVertices.push(zScale(0));
-    colorMatrix.push(props.graphSettings.mark.style.fill.color);
+    colorMatrix.push(vertColor);
 
     meshVertices.push(
       xScale(props.data[i][props.graphSettings.mark.position.x.field])
@@ -125,7 +129,7 @@ const TimeSeries = (props) => {
     meshVertices.push(
       zScale(props.data[i][props.graphSettings.mark.position.z.field])
     );
-    colorMatrix.push(props.graphSettings.mark.style.fill.color);
+    colorMatrix.push(vertColor);
   }
 
   let borderCoordinate = [];
@@ -155,7 +159,7 @@ const TimeSeries = (props) => {
   const xAxis = props.graphSettings.axis["x-axis"] ? (
     <XAxis
       domain={
-        props.graphSettings.mark.position.z.scaleType === "linear"
+        props.graphSettings.mark.position.x.scaleType === "linear"
           ? xScale.ticks(
               props.graphSettings.axis["x-axis"].ticks?.noOfTicks
                 ? props.graphSettings.axis["x-axis"].ticks.noOfTicks
@@ -221,14 +225,14 @@ const TimeSeries = (props) => {
     />
   ) : null;
 
-  const stroke_width = props.graphSettings.mark.style.stroke?.width
-    ? props.graphSettings.mark.style.stroke?.width
+  const stroke_width = props.graphSettings.mark.style?.stroke?.width
+    ? props.graphSettings.mark.style?.stroke?.width
     : 1;
-  const stroke_color = props.graphSettings.mark.style.stroke?.color
-    ? props.graphSettings.mark.style.stroke?.color
-    : "#000000";
-  const stroke_opacity = props.graphSettings.mark.style.stroke?.opacity
-    ? props.graphSettings.mark.style.stroke?.opacity
+  const stroke_color = props.graphSettings.mark.style?.stroke?.color
+    ? props.graphSettings.mark.style?.stroke?.color
+    : "#ffffff";
+  const stroke_opacity = props.graphSettings.mark.style?.stroke?.opacity
+    ? props.graphSettings.mark.style?.stroke?.opacity
     : 1;
 
   return (

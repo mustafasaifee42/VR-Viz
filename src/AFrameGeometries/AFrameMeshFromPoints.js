@@ -50,7 +50,6 @@ AFRAME.registerComponent("aframemeshfrompoints", {
       vertColor.push(col.g);
       vertColor.push(col.b);
     });
-
     const vertices = new Float32Array(pointVecs);
     const vertexColor = new Float32Array(vertColor);
     geometry.setAttribute("position", new THREE.BufferAttribute(vertices, 3));

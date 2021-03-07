@@ -12,7 +12,13 @@ import "./AFrameComponents/PivotCenterForModel";
 import "./AFrameComponents/MaterialModification";
 import "./AFrameComponents/HighlightOnClick";
 
+import "./AFrameGeometries/AFrameContourLines";
 import "./AFrameGeometries/AFrameCurveLine";
+import "./AFrameGeometries/AFrameFlowLine";
+import "./AFrameGeometries/AFrameFlowLineAnimationDot";
+import "./AFrameGeometries/AFrameGlobe";
+import "./AFrameGeometries/AFrameMap";
+import "./AFrameGeometries/AFrameMapOutline";
 import "./AFrameGeometries/AFrameMeshFromPoints";
 import "./AFrameGeometries/AFrameShape";
 

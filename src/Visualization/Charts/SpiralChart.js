@@ -68,14 +68,22 @@ const SpiralChart = (props) => {
     scales.forEach((scale, j) => {
       coordinates =
         coordinates +
-        `${scale(d[this.props.mark.vertices[j].title]) * Math.sin(j * angle)} ${
-          0 - scale(d[this.props.mark.vertices[j].title]) * Math.cos(j * angle)
+        `${
+          scale(d[props.graphSettings.mark.vertices[j].title]) *
+          Math.sin(j * angle)
+        } ${
+          0 -
+          scale(d[props.graphSettings.mark.vertices[j].title]) *
+            Math.cos(j * angle)
         },`;
     });
     coordinates =
       coordinates +
-      `${scales[0](d[this.props.mark.vertices[0].title]) * Math.sin(0)} ${
-        0 - scales[0](d[this.props.mark.vertices[0].title]) * Math.cos(0)
+      `${
+        scales[0](d[props.graphSettings.mark.vertices[0].title]) * Math.sin(0)
+      } ${
+        0 -
+        scales[0](d[props.graphSettings.mark.vertices[0].title]) * Math.cos(0)
       }`;
 
     return coordinates;
@@ -139,11 +147,11 @@ const SpiralChart = (props) => {
       {marks}
       <a-box
         class="clickable"
-        position={`0 ${this.props.style.height / 2} 0`}
+        position={`0 ${props.graphSettings.style.height / 2} 0`}
         opacity="0"
-        height={this.props.style.height}
-        depth={this.props.style.width * 2}
-        width={this.props.style.width * 2}
+        height={props.graphSettings.style.height}
+        depth={props.graphSettings.style.width * 2}
+        width={props.graphSettings.style.width * 2}
       />
     </>
   );

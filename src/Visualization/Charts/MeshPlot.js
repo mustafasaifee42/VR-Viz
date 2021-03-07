@@ -53,19 +53,17 @@ const MeshPlot = (props) => {
     }
   }
 
-  const colorDomain = props.graphSettings.mark.style.fill.scaleType
-    ? props.graphSettings.mark.style.fill.domain
-      ? props.graphSettings.mark.style.fill.domain
-      : GetDomain(
-          dataCoordinate,
-          props.graphSettings.mark.style.fill.axis,
-          "linear",
-          false
-        )
+  const colorDomain = props.graphSettings.mark.style?.fill?.scaleType
+    ? [
+        0,
+        props.graphSettings.mark.style?.fill?.axis === 1
+          ? props.graphSettings.style.dimensions.height
+          : props.graphSettings.mark.style?.fill?.axis === 2
+          ? props.graphSettings.style.dimensions.depth
+          : props.graphSettings.style.dimensions.width,
+      ]
     : null;
-
   //Adding Scale
-
   const xScale =
     props.graphSettings.mark.position.x.scaleType === "linear"
       ? d3
@@ -89,7 +87,8 @@ const MeshPlot = (props) => {
     .range([0, props.graphSettings.style.dimensions.height]);
 
   const zScale =
-    props.graphSettings.mark.position.z.scaleType === "linear"
+    props.graphSettings.mark.position.z.scaleType === "linear" &&
+    props.graphSettings.mark.position.z.domain
       ? d3
           .scaleLinear()
           .range([0, props.graphSettings.style.dimensions.depth])
@@ -105,14 +104,12 @@ const MeshPlot = (props) => {
           )
           .domain(zDomain);
 
-  const colorRange = props.graphSettings.mark.style.fill.color
-    ? props.graphSettings.mark.style.fill.color
+  const colorRange = props.graphSettings.mark.style?.fill?.color
+    ? props.graphSettings.mark.style?.fill?.color
     : ["#ff0000", "#ffff00"];
-
-  const colorScale = props.graphSettings.mark.style.fill.scaleType
+  const colorScale = props.graphSettings.mark.style?.fill?.scaleType
     ? d3.scaleLinear().domain(colorDomain).range(colorRange)
     : null;
-
   //Adding marks
 
   let meshVertices = [],
@@ -124,126 +121,132 @@ const MeshPlot = (props) => {
       );
       meshVertices.push(yScale(props.data[i][zDomain[j]]));
       meshVertices.push(zScale(zDomain[j]));
-      colorMatrix.push(
-        colorScale
-          ? colorScale(
-              props.graphSettings.mark.style.fill.axis === 1
-                ? colorScale(props.data[i][zDomain[j]])
-                : props.graphSettings.mark.style.fill.axis === 2
-                ? colorScale(zDomain[j])
-                : colorScale(
-                    props.data[i][props.graphSettings.mark.position.x.field]
-                  )
-            )
-          : props.graphSettings.mark.style.fill.color
-          ? props.graphSettings.mark.style.fill.color
-          : "#000000"
-      );
+
+      let vertColorIndex =
+        props.graphSettings.mark.style?.fill?.axis === 1
+          ? yScale(props.data[i][zDomain[j]])
+          : props.graphSettings.mark.style?.fill?.axis === 2
+          ? zScale(zDomain[j])
+          : xScale(props.data[i][props.graphSettings.mark.position.x.field]);
+
+      let vertColor = colorScale
+        ? colorScale(vertColorIndex)
+        : props.graphSettings.mark.style?.fill?.color
+        ? props.graphSettings.mark.style?.fill?.color
+        : "#ff0000";
+
+      colorMatrix.push(vertColor);
 
       meshVertices.push(
         xScale(props.data[i + 1][props.graphSettings.mark.position.x.field])
       );
       meshVertices.push(yScale(props.data[i + 1][zDomain[j]]));
       meshVertices.push(zScale(zDomain[j]));
-      colorMatrix.push(
-        colorScale
-          ? colorScale(
-              props.graphSettings.mark.style.fill.axis === 1
-                ? colorScale(props.data[i][zDomain[j]])
-                : props.graphSettings.mark.style.fill.axis === 2
-                ? colorScale(zDomain[j])
-                : colorScale(
-                    props.data[i][props.graphSettings.mark.position.x.field]
-                  )
-            )
-          : props.graphSettings.mark.style.fill.color
-          ? props.graphSettings.mark.style.fill.color
-          : "#000000"
-      );
+
+      vertColorIndex =
+        props.graphSettings.mark.style?.fill?.axis === 1
+          ? yScale(props.data[i + 1][zDomain[j]])
+          : props.graphSettings.mark.style?.fill?.axis === 2
+          ? zScale(zDomain[j])
+          : xScale(
+              props.data[i + 1][props.graphSettings.mark.position.x.field]
+            );
+
+      vertColor = colorScale
+        ? colorScale(vertColorIndex)
+        : props.graphSettings.mark.style?.fill?.color
+        ? props.graphSettings.mark.style?.fill?.color
+        : "#ff0000";
+
+      colorMatrix.push(vertColor);
 
       meshVertices.push(
         xScale(props.data[i + 1][props.graphSettings.mark.position.x.field])
       );
       meshVertices.push(yScale(props.data[i + 1][zDomain[j + 1]]));
       meshVertices.push(zScale(zDomain[j + 1]));
-      colorMatrix.push(
-        colorScale
-          ? colorScale(
-              props.graphSettings.mark.style.fill.axis === 1
-                ? colorScale(props.data[i][zDomain[j]])
-                : props.graphSettings.mark.style.fill.axis === 2
-                ? colorScale(zDomain[j])
-                : colorScale(
-                    props.data[i][props.graphSettings.mark.position.x.field]
-                  )
-            )
-          : props.graphSettings.mark.style.fill.color
-          ? props.graphSettings.mark.style.fill.color
-          : "#000000"
-      );
+
+      vertColorIndex =
+        props.graphSettings.mark.style?.fill?.axis === 1
+          ? yScale(props.data[i + 1][zDomain[j + 1]])
+          : props.graphSettings.mark.style?.fill?.axis === 2
+          ? zScale(zDomain[j + 1])
+          : xScale(
+              props.data[i + 1][props.graphSettings.mark.position.x.field]
+            );
+
+      vertColor = colorScale
+        ? colorScale(vertColorIndex)
+        : props.graphSettings.mark.style?.fill?.color
+        ? props.graphSettings.mark.style?.fill?.color
+        : "#ff0000";
+
+      colorMatrix.push(vertColor);
 
       meshVertices.push(
         xScale(props.data[i + 1][props.graphSettings.mark.position.x.field])
       );
       meshVertices.push(yScale(props.data[i + 1][zDomain[j + 1]]));
       meshVertices.push(zScale(zDomain[j + 1]));
-      colorMatrix.push(
-        colorScale
-          ? colorScale(
-              props.graphSettings.mark.style.fill.axis === 1
-                ? colorScale(props.data[i][zDomain[j]])
-                : props.graphSettings.mark.style.fill.axis === 2
-                ? colorScale(zDomain[j])
-                : colorScale(
-                    props.data[i][props.graphSettings.mark.position.x.field]
-                  )
-            )
-          : props.graphSettings.mark.style.fill.color
-          ? props.graphSettings.mark.style.fill.color
-          : "#000000"
-      );
+
+      vertColorIndex =
+        props.graphSettings.mark.style?.fill?.axis === 1
+          ? yScale(props.data[i + 1][zDomain[j + 1]])
+          : props.graphSettings.mark.style?.fill?.axis === 2
+          ? zScale(zDomain[j + 1])
+          : xScale(
+              props.data[i + 1][props.graphSettings.mark.position.x.field]
+            );
+
+      vertColor = colorScale
+        ? colorScale(vertColorIndex)
+        : props.graphSettings.mark.style?.fill?.color
+        ? props.graphSettings.mark.style?.fill?.color
+        : "#ff0000";
+
+      colorMatrix.push(vertColor);
 
       meshVertices.push(
         xScale(props.data[i][props.graphSettings.mark.position.x.field])
       );
       meshVertices.push(yScale(props.data[i][zDomain[j + 1]]));
       meshVertices.push(zScale(zDomain[j + 1]));
-      colorMatrix.push(
-        colorScale
-          ? colorScale(
-              props.graphSettings.mark.style.fill.axis === 1
-                ? colorScale(props.data[i][zDomain[j]])
-                : props.graphSettings.mark.style.fill.axis === 2
-                ? colorScale(zDomain[j])
-                : colorScale(
-                    props.data[i][props.graphSettings.mark.position.x.field]
-                  )
-            )
-          : props.graphSettings.mark.style.fill.color
-          ? props.graphSettings.mark.style.fill.color
-          : "#000000"
-      );
+
+      vertColorIndex =
+        props.graphSettings.mark.style?.fill?.axis === 1
+          ? yScale(props.data[i][zDomain[j + 1]])
+          : props.graphSettings.mark.style?.fill?.axis === 2
+          ? zScale(zDomain[j + 1])
+          : xScale(props.data[i][props.graphSettings.mark.position.x.field]);
+
+      vertColor = colorScale
+        ? colorScale(vertColorIndex)
+        : props.graphSettings.mark.style?.fill?.color
+        ? props.graphSettings.mark.style?.fill?.color
+        : "#ff0000";
+
+      colorMatrix.push(vertColor);
 
       meshVertices.push(
         xScale(props.data[i][props.graphSettings.mark.position.x.field])
       );
       meshVertices.push(yScale(props.data[i][zDomain[j]]));
       meshVertices.push(zScale(zDomain[j]));
-      colorMatrix.push(
-        colorScale
-          ? colorScale(
-              props.graphSettings.mark.style.fill.axis === 1
-                ? colorScale(props.data[i][zDomain[j]])
-                : props.graphSettings.mark.style.fill.axis === 2
-                ? colorScale(zDomain[j])
-                : colorScale(
-                    props.data[i][props.graphSettings.mark.position.x.field]
-                  )
-            )
-          : props.graphSettings.mark.style.fill.color
-          ? props.graphSettings.mark.style.fill.color
-          : "#000000"
-      );
+
+      vertColorIndex =
+        props.graphSettings.mark.style?.fill?.axis === 1
+          ? yScale(props.data[i][zDomain[j]])
+          : props.graphSettings.mark.style?.fill?.axis === 2
+          ? zScale(zDomain[j])
+          : xScale(props.data[i][props.graphSettings.mark.position.x.field]);
+
+      vertColor = colorScale
+        ? colorScale(vertColorIndex)
+        : props.graphSettings.mark.style?.fill?.color
+        ? props.graphSettings.mark.style?.fill?.color
+        : "#ff0000";
+
+      colorMatrix.push(vertColor);
     }
   }
 
@@ -317,17 +320,16 @@ const MeshPlot = (props) => {
     />
   ) : null;
 
-  const stroke_bool = props.graphSettings.mark.style.stroke ? true : false;
-  const stroke_width = props.graphSettings.mark.style.stroke?.width
-    ? props.graphSettings.mark.style.stroke?.width
+  const stroke_bool = props.graphSettings.mark.style?.stroke ? true : false;
+  const stroke_width = props.graphSettings.mark.style?.stroke?.width
+    ? props.graphSettings.mark.style?.stroke?.width
     : 1;
-  const stroke_color = props.graphSettings.mark.style.stroke?.color
-    ? props.graphSettings.mark.style.stroke?.color
+  const stroke_color = props.graphSettings.mark.style?.stroke?.color
+    ? props.graphSettings.mark.style?.stroke?.color
     : "#000000";
-  const stroke_opacity = props.graphSettings.mark.style.stroke?.opacity
-    ? props.graphSettings.mark.style.stroke?.opacity
+  const stroke_opacity = props.graphSettings.mark.style?.stroke?.opacity
+    ? props.graphSettings.mark.style?.stroke?.opacity
     : 1;
-
   return (
     <>
       {xAxis}
@@ -341,7 +343,11 @@ const MeshPlot = (props) => {
         stroke_color={stroke_color}
         stroke_width={stroke_width}
         stroke_opacity={stroke_opacity}
-        opacity={props.graphSettings.mark.style.fill.opacity}
+        opacity={
+          props.graphSettings.mark.style?.fill?.opacity
+            ? props.graphSettings.mark.style?.fill?.opacity
+            : 1
+        }
       />
       <a-box
         class="clickable"

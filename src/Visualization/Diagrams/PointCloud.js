@@ -11,41 +11,43 @@ const PointCloud = (props) => {
     return null;
   }
 
-  const colorDomain = props.graphSettings.mark.style.fill.scaleType
-    ? props.graphSettings.mark.style.fill.domain
-      ? props.graphSettings.mark.style.fill.domain
+  const colorDomain = props.graphSettings.mark.style?.fill?.scaleType
+    ? props.graphSettings.mark.style?.fill?.domain
+      ? props.graphSettings.mark.style?.fill?.domain
       : GetDomain(
           props.data,
-          props.graphSettings.mark.style.fill.field,
-          props.graphSettings.mark.style.fill.scaleType,
-          props.graphSettings.mark.style.fill.startFromZero
+          props.graphSettings.mark.style?.fill?.field,
+          props.graphSettings.mark.style?.fill?.scaleType,
+          props.graphSettings.mark.style?.fill?.startFromZero
         )
     : null;
 
-  const colorRange = props.graphSettings.mark.style.fill.color
-    ? props.graphSettings.mark.style.fill.color
+  const colorRange = props.graphSettings.mark.style?.fill?.color
+    ? props.graphSettings.mark.style?.fill?.color
     : d3.schemeCategory10;
 
-  const colorScale = props.graphSettings.mark.style.fill.scaleType
-    ? props.graphSettings.mark.style.fill.scaleType === "ordinal"
+  const colorScale = props.graphSettings.mark.style?.fill?.scaleType
+    ? props.graphSettings.mark.style?.fill?.scaleType === "ordinal"
       ? d3.scaleOrdinal().domain(colorDomain).range(colorRange)
       : d3.scaleLinear().domain(colorDomain).range(colorRange)
     : null;
-
+  const scalingFactor = props.graphSettings.style?.objectScale
+    ? props.graphSettings.style?.objectScale
+    : 1;
   //Adding marks
   const marks = props.data.map((d, i) => {
     const color =
       d.r && d.g && d.b
         ? `rgb(${d.r},${d.g},${d.b})`
         : colorScale
-        ? colorScale(d[props.graphSettings.mark.style.fill.field])
-        : props.graphSettings.mark.style.fill.color
-        ? props.graphSettings.mark.style.fill.color
-        : "#000000";
+        ? colorScale(d[props.graphSettings.mark.style?.fill?.field])
+        : props.graphSettings.mark.style?.fill?.color
+        ? props.graphSettings.mark.style?.fill?.color
+        : "#ff0000";
 
-    const radius = props.graphSettings.mark.style.radius
-      ? props.graphSettings.mark.style.radius
-      : 5;
+    const radius = props.graphSettings.mark.style?.radius
+      ? props.graphSettings.mark.style?.radius
+      : 0.1;
 
     const hoverText = props.graphSettings.mark.mouseOver?.label
       ? props.graphSettings.mark.mouseOver.label.value(d)
@@ -61,8 +63,8 @@ const PointCloud = (props) => {
         }
         color={`${color}`}
         opacity={
-          props.graphSettings.mark.style.fill.opacity
-            ? props.graphSettings.mark.style.fill.opacity
+          props.graphSettings.mark.style?.fill?.opacity
+            ? props.graphSettings.mark.style?.fill?.opacity
             : 1
         }
         depth={`${radius}`}
@@ -70,13 +72,13 @@ const PointCloud = (props) => {
         width={`${radius}`}
         radius={`${radius}`}
         segments={
-          props.graphSettings.mark.style.segments
-            ? `${props.graphSettings.mark.style.segments}`
+          props.graphSettings.mark.style?.segments
+            ? `${props.graphSettings.mark.style?.segments}`
             : "16"
         }
-        position={`${d.x * props.graphSettings.style.objectScale} ${
-          d.y * props.graphSettings.style.objectScale
-        } ${d.z * props.graphSettings.style.objectScale}`}
+        position={`${d.x * scalingFactor} ${d.y * scalingFactor} ${
+          d.z * scalingFactor
+        }`}
         hover={props.graphSettings.mark.mouseOver}
         hoverText={hoverText}
         graphID={props.graphID}

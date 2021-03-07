@@ -10,18 +10,12 @@ const MapStackedBarChart = (props) => {
   // Data manipulation
 
   let data = d3.stack().keys(props.graphSettings.mark.bars.style.fill.field)(
-      props.data
-    ),
-    max = 0;
+    props.data
+  );
   let dataset = [];
   for (let i = 0; i < data.length; i++) {
     for (let j = 0; j < data[i].length; j++) {
       dataset.push(data[i][j]);
-    }
-  }
-  for (let i = 0; i < dataset.length; i++) {
-    if (max < dataset[i][1]) {
-      max = dataset[i][1];
     }
   }
   // Getting domain
@@ -33,7 +27,7 @@ const MapStackedBarChart = (props) => {
         "linear",
         props.graphSettings.mark.bars.style.height.startFromZero
       );
-
+  console.log(heightDomain);
   //Adding scales
 
   let yScale;
@@ -41,21 +35,27 @@ const MapStackedBarChart = (props) => {
   yScale = d3
     .scaleLinear()
     .domain(heightDomain)
-    .range(props.graphSettings.mark.bars.style.height.value);
+    .range(
+      props.graphSettings.mark.bars.style.height.value
+        ? props.graphSettings.mark.bars.style.height.value
+        : [0, 5]
+    );
 
   //Drawing Map
 
   let geoData = GetMapShape(
     props.graphSettings.mark.map.data,
-    props.graphSettings.mark.map.projection,
+    props.graphSettings.mark.map.projection
+      ? props.graphSettings.mark.map.projection
+      : "Mercator",
     props.graphSettings.mark.mapScale,
     props.graphSettings.mark.mapOrigin,
     props.graphSettings.mark.map.shapeIdentifier,
     props.graphSettings.mark.map.shapeKey
   );
 
-  const extrusionHeight = props.graphSettings.mark.map.style.extrusion.value
-    ? props.graphSettings.mark.map.style.extrusion.value
+  const extrusionHeight = props.graphSettings.mark.map.style?.extrusion?.value
+    ? props.graphSettings.mark.map.style?.extrusion?.value
     : 0.001;
   let extrusionArr = [],
     colorArray = [],
@@ -68,7 +68,11 @@ const MapStackedBarChart = (props) => {
       return { x: parseFloat(pnts[0]), y: parseFloat(pnts[1]) };
     });
     extrusionArr.push(extrusionHeight);
-    colorArray.push(props.graphSettings.mark.map.style.fill.color);
+    colorArray.push(
+      props.graphSettings.mark.map.style?.fill?.color
+        ? props.graphSettings.mark.map.style?.fill?.color
+        : "#ff0000"
+    );
 
     const min = {
       x: d3.min(pntArray, (d) => d["x"]),
@@ -95,10 +99,10 @@ const MapStackedBarChart = (props) => {
     return pntArray;
   });
 
-  const stroke = props.graphSettings.mark.map.style.stroke ? true : false;
+  const stroke = props.graphSettings.mark.map.style?.stroke ? true : false;
 
-  const strokeColor = props.graphSettings.mark.map.style.stroke?.color
-    ? props.graphSettings.mark.map.style.stroke.color
+  const strokeColor = props.graphSettings.mark.map.style?.stroke?.color
+    ? props.graphSettings.mark.map.style?.stroke?.color
     : "#000000";
 
   const mapShape = (
@@ -108,7 +112,11 @@ const MapStackedBarChart = (props) => {
       stroke_color={strokeColor}
       extrude={JSON.stringify(extrusionArr)}
       color={JSON.stringify(colorArray)}
-      opacity={props.graphSettings.mark.map.style.fill.opacity}
+      opacity={
+        props.graphSettings.mark.map.style?.fill?.opacity
+          ? props.graphSettings.mark.map.style?.fill?.opacity
+          : 1
+      }
     />
   );
 
@@ -127,12 +135,16 @@ const MapStackedBarChart = (props) => {
       const hght =
         yScale(d1[1] - d1[0]) === 0 ? 0.000000000001 : yScale(d1[1] - d1[0]);
 
-      const color = props.graphSettings.mark.bars.style.fill.color[i];
+      const color = props.graphSettings.mark.bars.style.fill.color
+        ? props.graphSettings.mark.bars.style.fill.color[i]
+        : d3.schemeCategory10[i];
 
       const coordinates = GetMapCoordinates(
         d1.data.longitude,
         d1.data.latitude,
-        props.graphSettings.mark.projection,
+        props.graphSettings.mark.map.projection
+          ? props.graphSettings.mark.map.projection
+          : "Mercator",
         props.graphSettings.mark.mapScale,
         props.graphSettings.mark.mapOrigin
       );
@@ -162,10 +174,22 @@ const MapStackedBarChart = (props) => {
               ? props.graphSettings.mark.bars.style.fill.opacity
               : 1
           }
-          depth={`${props.graphSettings.mark.bars.style.depth}`}
+          depth={
+            props.graphSettings.mark.bars.style.depth
+              ? `${props.graphSettings.mark.bars.style.depth}`
+              : "0.2"
+          }
           height={`${hght}`}
-          width={`${props.graphSettings.mark.bars.style.width}`}
-          radius={`${props.graphSettings.mark.bars.style.radius}`}
+          width={
+            props.graphSettings.mark.bars.style.width
+              ? `${props.graphSettings.mark.bars.style.width}`
+              : "0.2"
+          }
+          radius={
+            props.graphSettings.mark.bars.style.radius
+              ? `${props.graphSettings.mark.bars.style.radius}`
+              : "0.2"
+          }
           segments={
             props.graphSettings.mark.bars.style.segments
               ? `${props.graphSettings.mark.bars.style.segments}`

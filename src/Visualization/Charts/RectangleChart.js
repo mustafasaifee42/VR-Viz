@@ -39,14 +39,14 @@ const RectangleChart = (props) => {
         props.graphSettings.mark.style.depth.startFromZero
       );
 
-  const colorDomain = props.graphSettings.mark.style.fill.scaleType
-    ? props.graphSettings.mark.style.fill.domain
-      ? props.graphSettings.mark.style.fill.domain
+  const colorDomain = props.graphSettings.mark.style?.fill?.scaleType
+    ? props.graphSettings.mark.style?.fill?.domain
+      ? props.graphSettings.mark.style?.fill?.domain
       : GetDomain(
           props.data,
-          props.graphSettings.mark.style.fill.field,
-          props.graphSettings.mark.style.fill.scaleType,
-          props.graphSettings.mark.style.fill.startFromZero
+          props.graphSettings.mark.style?.fill?.field,
+          props.graphSettings.mark.style?.fill?.scaleType,
+          props.graphSettings.mark.style?.fill?.startFromZero
         )
     : null;
 
@@ -56,7 +56,11 @@ const RectangleChart = (props) => {
     .scaleBand()
     .range([0, props.graphSettings.style.dimensions.width])
     .domain(xDomain)
-    .paddingInner(props.graphSettings.mark.style.padding.x);
+    .paddingInner(
+      props.graphSettings.mark?.style?.padding?.x
+        ? props.graphSettings.mark?.style?.padding?.x
+        : 0.1
+    );
 
   const width = xScale.bandwidth();
 
@@ -70,12 +74,12 @@ const RectangleChart = (props) => {
     .domain(zDomain)
     .range([0, props.graphSettings.style.dimensions.depth]);
 
-  const colorRange = props.graphSettings.mark.style.fill.color
-    ? props.graphSettings.mark.style.fill.color
+  const colorRange = props.graphSettings.mark.style?.fill?.color
+    ? props.graphSettings.mark.style?.fill?.color
     : d3.schemeCategory10;
 
-  const colorScale = props.graphSettings.mark.style.fill.scaleType
-    ? props.graphSettings.mark.style.fill.scaleType === "ordinal"
+  const colorScale = props.graphSettings.mark.style?.fill?.scaleType
+    ? props.graphSettings.mark.style?.fill?.scaleType === "ordinal"
       ? d3.scaleOrdinal().domain(colorDomain).range(colorRange)
       : d3.scaleLinear().domain(colorDomain).range(colorRange)
     : null;
@@ -92,9 +96,12 @@ const RectangleChart = (props) => {
         ? 0.000000000001
         : zScale(d[props.graphSettings.mark.style.depth.field]);
 
-    const color = colorScale
-      ? colorScale(d[props.graphSettings.mark.style.fill.field])
-      : props.graphSettings.mark.style.fill.color;
+    const color =
+      colorScale && props.graphSettings.mark.style?.fill?.field
+        ? colorScale(d[props.graphSettings.mark.style?.fill?.field])
+        : props.graphSettings.mark.style?.fill?.color
+        ? props.graphSettings.mark.style?.fill?.color
+        : "#ff0000";
 
     const position = `${
       xScale(d[props.graphSettings.mark.position.x.field]) + width / 2
@@ -117,13 +124,11 @@ const RectangleChart = (props) => {
     return (
       <Shape
         key={i}
-        type={
-          props.graphSettings.mark.type ? props.graphSettings.mark.type : "box"
-        }
+        type={"box"}
         color={`${color}`}
         opacity={
-          props.graphSettings.mark.style.fill.opacity
-            ? props.graphSettings.mark.style.fill.opacity
+          props.graphSettings.mark.style?.fill?.opacity
+            ? props.graphSettings.mark.style?.fill?.opacity
             : 1
         }
         depth={`${depth}`}
@@ -131,14 +136,14 @@ const RectangleChart = (props) => {
         width={`${width}`}
         radius={"0"}
         segments={
-          props.graphSettings.mark.style.segments
-            ? `${props.graphSettings.mark.style.segments}`
+          props.graphSettings.mark.style?.segments
+            ? `${props.graphSettings.mark.style?.segments}`
             : "16"
         }
         position={position}
         hover={props.graphSettings.mark.mouseOver}
         hoverText={hoverText}
-        graphID={props.graphSettings.index}
+        graphID={props.graphID}
         class={className}
         id={idName}
         data={JSON.stringify(d)}

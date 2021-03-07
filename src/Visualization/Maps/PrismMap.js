@@ -9,10 +9,10 @@ const PrismMap = (props) => {
   let data = {};
   props.data.forEach((d) => {
     data[d[props.graphSettings.mark.shapeIdentifier]] = props.graphSettings.mark
-      .style.fill.scaleType
+      .style.fill?.scaleType
       ? {
           value: d[props.graphSettings.mark.style.extrusion.field],
-          colorField: d[props.graphSettings.mark.style.fill.field],
+          colorField: d[props.graphSettings.mark.style.fill?.field],
         }
       : {
           value: d[props.graphSettings.mark.style.extrusion.field],
@@ -31,14 +31,14 @@ const PrismMap = (props) => {
         props.graphSettings.mark.style.extrusion.startFromZero
       );
 
-  const colorDomain = props.graphSettings.mark.style.fill.scaleType
-    ? props.graphSettings.mark.style.fill.scaleType
-      ? props.graphSettings.mark.style.fill.scaleType
+  const colorDomain = props.graphSettings.mark.style.fill?.scaleType
+    ? props.graphSettings.mark.style.fill?.scaleType
+      ? props.graphSettings.mark.style.fill?.scaleType
       : GetDomain(
           props.data,
-          props.graphSettings.mark.style.fill.field,
-          props.graphSettings.mark.style.fill.scaleType,
-          props.graphSettings.mark.style.fill.startFromZero
+          props.graphSettings.mark.style.fill?.field,
+          props.graphSettings.mark.style.fill?.scaleType,
+          props.graphSettings.mark.style.fill?.startFromZero
         )
     : null;
 
@@ -47,14 +47,18 @@ const PrismMap = (props) => {
   const extrusionScale = d3
     .scaleLinear()
     .domain(extrusionDomain)
-    .range(props.graphSettings.mark.style.extrusion.value);
+    .range(
+      props.graphSettings.mark.style.extrusion.value
+        ? props.graphSettings.mark.style.extrusion.value
+        : [0.5]
+    );
 
-  const colorRange = props.graphSettings.mark.style.fill.color
-    ? props.graphSettings.mark.style.fill.color
+  const colorRange = props.graphSettings.mark.style.fill?.color
+    ? props.graphSettings.mark.style.fill?.color
     : d3.schemeCategory10;
 
-  const colorScale = props.graphSettings.mark.style.fill.scaleType
-    ? props.graphSettings.mark.style.fill.scaleType === "ordinal"
+  const colorScale = props.graphSettings.mark.style.fill?.scaleType
+    ? props.graphSettings.mark.style.fill?.scaleType === "ordinal"
       ? d3.scaleOrdinal().domain(colorDomain).range(colorRange)
       : d3.scaleLinear().domain(colorDomain).range(colorRange)
     : null;
@@ -62,7 +66,7 @@ const PrismMap = (props) => {
   //Adding marks
   const stroke = props.graphSettings.mark.style.stroke ? true : false;
   const strokeColor = props.graphSettings.mark.style.stroke?.color
-    ? props.graphSettings.mark.style.stroke.color
+    ? props.graphSettings.mark.style.stroke?.color
     : "#000000";
   const sphere = props.graphSettings.mark.projection ? null : (
     <a-sphere
@@ -98,9 +102,9 @@ const PrismMap = (props) => {
     colorArray.push(
       colorScale
         ? colorScale(data[d["code"]]["colorField"])
-        : props.graphSettings.mark.style.fill.color
-        ? props.graphSettings.mark.style.fill.color
-        : "#000000"
+        : props.graphSettings.mark.style.fill?.color
+        ? props.graphSettings.mark.style.fill?.color
+        : "#ff0000"
     );
 
     let min = {
@@ -128,20 +132,7 @@ const PrismMap = (props) => {
     return pointsArray;
   });
 
-  const projectiocMapShape = props.graphSettings.mark.style.fill.scaleType ? (
-    <a-entity
-      class="clickable"
-      aframemap={`points:${JSON.stringify(
-        pts
-      )};stroke_bool:${stroke};stroke_color:${strokeColor};extrude:${JSON.stringify(
-        extrusionArr
-      )};color:${JSON.stringify(colorArray)};opacity:${
-        props.graphSettings.mark.style.fill.opacity
-          ? props.graphSettings.mark.style.fill.opacity
-          : 1
-      }`}
-    />
-  ) : (
+  const projectiocMapShape = (
     <a-frame-map
       class="clickable"
       points={JSON.stringify(pts)}
@@ -150,8 +141,8 @@ const PrismMap = (props) => {
       extrude={JSON.stringify(extrusionArr)}
       color={JSON.stringify(colorArray)}
       opacity={
-        props.graphSettings.mark.style.fill.opacity
-          ? props.graphSettings.mark.style.fill.opacity
+        props.graphSettings.mark.style.fill?.opacity
+          ? props.graphSettings.mark.style.fill?.opacity
           : 1
       }
     />
@@ -165,18 +156,20 @@ const PrismMap = (props) => {
           points={JSON.stringify(d.vertices.geometry)}
           radius={props.graphSettings.mark.mapScale}
           extrude={
-            extrusionScale(data[d["code"]]["value"]) === 0
+            extrusionScale(data[d.code].value) === 0
               ? 0.000000000001
-              : extrusionScale(data[d["code"]]["value"])
+              : extrusionScale(data[d.code].value)
           }
           color={
             colorScale
-              ? colorScale(data[d["code"]]["colorField"])
-              : props.graphSettings.mark.style.fill.color
+              ? colorScale(data[d.code].colorField)
+              : props.graphSettings.mark.style.fill?.color
+              ? props.graphSettings.mark.style.fill?.color
+              : "#ff0000"
           }
           opacity={
-            props.graphSettings.mark.style.fill.opacity
-              ? props.graphSettings.mark.style.fill.opacity
+            props.graphSettings.mark.style.fill?.opacity
+              ? props.graphSettings.mark.style.fill?.opacity
               : 1
           }
           stroke_bool={stroke}

@@ -1,4 +1,5 @@
 import VRViz from "./VRViz";
+import mapData from "./mapData/mapData.json";
 
 function App() {
   return (
@@ -24,162 +25,58 @@ function App() {
           nearClipping: 0.5,
           fov: 80,
         },
-        floor: {
-          style: {
-            color: "#fff",
-            texture: false,
-            width: 100,
-            depth: 100,
-          },
-        },
       }}
       graph={[
         {
-          type: "BarGraph",
+          type: "FlowMap",
           data: {
-            dataFile: "data/barGraph.csv",
+            dataFile: "data/flowMap.csv",
             fileType: "csv",
             fieldDesc: [
-              ["Year", "text"],
-              ["Month", "text"],
-              ["Tornadoes", "number"],
-              ["Deaths", "number"],
+              ["source_latitude", "number"],
+              ["source_longitude", "number"],
+              ["target_latitude", "number"],
+              ["target_longitude", "number"],
             ],
           },
           style: {
             origin: [0, 0, 0],
-            dimensions: {
-              width: 10,
-              height: 10,
-              depth: 10,
-            },
           },
           mark: {
-            type: "cone",
-            class: (d, i) => `boxes`,
-            id: (d, i) => `boxes_${d.Month}_${d.Year}`,
-            position: {
-              x: {
-                scaleType: "ordinal",
-                field: "Month",
-                domain: [
-                  "January",
-                  "February",
-                  "March",
-                  "April",
-                  "May",
-                  "June",
-                  "July",
-                  "August",
-                  "September",
-                  "October",
-                  "November",
-                  "December",
-                ],
-              },
-              z: {
-                scaleType: "ordinal",
-                field: "Year",
+            mapScale: 20,
+            mapOrigin: [5, 5],
+            rotation: "-90 0 0",
+            map: {
+              data: mapData,
+              projection: "Mercator",
+              shapeIdentifier: "id",
+              shapeKey: "countries",
+              style: {
+                extrusion: {
+                  value: 0.000001,
+                },
+                fill: {
+                  color: "#111",
+                  opacity: 1,
+                },
+                stroke: {
+                  width: 1,
+                  color: "#444",
+                },
               },
             },
-            style: {
-              padding: {
-                x: 0.1,
-                z: 0.1,
-              },
-              height: {
-                scaleType: "linear",
-                startFromZero: true,
-                field: "Tornadoes",
-              },
-              fill: {
-                opacity: 0.4,
-                scaleType: "linear",
-                field: "Deaths",
-                color: ["red", "green"],
-              },
-            },
-            mouseOver: {
-              focusedObject: {
-                opacity: 1,
-                fill: "#333",
-              },
-              nonFocusedObject: {
-                opacity: 0,
-              },
-              label: {
-                value: (d) =>
-                  `Year:${d.Year}\nMonth:${d.Month}\nDeaths:${d.Deaths}\nTornadoes:${d.Tornadoes}\n`,
-                align: "center",
-                fontSize: 1,
-                backgroundColor: "#333",
-                backgroundOpacity: 1,
-                fontColor: "#fff",
-              },
-            },
-          },
-          axis: {
-            "axis-box": {
-              color: "black",
-            },
-            "x-axis": {
-              orient: "bottom-back",
-              title: {
-                text: "",
-                fontSize: 10,
-                color: "black",
-                opacity: 1,
-              },
-              ticks: {
-                noOfTicks: 10,
-                size: 0.1,
-                color: "black",
-                opacity: 1,
-                fontSize: 10,
-              },
-              grid: {
-                color: "black",
-                opacity: 1,
-              },
-            },
-            "y-axis": {
-              orient: "bottom-back",
-              title: {
-                text: "",
-                fontSize: 10,
-                color: "black",
-                opacity: 1,
-              },
-              ticks: {
-                noOfTicks: 10,
-                size: 0.1,
-                color: "black",
-                opacity: 1,
-                fontSize: 10,
-              },
-              grid: {
-                color: "black",
-                opacity: 1,
-              },
-            },
-            "z-axis": {
-              orient: "bottom-back",
-              title: {
-                text: "",
-                fontSize: 10,
-                color: "black",
-                opacity: 1,
-              },
-              ticks: {
-                noOfTicks: 10,
-                size: 0.1,
-                color: "black",
-                opacity: 1,
-                fontSize: 10,
-              },
-              grid: {
-                color: "black",
-                opacity: 1,
+            nodes: {
+              target: {
+                type: "sphere",
+                style: {
+                  radius: {
+                    value: 0.05,
+                  },
+                  fill: {
+                    color: "#0f9d5b",
+                    opacity: 0.5,
+                  },
+                },
               },
             },
           },

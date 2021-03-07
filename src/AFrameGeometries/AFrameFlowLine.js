@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import AFRAME from "aframe";
+import { BufferGeometryUtils } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
 AFRAME.registerPrimitive("a-frame-flowLine", {
   defaultComponents: {
@@ -125,38 +126,9 @@ AFRAME.registerComponent("curvefrompoints", {
       );
       return bufferGeom;
     });
-    let geoMerge = new THREE.BufferGeometry();
-    bufferGeomArray.forEach((d, i) => {
-      geoMerge.merge(d);
-    });
 
-    //coverting merged geometry to buffergeometry
-    let geoMergeBuffer = new THREE.BufferGeometry();
-    let strokeVer = [],
-      colors = [];
-    for (let i = 0; i < geoMerge.vertices.length; i++) {
-      strokeVer.push(
-        parseFloat(geoMerge.vertices[i].x),
-        parseFloat(geoMerge.vertices[i].y),
-        parseFloat(geoMerge.vertices[i].z)
-      );
-      colors.push(
-        geoMerge.colors[i].r,
-        geoMerge.colors[i].g,
-        geoMerge.colors[i].b
-      );
-    }
-
-    const strokeVerFloat = new Float32Array(strokeVer);
-    const colorsFloat = new Float32Array(colors);
-
-    geoMergeBuffer.setAttribute(
-      "position",
-      new THREE.BufferAttribute(strokeVerFloat, 3)
-    );
-    geoMergeBuffer.setAttribute(
-      "color",
-      new THREE.BufferAttribute(colorsFloat, 3)
+    let geoMergeBuffer = BufferGeometryUtils.mergeBufferGeometries(
+      bufferGeomArray
     );
 
     let curveObject;

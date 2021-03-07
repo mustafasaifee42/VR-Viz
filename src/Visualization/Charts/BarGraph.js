@@ -39,14 +39,14 @@ const BarGraph = (props) => {
         props.graphSettings.mark.position.z.startFromZero
       );
 
-  const colorDomain = props.graphSettings.mark.style.fill.scaleType
-    ? props.graphSettings.mark.style.fill.domain
-      ? props.graphSettings.mark.style.fill.domain
+  const colorDomain = props.graphSettings.mark.style.fill?.scaleType
+    ? props.graphSettings.mark.style.fill?.domain
+      ? props.graphSettings.mark.style.fill?.domain
       : GetDomain(
           props.data,
-          props.graphSettings.mark.style.fill.field,
-          props.graphSettings.mark.style.fill.scaleType,
-          props.graphSettings.mark.style.fill.startFromZero
+          props.graphSettings.mark.style.fill?.field,
+          props.graphSettings.mark.style.fill?.scaleType,
+          props.graphSettings.mark.style.fill?.startFromZero
         )
     : null;
 
@@ -56,7 +56,11 @@ const BarGraph = (props) => {
     .scaleBand()
     .range([0, props.graphSettings.style.dimensions.width])
     .domain(xDomain)
-    .paddingInner(props.graphSettings.mark.style.padding.x);
+    .paddingInner(
+      props.graphSettings.mark.style.padding?.x
+        ? props.graphSettings.mark.style.padding?.x
+        : 0.1
+    );
 
   const width = xScale.bandwidth();
 
@@ -69,18 +73,22 @@ const BarGraph = (props) => {
     .scaleBand()
     .domain(zDomain)
     .range([0, props.graphSettings.style.dimensions.depth])
-    .paddingInner(props.graphSettings.mark.style.padding.z);
+    .paddingInner(
+      props.graphSettings.mark.style.padding?.z
+        ? props.graphSettings.mark.style.padding?.z
+        : 0.1
+    );
 
   const depth = zScale.bandwidth();
 
   const radius = depth > width ? width / 2 : depth / 2;
 
-  const colorRange = props.graphSettings.mark.style.fill.color
-    ? props.graphSettings.mark.style.fill.color
+  const colorRange = props.graphSettings.mark.style.fill?.color
+    ? props.graphSettings.mark.style.fill?.color
     : d3.schemeCategory10;
 
-  const colorScale = props.graphSettings.mark.style.fill.scaleType
-    ? props.graphSettings.mark.style.fill.scaleType === "ordinal"
+  const colorScale = props.graphSettings.mark.style.fill?.scaleType
+    ? props.graphSettings.mark.style.fill?.scaleType === "ordinal"
       ? d3.scaleOrdinal().domain(colorDomain).range(colorRange)
       : d3.scaleLinear().domain(colorDomain).range(colorRange)
     : null;
@@ -92,11 +100,12 @@ const BarGraph = (props) => {
         ? 0.000000000001
         : yScale(d[props.graphSettings.mark.style.height.field]);
 
-    const color = colorScale
-      ? colorScale(d[props.graphSettings.mark.style.fill.field])
-      : props.graphSettings.mark.style.fill.color
-      ? props.graphSettings.mark.style.fill.color
-      : "#000000";
+    const color =
+      colorScale && props.graphSettings.mark.style.fill?.field
+        ? colorScale(d[props.graphSettings.mark.style.fill?.field])
+        : props.graphSettings.mark.style.fill?.color
+        ? props.graphSettings.mark.style.fill?.color
+        : "#ff0000";
 
     const position = `${
       xScale(d[props.graphSettings.mark.position.x.field]) + width / 2
@@ -105,7 +114,7 @@ const BarGraph = (props) => {
     }`;
 
     const hoverText = props.graphSettings.mark.mouseOver?.label
-      ? props.graphSettings.mark.mouseOver.label.value(d)
+      ? props.graphSettings.mark.mouseOver?.label?.value(d)
       : null;
 
     const className =
@@ -126,8 +135,8 @@ const BarGraph = (props) => {
         }
         color={`${color}`}
         opacity={
-          props.graphSettings.mark.style.fill.opacity
-            ? props.graphSettings.mark.style.fill.opacity
+          props.graphSettings.mark.style.fill?.opacity
+            ? props.graphSettings.mark.style.fill?.opacity
             : 1
         }
         depth={`${depth}`}
@@ -142,7 +151,7 @@ const BarGraph = (props) => {
         position={position}
         hover={props.graphSettings.mark.mouseOver}
         hoverText={hoverText}
-        graphID={props.graphSettings.index}
+        graphID={props.graphID}
         class={className}
         id={idName}
         data={JSON.stringify(d)}

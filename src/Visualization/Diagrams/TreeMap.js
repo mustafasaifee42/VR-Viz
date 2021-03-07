@@ -19,9 +19,7 @@ const TreeMap = (props) => {
     .paddingInner(props.graphSettings.mark.style.paddingInner)
     .paddingOuter(props.graphSettings.mark.style.paddingOuter);
 
-  const root = d3
-    .hierarchy(this.state.data, (d) => d.children)
-    .sum((d) => d.size);
+  const root = d3.hierarchy(props.data, (d) => d.children).sum((d) => d.size);
 
   const tree = treemap(root);
 
@@ -132,7 +130,7 @@ const TreeMap = (props) => {
         position={position}
         hover={props.graphSettings.mark.mouseOver}
         hoverText={hoverText}
-        graphID={props.graphSettings.index}
+        graphID={props.graphID}
         class={className}
         id={idName}
         data={JSON.stringify(d)}

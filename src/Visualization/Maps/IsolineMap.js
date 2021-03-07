@@ -8,13 +8,13 @@ import GetMapCoordinates from "../../utils/GetMapCoordinates";
 const IsolineMap = (props) => {
   // Getting domain]
 
-  const colorDomain = props.graphSettings.mark.isoLines.style.stroke.domain
-    ? props.graphSettings.mark.isoLines.style.stroke.domain
+  const colorDomain = props.graphSettings.mark.isoLines.style?.stroke?.domain
+    ? props.graphSettings.mark.isoLines.style?.stroke?.domain
     : GetDomain(
         props.data,
-        props.graphSettings.mark.isoLines.style.stroke.field,
-        props.graphSettings.mark.isoLines.style.stroke.scaleType,
-        props.graphSettings.mark.isoLines.style.stroke.startFromZero
+        props.graphSettings.mark.isoLines.style?.stroke?.field,
+        props.graphSettings.mark.isoLines.style?.stroke?.scaleType,
+        props.graphSettings.mark.isoLines.style?.stroke?.startFromZero
       );
 
   const elevationDomain = props.graphSettings.mark.isoLines.elevation.domain
@@ -28,12 +28,12 @@ const IsolineMap = (props) => {
 
   //Adding scales
 
-  const colorRange = props.graphSettings.mark.isoLines.style.stroke.color
-    ? props.graphSettings.mark.isoLines.style.stroke.color
+  const colorRange = props.graphSettings.mark.isoLines.style?.stroke?.color
+    ? props.graphSettings.mark.isoLines.style?.stroke?.color
     : d3.schemeCategory10;
 
-  const colorScale = props.graphSettings.mark.isoLines.style.stroke.scaleType
-    ? props.graphSettings.mark.isoLines.style.stroke.scaleType === "ordinal"
+  const colorScale = props.graphSettings.mark.isoLines.style?.stroke?.scaleType
+    ? props.graphSettings.mark.isoLines.style?.stroke?.scaleType === "ordinal"
       ? d3.scaleOrdinal().domain(colorDomain).range(colorRange)
       : d3.scaleLinear().domain(colorDomain).range(colorRange)
     : null;
@@ -41,11 +41,15 @@ const IsolineMap = (props) => {
   const elevationScale = d3
     .scaleLinear()
     .domain(elevationDomain)
-    .range(props.graphSettings.mark.isoLines.elevation.value);
+    .range(
+      props.graphSettings.mark.isoLines.elevation.value
+        ? props.graphSettings.mark.isoLines.elevation.value
+        : [0, 5]
+    );
 
   //Drawing Map
-  const extrusionHeight = props.graphSettings.mark.map.style.extrusion.value
-    ? props.graphSettings.mark.map.style.extrusion.value
+  const extrusionHeight = props.graphSettings.mark.map.style?.extrusion?.value
+    ? props.graphSettings.mark.map.style?.extrusion?.value
     : 0.001;
   let extrusionArr = [],
     mapColorArray = [],
@@ -53,7 +57,9 @@ const IsolineMap = (props) => {
 
   const geoData = GetMapShape(
     props.graphSettings.mark.map.data,
-    props.graphSettings.mark.projection,
+    props.graphSettings.mark.map.projection
+      ? props.graphSettings.mark.map.projection
+      : "Mercator",
     props.graphSettings.mark.mapScale,
     props.graphSettings.mark.mapOrigin,
     props.graphSettings.mark.map.shapeIdentifier,
@@ -67,7 +73,11 @@ const IsolineMap = (props) => {
       return { x: parseFloat(pnts[0]), y: parseFloat(pnts[1]) };
     });
     extrusionArr.push(extrusionHeight);
-    mapColorArray.push(props.graphSettings.mark.map.style.fill.color);
+    mapColorArray.push(
+      props.graphSettings.mark.map.style?.fill?.color
+        ? props.graphSettings.mark.map.style?.fill?.color
+        : "#000000"
+    );
 
     let min = {
       x: d3.min(pntArray, (d) => d["x"]),
@@ -94,10 +104,10 @@ const IsolineMap = (props) => {
     return pntArray;
   });
 
-  const stroke = props.graphSettings.mark.map.style.stroke ? true : false;
+  const stroke = props.graphSettings.mark.map.style?.stroke ? true : false;
 
-  const strokeColor = props.graphSettings.mark.map.style.stroke?.color
-    ? props.graphSettings.mark.map.style.stroke.color
+  const strokeColor = props.graphSettings.mark.map.style?.stroke?.color
+    ? props.graphSettings.mark.map.style?.stroke?.color
     : "#000000";
 
   const mapShape = (
@@ -107,7 +117,11 @@ const IsolineMap = (props) => {
       stroke_color={strokeColor}
       extrude={JSON.stringify(extrusionArr)}
       color={JSON.stringify(mapColorArray)}
-      opacity={props.graphSettings.mark.map.style.fill.opacity}
+      opacity={
+        props.graphSettings.mark.map.style?.fill?.opacity
+          ? props.graphSettings.mark.map.style?.fill?.opacity
+          : 1
+      }
     />
   );
 
@@ -129,7 +143,9 @@ const IsolineMap = (props) => {
       let position = GetMapCoordinates(
         d.geojson.geometry.coordinates[j][0],
         d.geojson.geometry.coordinates[j][1],
-        props.graphSettings.mark.projection,
+        props.graphSettings.mark.map.projection
+          ? props.graphSettings.mark.map.projection
+          : "Mercator",
         props.graphSettings.mark.mapScale,
         props.graphSettings.mark.mapOrigin
       );
@@ -144,11 +160,11 @@ const IsolineMap = (props) => {
         colorArray.push(
           colorScale
             ? colorScale(
-                d[props.graphSettings.mark.isoLines.style.stroke.field]
+                d[props.graphSettings.mark.isoLines.style?.stroke?.field]
               )
-            : props.graphSettings.mark.isoLines.style.stroke.color
-            ? props.graphSettings.mark.isoLines.style.stroke.color
-            : "#000000"
+            : props.graphSettings.mark.isoLines.style?.stroke?.color
+            ? props.graphSettings.mark.isoLines.style?.stroke?.color
+            : "#ffffff"
         );
       } else {
         path.push({
@@ -168,20 +184,20 @@ const IsolineMap = (props) => {
         colorArray.push(
           colorScale
             ? colorScale(
-                d[props.graphSettings.mark.isoLines.style.stroke.field]
+                d[props.graphSettings.mark.isoLines.style?.stroke?.field]
               )
-            : props.graphSettings.mark.isoLines.style.stroke.color
-            ? props.graphSettings.mark.isoLines.style.stroke.color
-            : "#000000"
+            : props.graphSettings.mark.isoLines.style?.stroke?.color
+            ? props.graphSettings.mark.isoLines.style?.stroke?.color
+            : "#ffffff"
         );
         colorArray.push(
           colorScale
             ? colorScale(
-                d[props.graphSettings.mark.isoLines.style.stroke.field]
+                d[props.graphSettings.mark.isoLines.style?.stroke?.field]
               )
-            : props.graphSettings.mark.isoLines.style.stroke.color
-            ? props.graphSettings.mark.isoLines.style.stroke.color
-            : "#000000"
+            : props.graphSettings.mark.isoLines.style?.stroke?.color
+            ? props.graphSettings.mark.isoLines.style?.stroke?.color
+            : "#ffffff"
         );
       }
     }
@@ -193,8 +209,8 @@ const IsolineMap = (props) => {
       points={contourList}
       color={colorList}
       opacity={
-        props.graphSettings.mark.isoLines.style.stroke.opacity
-          ? props.graphSettings.mark.isoLines.style.stroke.opacity
+        props.graphSettings.mark.isoLines.style?.stroke?.opacity
+          ? props.graphSettings.mark.isoLines.style?.stroke?.opacity
           : 1
       }
     />
