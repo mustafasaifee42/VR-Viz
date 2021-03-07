@@ -134,8 +134,8 @@ const LollipopChart = (props) => {
     const color =
       colorScale && props.graphSettings.mark.style?.fill?.field
         ? colorScale(d[props.graphSettings.mark.style?.fill?.field])
-        : props.graphSettings.mark.style.fill.color
-        ? props.graphSettings.mark.style.fill.color
+        : props.graphSettings.mark.style?.fill.color
+        ? props.graphSettings.mark.style?.fill.color
         : "#ff0000";
 
     const radiusValue =
