@@ -92,9 +92,6 @@ class App extends Component {
                 style: {
                   depth: 0.2,
                   width: 0.2,
-                  height: {
-                    value: [0, 5],
-                  },
                   fill: {
                     opacity: 0.9,
                     color: ["green", "blue"],

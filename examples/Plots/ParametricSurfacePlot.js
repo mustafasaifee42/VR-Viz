@@ -65,7 +65,6 @@ class App extends Component {
                   function: (u, v) => Math.sin(u) * (3 + Math.cos(v)),
                 },
               },
-              type: "plane",
               style: {
                 fill: {
                   opacity: 0.4,

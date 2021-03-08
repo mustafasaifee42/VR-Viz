@@ -53,7 +53,6 @@ class App extends Component {
               },
             },
             mark: {
-              type: "plane",
               position: {
                 x: {
                   domain: [0, 2 * Math.PI],

@@ -59,7 +59,6 @@ class App extends Component {
               shapeKey: "countries",
               style: {
                 extrusion: {
-                  scaleType: "linear",
                   field: "value",
                   value: [0, 5],
                 },

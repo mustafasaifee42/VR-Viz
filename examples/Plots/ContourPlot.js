@@ -54,7 +54,6 @@ class App extends Component {
               },
             },
             mark: {
-              type: "line",
               position: {
                 x: {
                   function: (y) => Math.sin(y),

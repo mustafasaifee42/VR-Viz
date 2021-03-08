@@ -76,7 +76,6 @@ class App extends Component {
                   depth: 0.2,
                   width: 0.2,
                   height: {
-                    scaleType: "linear",
                     field: "value",
                     value: [0, 5],
                   },

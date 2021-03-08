@@ -83,23 +83,9 @@ class App extends Component {
               nodes: {
                 source: {
                   type: "sphere",
-                  style: {
-                    radius: 0.05,
-                    fill: {
-                      color: "#b71c1c",
-                      opacity: 0.5,
-                    },
-                  },
                 },
                 target: {
                   type: "sphere",
-                  style: {
-                    radius: 0.05,
-                    fill: {
-                      color: "#0f9d5b",
-                      opacity: 0.5,
-                    },
-                  },
                 },
               },
             },

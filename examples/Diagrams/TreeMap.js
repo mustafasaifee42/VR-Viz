@@ -50,7 +50,6 @@ class App extends Component {
               },
             },
             mark: {
-              type: "box",
               style: {
                 paddingInner: 0.01,
                 paddingOuter: 0.005,

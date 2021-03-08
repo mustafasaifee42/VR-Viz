@@ -6,7 +6,6 @@
 
 ```
 'mark': {
-  'type': 'plane',
   'position': {
     'x': {
       'domain': [0, 2 * Math.PI],
@@ -38,7 +37,6 @@
 
 | Property                 | Type            | Description                                                                                                                                                                                                                                        |
 | ------------------------ | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| type                     | string          | Defines type of contour that would be created. **Required. Default value: plane**. _Available values: plane._                                                                                                                                      |
 | position                 | object          | Defines the how the position of vertices for contour will be mapped. **Required**                                                                                                                                                                  |
 | position.x               | object          | **Required.**                                                                                                                                                                                                                                      |
 | position.x.domain        | array           | Defines the domain for x position. **Not Required.** _If not present the domain is calculated from the provided data depending on the position.x.scaleType._                                                                                       |

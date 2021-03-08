@@ -64,7 +64,6 @@ class App extends Component {
                   function: (y) => Math.cos(y),
                 },
               },
-              type: "line",
               style: {
                 opacity: 0.4,
                 color: "red",

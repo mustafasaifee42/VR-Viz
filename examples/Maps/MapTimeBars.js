@@ -107,7 +107,6 @@ class App extends Component {
                 },
                 style: {
                   radius: {
-                    scaleType: "linear",
                     value: [0, 1],
                     startFromZero: true,
                   },

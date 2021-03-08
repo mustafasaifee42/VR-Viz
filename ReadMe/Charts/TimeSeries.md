@@ -6,7 +6,6 @@
 
 ```
 'mark': {
-  'type': 'plane',
   'position': {
     'x': {
       'field': 'Year',
