@@ -50,7 +50,7 @@ const PrismMap = (props) => {
     .range(
       props.graphSettings.mark.style.extrusion.value
         ? props.graphSettings.mark.style.extrusion.value
-        : [0.5]
+        : [0, 5]
     );
 
   const colorRange = props.graphSettings.mark.style.fill?.color

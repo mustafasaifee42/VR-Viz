@@ -30,8 +30,8 @@ const FlowMap = (props) => {
     : null;
 
   //Drawing Map
-  const extrusionHeight = props.graphSettings.mark.map.style?.extrusion?.value
-    ? props.graphSettings.mark.map.style?.extrusion?.value
+  const extrusionHeight = props.graphSettings.mark.map.style?.extrusion
+    ? props.graphSettings.mark.map.style?.extrusion
     : 0.001;
 
   let extrusionArr = [],
@@ -149,21 +149,18 @@ const FlowMap = (props) => {
                     : "#000000"
                 }
                 width={
-                  props.graphSettings.mark.nodes?.source?.style?.radius?.value
+                  props.graphSettings.mark.nodes?.source?.style?.radius
                     ? props.graphSettings.mark.nodes?.source?.style?.radius
-                        ?.value
                     : 0.05
                 }
                 height={
-                  props.graphSettings.mark.nodes?.source?.style?.radius?.value
+                  props.graphSettings.mark.nodes?.source?.style?.radius
                     ? props.graphSettings.mark.nodes?.source?.style?.radius
-                        ?.value
                     : 0.05
                 }
                 depth={
-                  props.graphSettings.mark.nodes?.source?.style?.radius?.value
+                  props.graphSettings.mark.nodes?.source?.style?.radius
                     ? props.graphSettings.mark.nodes?.source?.style?.radius
-                        ?.value
                     : 0.05
                 }
                 position={`${sourcePosition[0]} ${sourcePosition[1]} 0`}
@@ -186,9 +183,8 @@ const FlowMap = (props) => {
                     : "#000000"
                 }
                 radius={
-                  props.graphSettings.mark.nodes?.source?.style?.radius?.value
+                  props.graphSettings.mark.nodes?.source?.style?.radius
                     ? props.graphSettings.mark.nodes?.source?.style?.radius
-                        ?.value
                     : 0.05
                 }
                 position={`${sourcePosition[0]} ${sourcePosition[1]} 0`}
@@ -229,21 +225,18 @@ const FlowMap = (props) => {
                     : "#000000"
                 }
                 width={
-                  props.graphSettings.mark.nodes?.target?.style?.radius?.value
+                  props.graphSettings.mark.nodes?.target?.style?.radius
                     ? props.graphSettings.mark.nodes?.target?.style?.radius
-                        ?.value
                     : 0.05
                 }
                 height={
-                  props.graphSettings.mark.nodes?.target?.style?.radius?.value
+                  props.graphSettings.mark.nodes?.target?.style?.radius
                     ? props.graphSettings.mark.nodes?.target?.style?.radius
-                        ?.value
                     : 0.05
                 }
                 depth={
-                  props.graphSettings.mark.nodes?.target?.style?.radius?.value
+                  props.graphSettings.mark.nodes?.target?.style?.radius
                     ? props.graphSettings.mark.nodes?.target?.style?.radius
-                        ?.value
                     : 0.05
                 }
                 position={`${targetPosition[0]} ${targetPosition[1]} 0`}
@@ -266,9 +259,8 @@ const FlowMap = (props) => {
                     : "#000000"
                 }
                 radius={
-                  props.graphSettings.mark.nodes?.target?.style?.radius?.value
+                  props.graphSettings.mark.nodes?.target?.style?.radius
                     ? props.graphSettings.mark.nodes?.target?.style?.radius
-                        ?.value
                     : 0.05
                 }
                 position={`${targetPosition[0]} ${targetPosition[1]} 0`}
@@ -327,8 +319,8 @@ const FlowMap = (props) => {
         )
     : null;
 
-  const opacity = props.graphSettings.mark.flowlines?.style.opacity
-    ? props.graphSettings.mark.flowlines?.style.opacity
+  const opacity = props.graphSettings.mark.flowlines?.style?.opacity
+    ? props.graphSettings.mark.flowlines?.style?.opacity
     : 1;
 
   let vertexColorArray = [];
@@ -358,12 +350,16 @@ const FlowMap = (props) => {
 
     targetPosition[1] = -1 * targetPosition[1];
     targetPosition.push(0);
-    const middlePoint = props.graphSettings.mark.flowlines?.style.height
+    const heightScaltFactor = props.graphSettings.mark.flowlines?.style?.height
+      ?.scaleFactor
+      ? props.graphSettings.mark.flowlines?.style?.height?.scaleFactor
+      : 1;
+    const middlePoint = props.graphSettings.mark.flowlines?.style?.height
       ? [
           (targetPosition[0] + sourcePosition[0]) / 2,
           (targetPosition[1] + sourcePosition[1]) / 2,
-          d[props.graphSettings.mark.flowlines?.style.height.field] *
-            props.graphSettings.mark.flowlines?.style.height.scaleFactor,
+          d[props.graphSettings.mark.flowlines?.style?.height?.field] *
+            heightScaltFactor,
         ]
       : [
           (targetPosition[0] + sourcePosition[0]) / 2,

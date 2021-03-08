@@ -74,7 +74,6 @@ class App extends Component {
                   scaleType: "linear",
                 },
                 z: {
-                  scaleType: "ordinal",
                   domain: ["-10", "0", "10"],
                 },
               },

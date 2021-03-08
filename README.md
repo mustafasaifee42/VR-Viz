@@ -258,10 +258,10 @@ Floor has property called `style` in which the visual properties of floor is def
 
 **Properties for 3D-objects**
 
-| Property   | Type   | Description                                                                                                                                                                  |
-| ---------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| objectFile | string | Path of the 3D object. **Required**                                                                                                                                          |
-| id         | string | ID of the 3D object which is later used to identify this object. There should not be any space or special character except \_ and must not start with a number. **Required** |
+| Property   | Type   | Description                                                                                                                                                                 |
+| ---------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| objectFile | string | Path of the 3D object. **Required**                                                                                                                                         |
+| id         | string | ID of the 3D object which is later used to identify this object. _There should not be any space or special character except and must not start with a number_. **Required** |
 
 #### parentDiv _(optional)_
 
@@ -297,59 +297,81 @@ Main features / properties of the graph objects are:
 
 type is used to define what kind of visualization is needed. The availabe values for type are :
 
+_Charts_
+
 - `BarGraph` for 3D Bar Graph
 - `StackedBarGraph` for 3D Stacked Bar Graph
 - `LollipopChart` for 3D Lollipop Chart
 - `RectangleChart` for 3D Rectangle Chart
 - `ScatterPlot` for 3D Scatter Plot / 3D Bubble Chat
 - `ConnectedScatterPlot` for 3D Connected Scatter Plot
-- `CrossSectionView` for 3D Cross Sectional View or 3D Models
 - `MeshPlot` for 3D Mesh Plot
 - `WaterFallPlot` for Waterfall Plot
 - `TimeSeries` for 3D Time Series
-- `ContourPlot` for 3D Contour Plot
-- `ParametricCurvePlot` for 3D Parametric Curve Plot
-- `SurfacePlot` for 3D Surface Plot
-- `ParametricSurfacePlot` for 3D Parametric Surface Plot
-- `ContourMap` for 3D Contour Map
-- `PointCloud` for 3D Point Cloud
-- `ForceDirectedGraph` for 3D Force Directed Graph
+- `SpiralPlot` for 3D Spiral Plot
+
+_Maps_
+
 - `PrismMap` for 3D Prism Map
 - `MapBarGraph` for 3D Map Bar Graph
 - `MapStackedBarGraph` for 3D Map Stacked Bar Graph
 - `MapTimeBars` for Time Series on Map
-- `MapWithIsoLines` for 3D Map with Iso Line
+- `IsolineMap` for 3D Map with Iso Line
 - `FlowMap` for 3D Flow Map
+
+_Diagrams_
+
+- `CrossSectionView` for 3D Cross Sectional View or 3D Models
+- `ContourMap` for 3D Contour Map
+- `PointCloud` for 3D Point Cloud
+- `ForceDirectedGraph` for 3D Force Directed Graph
 - `TreeMap` for 3D TreeMap
-- `SpiralPlot` for 3D Spiral Plot
+
+_Plots_
+
+- `ContourPlot` for 3D Contour Plot
+- `ParametricCurvePlot` for 3D Parametric Curve Plot
+- `SurfacePlot` for 3D Surface Plot
+- `ParametricSurfacePlot` for 3D Parametric Surface Plot
 
 **Supported Visualizations**
 
-- [3D Bar Graph](/ReadMe/BarGraph.md)
-- [3D Stacked Bar Graph](/ReadMe/StackedBarGraph.md)
-- [3D Lollipop Chart](/ReadMe/LollipopChart.md)
-- [3D Rectangle Chart](/ReadMe/RectangleChart.md)
-- [3D Scatter Plot / 3D Bubble Chat](/ReadMe/ScatterPlot.md)
-- [3D Connected Scatter Plot](/ReadMe/ConnectedScatterPlot.md)
-- [3D Cross Sectional View](/ReadMe/CrossSectionalView.md)
-- [3D Mesh Plot](/ReadMe/MeshPlot.md)
-- [Waterfall Plot](/ReadMe/WaterFallPlot.md)
-- [3D Time Series](/ReadMe/TimeSeries.md)
-- [3D Contour Plot](/ReadMe/ContourPlot.md)
-- [3D Parametric Curve Plot](/ReadMe/ParametricCurvePlot.md)
-- [3D Surface Plot](/ReadMe/SurfacePlot.md)
-- [3D Parametric Surface Plot](/ReadMe/ParametricSurfacePlot.md)
-- [3D Contour Map](/ReadMe/ContourMap.md)
-- [3D Point Cloud](/ReadMe/PointCloud.md)
-- [3D Force Directed Graph](/ReadMe/ForceDirectedGraph.md)
-- [3D Prism Map](/ReadMe/PrismMap.md)
-- [3D Map Bar Graph](/ReadMe/MapBarChart.md)
-- [3D Map Stacked Bar Graph](/ReadMe/MapStackedBarChart.md)
-- [MapTimeBars](/ReadMe/MapTimeBars.md)
-- [MapWithIsoLines](/ReadMe/MapWithIsoLines.md)
-- [3D Flow Map](/ReadMe/FlowMap.md)
-- [3D TreeMap](/ReadMe/TreeMap.md)
-- [3D Spiral Plot](/ReadMe/SpiralPlot.md)
+_Charts_
+
+- [3D Bar Graph](/ReadMe/CHarts/BarGraph.md)
+- [3D Stacked Bar Graph](/ReadMe/Charts/StackedBarGraph.md)
+- [3D Lollipop Chart](/ReadMe/Charts/LollipopChart.md)
+- [3D Rectangle Chart](/ReadMe/Charts/RectangleChart.md)
+- [3D Scatter Plot / 3D Bubble Chat](/ReadMe/Charts/ScatterPlot.md)
+- [3D Connected Scatter Plot](/ReadMe/Charts/ConnectedScatterPlot.md)
+- [3D Mesh Plot](/ReadMe/Charts/MeshPlot.md)
+- [Waterfall Plot](/ReadMe/Charts/WaterFallPlot.md)
+- [3D Time Series](/ReadMe/Charts/TimeSeries.md)
+- [3D Spiral Plot](/ReadMe/Charts/SpiralPlot.md)
+
+_Maps_
+
+- [3D Prism Map](/ReadMe/Maps/PrismMap.md)
+- [3D Map Bar Graph](/ReadMe/Maps/MapBarChart.md)
+- [3D Map Stacked Bar Graph](/ReadMe/Maps/MapStackedBarChart.md)
+- [MapTimeBars](/ReadMe/Maps/MapTimeBars.md)
+- [IsolineMap](/ReadMe/Maps/MapWithIsoLines.md)
+- [3D Flow Map](/ReadMe/Maps/FlowMap.md)
+
+_Diagrams_
+
+- [3D Cross Sectional View](/ReadMe/Diagrams/CrossSectionalView.md)
+- [3D Contour Map](/ReadMe/Diagrams/ContourMap.md)
+- [3D Point Cloud](/ReadMe/Diagrams/PointCloud.md)
+- [3D Force Directed Graph](/ReadMe/Diagrams/ForceDirectedGraph.md)
+- [3D TreeMap](/ReadMe/Diagrams/TreeMap.md)
+
+_Plots_
+
+- [3D Contour Plot](/ReadMe/Plots/ContourPlot.md)
+- [3D Parametric Curve Plot](/ReadMe/Plots/ParametricCurvePlot.md)
+- [3D Surface Plot](/ReadMe/Plots/SurfacePlot.md)
+- [3D Parametric Surface Plot](/ReadMe/Plots/ParametricSurfacePlot.md)
 
 #### data
 

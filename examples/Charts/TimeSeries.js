@@ -63,18 +63,15 @@ class App extends Component {
               },
             },
             mark: {
-              type: "plane",
               position: {
                 x: {
                   scaleType: "ordinal",
                   field: "Year",
                 },
                 y: {
-                  scaleType: "linear",
                   field: "Tornadoes",
                 },
                 z: {
-                  scaleType: "linear",
                   field: "Deaths",
                 },
               },

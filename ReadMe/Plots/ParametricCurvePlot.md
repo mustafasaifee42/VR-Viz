@@ -32,14 +32,14 @@
 | type                     | string   | Defines type of contour that would be created. **Required. Default value: line**. _Available values: line._                                                                                            |
 | position                 | object   | Defines the how the position of vertices for contour will be mapped. **Required**                                                                                                                      |
 | position.x               | object   | **Required.**                                                                                                                                                                                          |
-| position.x.domain        | array    | Defines the domain for x position. **Not Required.** _If not present the domain is calculated from the provide data._                                                                                  |
+| position.x.domain        | array    | Defines the domain for x position. **Not Required.** _If not present the domain is calculated from the provided data._                                                                                 |
 | position.x.startFromZero | boolean  | Defines if the domain starts from 0 or not. **Not Required. Default value: false**. _Only applicable if `position.x.domain` is not given_                                                              |
 | position.x.function      | function | Defines the function for x position. **Required.**                                                                                                                                                     |
 | position.y               | object   | **Required.**                                                                                                                                                                                          |
-| position.y.domain        | array    | Defines the domain for y position. **Not Required.** _If not present the domain is calculated from the provide data._                                                                                  |
+| position.y.domain        | array    | Defines the domain for y position. **Not Required.** _If not present the domain is calculated from the provided data._                                                                                 |
 | position.y.startFromZero | boolean  | Defines if the domain starts from 0 or not. **Not Required. Default value: false**. _Only applicable if `position.y.domain` is not given_                                                              |
 | position.y.function      | function | Defines the function for y position. **Required.**                                                                                                                                                     |
-| position.z.domain        | array    | Defines the domain for z position. **Not Required.** _If not present the domain is calculated from the provide data._                                                                                  |
+| position.z.domain        | array    | Defines the domain for z position. **Not Required.** _If not present the domain is calculated from the provided data._                                                                                 |
 | position.z.startFromZero | boolean  | Defines if the domain starts from 0 or not. **Not Required. Default value: false**. _Only applicable if `position.z.domain` is not given_                                                              |
 | position.z.function      | function | Defines the function for z position. **Required.**                                                                                                                                                     |
 | style                    | object   | Defines the style of the contour. **Not Required**                                                                                                                                                     |
@@ -64,4 +64,4 @@
 | domain   | array | Defines the domain for which the curve is plot. **Required.**         |
 | steps    | array | Defines the intervals at which the curve is calculated. **Required.** |
 
-### [Example JS of the Visualization](../examples/Plots/ParametricCurvePlot.js)
+### [Example JS of the Visualization](../../examples/Plots/ParametricCurvePlot.js)

@@ -66,26 +66,21 @@ class App extends Component {
               vertices: [
                 {
                   title: "GDP1",
-                  scaleType: "linear",
                   domain: [0, 5],
                 },
                 {
                   title: "GDP2",
-                  scaleType: "linear",
                   domain: [0, 5],
                 },
                 {
                   title: "GDP3",
-                  scaleType: "linear",
                   domain: [0, 5],
                 },
                 {
                   title: "GDP4",
-                  scaleType: "linear",
                   domain: [0, 5],
                 },
                 {
-                  scaleType: "linear",
                   title: "GDP5",
                   domain: [0, 5],
                 },

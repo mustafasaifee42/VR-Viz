@@ -57,17 +57,14 @@ class App extends Component {
               type: "line",
               position: {
                 x: {
-                  scaleType: "linear",
                   function: (y) => Math.sin(y),
                 },
                 y: {
-                  scaleType: "linear",
                   domain: [0, 6 * Math.PI],
                   range: [0, 10],
                   steps: 150,
                 },
                 z: {
-                  scaleType: "linear",
                   function: (y) => Math.cos(y),
                 },
               },

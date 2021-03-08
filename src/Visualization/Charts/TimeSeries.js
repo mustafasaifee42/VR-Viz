@@ -159,19 +159,24 @@ const TimeSeries = (props) => {
   const xAxis = props.graphSettings.axis["x-axis"] ? (
     <XAxis
       domain={
-        props.graphSettings.mark.position.x.scaleType === "linear"
-          ? xScale.ticks(
+        props.graphSettings.mark.position.x.scaleType === "ordinal"
+          ? xDomain
+          : xScale.ticks(
               props.graphSettings.axis["x-axis"].ticks?.noOfTicks
                 ? props.graphSettings.axis["x-axis"].ticks.noOfTicks
                 : 5
             )
-          : xDomain
       }
       tick={props.graphSettings.axis["x-axis"].ticks}
       scale={xScale}
       orient={props.graphSettings.axis["x-axis"].orient}
       title={props.graphSettings.axis["x-axis"].title}
       dimensions={props.graphSettings.style.dimensions}
+      padding={
+        props.graphSettings.mark.position.x.scaleType === "ordinal"
+          ? xScale.bandwidth()
+          : 0
+      }
       grid={props.graphSettings.axis["x-axis"].grid}
     />
   ) : null;
@@ -230,7 +235,7 @@ const TimeSeries = (props) => {
     : 1;
   const stroke_color = props.graphSettings.mark.style?.stroke?.color
     ? props.graphSettings.mark.style?.stroke?.color
-    : "#ffffff";
+    : "#000000";
   const stroke_opacity = props.graphSettings.mark.style?.stroke?.opacity
     ? props.graphSettings.mark.style?.stroke?.opacity
     : 1;
@@ -248,9 +253,13 @@ const TimeSeries = (props) => {
         stroke_color={stroke_color}
         stroke_width={stroke_width}
         stroke_opacity={stroke_opacity}
-        opacity={props.graphSettings.mark.style.fill.opacity}
+        opacity={
+          props.graphSettings.mark.style?.fill?.opacity
+            ? props.graphSettings.mark.style?.fill?.opacity
+            : 1
+        }
       />
-      {props.graphSettings.mark.style.stroke ? (
+      {props.graphSettings.mark.style?.stroke ? (
         <a-frame-curve-line
           points={JSON.stringify(borderCoordinate)}
           type={"line"}

@@ -56,23 +56,19 @@ class App extends Component {
               type: "plane",
               position: {
                 x: {
-                  scaleType: "linear",
                   domain: [0, 2 * Math.PI],
                   steps: 50,
                 },
                 y: {
-                  scaleType: "linear",
                   function: (x, z) => x * Math.sin(x) - z * Math.cos(z),
                 },
                 z: {
-                  scaleType: "linear",
                   domain: [0, 2 * Math.PI],
                   steps: 50,
                 },
               },
               style: {
                 fill: {
-                  scaleType: "linear",
                   function: (x, z) => x * z,
                   color: ["green", "blue"],
                   opacity: 1,

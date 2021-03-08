@@ -59,7 +59,7 @@
 | material.highlightOnClick.opacity  | number          | Defines the opacity for the meshes when it is clicked **Not Required. Default value: 1**                                                                                                                                                                                                                            |
 | material.highlightOnClick.color    | string          | Defines the color for the meshes when it is clicked **Not Required. Default value: #ffff00** _Only applicable if material.type is lambert or phong_                                                                                                                                                                 |
 
-### [Example JS of the Visualization](../examples/Diagrams/CrossSectionView.js)
+### [Example JS of the Visualization](../../examples/Diagrams/CrossSectionView.js)
 
 #### Data
 

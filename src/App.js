@@ -52,9 +52,7 @@ function App() {
               shapeIdentifier: "id",
               shapeKey: "countries",
               style: {
-                extrusion: {
-                  value: 0.000001,
-                },
+                extrusion: 0.0000001,
                 fill: {
                   color: "#111",
                   opacity: 1,
@@ -65,18 +63,20 @@ function App() {
                 },
               },
             },
+            flowlines: {
+              style: {
+                opacity: 0.4,
+                stroke: {
+                  color: "#2196f3",
+                },
+              },
+            },
             nodes: {
+              source: {
+                type: "sphere",
+              },
               target: {
                 type: "sphere",
-                style: {
-                  radius: {
-                    value: 0.05,
-                  },
-                  fill: {
-                    color: "#0f9d5b",
-                    opacity: 0.5,
-                  },
-                },
               },
             },
           },

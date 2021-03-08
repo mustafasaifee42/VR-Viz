@@ -48,8 +48,8 @@ const IsolineMap = (props) => {
     );
 
   //Drawing Map
-  const extrusionHeight = props.graphSettings.mark.map.style?.extrusion?.value
-    ? props.graphSettings.mark.map.style?.extrusion?.value
+  const extrusionHeight = props.graphSettings.mark.map.style?.extrusion
+    ? props.graphSettings.mark.map.style?.extrusion
     : 0.001;
   let extrusionArr = [],
     mapColorArray = [],
@@ -164,7 +164,7 @@ const IsolineMap = (props) => {
               )
             : props.graphSettings.mark.isoLines.style?.stroke?.color
             ? props.graphSettings.mark.isoLines.style?.stroke?.color
-            : "#ffffff"
+            : "#000000"
         );
       } else {
         path.push({
@@ -188,7 +188,7 @@ const IsolineMap = (props) => {
               )
             : props.graphSettings.mark.isoLines.style?.stroke?.color
             ? props.graphSettings.mark.isoLines.style?.stroke?.color
-            : "#ffffff"
+            : "#000000"
         );
         colorArray.push(
           colorScale
@@ -197,7 +197,7 @@ const IsolineMap = (props) => {
               )
             : props.graphSettings.mark.isoLines.style?.stroke?.color
             ? props.graphSettings.mark.isoLines.style?.stroke?.color
-            : "#ffffff"
+            : "#000000"
         );
       }
     }

@@ -55,15 +55,12 @@ class App extends Component {
             mark: {
               position: {
                 x: {
-                  scaleType: "linear",
                   function: (y) => Math.sin(y),
                 },
                 y: {
-                  scaleType: "linear",
                   function: (y) => Math.sin(y),
                 },
                 z: {
-                  scaleType: "linear",
                   function: (y) => Math.cos(y),
                 },
               },

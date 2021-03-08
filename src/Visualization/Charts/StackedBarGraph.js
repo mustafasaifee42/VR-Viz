@@ -16,7 +16,7 @@ const StackedBarGraph = (props) => {
   const data = d3.stack().keys(props.graphSettings.mark.style.fill.field)(
     props.data
   );
-
+  console.log(data);
   const xDomain = props.graphSettings.mark.position.x.domain
     ? props.graphSettings.mark.position.x.domain
     : GetDomain(
@@ -57,12 +57,14 @@ const StackedBarGraph = (props) => {
     );
 
   const width = xScale.bandwidth();
-
   const yScale = d3
     .scaleLinear()
     .domain(yDomain)
-    .range([0, props.graphSettings.style.dimensions.height]);
-
+    .range(
+      props.graphSettings.mark.style.height.value
+        ? props.graphSettings.mark.style.height.value
+        : [0, props.graphSettings.style.dimensions.height]
+    );
   const zScale = d3
     .scaleBand()
     .domain(zDomain)
@@ -82,7 +84,9 @@ const StackedBarGraph = (props) => {
     d.map((d1, j) => {
       const hght =
         yScale(d1[1] - d1[0]) !== 0 ? yScale(d1[1] - d1[0]) : 0.000000000001;
-      const color = props.graphSettings.mark.style.fill.color[i];
+      const color = props.graphSettings.mark.style.fill?.color
+        ? props.graphSettings.mark.style.fill?.color[i]
+        : d3.schemeCategory10[i % 10];
       const position = `${
         xScale(d1.data[props.graphSettings.mark.position.x.field]) + width / 2
       } ${yScale(d1[0]) + hght / 2} ${

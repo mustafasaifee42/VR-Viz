@@ -51,8 +51,8 @@ const MapBarChart = (props) => {
 
   //Drawing Map
 
-  const extrusionHeight = props.graphSettings.mark.map.style?.extrusion?.value
-    ? props.graphSettings.mark.map.style?.extrusion?.value
+  const extrusionHeight = props.graphSettings.mark.map.style?.extrusion
+    ? props.graphSettings.mark.map.style?.extrusion
     : 0.001;
   let extrusionArr = [],
     colorArray = [],

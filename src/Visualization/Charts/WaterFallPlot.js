@@ -38,7 +38,7 @@ const WaterFallPlot = (props) => {
         dataList.push(props.data[i][xDomain[k]]);
       }
     }
-    yDomain = props.graphSettings.mark.position.y.startFromZero
+    yDomain = props.graphSettings.mark.position.y?.startFromZero
       ? [0, _.max(dataList)]
       : [_.min(dataList), _.max(dataList)];
   }
@@ -71,7 +71,7 @@ const WaterFallPlot = (props) => {
         props.data,
         props.graphSettings.mark.style?.fill?.field,
         props.graphSettings.mark.style?.fill?.scaleType
-          ? props.graphSettings.mark.style.fill.scaleType
+          ? props.graphSettings.mark.style?.fill.scaleType
           : "ordinal",
         false
       );
@@ -84,6 +84,90 @@ const WaterFallPlot = (props) => {
       ? d3.scaleLinear().domain(fillColorDomain).range(fillColorRange)
       : d3.scaleOrdinal().domain(fillColorDomain).range(fillColorRange)
     : null;
+
+  //Adding marks
+
+  const marks = props.data.map((d, i) => {
+    let path = `0 0,`;
+    for (let j = 0; j < xDomain.length; j++) {
+      if (j !== xDomain.length - 1)
+        path =
+          path + ` ${xScale(xDomain[j])} ${yScale(d[xDomain[j].toString()])},`;
+      else
+        path =
+          path + ` ${xScale(xDomain[j])} ${yScale(d[xDomain[j].toString()])}`;
+    }
+    path = path + `, ${xScale(xDomain[xDomain.length - 1])} 0`;
+    let points = path.split(", ");
+    let pntArray = points.map((el) => {
+      const pnts = el.split(" ");
+      return {
+        x: pnts[0],
+        y: pnts[1],
+        z: `${zScale(d[props.graphSettings.mark.position.z.field])}`,
+      };
+    });
+
+    let outlineArray = [];
+    pntArray.forEach((el, i) => {
+      if (i !== 0 && i !== pntArray.length - 1) outlineArray.push(el);
+    });
+
+    const plotShape = (
+      <a-frame-shape
+        points={JSON.stringify(pntArray)}
+        key={i}
+        color={
+          fillColorScale && props.graphSettings.mark.style?.fill?.field
+            ? fillColorScale(d[props.graphSettings.mark.style?.fill?.field])
+            : props.graphSettings.mark.style?.fill?.color
+            ? props.graphSettings.mark.style?.fill?.color
+            : "#ff0000"
+        }
+        opacity={
+          props.graphSettings.mark.style?.fill?.opacity
+            ? props.graphSettings.mark.style?.fill?.opacity
+            : 1
+        }
+      />
+    );
+
+    const plotOutline = props.graphSettings.mark.style?.stroke ? (
+      <a-frame-curve-line
+        points={JSON.stringify(outlineArray)}
+        type={"line"}
+        resolution={20}
+        color={
+          props.graphSettings.mark.style?.stroke?.color
+            ? props.graphSettings.mark.style?.stroke?.color
+            : "#000000"
+        }
+        opacity={
+          props.graphSettings.mark.style?.stroke?.opacity
+            ? props.graphSettings.mark.style?.stroke.opacity
+            : 1
+        }
+        stroke_width={
+          props.graphSettings.mark.style?.stroke?.width
+            ? props.graphSettings.mark.style?.stroke?.width
+            : 1
+        }
+      />
+    ) : null;
+
+    return (
+      <a-entity key={i}>
+        {plotOutline}
+        <a-entity
+          position={`0 0 ${zScale(
+            d[props.graphSettings.mark.position.z.field]
+          )}`}
+        >
+          {plotShape}
+        </a-entity>
+      </a-entity>
+    );
+  });
 
   //Axis
   const xAxis = props.graphSettings.axis["x-axis"] ? (
@@ -138,94 +222,6 @@ const WaterFallPlot = (props) => {
       }
     />
   ) : null;
-
-  //Adding marks
-
-  const resolution = props.graphSettings.mark.style?.stroke?.resolution
-    ? props.graphSettings.mark.style?.stroke?.resolution
-    : 20;
-
-  const marks = props.data.map((d, i) => {
-    let path = `0 0,`;
-    for (let j = 0; j < xDomain.length; j++) {
-      if (j !== xDomain.length - 1)
-        path =
-          path + ` ${xScale(xDomain[j])} ${yScale(d[xDomain[j].toString()])},`;
-      else
-        path =
-          path + ` ${xScale(xDomain[j])} ${yScale(d[xDomain[j].toString()])}`;
-    }
-    path = path + `, ${xScale(xDomain[xDomain.length - 1])} 0`;
-    let points = path.split(", ");
-    let pntArray = points.map((el) => {
-      const pnts = el.split(" ");
-      return {
-        x: pnts[0],
-        y: pnts[1],
-        z: `${zScale(d[props.graphSettings.mark.position.z.field])}`,
-      };
-    });
-
-    let outlineArray = [];
-    pntArray.forEach((el, i) => {
-      if (i !== 0 && i !== pntArray.length - 1) outlineArray.push(el);
-    });
-
-    const mapShape = (
-      <a-frame-shape
-        points={JSON.stringify(pntArray)}
-        key={i}
-        color={
-          fillColorScale && props.graphSettings.mark.style?.fill?.field
-            ? fillColorScale(d[props.graphSettings.mark.style?.fill?.field])
-            : props.graphSettings.mark.style?.fill?.color
-            ? props.graphSettings.mark.style?.fill?.color
-            : "#ff0000"
-        }
-        opacity={
-          props.graphSettings.mark.style.fill?.opacity
-            ? props.graphSettings.mark.style.fill?.opacity
-            : 1
-        }
-      />
-    );
-
-    const mapOutline = props.graphSettings.mark.style.stroke ? (
-      <a-frame-curve-line
-        points={JSON.stringify(outlineArray)}
-        type={props.graphSettings.mark.style.stroke.curveType}
-        resolution={resolution}
-        color={
-          props.graphSettings.mark.style?.stroke?.color
-            ? props.graphSettings.mark.style?.stroke?.color
-            : "#ffffff"
-        }
-        opacity={
-          props.graphSettings.mark.style?.stroke?.opacity
-            ? props.graphSettings.mark.style?.stroke.opacity
-            : 1
-        }
-        stroke_width={
-          props.graphSettings.mark.style?.stroke?.width
-            ? props.graphSettings.mark.style?.stroke?.width
-            : 1
-        }
-      />
-    ) : null;
-
-    return (
-      <a-entity key={i}>
-        {mapOutline}
-        <a-entity
-          position={`0 0 ${zScale(
-            d[props.graphSettings.mark.position.z.field]
-          )}`}
-        >
-          {mapShape}
-        </a-entity>
-      </a-entity>
-    );
-  });
 
   return (
     <>

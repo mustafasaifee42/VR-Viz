@@ -19,15 +19,14 @@ const MapStackedBarChart = (props) => {
     }
   }
   // Getting domain
-  let heightDomain = props.graphSettings.mark.bars.style.height.domain
-    ? props.graphSettings.mark.bars.style.height.domain
+  let heightDomain = props.graphSettings.mark.bars.style.height?.domain
+    ? props.graphSettings.mark.bars.style.height?.domain
     : GetDomain(
         _.flattenDepth(data, 1),
         1,
         "linear",
-        props.graphSettings.mark.bars.style.height.startFromZero
+        props.graphSettings.mark.bars.style.height?.startFromZero
       );
-  console.log(heightDomain);
   //Adding scales
 
   let yScale;
@@ -36,8 +35,8 @@ const MapStackedBarChart = (props) => {
     .scaleLinear()
     .domain(heightDomain)
     .range(
-      props.graphSettings.mark.bars.style.height.value
-        ? props.graphSettings.mark.bars.style.height.value
+      props.graphSettings.mark.bars.style.height?.value
+        ? props.graphSettings.mark.bars.style.height?.value
         : [0, 5]
     );
 
@@ -54,8 +53,8 @@ const MapStackedBarChart = (props) => {
     props.graphSettings.mark.map.shapeKey
   );
 
-  const extrusionHeight = props.graphSettings.mark.map.style?.extrusion?.value
-    ? props.graphSettings.mark.map.style?.extrusion?.value
+  const extrusionHeight = props.graphSettings.mark.map.style?.extrusion
+    ? props.graphSettings.mark.map.style?.extrusion
     : 0.001;
   let extrusionArr = [],
     colorArray = [],
@@ -137,7 +136,7 @@ const MapStackedBarChart = (props) => {
 
       const color = props.graphSettings.mark.bars.style.fill.color
         ? props.graphSettings.mark.bars.style.fill.color[i]
-        : d3.schemeCategory10[i];
+        : d3.schemeCategory10[i % 10];
 
       const coordinates = GetMapCoordinates(
         d1.data.longitude,

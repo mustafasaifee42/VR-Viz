@@ -65,15 +65,12 @@ class App extends Component {
             mark: {
               position: {
                 x: {
-                  scaleType: "linear",
                   field: "Cars",
                 },
                 y: {
-                  scaleType: "linear",
                   field: "Trucks",
                 },
                 z: {
-                  scaleType: "linear",
                   field: "Bikes",
                 },
               },

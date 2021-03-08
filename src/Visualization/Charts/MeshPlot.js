@@ -86,23 +86,16 @@ const MeshPlot = (props) => {
     .domain(yDomain)
     .range([0, props.graphSettings.style.dimensions.height]);
 
-  const zScale =
-    props.graphSettings.mark.position.z.scaleType === "linear" &&
-    props.graphSettings.mark.position.z.domain
-      ? d3
-          .scaleLinear()
-          .range([0, props.graphSettings.style.dimensions.depth])
-          .domain(zDomain)
-      : d3
-          .scaleOrdinal()
-          .range(
-            zDomain.map(
-              (_d, i) =>
-                (i * props.graphSettings.style.dimensions.depth) /
-                (zDomain.length - 1)
-            )
-          )
-          .domain(zDomain);
+  const zScale = d3
+    .scaleOrdinal()
+    .range(
+      zDomain.map(
+        (_d, i) =>
+          (i * props.graphSettings.style.dimensions.depth) /
+          (zDomain.length - 1)
+      )
+    )
+    .domain(zDomain);
 
   const colorRange = props.graphSettings.mark.style?.fill?.color
     ? props.graphSettings.mark.style?.fill?.color

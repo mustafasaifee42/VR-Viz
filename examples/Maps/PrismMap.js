@@ -70,7 +70,6 @@ class App extends Component {
                   color: ["green", "blue", "red", "yellow", "magenta", "cyan"],
                 },
                 stroke: {
-                  width: 1,
                   color: "black",
                 },
               },

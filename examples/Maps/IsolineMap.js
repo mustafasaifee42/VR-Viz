@@ -65,9 +65,7 @@ class App extends Component {
                 shapeIdentifier: "id",
                 shapeKey: "neighbourhood",
                 style: {
-                  extrusion: {
-                    value: 0.0000001,
-                  },
+                  extrusion: 0.0000001,
                   fill: {
                     opacity: 1,
                     color: "red",

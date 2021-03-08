@@ -67,11 +67,9 @@ class App extends Component {
             mark: {
               position: {
                 x: {
-                  scaleType: "ordinal",
                   field: "Quarters",
                 },
                 z: {
-                  scaleType: "ordinal",
                   field: "Countries",
                 },
               },
@@ -82,12 +80,10 @@ class App extends Component {
                   z: 0.1,
                 },
                 height: {
-                  scaleType: "linear",
                   field: ["Cars", "Trucks", "Bikes"],
                   startFromZero: true,
                 },
                 fill: {
-                  scaleType: "ordinal",
                   opacity: 0.4,
                   color: ["green", "blue", "red"],
                   field: ["Cars", "Trucks", "Bikes"],

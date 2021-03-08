@@ -70,7 +70,6 @@ class App extends Component {
               id: (d, i) => `boxes_${d.Month}_${d.Year}`,
               position: {
                 x: {
-                  scaleType: "ordinal",
                   field: "Month",
                   domain: [
                     "January",
@@ -88,7 +87,6 @@ class App extends Component {
                   ],
                 },
                 z: {
-                  scaleType: "ordinal",
                   field: "Year",
                 },
               },
@@ -98,7 +96,6 @@ class App extends Component {
                   z: 0.1,
                 },
                 height: {
-                  scaleType: "linear",
                   startFromZero: true,
                   field: "Tornadoes",
                 },

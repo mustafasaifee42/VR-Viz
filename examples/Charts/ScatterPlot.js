@@ -67,15 +67,12 @@ class App extends Component {
             mark: {
               position: {
                 x: {
-                  scaleType: "linear",
                   field: "sepal_length",
                 },
                 y: {
-                  scaleType: "linear",
                   field: "sepal_width",
                 },
                 z: {
-                  scaleType: "linear",
                   field: "petal_length",
                 },
               },

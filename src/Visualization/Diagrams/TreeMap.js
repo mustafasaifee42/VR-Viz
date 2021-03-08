@@ -16,20 +16,30 @@ const TreeMap = (props) => {
       props.graphSettings.style.dimensions.width,
       props.graphSettings.style.dimensions.depth,
     ])
-    .paddingInner(props.graphSettings.mark.style.paddingInner)
-    .paddingOuter(props.graphSettings.mark.style.paddingOuter);
+    .paddingInner(
+      props.graphSettings.mark.style.paddingInner
+        ? props.graphSettings.mark.style.paddingInner
+        : 0.01
+    )
+    .paddingOuter(
+      props.graphSettings.mark.style.paddingOuter
+        ? props.graphSettings.mark.style.paddingOuter
+        : 0.005
+    );
 
   const root = d3.hierarchy(props.data, (d) => d.children).sum((d) => d.size);
 
   const tree = treemap(root);
 
-  const parent = tree
-    .leaves()
-    .map((d) =>
-      parent.indexOf(d.parent.data.name) === -1 && d.parent.data.name !== null
-        ? d.parent.data.name
-        : null
-    );
+  let parent = [];
+
+  tree.leaves().forEach((d) => {
+    if (
+      parent.indexOf(d.parent.data.name) === -1 &&
+      d.parent.data.name !== null
+    )
+      parent.push(d.parent.data.name);
+  });
 
   const heightDomain = props.graphSettings.mark.style.extrusion.domain
     ? props.graphSettings.mark.style.extrusion.domain
@@ -62,13 +72,13 @@ const TreeMap = (props) => {
         .domain(heightDomain)
         .range([0, props.graphSettings.style.dimensions.height]);
 
-  const colorScale = props.graphSettings.mark.style.fill.scaleType
+  const colorScale = props.graphSettings.mark.style.fill?.scaleType
     ? d3
         .scaleOrdinal()
         .domain(parent)
         .range(
-          props.graphSettings.mark.style.fill.color
-            ? props.graphSettings.mark.style.fill.color
+          props.graphSettings.mark.style.fill?.color
+            ? props.graphSettings.mark.style.fill?.color
             : d3.schemeCategory10
         )
     : null;
@@ -90,9 +100,9 @@ const TreeMap = (props) => {
 
     const color = colorScale
       ? colorScale(d.parent.data.name)
-      : props.graphSettings.mark.style.fill.color
-      ? props.graphSettings.mark.style.fill.color
-      : "#000000";
+      : props.graphSettings.mark.style.fill?.color
+      ? props.graphSettings.mark.style.fill?.color
+      : "#ff0000";
 
     const hoverText = props.graphSettings.mark.mouseOver?.label
       ? props.graphSettings.mark.mouseOver.label.value(d)
@@ -114,8 +124,8 @@ const TreeMap = (props) => {
         type={"box"}
         color={`${color}`}
         opacity={
-          props.graphSettings.mark.style.fill.opacity
-            ? props.graphSettings.mark.style.fill.opacity
+          props.graphSettings.mark.style.fill?.opacity
+            ? props.graphSettings.mark.style.fill?.opacity
             : 1
         }
         depth={`${depth}`}
@@ -133,7 +143,7 @@ const TreeMap = (props) => {
         graphID={props.graphID}
         class={className}
         id={idName}
-        data={JSON.stringify(d)}
+        data={JSON.stringify({ data: d.data, parent: d.parent.data })}
       />
     );
   });

@@ -66,11 +66,7 @@ class App extends Component {
             mark: {
               position: {
                 x: {
-                  scaleType: "ordinal",
                   domain: ["-10", "0", "10"],
-                },
-                y: {
-                  scaleType: "linear",
                 },
                 z: {
                   scaleType: "ordinal",

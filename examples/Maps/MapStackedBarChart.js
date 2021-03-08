@@ -76,9 +76,7 @@ class App extends Component {
                 shapeIdentifier: "id",
                 shapeKey: "countries",
                 style: {
-                  extrusion: {
-                    value: 0.0000001,
-                  },
+                  extrusion: 0.0000001,
                   fill: {
                     opacity: 1,
                     color: "red",
@@ -95,13 +93,10 @@ class App extends Component {
                   depth: 0.2,
                   width: 0.2,
                   height: {
-                    scaleType: "linear",
-                    field: ["value", "value1"],
                     value: [0, 5],
                   },
                   fill: {
                     opacity: 0.9,
-                    scaleType: "ordinal",
                     color: ["green", "blue"],
                     field: ["value", "value1"],
                   },

@@ -61,9 +61,7 @@ class App extends Component {
                 shapeIdentifier: "id",
                 shapeKey: "countries",
                 style: {
-                  extrusion: {
-                    value: 0.000001,
-                  },
+                  extrusion: 0.0000001,
                   fill: {
                     color: "#111",
                     opacity: 1,
@@ -86,9 +84,7 @@ class App extends Component {
                 source: {
                   type: "sphere",
                   style: {
-                    radius: {
-                      value: 0.05,
-                    },
+                    radius: 0.05,
                     fill: {
                       color: "#b71c1c",
                       opacity: 0.5,
@@ -98,9 +94,7 @@ class App extends Component {
                 target: {
                   type: "sphere",
                   style: {
-                    radius: {
-                      value: 0.05,
-                    },
+                    radius: 0.05,
                     fill: {
                       color: "#0f9d5b",
                       opacity: 0.5,

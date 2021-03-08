@@ -66,7 +66,6 @@ class App extends Component {
             mark: {
               position: {
                 x: {
-                  scaleType: "ordinal",
                   field: "Year",
                 },
               },
@@ -76,11 +75,9 @@ class App extends Component {
                   x: 0.1,
                 },
                 depth: {
-                  scaleType: "linear",
                   field: "Deaths",
                 },
                 height: {
-                  scaleType: "linear",
                   field: "Tornadoes",
                 },
                 fill: {

@@ -167,7 +167,7 @@ const BarGraph = (props) => {
           )
         : props.graphSettings.mark.nodes.style?.radius?.value
         ? props.graphSettings.mark.nodes.style?.radius?.value
-        : 5;
+        : 0.5;
 
     const col =
       nodeColorScale && props.graphSettings.mark.nodes.style?.fill?.field
@@ -180,9 +180,10 @@ const BarGraph = (props) => {
         ? props.graphSettings.mark.nodes.style?.fill?.color
         : "#ff0000";
 
-    const lab = props.graphSettings.mark.labels
-      ? props.data.nodes[i][props.graphSettings.mark.labels.field]
-      : "";
+    const lab =
+      props.graphSettings.mark.labels && props.graphSettings.mark.labels?.field
+        ? props.data.nodes[i][props.graphSettings.mark.labels.field]
+        : "";
 
     g.addNode(props.data.nodes[i].id, {
       color: col,
@@ -294,8 +295,8 @@ const BarGraph = (props) => {
         width={`${node.data.radius}`}
         radius={`${node.data.radius}`}
         segments={
-          props.graphSettings.mark.nodes.style.segments
-            ? `${props.graphSettings.mark.nodes.style.segments}`
+          props.graphSettings.mark.nodes.style?.segments
+            ? `${props.graphSettings.mark.nodes.style?.segments}`
             : "16"
         }
         position={`${layout.getNodePosition(node.id).x * scale} ${

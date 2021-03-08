@@ -59,12 +59,10 @@ class App extends Component {
               type: "box",
               position: {
                 y: {
-                  scaleType: "linear",
                   startFromZero: true,
                   field: "Tornadoes",
                 },
                 x: {
-                  scaleType: "ordinal",
                   field: "Month",
                   domain: [
                     "January",
@@ -82,7 +80,6 @@ class App extends Component {
                   ],
                 },
                 z: {
-                  scaleType: "ordinal",
                   field: "Year",
                 },
               },
