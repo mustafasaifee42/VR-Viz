@@ -1,53 +1,60 @@
-import AFRAME from 'aframe';
-import * as THREE from 'three';
+import AFRAME from "aframe";
+import * as THREE from "three";
 
 AFRAME.registerComponent("click-rotation", {
   schema: {
-    enabled: {type: 'boolean', default: true},
-    speed: {type: 'number', default: 1}
+    enabled: { type: "boolean", default: true },
+    speed: { type: "number", default: 1 },
   },
 
-  init: function() {
+  init: function () {
     this.obj = this.el;
     this.ifMouseDown = false;
     this.x_cord = 0;
     this.y_cord = 0;
-    document.addEventListener('mousedown',(event) => {
-      if(this.data.enabled) {
+    document.addEventListener("mousedown", (event) => {
+      if (this.data.enabled) {
         this.x_cord = event.clientX;
         this.y_cord = event.clientY;
       }
     });
     this.el.addEventListener("mousedown", (event) => {
-      if(this.data.enabled) {      
+      if (this.data.enabled) {
         this.ifMouseDown = true;
-        document.getElementById('head').setAttribute('look-controls','enabled: false')
+        document
+          .getElementById("head")
+          .setAttribute("look-controls", "enabled: false");
       }
     });
-    document.addEventListener('mouseup',(event) => {
-      if(this.data.enabled) {
+    document.addEventListener("mouseup", (event) => {
+      if (this.data.enabled) {
         this.ifMouseDown = false;
-        document.getElementById('head').setAttribute('look-controls','enabled: true')
+        document
+          .getElementById("head")
+          .setAttribute("look-controls", "enabled: true");
       }
     });
-    document.addEventListener('mousemove',(event) => {
-      if(this.ifMouseDown && this.data.enabled)
-      {
-        var temp_x = event.clientX-this.x_cord;
-        var temp_y = event.clientY-this.y_cord;
-            
-        var deltaRotationQuaternion = new THREE.Quaternion()
-            .setFromEuler(new THREE.Euler(
-                (temp_y*this.data.speed) * (Math.PI / 180),
-                (temp_x*this.data.speed) * (Math.PI / 180),
-                0,
-                'XYZ'
-            ));
-        
-        this.el.object3D.quaternion.multiplyQuaternions(deltaRotationQuaternion, this.el.object3D.quaternion);
+    document.addEventListener("mousemove", (event) => {
+      if (this.ifMouseDown && this.data.enabled) {
+        var temp_x = event.clientX - this.x_cord;
+        var temp_y = event.clientY - this.y_cord;
+
+        var deltaRotationQuaternion = new THREE.Quaternion().setFromEuler(
+          new THREE.Euler(
+            temp_y * this.data.speed * (Math.PI / 180),
+            temp_x * this.data.speed * (Math.PI / 180),
+            0,
+            "XYZ"
+          )
+        );
+
+        this.el.object3D.quaternion.multiplyQuaternions(
+          deltaRotationQuaternion,
+          this.el.object3D.quaternion
+        );
         this.x_cord = event.clientX;
         this.y_cord = event.clientY;
       }
     });
-  }
+  },
 });
