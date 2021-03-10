@@ -37,7 +37,7 @@ const XAxis = (props) => {
 
   const title = props.title ? (
     <a-text
-      opacity={props.grid.opacity ? props.grid.opacity : 1}
+      opacity={props.title.opacity ? props.title.opacity : 1}
       color={props.title.color ? props.title.color : "#000000"}
       width={props.title.fontSize ? props.title.fontSize : 12}
       value={`${props.title.text}`}
@@ -50,20 +50,44 @@ const XAxis = (props) => {
     />
   ) : null;
 
-  const ticks =
-    props.orient === "front-top"
+  const grid = !props.grid
+    ? null
+    : props.orient === "front-top" || props.orient === "back-top"
+    ? props.domain.map((d, i) => (
+        <a-entity
+          key={i}
+          line={`start:${props.scale(d) + padding} ${props.dimensions.height} ${
+            props.dimensions.depth
+          }; end:${props.scale(d) + padding} ${
+            props.dimensions.height
+          } 0; color:${
+            props.grid.color ? props.grid.color : "#000000"
+          }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
+        />
+      ))
+    : props.domain.map((d, i) => (
+        <a-entity
+          key={i}
+          line={`start:${props.scale(d) + padding} 0 ${
+            props.dimensions.depth
+          }; end:${props.scale(d) + padding} 0 0; color:${
+            props.grid.color ? props.grid.color : "#000000"
+          }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
+        />
+      ));
+
+  const ticks = props.tick
+    ? props.orient === "front-top"
       ? props.domain.map((d, i) => (
           <a-entity
             key={i}
             line={`start:${props.scale(d) + padding} ${
               props.dimensions.height
-            } ${props.grid ? 0 : props.dimensions.depth}; end:${
-              props.scale(d) + padding
-            } ${props.dimensions.height} ${
-              props.dimensions.depth + props.tick.size
-            }; color:${
+            } ${props.dimensions.depth}; end:${props.scale(d) + padding} ${
+              props.dimensions.height
+            } ${props.dimensions.depth + props.tick.size}; color:${
               props.tick.color ? props.tick.color : "#000000"
-            }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
+            }; opacity:${props.tick.opacity ? props.tick.opacity : 1}`}
           />
         ))
       : props.orient === "back-bottom"
@@ -71,12 +95,12 @@ const XAxis = (props) => {
           <a-entity
             key={i}
             line={`start:${props.scale(d) + padding} 0.001 ${
-              props.grid ? 0 : props.dimensions.depth
+              props.dimensions.depth
             }; end:${props.scale(d) + padding} 0.001 ${
               0 - props.tick.size
             }; color:${
               props.tick.color ? props.tick.color : "#000000"
-            }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
+            }; opacity:${props.tick.opacity ? props.tick.opacity : 1}`}
           />
         ))
       : props.orient === "back-top"
@@ -85,25 +109,26 @@ const XAxis = (props) => {
             key={i}
             line={`start:${props.scale(d) + padding} ${
               props.dimensions.height
-            } ${props.grid ? 0 : props.dimensions.depth}; end:${
-              props.scale(d) + padding
-            } ${props.dimensions.height} ${0 - props.tick.size}; color:${
+            } ${props.dimensions.depth}; end:${props.scale(d) + padding} ${
+              props.dimensions.height
+            } ${0 - props.tick.size}; color:${
               props.tick.color ? props.tick.color : "#000000"
-            }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
+            }; opacity:${props.tick.opacity ? props.tick.opacity : 1}`}
           />
         ))
       : props.domain.map((d, i) => (
           <a-entity
             key={i}
             line={`start:${props.scale(d) + padding} 0.001 ${
-              props.grid ? 0 : props.dimensions.depth
+              props.dimensions.depth
             }; end:${props.scale(d) + padding} 0.001 ${
               props.dimensions.depth + props.tick.size
             }; color:${
               props.tick.color ? props.tick.color : "#000000"
-            }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
+            }; opacity:${props.tick.opacity ? props.tick.opacity : 1}`}
           />
-        ));
+        ))
+    : null;
 
   const axis =
     props.orient === "front-top" ? (
@@ -112,8 +137,8 @@ const XAxis = (props) => {
           props.dimensions.depth
         }; end:${props.dimensions.width} ${props.dimensions.height} ${
           props.dimensions.depth
-        }; opacity:${props.grid.opacity ? props.grid.opacity : 1}; color:${
-          props.tick.color ? props.tick.color : "#000000"
+        }; opacity:${props.tick?.opacity ? props.tick.opacity : 1}; color:${
+          props.tick?.color ? props.tick.color : "#000000"
         }`}
       />
     ) : props.orient === "back-bottom" ? (
@@ -121,34 +146,34 @@ const XAxis = (props) => {
         line={`start:0 0.001 0; end:${
           props.dimensions.width
         } 0.001 0; opacity:${
-          props.grid.opacity ? props.grid.opacity : 1
-        }; color:${props.tick.color ? props.tick.color : "#000000"}`}
+          props.tick?.opacity ? props.tick.opacity : 1
+        }; color:${props.tick?.color ? props.tick.color : "#000000"}`}
       />
     ) : props.orient === "back-top" ? (
       <a-entity
         line={`start:0 ${props.dimensions.height} 0; end:${
           props.dimensions.width
         } ${props.dimensions.height} 0; opacity:${
-          props.grid.opacity ? props.grid.opacity : 1
-        }; color:${props.tick.color ? props.tick.color : "#000000"}`}
+          props.tick?.opacity ? props.tick.opacity : 1
+        }; color:${props.tick?.color ? props.tick.color : "#000000"}`}
       />
     ) : (
       <a-entity
         line={`start:0 0.001 ${props.dimensions.depth}; end:${
           props.dimensions.width
         } 0.001 ${props.dimensions.depth}; opacity:${
-          props.grid.opacity ? props.grid.opacity : 1
-        }; color:${props.tick.color ? props.tick.color : "#000000"}`}
+          props.tick?.opacity ? props.tick.opacity : 1
+        }; color:${props.tick?.color ? props.tick.color : "#000000"}`}
       />
     );
 
-  const tickText =
-    props.orient === "front-top"
+  const tickText = props.tick
+    ? props.orient === "front-top"
       ? props.domain.map((d, i) => (
           <a-text
             key={i}
             billboard={props.tick.billboarding}
-            opacity={props.grid.opacity ? props.grid.opacity : 1}
+            opacity={props.tick.opacity ? props.tick.opacity : 1}
             color={props.tick.color}
             width={props.tick.fontSize}
             value={
@@ -170,7 +195,7 @@ const XAxis = (props) => {
           <a-text
             key={i}
             billboard={props.tick.billboarding}
-            opacity={props.grid.opacity ? props.grid.opacity : 1}
+            opacity={props.tick.opacity ? props.tick.opacity : 1}
             color={props.tick.color}
             width={props.tick.fontSize}
             value={
@@ -192,7 +217,7 @@ const XAxis = (props) => {
           <a-text
             key={i}
             billboard={props.tick.billboarding}
-            opacity={props.grid.opacity ? props.grid.opacity : 1}
+            opacity={props.tick.opacity ? props.tick.opacity : 1}
             color={props.tick.color}
             width={props.tick.fontSize}
             value={
@@ -213,7 +238,7 @@ const XAxis = (props) => {
           <a-text
             key={i}
             billboard={props.tick.billboarding}
-            opacity={props.grid.opacity ? props.grid.opacity : 1}
+            opacity={props.tick.opacity ? props.tick.opacity : 1}
             color={props.tick.color}
             width={props.tick.fontSize}
             value={
@@ -229,11 +254,13 @@ const XAxis = (props) => {
               props.dimensions.depth + props.tick.size + 0.05
             }`}
           />
-        ));
+        ))
+    : null;
 
   return (
     <>
       {ticks}
+      {grid}
       {axis}
       {tickText}
       {title}
@@ -272,7 +299,7 @@ const YAxis = (props) => {
 
   const title = props.title ? (
     <a-text
-      opacity={props.grid.opacity ? props.grid.opacity : 1}
+      opacity={props.title.opacity ? props.title.opacity : 1}
       color={props.title.color ? props.title.color : "#000000"}
       width={props.title.fontSize ? props.title.fontSize : 12}
       value={`${props.title.text}`}
@@ -296,7 +323,7 @@ const YAxis = (props) => {
           } 0; end:${props.dimensions.width} ${props.scale(d) + padding} ${
             props.dimensions.depth
           }; color:${
-            props.tick.color ? props.tick.color : "#000000"
+            props.grid.color ? props.grid.color : "#000000"
           }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
         />
       ))
@@ -306,7 +333,7 @@ const YAxis = (props) => {
           line={`start:0 ${props.scale(d) + padding} 0; end:0 ${
             props.scale(d) + padding
           } ${props.dimensions.depth}; color:${
-            props.tick.color ? props.tick.color : "#000000"
+            props.grid.color ? props.grid.color : "#000000"
           }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
         />
       ));
@@ -315,8 +342,8 @@ const YAxis = (props) => {
     props.orient === "back-left" ? (
       <a-entity
         line={`start:0, ${props.dimensions.height}, 0; end:0 0.001 0; opacity:${
-          props.grid.opacity ? props.grid.opacity : 1
-        }; color:${props.tick.color ? props.tick.color : "#000000"}`}
+          props.tick?.opacity ? props.tick.opacity : 1
+        }; color:${props.tick?.color ? props.tick.color : "#000000"}`}
       />
     ) : props.orient === "front-right" ? (
       <a-entity
@@ -324,8 +351,8 @@ const YAxis = (props) => {
           props.dimensions.depth
         }; end:${props.dimensions.width} 0.001 ${
           props.dimensions.depth
-        }; opacity:${props.grid.opacity ? props.grid.opacity : 1}; color:${
-          props.tick.color ? props.tick.color : "#000000"
+        }; opacity:${props.tick?.opacity ? props.tick.opacity : 1}; color:${
+          props.tick?.color ? props.tick.color : "#000000"
         }`}
       />
     ) : props.orient === "back-right" ? (
@@ -333,21 +360,21 @@ const YAxis = (props) => {
         line={`start:${props.dimensions.width}, ${
           props.dimensions.height
         }, 0; end:${props.dimensions.width} 0.001 0; opacity:${
-          props.grid.opacity ? props.grid.opacity : 1
-        }; color:${props.tick.color ? props.tick.color : "#000000"}`}
+          props.tick?.opacity ? props.tick.opacity : 1
+        }; color:${props.tick?.color ? props.tick.color : "#000000"}`}
       />
     ) : (
       <a-entity
         line={`start:0, ${props.dimensions.height}, ${
           props.dimensions.depth
         }; end:0 0.001 ${props.dimensions.depth}; opacity:${
-          props.grid.opacity ? props.grid.opacity : 1
-        }; color:${props.tick.color ? props.tick.color : "#000000"}`}
+          props.tick?.opacity ? props.tick.opacity : 1
+        }; color:${props.tick?.color ? props.tick.color : "#000000"}`}
       />
     );
 
-  const ticks =
-    props.orient === "back-left"
+  const ticks = props.tick
+    ? props.orient === "back-left"
       ? props.domain.map((d, i) => (
           <a-entity
             key={i}
@@ -355,7 +382,7 @@ const YAxis = (props) => {
               0 - props.tick.size
             } ${props.scale(d) + padding} 0; color:${
               props.tick.color ? props.tick.color : "#000000"
-            }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
+            }; opacity:${props.tick.opacity ? props.tick.opacity : 1}`}
           />
         ))
       : props.orient === "front-right"
@@ -368,7 +395,7 @@ const YAxis = (props) => {
               props.dimensions.width + props.tick.size
             } ${props.scale(d) + padding} ${props.dimensions.depth}; color:${
               props.tick.color ? props.tick.color : "#000000"
-            }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
+            }; opacity:${props.tick.opacity ? props.tick.opacity : 1}`}
           />
         ))
       : props.orient === "back-right"
@@ -381,7 +408,7 @@ const YAxis = (props) => {
               props.scale(d) + padding
             } 0; color:${
               props.tick.color ? props.tick.color : "#000000"
-            }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
+            }; opacity:${props.tick.opacity ? props.tick.opacity : 1}`}
           />
         ))
       : props.domain.map((d, i) => (
@@ -393,12 +420,13 @@ const YAxis = (props) => {
               props.dimensions.depth
             }; color:${
               props.tick.color ? props.tick.color : "#000000"
-            }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
+            }; opacity:${props.tick.opacity ? props.tick.opacity : 1}`}
           />
-        ));
+        ))
+    : null;
 
-  const tickText =
-    props.orient === "back-left"
+  const tickText = props.tick
+    ? props.orient === "back-left"
       ? props.domain.map((d, i) => (
           <a-text
             key={i}
@@ -484,7 +512,8 @@ const YAxis = (props) => {
               props.scale(d) + padding
             } ${props.dimensions.depth}`}
           />
-        ));
+        ))
+    : null;
 
   return (
     <>
@@ -532,7 +561,7 @@ const ZAxis = (props) => {
 
   const title = props.title ? (
     <a-text
-      opacity={props.grid.opacity ? props.grid.opacity : 1}
+      opacity={props.title.opacity ? props.title.opacity : 1}
       color={props.title.color ? props.title.color : "#000000"}
       width={props.title.fontSize ? props.title.fontSize : 12}
       value={`${props.title.text}`}
@@ -551,8 +580,8 @@ const ZAxis = (props) => {
         line={`start:0 ${props.dimensions.height} 0; end:0 ${
           props.dimensions.height
         } ${props.dimensions.depth}; opacity:${
-          props.tick.opacity ? props.tick.opacity : 1
-        }; color:${props.tick.color ? props.tick.color : "#000000"}`}
+          props.tick?.opacity ? props.tick.opacity : 1
+        }; color:${props.tick?.color ? props.tick.color : "#000000"}`}
       />
     ) : props.orient === "top-right" ? (
       <a-entity
@@ -560,8 +589,8 @@ const ZAxis = (props) => {
           props.dimensions.height
         } 0; end:${props.dimensions.width} ${props.dimensions.height} ${
           props.dimensions.depth
-        }; opacity:${props.tick.opacity ? props.tick.opacity : 1}; color:${
-          props.tick.color ? props.tick.color : "#000000"
+        }; opacity:${props.tick?.opacity ? props.tick.opacity : 1}; color:${
+          props.tick?.color ? props.tick.color : "#000000"
         }`}
       />
     ) : props.orient === "bottom-right" ? (
@@ -569,15 +598,15 @@ const ZAxis = (props) => {
         line={`start:${props.dimensions.width} 0.001 0; end:${
           props.dimensions.width
         } 0.001 ${props.dimensions.depth}; opacity:${
-          props.tick.opacity ? props.tick.opacity : 1
-        }; color:${props.tick.color ? props.tick.color : "#000000"}`}
+          props.tick?.opacity ? props.tick.opacity : 1
+        }; color:${props.tick?.color ? props.tick.color : "#000000"}`}
       />
     ) : (
       <a-entity
         line={`start:0 0.001 0; end:0 0.001 ${
           props.dimensions.depth
-        }; opacity:${props.tick.opacity ? props.tick.opacity : 1}; color:${
-          props.tick.color ? props.tick.color : "#000000"
+        }; opacity:${props.tick?.opacity ? props.tick.opacity : 1}; color:${
+          props.tick?.color ? props.tick.color : "#000000"
         }`}
       />
     );
@@ -593,12 +622,12 @@ const ZAxis = (props) => {
           }; end:${props.dimensions.width} ${props.dimensions.height} ${
             props.scale(d) + padding
           }; color:${
-            props.tick.color ? props.tick.color : "#000000"
+            props.grid.color ? props.grid.color : "#000000"
           }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
           line__2={`start:0.001 0 ${props.scale(d) + padding}; end:0.001 ${
             props.dimensions.height
           } ${props.scale(d) + padding}; color:${
-            props.tick.color ? props.tick.color : "#000000"
+            props.grid.color ? props.grid.color : "#000000"
           }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
         />
       ))
@@ -611,14 +640,14 @@ const ZAxis = (props) => {
           }; end:${props.dimensions.width} ${props.dimensions.height} ${
             props.scale(d) + padding
           }; color:${
-            props.tick.color ? props.tick.color : "#000000"
+            props.grid.color ? props.grid.color : "#000000"
           }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
           line__2={`start:${props.dimensions.width} 0 ${
             props.scale(d) + padding
           }; end:${props.dimensions.width} ${props.dimensions.height} ${
             props.scale(d) + padding
           }; color:${
-            props.tick.color ? props.tick.color : "#000000"
+            props.grid.color ? props.grid.color : "#000000"
           }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
         />
       ))
@@ -629,14 +658,14 @@ const ZAxis = (props) => {
           line={`start:0 0.001 ${props.scale(d) + padding}; end:${
             props.dimensions.width
           } 0.001 ${props.scale(d) + padding}; color:${
-            props.tick.color ? props.tick.color : "#000000"
+            props.grid.color ? props.grid.color : "#000000"
           }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
           line__2={`start:${props.dimensions.width} 0 ${
             props.scale(d) + padding
           }; end:${props.dimensions.width} ${props.dimensions.height} ${
             props.scale(d) + padding
           }; color:${
-            props.tick.color ? props.tick.color : "#000000"
+            props.grid.color ? props.grid.color : "#000000"
           }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
         />
       ))
@@ -646,18 +675,18 @@ const ZAxis = (props) => {
           line={`start:0 0.001 ${props.scale(d) + padding}; end:${
             props.dimensions.width
           } 0.001 ${props.scale(d) + padding}; color:${
-            props.tick.color ? props.tick.color : "#000000"
+            props.grid.color ? props.grid.color : "#000000"
           }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
           line__2={`start:0.001 0 ${props.scale(d) + padding}; end:0.001 ${
             props.dimensions.height
           } ${props.scale(d) + padding}; color:${
-            props.tick.color ? props.tick.color : "#000000"
+            props.grid.color ? props.grid.color : "#000000"
           }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
         />
       ));
 
-  const ticks =
-    props.orient === "top-left"
+  const ticks = props.tick
+    ? props.orient === "top-left"
       ? props.domain.map((d, i) => (
           <a-entity
             key={i}
@@ -667,7 +696,7 @@ const ZAxis = (props) => {
               props.scale(d) + padding
             }; color:${
               props.tick.color ? props.tick.color : "#000000"
-            }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
+            }; opacity:${props.tick.opacity ? props.tick.opacity : 1}`}
           />
         ))
       : props.orient === "top-right"
@@ -680,7 +709,7 @@ const ZAxis = (props) => {
               props.dimensions.height
             } ${props.scale(d) + padding}; color:${
               props.tick.color ? props.tick.color : "#000000"
-            }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
+            }; opacity:${props.tick.opacity ? props.tick.opacity : 1}`}
           />
         ))
       : props.orient === "bottom-right"
@@ -693,7 +722,7 @@ const ZAxis = (props) => {
               props.scale(d) + padding
             }; color:${
               props.tick.color ? props.tick.color : "#000000"
-            }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
+            }; opacity:${props.tick.opacity ? props.tick.opacity : 1}`}
           />
         ))
       : props.domain.map((d, i) => (
@@ -703,12 +732,13 @@ const ZAxis = (props) => {
               0 - props.tick.size
             } 0.001 ${props.scale(d) + padding}; color:${
               props.tick.color ? props.tick.color : "#000000"
-            }; opacity:${props.grid.opacity ? props.grid.opacity : 1}`}
+            }; opacity:${props.tick.opacity ? props.tick.opacity : 1}`}
           />
-        ));
+        ))
+    : null;
 
-  const tickText =
-    props.orient === "top-left"
+  const tickText = props.tick
+    ? props.orient === "top-left"
       ? props.domain.map((d, i) => (
           <a-text
             key={i}
@@ -794,7 +824,8 @@ const ZAxis = (props) => {
               props.scale(d) + padding
             }`}
           />
-        ));
+        ))
+    : null;
 
   return (
     <>

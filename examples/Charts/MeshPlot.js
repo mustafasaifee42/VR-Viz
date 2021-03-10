@@ -69,9 +69,6 @@ class App extends Component {
                   scaleType: "ordinal",
                   field: "Alpha",
                 },
-                y: {
-                  scaleType: "linear",
-                },
                 z: {
                   domain: ["-10", "0", "10"],
                 },

@@ -71,7 +71,7 @@ const WaterFallPlot = (props) => {
         props.data,
         props.graphSettings.mark.style?.fill?.field,
         props.graphSettings.mark.style?.fill?.scaleType
-          ? props.graphSettings.mark.style?.fill.scaleType
+          ? props.graphSettings.mark.style?.fill?.scaleType
           : "ordinal",
         false
       );

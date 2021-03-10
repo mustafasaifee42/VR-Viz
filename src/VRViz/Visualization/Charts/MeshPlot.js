@@ -37,7 +37,7 @@ const MeshPlot = (props) => {
         dataList.push(props.data[i][zDomain[k]]);
       }
     }
-    yDomain = props.graphSettings.mark.position.y.startFromZero
+    yDomain = props.graphSettings.mark.position.y?.startFromZero
       ? [0, _.max(dataList)]
       : [_.min(dataList), _.max(dataList)];
   }

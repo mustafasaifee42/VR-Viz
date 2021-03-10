@@ -1,5 +1,4 @@
 import VRViz from "./VRViz";
-import mapData from "./mapData/mapData.json";
 
 function App() {
   return (
