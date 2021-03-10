@@ -160,59 +160,67 @@ const BarGraph = (props) => {
   });
 
   //Axis
-  const xAxis = props.graphSettings.axis["x-axis"] ? (
-    <XAxis
-      domain={xDomain}
-      tick={props.graphSettings.axis["x-axis"].ticks}
-      scale={xScale}
-      orient={props.graphSettings.axis["x-axis"].orient}
-      title={props.graphSettings.axis["x-axis"].title}
-      dimensions={props.graphSettings.style.dimensions}
-      padding={width}
-      grid={props.graphSettings.axis["x-axis"].grid}
-    />
+  const xAxis = props.graphSettings.axis ? (
+    props.graphSettings.axis["x-axis"] ? (
+      <XAxis
+        domain={xDomain}
+        tick={props.graphSettings.axis["x-axis"].ticks}
+        scale={xScale}
+        orient={props.graphSettings.axis["x-axis"].orient}
+        title={props.graphSettings.axis["x-axis"].title}
+        dimensions={props.graphSettings.style.dimensions}
+        padding={width}
+        grid={props.graphSettings.axis["x-axis"].grid}
+      />
+    ) : null
   ) : null;
 
-  const yAxis = props.graphSettings.axis["y-axis"] ? (
-    <YAxis
-      domain={yScale.ticks(
-        props.graphSettings.axis["y-axis"].ticks?.noOfTicks
-          ? props.graphSettings.axis["y-axis"].ticks.noOfTicks
-          : 5
-      )}
-      tick={props.graphSettings.axis["y-axis"].ticks}
-      scale={yScale}
-      orient={props.graphSettings.axis["y-axis"].orient}
-      title={props.graphSettings.axis["y-axis"].title}
-      dimensions={props.graphSettings.style.dimensions}
-      grid={props.graphSettings.axis["y-axis"].grid}
-    />
+  const yAxis = props.graphSettings.axis ? (
+    props.graphSettings.axis["y-axis"] ? (
+      <YAxis
+        domain={yScale.ticks(
+          props.graphSettings.axis["y-axis"].ticks?.noOfTicks
+            ? props.graphSettings.axis["y-axis"].ticks.noOfTicks
+            : 5
+        )}
+        tick={props.graphSettings.axis["y-axis"].ticks}
+        scale={yScale}
+        orient={props.graphSettings.axis["y-axis"].orient}
+        title={props.graphSettings.axis["y-axis"].title}
+        dimensions={props.graphSettings.style.dimensions}
+        grid={props.graphSettings.axis["y-axis"].grid}
+      />
+    ) : null
   ) : null;
 
-  const zAxis = props.graphSettings.axis["z-axis"] ? (
-    <ZAxis
-      domain={zDomain}
-      tick={props.graphSettings.axis["z-axis"].ticks}
-      scale={zScale}
-      orient={props.graphSettings.axis["z-axis"].orient}
-      title={props.graphSettings.axis["z-axis"].title}
-      dimensions={props.graphSettings.style.dimensions}
-      padding={depth}
-      grid={props.graphSettings.axis["z-axis"].grid}
-    />
+  const zAxis = props.graphSettings.axis ? (
+    props.graphSettings.axis["z-axis"] ? (
+      <ZAxis
+        domain={zDomain}
+        tick={props.graphSettings.axis["z-axis"].ticks}
+        scale={zScale}
+        orient={props.graphSettings.axis["z-axis"].orient}
+        title={props.graphSettings.axis["z-axis"].title}
+        dimensions={props.graphSettings.style.dimensions}
+        padding={depth}
+        grid={props.graphSettings.axis["z-axis"].grid}
+      />
+    ) : null
   ) : null;
 
-  const box = props.graphSettings.axis["axis-box"] ? (
-    <AxisBox
-      width={props.graphSettings.style.dimensions.width}
-      height={props.graphSettings.style.dimensions.height}
-      depth={props.graphSettings.style.dimensions.depth}
-      color={
-        props.graphSettings.axis["axis-box"].color
-          ? props.graphSettings.axis["axis-box"].color
-          : "#000000"
-      }
-    />
+  const box = props.graphSettings.axis ? (
+    props.graphSettings.axis["axis-box"] ? (
+      <AxisBox
+        width={props.graphSettings.style.dimensions.width}
+        height={props.graphSettings.style.dimensions.height}
+        depth={props.graphSettings.style.dimensions.depth}
+        color={
+          props.graphSettings.axis["axis-box"].color
+            ? props.graphSettings.axis["axis-box"].color
+            : "#000000"
+        }
+      />
+    ) : null
   ) : null;
 
   return (

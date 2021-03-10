@@ -35,7 +35,7 @@ const ParametricSurfacePlot = (props) => {
         props.graphSettings.mark.position.x.function(i, j),
         props.graphSettings.mark.position.y.function(i, j),
         props.graphSettings.mark.position.z.function(i, j),
-        props.graphSettings.mark.style?.fill?.color?.scaletype
+        props.graphSettings.mark.style?.fill?.color?.function
           ? props.graphSettings.mark.style?.fill?.color?.function(i, j)
           : null,
       ]);
@@ -66,7 +66,7 @@ const ParametricSurfacePlot = (props) => {
         props.graphSettings.mark.position.z.startFromZero
       );
 
-  const colorDomain = props.graphSettings.mark.style?.fill?.scaleType
+  const colorDomain = props.graphSettings.mark.style?.fill?.function
     ? props.graphSettings.mark.style?.fill?.domain
       ? props.graphSettings.mark.style?.fill?.domain
       : GetDomain(
@@ -98,7 +98,7 @@ const ParametricSurfacePlot = (props) => {
     ? props.graphSettings.mark.style?.fill?.color
     : ["#ff0000", "#ffff00"];
 
-  const colorScale = props.graphSettings.mark.style?.fill?.scaleType
+  const colorScale = props.graphSettings.mark.style?.fill?.function
     ? d3.scaleLinear().domain(colorDomain).range(colorRange)
     : null;
 
@@ -249,65 +249,73 @@ const ParametricSurfacePlot = (props) => {
   }
 
   //Axis
-  const xAxis = props.graphSettings.axis["x-axis"] ? (
-    <XAxis
-      domain={xScale.ticks(
-        props.graphSettings.axis["x-axis"].ticks?.noOfTicks
-          ? props.graphSettings.axis["x-axis"].ticks.noOfTicks
-          : 5
-      )}
-      tick={props.graphSettings.axis["x-axis"].ticks}
-      scale={xScale}
-      orient={props.graphSettings.axis["x-axis"].orient}
-      title={props.graphSettings.axis["x-axis"].title}
-      dimensions={props.graphSettings.style.dimensions}
-      grid={props.graphSettings.axis["x-axis"].grid}
-    />
+  const xAxis = props.graphSettings.axis ? (
+    props.graphSettings.axis["x-axis"] ? (
+      <XAxis
+        domain={xScale.ticks(
+          props.graphSettings.axis["x-axis"].ticks?.noOfTicks
+            ? props.graphSettings.axis["x-axis"].ticks.noOfTicks
+            : 5
+        )}
+        tick={props.graphSettings.axis["x-axis"].ticks}
+        scale={xScale}
+        orient={props.graphSettings.axis["x-axis"].orient}
+        title={props.graphSettings.axis["x-axis"].title}
+        dimensions={props.graphSettings.style.dimensions}
+        grid={props.graphSettings.axis["x-axis"].grid}
+      />
+    ) : null
   ) : null;
 
-  const yAxis = props.graphSettings.axis["y-axis"] ? (
-    <YAxis
-      domain={yScale.ticks(
-        props.graphSettings.axis["y-axis"].ticks?.noOfTicks
-          ? props.graphSettings.axis["y-axis"].ticks.noOfTicks
-          : 5
-      )}
-      tick={props.graphSettings.axis["y-axis"].ticks}
-      scale={yScale}
-      orient={props.graphSettings.axis["y-axis"].orient}
-      title={props.graphSettings.axis["y-axis"].title}
-      dimensions={props.graphSettings.style.dimensions}
-      grid={props.graphSettings.axis["y-axis"].grid}
-    />
+  const yAxis = props.graphSettings.axis ? (
+    props.graphSettings.axis["y-axis"] ? (
+      <YAxis
+        domain={yScale.ticks(
+          props.graphSettings.axis["y-axis"].ticks?.noOfTicks
+            ? props.graphSettings.axis["y-axis"].ticks.noOfTicks
+            : 5
+        )}
+        tick={props.graphSettings.axis["y-axis"].ticks}
+        scale={yScale}
+        orient={props.graphSettings.axis["y-axis"].orient}
+        title={props.graphSettings.axis["y-axis"].title}
+        dimensions={props.graphSettings.style.dimensions}
+        grid={props.graphSettings.axis["y-axis"].grid}
+      />
+    ) : null
   ) : null;
 
-  const zAxis = props.graphSettings.axis["z-axis"] ? (
-    <ZAxis
-      domain={zScale.ticks(
-        props.graphSettings.axis["z-axis"].ticks?.noOfTicks
-          ? props.graphSettings.axis["z-axis"].ticks.noOfTicks
-          : 5
-      )}
-      tick={props.graphSettings.axis["z-axis"].ticks}
-      scale={zScale}
-      orient={props.graphSettings.axis["z-axis"].orient}
-      title={props.graphSettings.axis["z-axis"].title}
-      dimensions={props.graphSettings.style.dimensions}
-      grid={props.graphSettings.axis["z-axis"].grid}
-    />
+  const zAxis = props.graphSettings.axis ? (
+    props.graphSettings.axis["z-axis"] ? (
+      <ZAxis
+        domain={zScale.ticks(
+          props.graphSettings.axis["z-axis"].ticks?.noOfTicks
+            ? props.graphSettings.axis["z-axis"].ticks.noOfTicks
+            : 5
+        )}
+        tick={props.graphSettings.axis["z-axis"].ticks}
+        scale={zScale}
+        orient={props.graphSettings.axis["z-axis"].orient}
+        title={props.graphSettings.axis["z-axis"].title}
+        dimensions={props.graphSettings.style.dimensions}
+        grid={props.graphSettings.axis["z-axis"].grid}
+      />
+    ) : null
   ) : null;
 
-  const box = props.graphSettings.axis["axis-box"] ? (
-    <AxisBox
-      width={props.graphSettings.style.dimensions.width}
-      height={props.graphSettings.style.dimensions.height}
-      depth={props.graphSettings.style.dimensions.depth}
-      color={
-        props.graphSettings.axis["axis-box"].color
-          ? props.graphSettings.axis["axis-box"].color
-          : "#000000"
-      }
-    />
+  const box = props.graphSettings.axis ? (
+    props.graphSettings.axis["axis-box"] ? (
+      <AxisBox
+        width={props.graphSettings.style.dimensions.width}
+        height={props.graphSettings.style.dimensions.height}
+        depth={props.graphSettings.style.dimensions.depth}
+        color={
+          props.graphSettings.axis["axis-box"].color
+            ? props.graphSettings.axis["axis-box"].color
+            : "#000000"
+        }
+      />
+    ) : null
   ) : null;
 
   const stroke_bool = props.graphSettings.mark.style?.stroke ? true : false;
@@ -335,9 +343,11 @@ const ParametricSurfacePlot = (props) => {
         stroke_width={stroke_width}
         stroke_opacity={stroke_opacity}
         opacity={
-          props.graphSettings.mark.style?.fill?.opacity
+          props.graphSettings.mark.style?.fill
             ? props.graphSettings.mark.style?.fill?.opacity
-            : 1
+              ? props.graphSettings.mark.style?.fill?.opacity
+              : 1
+            : 0
         }
       />
       <a-box

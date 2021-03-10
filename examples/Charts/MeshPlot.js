@@ -64,7 +64,6 @@ class App extends Component {
               },
             },
             mark: {
-              type: "plane",
               position: {
                 x: {
                   scaleType: "ordinal",
@@ -83,8 +82,7 @@ class App extends Component {
                   width: 2,
                 },
                 fill: {
-                  scaleType: "linear",
-                  axis: 0,
+                  axis: "x",
                   color: ["green", "blue"],
                   opacity: 0.7,
                 },
