@@ -178,11 +178,17 @@ const PrismMap = (props) => {
       ));
 
   return (
-    <>
+    <a-entity
+      rotation={
+        props.graphSettings.mark.rotation
+          ? props.graphSettings.mark.rotation
+          : "0 0 0"
+      }
+    >
       {sphere}
       {shapes}
       {props.graphSettings.mark.projection ? boundingBox : null}
-    </>
+    </a-entity>
   );
 };
 export default PrismMap;

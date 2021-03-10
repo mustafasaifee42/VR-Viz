@@ -211,12 +211,18 @@ const MapTimeBars = (props) => {
   );
 
   return (
-    <>
+    <a-entity
+      rotation={
+        props.graphSettings.mark.rotation
+          ? props.graphSettings.mark.rotation
+          : "0 0 0"
+      }
+    >
       {mapShape}
       {stroke ? mapOutline : null}
       {marks}
       {boundingBox}
-    </>
+    </a-entity>
   );
 };
 

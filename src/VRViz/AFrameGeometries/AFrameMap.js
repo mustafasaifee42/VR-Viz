@@ -72,10 +72,11 @@ AFRAME.registerComponent("aframemap", {
       geometry.setAttribute("color", new THREE.BufferAttribute(vertexColor, 3));
       return geometry;
     });
-
-    let geoMerge = BufferGeometryUtils.mergeBufferGeometries(geoArray);
-    const mesh = new THREE.Mesh(geoMerge, mat);
-    this.el.setObject3D("mesh", new AFRAME.THREE.Object3D());
-    this.el.object3D.children[0].add(mesh);
+    if (geoArray.length > 0) {
+      let geoMerge = BufferGeometryUtils.mergeBufferGeometries(geoArray);
+      const mesh = new THREE.Mesh(geoMerge, mat);
+      this.el.setObject3D("mesh", new AFRAME.THREE.Object3D());
+      this.el.object3D.children[0].add(mesh);
+    }
   },
 });

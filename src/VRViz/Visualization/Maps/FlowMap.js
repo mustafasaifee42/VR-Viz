@@ -442,7 +442,13 @@ const FlowMap = (props) => {
   }
 
   return (
-    <>
+    <a-entity
+      rotation={
+        props.graphSettings.mark.rotation
+          ? props.graphSettings.mark.rotation
+          : "0 0 0"
+      }
+    >
       {mapShape}
       {stroke ? mapOutline : null}
       {sourceNode}
@@ -450,7 +456,7 @@ const FlowMap = (props) => {
       {curves}
       {animationDot}
       {boundingBox}
-    </>
+    </a-entity>
   );
 };
 
