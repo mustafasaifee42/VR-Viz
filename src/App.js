@@ -1,5 +1,4 @@
 import VRViz from "./VRViz";
-import mapData from "./mapData/mapData.json";
 
 function App() {
   return (
@@ -7,7 +6,7 @@ function App() {
       scene={{
         sky: {
           style: {
-            color: "#fff",
+            color: "#ccc",
             texture: false,
           },
         },
@@ -27,65 +26,117 @@ function App() {
           },
         ],
         camera: {
-          position: "5 5 20",
+          position: "0 0 10",
           rotation: "0 0 0",
         },
-        reloadPageOnExitVR: true,
+        floor: {
+          style: {
+            color: "#ccc",
+            texture: false,
+            width: 100,
+            depth: 100,
+          },
+        },
       }}
       graph={[
         {
-          type: "MapStackedBarChart",
-          data: {
-            dataFile: "data/mapStackedBarChart.csv",
-            fileType: "csv",
-            fieldDesc: [
-              ["latitude", "number"],
-              ["longitude", "number"],
-              ["value", "number"],
-              ["value1", "number"],
-            ],
-          },
+          type: "SurfacePlot",
           style: {
             origin: [0, 0, 0],
+            dimensions: {
+              width: 10,
+              height: 10,
+              depth: 10,
+            },
           },
           mark: {
-            mapScale: 20,
-            mapOrigin: [5, 5],
-            rotation: "-75 0 0",
-            map: {
-              data: mapData,
-              projection: "Mercator",
-              shapeIdentifier: "id",
-              shapeKey: "countries",
-              style: {
-                extrusion: 0.1,
-                fill: {
-                  opacity: 0.001,
-                  color: "#333333",
-                },
-                stroke: {
-                  width: 1,
-                  color: "#444444",
-                },
+            position: {
+              x: {
+                domain: [0, 2 * Math.PI],
+                steps: 50,
+              },
+              y: {
+                function: (x, z) => x * Math.sin(x) - z * Math.cos(z),
+              },
+              z: {
+                domain: [0, 2 * Math.PI],
+                steps: 50,
               },
             },
-            bars: {
-              type: "box",
-              style: {
-                depth: 0.2,
-                width: 0.2,
-                height: {
-                  scaleType: "linear",
-                  field: ["value", "value1"],
-                  value: [0, 5],
-                  startFromZero: true,
-                },
-                fill: {
-                  opacity: 0.6,
-                  scaleType: "ordinal",
-                  color: ["#b71c1c", "#2196f3"],
-                  field: ["value", "value1"],
-                },
+            style: {
+              fill: {
+                function: (x, z) => x * z,
+                color: ["green", "blue"],
+                opacity: 1,
+              },
+              stroke: {
+                width: 1,
+                color: "black",
+              },
+            },
+          },
+          axis: {
+            "axis-box": {
+              color: "black",
+            },
+            "x-axis": {
+              orient: "bottom-back",
+              title: {
+                text: "",
+                fontSize: 10,
+                color: "black",
+                opacity: 1,
+              },
+              ticks: {
+                noOfTicks: 10,
+                size: 0.1,
+                color: "black",
+                opacity: 1,
+                fontSize: 10,
+              },
+              grid: {
+                color: "black",
+                opacity: 1,
+              },
+            },
+            "y-axis": {
+              orient: "bottom-back",
+              title: {
+                text: "",
+                fontSize: 10,
+                color: "black",
+                opacity: 1,
+              },
+              ticks: {
+                noOfTicks: 10,
+                size: 0.1,
+                color: "black",
+                opacity: 1,
+                fontSize: 10,
+              },
+              grid: {
+                color: "black",
+                opacity: 1,
+              },
+            },
+            "z-axis": {
+              orient: "bottom-back",
+              title: {
+                text: "",
+                fontSize: 10,
+                color: "black",
+                opacity: 1,
+              },
+              ticks: {
+                noOfTicks: 10,
+                size: 0.1,
+                color: "black",
+                opacity: 1,
+                fontSize: 10,
+              },
+              grid: {
+                color: "black",
+                opacity: 1,
               },
             },
           },
