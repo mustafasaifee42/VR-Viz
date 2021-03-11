@@ -392,9 +392,9 @@ _Plots_
 | origin    | array of numbers | Defines the position where the origin of the graph is placed. **Required.** _Example: [0,0,0]_                                                                                     |
 | rotation  | string           | Defines the rotation of the chart. **Not Required. Default value: '0 0 0'** _Format example: '-90 0 0'_                                                                            |
 | dimension | object           | Defines the dimension of the graph. Keys in the object are `width`, `depth` and `height`. The value for all these keys are float type. **Required.**                               |
-| xPivot    | number           | Defines the pivot point on x axis around which the graph can be rotated using `animateRotation` or on mouse drag. **Not required. Default value is the center point of the grsph** |
-| yPivot    | number           | Defines the pivot point on y axis around which the graph can be rotated using `animateRotation` or on mouse drag. **Not required. Default value is the center point of the grsph** |
-| zPivot    | number           | Defines the pivot point on z axis around which the graph can be rotated using `animateRotation` or on mouse drag. **Not required. Default value is the center point of the grsph** |
+| xPivot    | number           | Defines the pivot point on x axis around which the graph can be rotated using `animateRotation` or on mouse drag. **Not required. Default value is the center point of the graph** |
+| yPivot    | number           | Defines the pivot point on y axis around which the graph can be rotated using `animateRotation` or on mouse drag. **Not required. Default value is the center point of the graph** |
+| zPivot    | number           | Defines the pivot point on z axis around which the graph can be rotated using `animateRotation` or on mouse drag. **Not required. Default value is the center point of the graph** |
 
 #### mark
 
