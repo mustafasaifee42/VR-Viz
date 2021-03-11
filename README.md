@@ -282,12 +282,12 @@ Main features / properties of the graph objects are:
 
 - type
 - data
-- style **Not Required**
+- style `Not Required`
 - mark
-- axis **Not Required**
-- title **Not Required**
-- rotationOnDrag **Not Requred**
-- animateRotation **Not Required**
+- axis `Not Required`
+- title `Not Required`
+- rotationOnDrag `Not Requred`
+- animateRotation `Not Required`
 
 #### type
 
@@ -379,7 +379,7 @@ _Plots_
 | fileType | string | Type of value. **Available values: `csv`, `json`, `ply`, `text`. If the value of fileType is not mentioned the dataFile is taken as a json variable.** `csv` fletype must have header; `text` is used for csv without header.                                                                                                                                                                           |
 | desc     | array  | Description of the header. **Required only if the `fileType` is csv.** _Example: [['Year', 'date','YYYY'], ['geoJson', 'jsonObject'], ['Tornadoes', 'text'], ['Deaths', 'number']]_. If the data type for a particular header is date or time then the format is also required. Available formats can be seen [here](http://momentjs.com/docs/#/parsing/). _Moment.js is used to parse dates and time._ |
 
-#### style
+#### style `Not Required`
 
 **Properties for Style**
 
@@ -396,7 +396,7 @@ _Plots_
 
 `mark` is used to define the style and encoding for graphics in different visualizations. Different visualizations have different `mark` properties and key. These are discussed further in the documentation of individual visualizations.
 
-#### axis
+#### axis `Not Required`
 
 `axis` is used to define and draw the x, y and z axis. This object is not compulsory. If this object is not present none of the axes are drawn.
 
@@ -520,7 +520,7 @@ Defines if the different axes are drawn or not. **Not Required. If an object is 
 | grid.color         | string | Defined the color for grid for the axis. **Required.**                                                                                                                                                                                                                                                                                                                                                                     |
 | grid.opacity       | float  | Defined the opacity for grid for the axis. **Required.** _Value must be between 0 and 1._                                                                                                                                                                                                                                                                                                                                  |
 
-#### title **Not Required**
+#### title `Not Required`
 
 This defines the title of the graph
 
@@ -539,11 +539,11 @@ This defines the title of the graph
 | title.fontSize     | float    | Defines the fontSize of the graph title. **Not Required. Default value: 12.**                                                                    |
 | title.billboarding | bool     | Defines if the text always face the camera. **Not Required. Default value:false.** _If the value is change to true `title.rotation` is ignored._ |
 
-### rotationOnDrag **Not Required**
+#### rotationOnDrag `Not Required`
 
 This is use to define weather the visualization rotates on drag. _Type: `boolean`._ **Default value: `false`.**
 
-#### animateRotation **Not Required**
+#### animateRotation `Not Required`
 
 This is use to define the rotation animation of the graph for viewing it in different perspective. _If animateRotation is present the roation of graph on mouse drag is ignored._
 
