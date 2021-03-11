@@ -96,10 +96,26 @@ const Visualization = (props) => {
                   ? props.graphSettings.title?.color
                   : "#000000"
               }
-              wrapCount={props.graphSettings.title?.wrapCount}
-              lineHeight={props.graphSettings.title?.lineHeight}
-              width={props.graphSettings.title?.width}
-              value={props.graphSettings.title?.value}
+              wrapCount={
+                props.graphSettings.title?.wrapCount
+                  ? props.graphSettings.title?.wrapCount
+                  : 80
+              }
+              lineHeight={
+                props.graphSettings.title?.lineHeight
+                  ? props.graphSettings.title?.lineHeight
+                  : 14
+              }
+              width={
+                props.graphSettings.title?.fontSize
+                  ? props.graphSettings.title?.fontSize
+                  : 12
+              }
+              value={
+                props.graphSettings.title?.text
+                  ? props.graphSettings.title?.text
+                  : "Visualization"
+              }
               anchor="align"
               side="double"
               align={

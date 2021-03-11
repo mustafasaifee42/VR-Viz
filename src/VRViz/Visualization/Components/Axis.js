@@ -40,7 +40,7 @@ const XAxis = (props) => {
       opacity={props.title.opacity ? props.title.opacity : 1}
       color={props.title.color ? props.title.color : "#000000"}
       width={props.title.fontSize ? props.title.fontSize : 12}
-      value={`${props.title.text}`}
+      value={props.title.text ? props.title.text : "x-axis"}
       anchor="align"
       side="double"
       align={titleAlign}
@@ -302,7 +302,7 @@ const YAxis = (props) => {
       opacity={props.title.opacity ? props.title.opacity : 1}
       color={props.title.color ? props.title.color : "#000000"}
       width={props.title.fontSize ? props.title.fontSize : 12}
-      value={`${props.title.text}`}
+      value={props.title.text ? props.title.text : "y-axis"}
       anchor="align"
       side="double"
       align={titleAlign}
@@ -564,7 +564,7 @@ const ZAxis = (props) => {
       opacity={props.title.opacity ? props.title.opacity : 1}
       color={props.title.color ? props.title.color : "#000000"}
       width={props.title.fontSize ? props.title.fontSize : 12}
-      value={`${props.title.text}`}
+      value={props.title.text ? props.title.text : "z-axis"}
       anchor="align"
       side="double"
       align={titleAlign}

@@ -4,7 +4,7 @@ import GetDomain from "../../utils/GetDomain";
 import { XAxis, YAxis, ZAxis, AxisBox } from "../Components/Axis";
 
 const ParametricSurfacePlot = (props) => {
-  if (!props.graphSettings.style || !props.graphSettings.mark) {
+  if (!props.graphSettings.mark) {
     console.warn(
       `Error: Some necessary attributes missing for ${props.graphSettings.type}`
     );
@@ -81,18 +81,33 @@ const ParametricSurfacePlot = (props) => {
 
   const xScale = d3
     .scaleLinear()
-    .range([0, props.graphSettings.style.dimensions.width])
+    .range([
+      0,
+      props.graphSettings.style?.dimensions?.width
+        ? props.graphSettings.style?.dimensions?.width
+        : 10,
+    ])
     .domain(xDomain);
 
   const yScale = d3
     .scaleLinear()
     .domain(yDomain)
-    .range([0, props.graphSettings.style.dimensions.height]);
+    .range([
+      0,
+      props.graphSettings.style?.dimensions?.height
+        ? props.graphSettings.style?.dimensions?.height
+        : 10,
+    ]);
 
   const zScale = d3
     .scaleLinear()
     .domain(zDomain)
-    .range([0, props.graphSettings.style.dimensions.depth]);
+    .range([
+      0,
+      props.graphSettings.style?.dimensions?.depth
+        ? props.graphSettings.style?.dimensions?.depth
+        : 10,
+    ]);
 
   const colorRange = props.graphSettings.mark.style?.fill?.color
     ? props.graphSettings.mark.style?.fill?.color
@@ -261,7 +276,11 @@ const ParametricSurfacePlot = (props) => {
         scale={xScale}
         orient={props.graphSettings.axis["x-axis"].orient}
         title={props.graphSettings.axis["x-axis"].title}
-        dimensions={props.graphSettings.style.dimensions}
+        dimensions={
+          props.graphSettings.style?.dimensions
+            ? props.graphSettings.style?.dimensions
+            : { width: 10, height: 10, depth: 10 }
+        }
         grid={props.graphSettings.axis["x-axis"].grid}
       />
     ) : null
@@ -279,7 +298,11 @@ const ParametricSurfacePlot = (props) => {
         scale={yScale}
         orient={props.graphSettings.axis["y-axis"].orient}
         title={props.graphSettings.axis["y-axis"].title}
-        dimensions={props.graphSettings.style.dimensions}
+        dimensions={
+          props.graphSettings.style?.dimensions
+            ? props.graphSettings.style?.dimensions
+            : { width: 10, height: 10, depth: 10 }
+        }
         grid={props.graphSettings.axis["y-axis"].grid}
       />
     ) : null
@@ -297,7 +320,11 @@ const ParametricSurfacePlot = (props) => {
         scale={zScale}
         orient={props.graphSettings.axis["z-axis"].orient}
         title={props.graphSettings.axis["z-axis"].title}
-        dimensions={props.graphSettings.style.dimensions}
+        dimensions={
+          props.graphSettings.style?.dimensions
+            ? props.graphSettings.style?.dimensions
+            : { width: 10, height: 10, depth: 10 }
+        }
         grid={props.graphSettings.axis["z-axis"].grid}
       />
     ) : null
@@ -306,9 +333,21 @@ const ParametricSurfacePlot = (props) => {
   const box = props.graphSettings.axis ? (
     props.graphSettings.axis["axis-box"] ? (
       <AxisBox
-        width={props.graphSettings.style.dimensions.width}
-        height={props.graphSettings.style.dimensions.height}
-        depth={props.graphSettings.style.dimensions.depth}
+        width={
+          props.graphSettings.style?.dimensions?.width
+            ? props.graphSettings.style?.dimensions?.width
+            : 10
+        }
+        height={
+          props.graphSettings.style?.dimensions?.height
+            ? props.graphSettings.style?.dimensions?.height
+            : 10
+        }
+        depth={
+          props.graphSettings.style?.dimensions?.depth
+            ? props.graphSettings.style?.dimensions?.depth
+            : 10
+        }
         color={
           props.graphSettings.axis["axis-box"].color
             ? props.graphSettings.axis["axis-box"].color
@@ -352,12 +391,34 @@ const ParametricSurfacePlot = (props) => {
       />
       <a-box
         class="clickable"
-        width={props.graphSettings.style.dimensions.width}
-        height={props.graphSettings.style.dimensions.height}
-        depth={props.graphSettings.style.dimensions.depth}
-        position={`${props.graphSettings.style.dimensions.width / 2} ${
-          props.graphSettings.style.dimensions.height / 2
-        } ${props.graphSettings.style.dimensions.depth / 2}`}
+        width={
+          props.graphSettings.style?.dimensions?.width
+            ? props.graphSettings.style?.dimensions?.width
+            : 10
+        }
+        height={
+          props.graphSettings.style?.dimensions?.height
+            ? props.graphSettings.style?.dimensions?.height
+            : 10
+        }
+        depth={
+          props.graphSettings.style?.dimensions?.depth
+            ? props.graphSettings.style?.dimensions?.depth
+            : 10
+        }
+        position={`${
+          props.graphSettings.style?.dimensions?.width
+            ? props.graphSettings.style?.dimensions?.width / 2
+            : 5
+        } ${
+          props.graphSettings.style?.dimensions?.height
+            ? props.graphSettings.style?.dimensions?.height / 2
+            : 5
+        } ${
+          props.graphSettings.style?.dimensions?.depth
+            ? props.graphSettings.style?.dimensions?.depth / 2
+            : 5
+        }`}
         opacity={0}
       />
     </>

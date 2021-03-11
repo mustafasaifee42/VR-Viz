@@ -74,12 +74,34 @@ const CrossSectionView = (props) => {
         click-rotation={`enabled:${clickRotation}`}
         class={"clickable"}
         gltf-model={`url(${props.graphSettings.mark.object})`}
-        position={`${props.graphSettings.style.position[0]} ${props.graphSettings.style.position[1]} ${props.graphSettings.style.position[2]}`}
+        position={
+          props.graphSettings.style?.origin
+            ? `${props.graphSettings.style.origin[0]} ${props.graphSettings.style.origin[1]} ${props.graphSettings.style.origin[2]}`
+            : "0 0 0"
+        }
         play-all-model-animations
-        pivot-center-model={`xPosition:${props.graphSettings.style.position[0]};yPosition:${props.graphSettings.style.position[1]};zPosition:${props.graphSettings.style.position[2]};pivotX:${props.graphSettings.style.xPivot};pivotY:${props.graphSettings.style.yPivot};pivotZ:${props.graphSettings.style.zPivot}`}
+        pivot-center-model={`xPosition:${
+          props.graphSettings.style?.origin
+            ? props.graphSettings.style.origin[0]
+            : 0
+        };yPosition:${
+          props.graphSettings.style?.origin
+            ? props.graphSettings.style.origin[1]
+            : 0
+        };zPosition:${
+          props.graphSettings.style?.origin
+            ? props.graphSettings.style.origin[2]
+            : 0
+        };pivotX:${props.graphSettings.style?.xPivot};pivotY:${
+          props.graphSettings.style?.yPivot
+        };pivotZ:${props.graphSettings.style?.zPivot}`}
         modify-material={`specular:${specular};shininess:${shininess};emissive:${emissive};emphasisMaterial:${emphasisMaterial};emphasisMeshName:${meshName};emphasisOpacity:${emphasisOpacity};emphasisColor:${emphasisColor};modifyMaterial:${modifyMaterial};material:${material};materialColor:${materialColor};materialOpacity:${materialOpacity};edgeThresholdAngle:${edgeThresholdAngle};stroke:${stroke};strokeWidth:${strokeWidth};strokeColor:${strokeColor}`}
         highlight-on-click={`materialOpacity:${materialOpacity};emphasisOpacity:${emphasisOpacity};emphasisColor:${emphasisColor};materialColor:${materialColor};highlightEffect:${highlightEffect};highlightedOpacity:${highlightedOpacity};highlightedColor:${highlightedColor}`}
-        scale={`${props.graphSettings.style.scale[0]} ${props.graphSettings.style.scale[1]} ${props.graphSettings.style.scale[2]}`}
+        scale={
+          props.graphSettings.style?.scale
+            ? `${props.graphSettings.style.scale[0]} ${props.graphSettings.style.scale[1]} ${props.graphSettings.style.scale[2]}`
+            : "1 1 1"
+        }
       />
     </>
   );

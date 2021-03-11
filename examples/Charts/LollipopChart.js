@@ -113,12 +113,6 @@ class App extends Component {
             axis: {
               "x-axis": {
                 orient: "back-bottom",
-                title: {
-                  text: "",
-                  fontSize: 10,
-                  color: "white",
-                  opacity: 0.7,
-                },
                 ticks: {
                   noOfTicks: 10,
                   size: 0.1,
@@ -133,12 +127,6 @@ class App extends Component {
               },
               "y-axis": {
                 orient: "back-left",
-                title: {
-                  text: "",
-                  fontSize: 10,
-                  color: "white",
-                  opacity: 0.7,
-                },
                 ticks: {
                   noOfTicks: 10,
                   size: 0.1,
@@ -153,12 +141,6 @@ class App extends Component {
               },
               "z-axis": {
                 orient: "bottom-left",
-                title: {
-                  text: "",
-                  fontSize: 10,
-                  color: "white",
-                  opacity: 0.7,
-                },
                 ticks: {
                   noOfTicks: 10,
                   size: 0.1,

@@ -5,7 +5,7 @@ import GetDomain from "../../utils/GetDomain";
 import { XAxis, YAxis, ZAxis, AxisBox } from "../Components/Axis";
 
 const MeshPlot = (props) => {
-  if (!props.data || !props.graphSettings.style || !props.graphSettings.mark) {
+  if (!props.data || !props.graphSettings.mark) {
     console.warn(
       `Error: Some necessary attributes missing for ${props.graphSettings.type}`
     );
@@ -53,48 +53,42 @@ const MeshPlot = (props) => {
     }
   }
 
+  const graphHeight = props.graphSettings.style?.dimensions?.height
+    ? props.graphSettings.style?.dimensions?.height
+    : 10;
+  const graphWidth = props.graphSettings.style?.dimensions?.width
+    ? props.graphSettings.style?.dimensions?.width
+    : 10;
+  const graphDepth = props.graphSettings.style?.dimensions?.depth
+    ? props.graphSettings.style?.dimensions?.depth
+    : 10;
+
   const colorDomain = props.graphSettings.mark.style?.fill?.axis
     ? [
         0,
         props.graphSettings.mark.style?.fill?.axis === "y"
-          ? props.graphSettings.style.dimensions.height
+          ? graphHeight
           : props.graphSettings.mark.style?.fill?.axis === "z"
-          ? props.graphSettings.style.dimensions.depth
-          : props.graphSettings.style.dimensions.width,
+          ? graphDepth
+          : graphWidth,
       ]
     : null;
   //Adding Scale
   const xScale =
     props.graphSettings.mark.position.x.scaleType === "linear"
-      ? d3
-          .scaleLinear()
-          .range([0, props.graphSettings.style.dimensions.width])
-          .domain(xDomain)
+      ? d3.scaleLinear().range([0, graphWidth]).domain(xDomain)
       : d3
           .scaleOrdinal()
           .range(
-            xDomain.map(
-              (_d, i) =>
-                (i * props.graphSettings.style.dimensions.width) /
-                (xDomain.length - 1)
-            )
+            xDomain.map((_d, i) => (i * graphWidth) / (xDomain.length - 1))
           )
           .domain(xDomain);
 
-  const yScale = d3
-    .scaleLinear()
-    .domain(yDomain)
-    .range([0, props.graphSettings.style.dimensions.height]);
+  const yScale = d3.scaleLinear().domain(yDomain).range([0, graphHeight]);
 
   const zScale = d3
     .scaleOrdinal()
-    .range(
-      zDomain.map(
-        (_d, i) =>
-          (i * props.graphSettings.style.dimensions.depth) /
-          (zDomain.length - 1)
-      )
-    )
+    .range(zDomain.map((_d, i) => (i * graphDepth) / (zDomain.length - 1)))
     .domain(zDomain);
 
   const colorRange = props.graphSettings.mark.style?.fill?.color
@@ -260,7 +254,11 @@ const MeshPlot = (props) => {
         scale={xScale}
         orient={props.graphSettings.axis["x-axis"].orient}
         title={props.graphSettings.axis["x-axis"].title}
-        dimensions={props.graphSettings.style.dimensions}
+        dimensions={
+          props.graphSettings.style?.dimensions
+            ? props.graphSettings.style?.dimensions
+            : { width: 10, height: 10, depth: 10 }
+        }
         grid={props.graphSettings.axis["x-axis"].grid}
       />
     ) : null
@@ -278,7 +276,11 @@ const MeshPlot = (props) => {
         scale={yScale}
         orient={props.graphSettings.axis["y-axis"].orient}
         title={props.graphSettings.axis["y-axis"].title}
-        dimensions={props.graphSettings.style.dimensions}
+        dimensions={
+          props.graphSettings.style?.dimensions
+            ? props.graphSettings.style?.dimensions
+            : { width: 10, height: 10, depth: 10 }
+        }
         grid={props.graphSettings.axis["y-axis"].grid}
       />
     ) : null
@@ -300,7 +302,11 @@ const MeshPlot = (props) => {
         scale={zScale}
         orient={props.graphSettings.axis["z-axis"].orient}
         title={props.graphSettings.axis["z-axis"].title}
-        dimensions={props.graphSettings.style.dimensions}
+        dimensions={
+          props.graphSettings.style?.dimensions
+            ? props.graphSettings.style?.dimensions
+            : { width: 10, height: 10, depth: 10 }
+        }
         grid={props.graphSettings.axis["z-axis"].grid}
       />
     ) : null
@@ -309,9 +315,21 @@ const MeshPlot = (props) => {
   const box = props.graphSettings.axis ? (
     props.graphSettings.axis["axis-box"] ? (
       <AxisBox
-        width={props.graphSettings.style.dimensions.width}
-        height={props.graphSettings.style.dimensions.height}
-        depth={props.graphSettings.style.dimensions.depth}
+        width={
+          props.graphSettings.style?.dimensions?.width
+            ? props.graphSettings.style?.dimensions?.width
+            : 10
+        }
+        height={
+          props.graphSettings.style?.dimensions?.height
+            ? props.graphSettings.style?.dimensions?.height
+            : 10
+        }
+        depth={
+          props.graphSettings.style?.dimensions?.depth
+            ? props.graphSettings.style?.dimensions?.depth
+            : 10
+        }
         color={
           props.graphSettings.axis["axis-box"].color
             ? props.graphSettings.axis["axis-box"].color
@@ -354,12 +372,34 @@ const MeshPlot = (props) => {
       />
       <a-box
         class="clickable"
-        width={props.graphSettings.style.dimensions.width}
-        height={props.graphSettings.style.dimensions.height}
-        depth={props.graphSettings.style.dimensions.depth}
-        position={`${props.graphSettings.style.dimensions.width / 2} ${
-          props.graphSettings.style.dimensions.height / 2
-        } ${props.graphSettings.style.dimensions.depth / 2}`}
+        width={
+          props.graphSettings.style?.dimensions?.width
+            ? props.graphSettings.style?.dimensions?.width
+            : 10
+        }
+        height={
+          props.graphSettings.style?.dimensions?.height
+            ? props.graphSettings.style?.dimensions?.height
+            : 10
+        }
+        depth={
+          props.graphSettings.style?.dimensions?.depth
+            ? props.graphSettings.style?.dimensions?.depth
+            : 10
+        }
+        position={`${
+          props.graphSettings.style?.dimensions?.width
+            ? props.graphSettings.style?.dimensions?.width / 2
+            : 5
+        } ${
+          props.graphSettings.style?.dimensions?.height
+            ? props.graphSettings.style?.dimensions?.height / 2
+            : 5
+        } ${
+          props.graphSettings.style?.dimensions?.depth
+            ? props.graphSettings.style?.dimensions?.depth / 2
+            : 5
+        }`}
         opacity={0}
       />
     </>

@@ -1,5 +1,7 @@
 import VRViz from "./VRViz";
 
+import mapData from "./mapData/mapData.json";
+
 function App() {
   return (
     <VRViz
@@ -26,8 +28,10 @@ function App() {
           },
         ],
         camera: {
-          position: "0 0 10",
+          position: "0 5 10",
           rotation: "0 0 0",
+          nearClipping: 0.5,
+          fov: 80,
         },
         floor: {
           style: {
@@ -40,103 +44,71 @@ function App() {
       }}
       graph={[
         {
-          type: "SurfacePlot",
-          style: {
-            origin: [0, 0, 0],
-            dimensions: {
-              width: 10,
-              height: 10,
-              depth: 10,
-            },
+          type: "BarGraph",
+          data: {
+            dataFile: "data/barGraph.csv",
+            fileType: "csv",
+            fieldDesc: [
+              ["Year", "text"],
+              ["Month", "text"],
+              ["Tornadoes", "number"],
+              ["Deaths", "number"],
+            ],
           },
           mark: {
+            type: "cone",
+            class: (d, i) => `boxes`,
+            id: (d, i) => `boxes_${d.Month}_${d.Year}`,
             position: {
               x: {
-                domain: [0, 2 * Math.PI],
-                steps: 50,
-              },
-              y: {
-                function: (x, z) => x * Math.sin(x) - z * Math.cos(z),
+                field: "Month",
+                domain: [
+                  "January",
+                  "February",
+                  "March",
+                  "April",
+                  "May",
+                  "June",
+                  "July",
+                  "August",
+                  "September",
+                  "October",
+                  "November",
+                  "December",
+                ],
               },
               z: {
-                domain: [0, 2 * Math.PI],
-                steps: 50,
+                field: "Year",
               },
             },
             style: {
+              height: {
+                startFromZero: true,
+                field: "Tornadoes",
+              },
               fill: {
-                function: (x, z) => x * z,
-                color: ["green", "blue"],
-                opacity: 1,
-              },
-              stroke: {
-                width: 1,
-                color: "black",
+                opacity: 0.4,
+                scaleType: "linear",
+                field: "Deaths",
+                color: ["red", "green"],
               },
             },
-          },
-          axis: {
-            "axis-box": {
-              color: "black",
-            },
-            "x-axis": {
-              orient: "bottom-back",
-              title: {
-                text: "",
-                fontSize: 10,
-                color: "black",
+            mouseOver: {
+              focusedObject: {
                 opacity: 1,
+                fill: "#333",
               },
-              ticks: {
-                noOfTicks: 10,
-                size: 0.1,
-                color: "black",
-                opacity: 1,
-                fontSize: 10,
+              nonFocusedObject: {
+                opacity: 0,
               },
-              grid: {
-                color: "black",
-                opacity: 1,
-              },
-            },
-            "y-axis": {
-              orient: "bottom-back",
-              title: {
-                text: "",
-                fontSize: 10,
-                color: "black",
-                opacity: 1,
-              },
-              ticks: {
-                noOfTicks: 10,
-                size: 0.1,
-                color: "black",
-                opacity: 1,
-                fontSize: 10,
-              },
-              grid: {
-                color: "black",
-                opacity: 1,
-              },
-            },
-            "z-axis": {
-              orient: "bottom-back",
-              title: {
-                text: "",
-                fontSize: 10,
-                color: "black",
-                opacity: 1,
-              },
-              ticks: {
-                noOfTicks: 10,
-                size: 0.1,
-                color: "black",
-                opacity: 1,
-                fontSize: 10,
-              },
-              grid: {
-                color: "black",
-                opacity: 1,
+              label: {
+                value: (d) =>
+                  `Year:${d.Year}\nMonth:${d.Month}\nDeaths:${d.Deaths}\nTornadoes:${d.Tornadoes}\n`,
+                align: "center",
+                fontSize: 1,
+                backgroundColor: "#333",
+                backgroundOpacity: 1,
+                fontColor: "#fff",
               },
             },
           },

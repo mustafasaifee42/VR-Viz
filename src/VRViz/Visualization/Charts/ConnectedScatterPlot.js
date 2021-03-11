@@ -5,7 +5,7 @@ import Shape from "../Components/Shape";
 import { XAxis, YAxis, ZAxis, AxisBox } from "../Components/Axis";
 
 const ConnectedScatterPlot = (props) => {
-  if (!props.data || !props.graphSettings.style || !props.graphSettings.mark) {
+  if (!props.data || !props.graphSettings.mark) {
     console.warn(
       `Error: Some necessary attributes missing for ${props.graphSettings.type}`
     );
@@ -66,17 +66,32 @@ const ConnectedScatterPlot = (props) => {
   const xScale = d3
     .scaleLinear()
     .domain(xDomain)
-    .range([0, props.graphSettings.style.dimensions.width]);
+    .range([
+      0,
+      props.graphSettings.style?.dimensions?.width
+        ? props.graphSettings.style?.dimensions?.width
+        : 10,
+    ]);
 
   const yScale = d3
     .scaleLinear()
     .domain(yDomain)
-    .range([0, props.graphSettings.style.dimensions.height]);
+    .range([
+      0,
+      props.graphSettings.style?.dimensions?.height
+        ? props.graphSettings.style?.dimensions?.height
+        : 10,
+    ]);
 
   const zScale = d3
     .scaleLinear()
     .domain(zDomain)
-    .range([0, props.graphSettings.style.dimensions.depth]);
+    .range([
+      0,
+      props.graphSettings.style?.dimensions?.depth
+        ? props.graphSettings.style?.dimensions?.depth
+        : 10,
+    ]);
 
   const colorRange = props.graphSettings.mark.points?.style?.fill?.color
     ? props.graphSettings.mark.points?.style?.fill?.color
@@ -273,7 +288,11 @@ const ConnectedScatterPlot = (props) => {
         scale={xScale}
         orient={props.graphSettings.axis["x-axis"].orient}
         title={props.graphSettings.axis["x-axis"].title}
-        dimensions={props.graphSettings.style.dimensions}
+        dimensions={
+          props.graphSettings.style?.dimensions
+            ? props.graphSettings.style?.dimensions
+            : { width: 10, height: 10, depth: 10 }
+        }
         grid={props.graphSettings.axis["x-axis"].grid}
       />
     ) : null
@@ -291,7 +310,11 @@ const ConnectedScatterPlot = (props) => {
         scale={yScale}
         orient={props.graphSettings.axis["y-axis"].orient}
         title={props.graphSettings.axis["y-axis"].title}
-        dimensions={props.graphSettings.style.dimensions}
+        dimensions={
+          props.graphSettings.style?.dimensions
+            ? props.graphSettings.style?.dimensions
+            : { width: 10, height: 10, depth: 10 }
+        }
         grid={props.graphSettings.axis["y-axis"].grid}
       />
     ) : null
@@ -309,7 +332,11 @@ const ConnectedScatterPlot = (props) => {
         scale={zScale}
         orient={props.graphSettings.axis["z-axis"].orient}
         title={props.graphSettings.axis["z-axis"].title}
-        dimensions={props.graphSettings.style.dimensions}
+        dimensions={
+          props.graphSettings.style?.dimensions
+            ? props.graphSettings.style?.dimensions
+            : { width: 10, height: 10, depth: 10 }
+        }
         grid={props.graphSettings.axis["z-axis"].grid}
       />
     ) : null
@@ -318,9 +345,21 @@ const ConnectedScatterPlot = (props) => {
   const box = props.graphSettings.axis ? (
     props.graphSettings.axis["axis-box"] ? (
       <AxisBox
-        width={props.graphSettings.style.dimensions.width}
-        height={props.graphSettings.style.dimensions.height}
-        depth={props.graphSettings.style.dimensions.depth}
+        width={
+          props.graphSettings.style?.dimensions?.width
+            ? props.graphSettings.style?.dimensions?.width
+            : 10
+        }
+        height={
+          props.graphSettings.style?.dimensions?.height
+            ? props.graphSettings.style?.dimensions?.height
+            : 10
+        }
+        depth={
+          props.graphSettings.style?.dimensions?.depth
+            ? props.graphSettings.style?.dimensions?.depth
+            : 10
+        }
         color={
           props.graphSettings.axis["axis-box"].color
             ? props.graphSettings.axis["axis-box"].color

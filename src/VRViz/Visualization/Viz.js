@@ -288,9 +288,39 @@ const Viz = (props) => {
     ) : (
       <a-entity
         click-rotation={`enabled:${clickRotation}`}
-        pivot-center={`xPosition:${props.graphSettings.style.origin[0]};yPosition:${props.graphSettings.style.origin[1]};zPosition:${props.graphSettings.style.origin[2]};pivotX:${props.graphSettings.style.xPivot};pivotY:${props.graphSettings.style.yPivot};pivotZ:${props.graphSettings.style.zPivot}`}
-        position={`${props.graphSettings.style.origin[0]} ${props.graphSettings.style.origin[1]} ${props.graphSettings.style.origin[2]}`}
-        rotation={props.graphSettings.style.rotation}
+        pivot-center={`xPosition:${
+          props.graphSettings.style?.origin
+            ? props.graphSettings.style.origin[0]
+            : 0
+        };yPosition:${
+          props.graphSettings.style?.origin
+            ? props.graphSettings.style.origin[1]
+            : 0
+        };zPosition:${
+          props.graphSettings.style?.origin
+            ? props.graphSettings.style.origin[2]
+            : 0
+        };pivotX:${props.graphSettings.style?.xPivot};pivotY:${
+          props.graphSettings.style?.yPivot
+        };pivotZ:${props.graphSettings.style?.zPivot}`}
+        position={`${
+          props.graphSettings.style?.origin
+            ? props.graphSettings.style.origin[0]
+            : 0
+        } ${
+          props.graphSettings.style?.origin
+            ? props.graphSettings.style.origin[1]
+            : 0
+        } ${
+          props.graphSettings.style?.origin
+            ? props.graphSettings.style.origin[2]
+            : 0
+        }`}
+        rotation={
+          props.graphSettings.style?.rotation
+            ? props.graphSettings.style.rotation
+            : "0 0 0"
+        }
         id={props.graphID}
       >
         {animation}

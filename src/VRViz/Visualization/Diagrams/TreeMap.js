@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import Shape from "../Components/Shape";
 
 const TreeMap = (props) => {
-  if (!props.data || !props.graphSettings.style || !props.graphSettings.mark) {
+  if (!props.data || !props.graphSettings.mark) {
     console.warn(
       `Error: Some necessary attributes missing for ${props.graphSettings.type}`
     );
@@ -13,8 +13,12 @@ const TreeMap = (props) => {
   const treemap = d3
     .treemap()
     .size([
-      props.graphSettings.style.dimensions.width,
-      props.graphSettings.style.dimensions.depth,
+      props.graphSettings.style?.dimensions?.width
+        ? props.graphSettings.style?.dimensions?.width
+        : 10,
+      props.graphSettings.style?.dimensions?.depth
+        ? props.graphSettings.style?.dimensions?.depth
+        : 10,
     ])
     .paddingInner(
       props.graphSettings.mark.style.paddingInner
@@ -70,7 +74,12 @@ const TreeMap = (props) => {
     : d3
         .scaleLinear()
         .domain(heightDomain)
-        .range([0, props.graphSettings.style.dimensions.height]);
+        .range([
+          0,
+          props.graphSettings.style?.dimensions?.height
+            ? props.graphSettings.style?.dimensions?.height
+            : 10,
+        ]);
 
   const colorScale = props.graphSettings.mark.style.fill?.scaleType
     ? d3
