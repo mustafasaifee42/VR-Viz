@@ -129,7 +129,6 @@ const SpiralChart = (props) => {
           }
         />
       );
-    console.log(props.graphSettings.mark.style?.fill?.color);
     const shape = props.graphSettings.mark.style?.fill ? (
       fillColorScale && props.graphSettings.mark.style?.fill?.field ? (
         <a-frame-shape
