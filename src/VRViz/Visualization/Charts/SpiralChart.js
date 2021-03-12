@@ -129,38 +129,34 @@ const SpiralChart = (props) => {
           }
         />
       );
-
-    const shape =
-      props.graphSettings.mark.style?.fill &&
-      props.graphSettings.mark.style?.fill?.field ? (
-        fillColorScale ? (
-          <a-frame-shape
-            points={JSON.stringify(pntArray)}
-            color={fillColorScale(
-              d[props.graphSettings.mark.style?.fill?.field]
-            )}
-            opacity={
-              props.graphSettings.mark.style?.fill?.opacity
-                ? props.graphSettings.mark.style?.fill?.opacity
-                : 1
-            }
-          />
-        ) : (
-          <a-frame-shape
-            points={JSON.stringify(pntArray)}
-            color={
-              props.graphSettings.mark.style?.fill?.color
-                ? props.graphSettings.mark.style?.fill?.color
-                : "#ff0000"
-            }
-            opacity={
-              props.graphSettings.mark.style?.fill?.opacity
-                ? props.graphSettings.mark.style?.fill?.opacity
-                : 1
-            }
-          />
-        )
-      ) : null;
+    console.log(props.graphSettings.mark.style?.fill?.color);
+    const shape = props.graphSettings.mark.style?.fill ? (
+      fillColorScale && props.graphSettings.mark.style?.fill?.field ? (
+        <a-frame-shape
+          points={JSON.stringify(pntArray)}
+          color={"#ff0000"}
+          opacity={
+            props.graphSettings.mark.style?.fill?.opacity
+              ? props.graphSettings.mark.style?.fill?.opacity
+              : 1
+          }
+        />
+      ) : (
+        <a-frame-shape
+          points={JSON.stringify(pntArray)}
+          color={
+            props.graphSettings.mark.style?.fill?.color
+              ? props.graphSettings.mark.style?.fill?.color
+              : "#ff0000"
+          }
+          opacity={
+            props.graphSettings.mark.style?.fill?.opacity
+              ? props.graphSettings.mark.style?.fill?.opacity
+              : 1
+          }
+        />
+      )
+    ) : null;
     return (
       <a-entity rotation="90 0 0" position={`0 ${i * yPos} 0`} key={i}>
         {shape}

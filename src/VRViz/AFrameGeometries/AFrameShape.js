@@ -26,7 +26,7 @@ AFRAME.registerComponent("aframeshape", {
   },
   init: function () {
     this.obj = this.el;
-    let mat = new THREE.MeshLambertMaterial({
+    let mat = new THREE.MeshStandardMaterial({
       color: this.data.color,
       opacity: this.data.opacity,
       side: THREE.DoubleSide,
