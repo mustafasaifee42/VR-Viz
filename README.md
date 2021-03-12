@@ -8,6 +8,14 @@ VR-Viz provide a high-level react components to generate 3D visualization in web
 
 **Boilerplate for using VR-Viz can be found [here](https://github.com/mustafasaifee42/vr-viz-boilerplate).**
 
+## Recent Updates
+
+* Updated the A-Frame and Three.js version used (now works on all the major modern browsers)
+* Changes all geometries to BufferGeometries which result in inproved performance
+* Added default values for most of the parameters
+* Added rotationOnDrag feature which let the user to rotate the visualization on drag on computers
+* Added billboarding for att the text by dafault
+
 ## If using NPM
 
 Package link: [https://www.npmjs.com/package/vr-viz](https://www.npmjs.com/package/vr-viz)
