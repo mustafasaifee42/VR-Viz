@@ -125,7 +125,9 @@ const Visualization = (props) => {
               }
               position={props.graphSettings.title?.position}
               rotation={props.graphSettings.title?.rotation}
-              billboard={props.graphSettings.title?.billboarding}
+              billboard={
+                props.graphSettings.title?.billboarding === false ? false : true
+              }
             />
           ) : null}
           <Viz

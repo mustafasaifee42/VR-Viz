@@ -46,7 +46,7 @@ const XAxis = (props) => {
       align={titleAlign}
       rotation={titleRotation}
       position={titlePosition}
-      billboard={props.title.billboarding}
+      billboard={props.title.billboarding === false ? false : true}
     />
   ) : null;
 
@@ -172,7 +172,7 @@ const XAxis = (props) => {
       ? props.domain.map((d, i) => (
           <a-text
             key={i}
-            billboard={props.tick.billboarding}
+            billboard={props.tick.billboarding === false ? false : true}
             opacity={props.tick.opacity ? props.tick.opacity : 1}
             color={props.tick.color}
             width={props.tick.fontSize}
@@ -194,7 +194,7 @@ const XAxis = (props) => {
       ? props.domain.map((d, i) => (
           <a-text
             key={i}
-            billboard={props.tick.billboarding}
+            billboard={props.tick.billboarding === false ? false : true}
             opacity={props.tick.opacity ? props.tick.opacity : 1}
             color={props.tick.color}
             width={props.tick.fontSize}
@@ -216,7 +216,7 @@ const XAxis = (props) => {
       ? props.domain.map((d, i) => (
           <a-text
             key={i}
-            billboard={props.tick.billboarding}
+            billboard={props.tick.billboarding === false ? false : true}
             opacity={props.tick.opacity ? props.tick.opacity : 1}
             color={props.tick.color}
             width={props.tick.fontSize}
@@ -237,7 +237,7 @@ const XAxis = (props) => {
       : props.domain.map((d, i) => (
           <a-text
             key={i}
-            billboard={props.tick.billboarding}
+            billboard={props.tick.billboarding === false ? false : true}
             opacity={props.tick.opacity ? props.tick.opacity : 1}
             color={props.tick.color}
             width={props.tick.fontSize}
@@ -308,7 +308,7 @@ const YAxis = (props) => {
       align={titleAlign}
       rotation={titleRotation}
       position={titlePosition}
-      billboard={props.title.billboarding}
+      billboard={props.title.billboarding === false ? false : true}
     />
   ) : null;
 
@@ -430,7 +430,7 @@ const YAxis = (props) => {
       ? props.domain.map((d, i) => (
           <a-text
             key={i}
-            billboard={props.tick.billboarding}
+            billboard={props.tick.billboarding === false ? false : true}
             opacity={props.tick.opacity}
             color={props.tick.color}
             width={props.tick.fontSize}
@@ -452,7 +452,7 @@ const YAxis = (props) => {
       ? props.domain.map((d, i) => (
           <a-text
             key={i}
-            billboard={props.tick.billboarding}
+            billboard={props.tick.billboarding === false ? false : true}
             opacity={props.tick.opacity}
             color={props.tick.color}
             width={props.tick.fontSize}
@@ -474,7 +474,7 @@ const YAxis = (props) => {
       ? props.domain.map((d, i) => (
           <a-text
             key={i}
-            billboard={props.tick.billboarding}
+            billboard={props.tick.billboarding === false ? false : true}
             opacity={props.tick.opacity}
             color={props.tick.color}
             width={props.tick.fontSize}
@@ -495,7 +495,7 @@ const YAxis = (props) => {
       : props.domain.map((d, i) => (
           <a-text
             key={i}
-            billboard={props.tick.billboarding}
+            billboard={props.tick.billboarding === false ? false : true}
             opacity={props.tick.opacity}
             color={props.tick.color}
             width={props.tick.fontSize}
@@ -570,7 +570,7 @@ const ZAxis = (props) => {
       align={titleAlign}
       rotation={titleRotation}
       position={titlePosition}
-      billboard={props.title.billboarding}
+      billboard={props.title.billboarding === false ? false : true}
     />
   ) : null;
 
@@ -742,7 +742,7 @@ const ZAxis = (props) => {
       ? props.domain.map((d, i) => (
           <a-text
             key={i}
-            billboard={props.tick.billboarding}
+            billboard={props.tick.billboarding === false ? false : true}
             opacity={props.tick.opacity}
             color={props.tick.color}
             width={props.tick.fontSize}
@@ -764,7 +764,7 @@ const ZAxis = (props) => {
       ? props.domain.map((d, i) => (
           <a-text
             key={i}
-            billboard={props.tick.billboarding}
+            billboard={props.tick.billboarding === false ? false : true}
             opacity={props.tick.opacity}
             color={props.tick.color}
             width={props.tick.fontSize}
@@ -786,7 +786,7 @@ const ZAxis = (props) => {
       ? props.domain.map((d, i) => (
           <a-text
             key={i}
-            billboard={props.tick.billboarding}
+            billboard={props.tick.billboarding === false ? false : true}
             opacity={props.tick.opacity}
             color={props.tick.color}
             width={props.tick.fontSize}
@@ -807,7 +807,7 @@ const ZAxis = (props) => {
       : props.domain.map((d, i) => (
           <a-text
             key={i}
-            billboard={props.tick.billboarding}
+            billboard={props.tick.billboarding === false ? false : true}
             opacity={props.tick.opacity}
             color={props.tick.color}
             width={props.tick.fontSize}

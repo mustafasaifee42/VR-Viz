@@ -328,9 +328,7 @@ const BarGraph = (props) => {
         side="double"
         align="left"
         billboard={
-          props.graphSettings.mark.labels?.billboarding
-            ? props.graphSettings.mark.labels?.billboarding
-            : true
+          props.graphSettings.mark.labels?.billboarding === false ? false : true
         }
         position={`${
           layout.getNodePosition(node.id).x * scale +

@@ -221,8 +221,8 @@ const ConnectedScatterPlot = (props) => {
               d[props.graphSettings.mark.position.z.field]
             )}`}
             billboard={
-              props.graphSettings.mark.label?.billboarding
-                ? props.graphSettings.mark.label?.billboarding
+              props.graphSettings.mark.label?.billboarding === false
+                ? false
                 : true
             }
           />
@@ -261,8 +261,8 @@ const ConnectedScatterPlot = (props) => {
               d[props.graphSettings.mark.position.z.field]
             )}`}
             billboard={
-              props.graphSettings.mark.label?.billboarding
-                ? props.graphSettings.mark.label?.billboarding
+              props.graphSettings.mark.label?.billboarding === false
+                ? false
                 : true
             }
           />
