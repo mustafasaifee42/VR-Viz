@@ -32,7 +32,6 @@ AFRAME.registerComponent("aframecontourlines", {
     });
     let strokeVer = [],
       colors = [];
-    console.log(this.data.points);
     const strokeVerticesArray = JSON.parse(this.data.points);
     const colorListArray = JSON.parse(this.data.color);
     for (let i = 0; i < strokeVerticesArray.length; i++) {

@@ -16,7 +16,6 @@ const StackedBarGraph = (props) => {
   const data = d3.stack().keys(props.graphSettings.mark.style.fill.field)(
     props.data
   );
-  console.log(data);
   const xDomain = props.graphSettings.mark.position.x.domain
     ? props.graphSettings.mark.position.x.domain
     : GetDomain(
