@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import VRViz from "./Component/Visualization.js";
+import VRViz from "./VRViz";
 import mapData from "./mapData/mapData.json";
 
 class App extends Component {
@@ -42,7 +42,7 @@ class App extends Component {
               fileType: "ply",
             },
             style: {
-              origin: [0, 0, 0],
+              origin: { x: 0, y: 0, z: 0 },
               objectScale: 0.01,
             },
             mark: {

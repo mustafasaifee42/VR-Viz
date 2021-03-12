@@ -22,6 +22,9 @@ const PointCloud = (props) => {
         )
     : null;
 
+  let vertX = [],
+    vertY = [],
+    vertZ = [];
   const colorRange = props.graphSettings.mark?.style?.fill?.color
     ? props.graphSettings.mark?.style?.fill?.color
     : d3.schemeCategory10;
@@ -52,6 +55,10 @@ const PointCloud = (props) => {
     const hoverText = props.graphSettings.mark?.mouseOver?.label
       ? props.graphSettings.mark?.mouseOver.label.value(d)
       : null;
+
+    vertX.push(d.x * scalingFactor);
+    vertY.push(d.y * scalingFactor);
+    vertZ.push(d.z * scalingFactor);
 
     return (
       <Shape
@@ -85,8 +92,21 @@ const PointCloud = (props) => {
       />
     );
   });
-
-  return <>{marks}</>;
+  return (
+    <>
+      {marks}
+      <a-box
+        class="clickable"
+        width={d3.max(vertX) - d3.min(vertX)}
+        height={d3.max(vertY) - d3.min(vertY)}
+        depth={d3.max(vertZ) - d3.min(vertZ)}
+        position={`${(d3.max(vertX) + d3.min(vertX)) / 2} ${
+          (d3.max(vertY) + d3.min(vertY)) / 2
+        } ${(d3.max(vertZ) + d3.min(vertZ)) / 2}`}
+        opacity={0}
+      />
+    </>
+  );
 };
 
 export default PointCloud;

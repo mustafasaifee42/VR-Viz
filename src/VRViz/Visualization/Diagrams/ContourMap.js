@@ -38,7 +38,10 @@ const ContourMap = (props) => {
     : null;
 
   let meshVertices = [],
-    colorMatrix = [];
+    colorMatrix = [],
+    vertX = [],
+    vertY = [],
+    vertZ = [];
   for (let i = 0; i < props.data.length - 1; i++) {
     for (let k = 0; k < props.data[i].length - 1; k++) {
       const threshold = props.graphSettings.mark?.heightThreshold
@@ -50,6 +53,9 @@ const ContourMap = (props) => {
       const objScaleHeight = props.graphSettings.style?.objectScale?.height
         ? props.graphSettings.style?.objectScale?.height
         : 0.1;
+      vertX.push(i * objScaleGround);
+      vertY.push((props.data[i][k] - threshold) * objScaleHeight);
+      vertZ.push(k * objScaleGround);
       meshVertices.push(i * objScaleGround);
       meshVertices.push((props.data[i][k] - threshold) * objScaleHeight);
       meshVertices.push(k * objScaleGround);
@@ -146,6 +152,16 @@ const ContourMap = (props) => {
             ? props.graphSettings.mark?.style?.fill?.opacity
             : 1
         }
+      />
+      <a-box
+        class="clickable"
+        width={d3.max(vertX) - d3.min(vertX)}
+        height={d3.max(vertY) - d3.min(vertY)}
+        depth={d3.max(vertZ) - d3.min(vertZ)}
+        position={`${(d3.max(vertX) + d3.min(vertX)) / 2} ${
+          (d3.max(vertY) + d3.min(vertY)) / 2
+        } ${(d3.max(vertZ) + d3.min(vertZ)) / 2}`}
+        opacity={0}
       />
     </>
   );

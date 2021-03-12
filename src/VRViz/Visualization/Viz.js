@@ -31,10 +31,11 @@ import SurfacePlot from "./Plots/SurfacePlot";
 
 const Viz = (props) => {
   const clickRotation =
-    props.graphSettings.rotationOnDrag && !props.graphSettings.animateRotation
-      ? "true"
-      : "false";
-
+    props.graphSettings.rotationOnDrag === false
+      ? "false"
+      : props.graphSettings.animateRotation
+      ? "false"
+      : "true";
   const animation = props.graphSettings.animateRotation ? (
     <a-animation
       attribute="rotation"
@@ -289,31 +290,31 @@ const Viz = (props) => {
       <a-entity
         click-rotation={`enabled:${clickRotation}`}
         pivot-center={`xPosition:${
-          props.graphSettings.style?.origin
-            ? props.graphSettings.style.origin[0]
+          props.graphSettings.style?.origin?.x
+            ? props.graphSettings.style?.origin?.x
             : 0
         };yPosition:${
-          props.graphSettings.style?.origin
-            ? props.graphSettings.style.origin[1]
+          props.graphSettings.style?.origin?.y
+            ? props.graphSettings.style?.origin?.y
             : 0
         };zPosition:${
-          props.graphSettings.style?.origin
-            ? props.graphSettings.style.origin[2]
+          props.graphSettings.style?.origin?.z
+            ? props.graphSettings.style?.origin?.z
             : 0
-        };pivotX:${props.graphSettings.style?.xPivot};pivotY:${
-          props.graphSettings.style?.yPivot
-        };pivotZ:${props.graphSettings.style?.zPivot}`}
+        };pivotX:${props.graphSettings.style?.pivot?.x};pivotY:${
+          props.graphSettings.style?.pivot?.y
+        };pivotZ:${props.graphSettings.style?.pivot?.z}`}
         position={`${
-          props.graphSettings.style?.origin
-            ? props.graphSettings.style.origin[0]
+          props.graphSettings.style?.origin?.x
+            ? props.graphSettings.style?.origin?.x
             : 0
         } ${
-          props.graphSettings.style?.origin
-            ? props.graphSettings.style.origin[1]
+          props.graphSettings.style?.origin?.y
+            ? props.graphSettings.style?.origin?.y
             : 0
         } ${
-          props.graphSettings.style?.origin
-            ? props.graphSettings.style.origin[2]
+          props.graphSettings.style?.origin?.z
+            ? props.graphSettings.style?.origin?.z
             : 0
         }`}
         rotation={

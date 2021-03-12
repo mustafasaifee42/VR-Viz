@@ -62,5 +62,37 @@ AFRAME.registerComponent("pivot-center", {
         }`
       );
     }
+
+    this.el.sceneEl.addEventListener("loaded", () => {
+      if (this.el.sceneEl.hasLoaded) {
+        this.model.traverse((node) => {
+          const box = new THREE.Box3().setFromObject(node);
+          this.min.x = min(this.min.x, box.min.x);
+          this.min.y = min(this.min.y, box.min.y);
+          this.min.z = min(this.min.z, box.min.z);
+          this.max.x = max(this.max.x, box.max.x);
+          this.max.y = max(this.max.y, box.max.y);
+          this.max.z = max(this.max.z, box.max.z);
+        });
+        let xPivot = this.data.pivotX,
+          yPivot = this.data.pivotY,
+          zPivot = this.data.pivotZ;
+        if (isNaN(this.data.pivotX))
+          xPivot = `${this.min.x + (this.max.x - this.min.x) / 2}`;
+        if (isNaN(this.data.pivotY))
+          yPivot = `${this.min.y + (this.max.y - this.min.y) / 2}`;
+        if (isNaN(this.data.pivotZ))
+          zPivot = `${this.min.z + (this.max.z - this.min.z) / 2}`;
+        if (this.data.ignoreX) xPivot = "0";
+        if (this.data.ignoreY) yPivot = "0";
+        if (this.data.ignoreZ) zPivot = "0";
+        this.el.setAttribute(
+          "pivot",
+          `${xPivot - this.data.xPosition} ${yPivot - this.data.yPosition} ${
+            zPivot - this.data.zPosition
+          }`
+        );
+      }
+    });
   },
 });

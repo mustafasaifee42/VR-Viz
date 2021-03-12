@@ -109,7 +109,7 @@ The react component used to generate visualizations is `VRViz` with 2 props:
           'fileType': 'json',
         },
         'style': {
-          'origin': [0, 0, 0],
+          'origin': {'x': 0, 'y': 0, 'z': 0},
           'dimensions': {
             'width': 50,
             'depth': 50,
@@ -383,14 +383,12 @@ _Plots_
 
 **Properties for Style**
 
-| Property  | Type             | Description                                                                                                                                                                                                 |
-| --------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| origin    | array of numbers | Defines the position where the origin of the graph is placed. **Not Required. Default value: [0,0,0].** _Example: [0,0,0]_                                                                                  |
-| rotation  | string           | Defines the rotation of the chart. **Not Required. Default value: '0 0 0'** _Format example: '-90 0 0'_                                                                                                     |
-| dimension | object           | Defines the dimension of the graph. Keys in the object are `width`, `depth` and `height`. The value for all these keys are float type. **Not Required. Default value: {width: 10, height: 10, depth: 10}.** |
-| xPivot    | number           | Defines the pivot point on x axis around which the graph can be rotated using `animateRotation` or on mouse drag. **Not required. Default value is the center point of the grsph**                          |
-| yPivot    | number           | Defines the pivot point on y axis around which the graph can be rotated using `animateRotation` or on mouse drag. **Not required. Default value is the center point of the grsph**                          |
-| zPivot    | number           | Defines the pivot point on z axis around which the graph can be rotated using `animateRotation` or on mouse drag. **Not required. Default value is the center point of the grsph**                          |
+| Property  | Type   | Description                                                                                                                                                                                                                          |
+| --------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| origin    | object | Defines the position where the origin of the graph is placed. Keys in the object are `x`, `y` and `z`.**Not Required. Default value: {x: 0, y: 0, z: 0}.** Not all keys are required also.                                           |
+| rotation  | string | Defines the rotation of the chart. **Not Required. Default value: '0 0 0'** _Format example: '-90 0 0'_                                                                                                                              |
+| dimension | object | Defines the dimension of the graph. Keys in the object are `width`, `depth` and `height`. The value for all these keys are float type. **Not Required. Default value: {width: 10, height: 10, depth: 10}.**                          |
+| pivot     | object | Defines the pivot point around which the graph can be rotated using `animateRotation` or on mouse drag. Keys in the object are `x`, `y` and `z`.**Not Required. Default value: {x: 0, y: 0, z: 0}.** Not all keys are required also. |
 
 #### mark
 
@@ -541,7 +539,7 @@ This defines the title of the graph
 
 #### rotationOnDrag `Not Required`
 
-This is use to define weather the visualization rotates on drag. _Type: `boolean`._ **Default value: `false`.**
+This is use to define weather the visualization rotates on drag. _Type: `boolean`._ **Default value: `true`.**
 
 #### animateRotation `Not Required`
 

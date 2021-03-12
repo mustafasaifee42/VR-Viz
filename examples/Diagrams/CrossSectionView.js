@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import VRViz from "./Component/Visualization.js";
+import VRViz from "./VRViz";
 
 class App extends Component {
   render() {

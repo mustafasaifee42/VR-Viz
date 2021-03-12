@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import VRViz from "./Component/Visualization.js";
+import VRViz from "./VRViz";
 import mapData from "./mapData/mapData.json";
 import sfMapData from "./mapData/sfMapData.json";
 
@@ -39,7 +39,7 @@ class App extends Component {
           {
             type: "IsolineMap",
             style: {
-              origin: [0, 0, 0],
+              origin: { x: 0, y: 0, z: 0 },
             },
             data: {
               dataFile: "data/mapContourLines.csv",
@@ -53,7 +53,7 @@ class App extends Component {
               ],
             },
             style: {
-              origin: [0, 0, 0],
+              origin: { x: 0, y: 0, z: 0 },
             },
             mark: {
               mapScale: 2500,
