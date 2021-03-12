@@ -134,6 +134,7 @@ const StackedBarGraph = (props) => {
           }
           position={position}
           hover={props.graphSettings.mark.mouseOver}
+          class={"clickable"}
           hoverText={hoverText}
           graphID={props.graphID}
         />
