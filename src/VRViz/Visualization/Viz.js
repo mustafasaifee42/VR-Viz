@@ -31,9 +31,8 @@ import SurfacePlot from "./Plots/SurfacePlot";
 
 const Viz = (props) => {
   const clickRotation =
-    props.graphSettings.rotationOnDrag === false
-      ? "false"
-      : props.graphSettings.animateRotation
+    props.graphSettings.animateRotation ||
+    props.graphSettings.rotationOnDrag?.rotateVisualization === false
       ? "false"
       : "true";
   const animation = props.graphSettings.animateRotation ? (
@@ -288,7 +287,15 @@ const Viz = (props) => {
       <a-entity id={props.graphID}>{chart}</a-entity>
     ) : (
       <a-entity
-        click-rotation={`enabled:${clickRotation}`}
+        click-rotation={`enabled:${clickRotation};yAxis:${
+          props.graphSettings.rotationOnDrag?.rotateAroundYaxis === false
+            ? false
+            : true
+        };xAxis:${
+          props.graphSettings.rotationOnDrag?.rotateAroundXaxis === false
+            ? false
+            : true
+        }`}
         pivot-center={`xPosition:${
           props.graphSettings.style?.origin?.x
             ? props.graphSettings.style?.origin?.x

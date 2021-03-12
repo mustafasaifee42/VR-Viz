@@ -2,9 +2,8 @@ import React from "react";
 
 const CrossSectionView = (props) => {
   const clickRotation =
-    props.graphSettings.rotationOnDrag === false
-      ? "false"
-      : props.graphSettings.animateRotation
+    props.graphSettings.animateRotation ||
+    props.graphSettings.rotationOnDrag?.rotateVisualization === false
       ? "false"
       : "true";
   const modifyMaterial = props.graphSettings.mark.material ? true : false;
@@ -72,7 +71,15 @@ const CrossSectionView = (props) => {
   return (
     <>
       <a-entity
-        click-rotation={`enabled:${clickRotation}`}
+        click-rotation={`enabled:${clickRotation};yAxis:${
+          props.graphSettings.rotationOnDrag?.rotateAroundYaxis === false
+            ? false
+            : true
+        };xAxis:${
+          props.graphSettings.rotationOnDrag?.rotateAroundXaxis === false
+            ? false
+            : true
+        }`}
         class={"clickable"}
         gltf-model={`url(${props.graphSettings.mark.object})`}
         position={`${

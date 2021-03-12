@@ -5,6 +5,8 @@ AFRAME.registerComponent("click-rotation", {
   schema: {
     enabled: { type: "boolean", default: true },
     speed: { type: "number", default: 1 },
+    yAxis: { type: "boolean", default: true },
+    xAxis: { type: "boolean", default: true },
   },
 
   init: function () {
@@ -36,8 +38,8 @@ AFRAME.registerComponent("click-rotation", {
     });
     document.addEventListener("mousemove", (event) => {
       if (this.ifMouseDown && this.data.enabled) {
-        var temp_x = event.clientX - this.x_cord;
-        var temp_y = event.clientY - this.y_cord;
+        var temp_x = this.data.yAxis ? event.clientX - this.x_cord : 0;
+        var temp_y = this.data.xAxis ? event.clientY - this.y_cord : 0;
 
         var deltaRotationQuaternion = new THREE.Quaternion().setFromEuler(
           new THREE.Euler(

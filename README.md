@@ -524,22 +524,29 @@ This defines the title of the graph
 
 **Properties for title**
 
-| Property           | Type     | Description                                                                                                                                      |
-| ------------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| title              | object   | Defines the value and style of the graph title. **Not Required.** _If not present the label is not shown._                                       |
-| title.value        | function | Returns the value of the text that is to be shown in the label. **Not Required. Default value: Visualization** _\n can be used for new line._    |
-| title.align        | string   | Defines the alignment of the text in the graph title. **Not Required. Default value: center** _Available values: center, left or right._         |
-| title.color        | string   | Defines the color of the text in the graph title. **Not Required. Default value: "#000000".**                                                    |
-| title.lineHeight   | float    | Defines the line height of the text in the graph title. **Not Required. Default value: 14.**                                                     |
-| title.wrapCount    | int      | Defines the wrap count of the text in the graph title. **Not Required. Default value: 80.**                                                      |
-| title.position     | string   | Defines the position of the graph title. **Required. Format is "0 0 0".**                                                                        |
-| title.rotation     | string   | Defines the rotation of the graph title. **Not Required. Format is "90 0 0".**                                                                   |
-| title.fontSize     | float    | Defines the fontSize of the graph title. **Not Required. Default value: 12.**                                                                    |
-| title.billboarding | bool     | Defines if the text always face the camera. **Not Required. Default value:false.** _If the value is change to true `title.rotation` is ignored._ |
+| Property     | Type     | Description                                                                                                                                      |
+| ------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| value        | function | Returns the value of the text that is to be shown in the label. **Not Required. Default value: Visualization** _\n can be used for new line._    |
+| align        | string   | Defines the alignment of the text in the graph title. **Not Required. Default value: center** _Available values: center, left or right._         |
+| color        | string   | Defines the color of the text in the graph title. **Not Required. Default value: "#000000".**                                                    |
+| lineHeight   | float    | Defines the line height of the text in the graph title. **Not Required. Default value: 14.**                                                     |
+| wrapCount    | int      | Defines the wrap count of the text in the graph title. **Not Required. Default value: 80.**                                                      |
+| position     | string   | Defines the position of the graph title. **Required. Format is "0 0 0".**                                                                        |
+| rotation     | string   | Defines the rotation of the graph title. **Not Required. Format is "90 0 0".**                                                                   |
+| fontSize     | float    | Defines the fontSize of the graph title. **Not Required. Default value: 12.**                                                                    |
+| billboarding | bool     | Defines if the text always face the camera. **Not Required. Default value:false.** _If the value is change to true `title.rotation` is ignored._ |
 
 #### rotationOnDrag `Not Required`
 
-This is use to define weather the visualization rotates on drag. _Type: `boolean`._ **Default value: `true`.**
+This is use to define weather the visualization rotates on drag. **Not Required. If no present then rotationOnDrag is activated by default.** _Type: `object`._
+
+**Properties for rotationOnDrag**
+
+| Property            | Type    | Description                                                                                      |
+| ------------------- | ------- | ------------------------------------------------------------------------------------------------ |
+| rotateVisualization | boolean | Defines weather visualization rotates on drag. **Not Required. Default value: true.**            |
+| rotateAroundYaxis   | boolean | Defines weather rotation on drag is allowed along Y axis. **Not Required. Default value: true.** |
+| rotateAroundXaxis   | boolean | Defines weather rotation on drag is allowed along X axis. **Not Required. Default value: true.** |
 
 #### animateRotation `Not Required`
 
