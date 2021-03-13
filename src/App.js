@@ -53,6 +53,14 @@ function App() {
               ["Deaths", "number"],
             ],
           },
+          style: {
+            origin: { x: 0, y: 0, z: 0 },
+            dimensions: {
+              width: 10,
+              height: 10,
+              depth: 10,
+            },
+          },
           mark: {
             type: "cone",
             class: (d, i) => `boxes`,
@@ -80,6 +88,10 @@ function App() {
               },
             },
             style: {
+              padding: {
+                x: 0.1,
+                z: 0.1,
+              },
               height: {
                 startFromZero: true,
                 field: "Tornadoes",
@@ -107,6 +119,60 @@ function App() {
                 backgroundColor: "#333",
                 backgroundOpacity: 1,
                 fontColor: "#fff",
+              },
+            },
+            projections: {
+              yz: true,
+              xy: true,
+              style: {
+                opacity: 0.4,
+              },
+            },
+          },
+          axis: {
+            "axis-box": {
+              color: "black",
+            },
+            "x-axis": {
+              orient: "bottom-back",
+              ticks: {
+                noOfTicks: 10,
+                size: 0.1,
+                color: "black",
+                opacity: 1,
+                fontSize: 10,
+              },
+              grid: {
+                color: "black",
+                opacity: 1,
+              },
+            },
+            "y-axis": {
+              orient: "bottom-back",
+              ticks: {
+                noOfTicks: 10,
+                size: 0.1,
+                color: "black",
+                opacity: 1,
+                fontSize: 10,
+              },
+              grid: {
+                color: "black",
+                opacity: 1,
+              },
+            },
+            "z-axis": {
+              orient: "bottom-back",
+              ticks: {
+                noOfTicks: 10,
+                size: 0.1,
+                color: "black",
+                opacity: 1,
+                fontSize: 10,
+              },
+              grid: {
+                color: "black",
+                opacity: 1,
               },
             },
           },

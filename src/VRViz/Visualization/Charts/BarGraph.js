@@ -21,7 +21,7 @@ const BarGraph = (props) => {
         props.graphSettings.mark.position.x.startFromZero
       );
 
-  const yDomain = props.graphSettings.mark.style.height.domain
+  let yDomain = props.graphSettings.mark.style.height.domain
     ? props.graphSettings.mark.style.height.domain
     : GetDomain(
         props.data,
@@ -38,6 +38,50 @@ const BarGraph = (props) => {
         "ordinal",
         props.graphSettings.mark.position.z.startFromZero
       );
+
+  let xyProjectionData = xDomain.map((d) => ({
+    label: d,
+    value: 0,
+  }));
+
+  xDomain.forEach((d, i) => {
+    props.data.forEach((data) => {
+      if (data[props.graphSettings.mark.position.x.field] === d) {
+        xyProjectionData[i].value =
+          xyProjectionData[i].value +
+          data[props.graphSettings.mark.style.height.field];
+      }
+    });
+  });
+
+  let yzProjectionData = zDomain.map((d) => ({
+    label: d,
+    value: 0,
+  }));
+
+  zDomain.forEach((d, i) => {
+    props.data.forEach((data) => {
+      if (data[props.graphSettings.mark.position.z.field] === d) {
+        yzProjectionData[i].value =
+          yzProjectionData[i].value +
+          data[props.graphSettings.mark.style.height.field];
+      }
+    });
+  });
+
+  if (props.graphSettings.mark.projections?.xy) {
+    yDomain[1] =
+      yDomain[1] < d3.max(xyProjectionData, (d) => d.value)
+        ? d3.max(xyProjectionData, (d) => d.value)
+        : yDomain[1];
+  }
+
+  if (props.graphSettings.mark.projections?.yz) {
+    yDomain[1] =
+      yDomain[1] < d3.max(yzProjectionData, (d) => d.value)
+        ? d3.max(yzProjectionData, (d) => d.value)
+        : yDomain[1];
+  }
 
   const colorDomain = props.graphSettings.mark.style.fill?.scaleType
     ? props.graphSettings.mark.style.fill?.domain
@@ -174,6 +218,76 @@ const BarGraph = (props) => {
     );
   });
 
+  //Adding Projections
+  const xyProjectionsShape = xyProjectionData.map((d, i) => (
+    <Shape
+      key={i}
+      type={"box"}
+      color={
+        props.graphSettings.mark.projections?.style?.color
+          ? props.graphSettings.mark.projections?.style?.color
+          : "#ff0000"
+      }
+      opacity={
+        props.graphSettings.mark.projections?.style?.opacity
+          ? props.graphSettings.mark.projections?.style?.opacity
+          : 1
+      }
+      depth="0.000000000001"
+      height={`${yScale(d.value) === 0 ? 0.000000000001 : yScale(d.value)}`}
+      width={
+        props.graphSettings.mark.type === "box" ||
+        !props.graphSettings.mark.type
+          ? width
+          : radius * 2
+      }
+      radius={`${radius}`}
+      segments={"16"}
+      position={`${xScale(d.label) + width / 2} ${
+        yScale(d.value) === 0 ? 0.000000000001 / 2 : yScale(d.value) / 2
+      } 0`}
+      hover={false}
+      hoverText={null}
+      graphID={props.graphID}
+      class="clickable"
+      data={JSON.stringify(d)}
+    />
+  ));
+  const yzProjectionsShape = yzProjectionData.map((d, i) => (
+    <Shape
+      key={i}
+      type={"box"}
+      color={
+        props.graphSettings.projections?.mark.style?.color
+          ? props.graphSettings.projections?.mark.style?.color
+          : "#ff0000"
+      }
+      opacity={
+        props.graphSettings.projections?.mark.style?.opacity
+          ? props.graphSettings.projections?.mark.style?.opacity
+          : 1
+      }
+      depth={
+        props.graphSettings.mark.type === "box" ||
+        !props.graphSettings.mark.type
+          ? depth
+          : radius * 2
+      }
+      height={`${yScale(d.value) === 0 ? 0.000000000001 : yScale(d.value)}`}
+      width="0.000000000001"
+      radius={`${radius}`}
+      segments={"16"}
+      position={`0 ${
+        yScale(d.value) === 0 ? 0.000000000001 / 2 : yScale(d.value) / 2
+      } ${zScale(d.label) + depth / 2}`}
+      hover={false}
+      hoverText={null}
+      graphID={props.graphID}
+      class="clickable"
+      data={JSON.stringify(d)}
+    />
+  ));
+
   //Axis
   const xAxis = props.graphSettings.axis ? (
     props.graphSettings.axis["x-axis"] ? (
@@ -265,6 +379,8 @@ const BarGraph = (props) => {
   return (
     <>
       {marks}
+      {props.graphSettings.mark.projections?.xy ? xyProjectionsShape : null}
+      {props.graphSettings.mark.projections?.yz ? yzProjectionsShape : null}
       {xAxis}
       {yAxis}
       {zAxis}
