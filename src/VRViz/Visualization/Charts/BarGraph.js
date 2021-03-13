@@ -258,13 +258,13 @@ const BarGraph = (props) => {
       key={i}
       type={"box"}
       color={
-        props.graphSettings.projections?.mark.style?.color
-          ? props.graphSettings.projections?.mark.style?.color
+        props.graphSettings.mark.projections?.style?.color
+          ? props.graphSettings.mark.projections?.style?.color
           : "#ff0000"
       }
       opacity={
-        props.graphSettings.projections?.mark.style?.opacity
-          ? props.graphSettings.projections?.mark.style?.opacity
+        props.graphSettings.mark.projections?.style?.opacity
+          ? props.graphSettings.mark.projections?.style?.opacity
           : 1
       }
       depth={
