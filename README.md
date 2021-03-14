@@ -10,11 +10,12 @@ VR-Viz provide a high-level react components to generate 3D visualization in web
 
 ## Recent Updates
 
-* Updated the A-Frame and Three.js version used (now works on all the major modern browsers)
-* Changes all geometries to BufferGeometries which result in inproved performance
-* Added default values for most of the parameters
-* Added rotationOnDrag feature which let the user to rotate the visualization on drag on computers
-* Added billboarding for att the text by dafault
+- Updated the A-Frame and Three.js version used (now works on all the major modern browsers)
+- Changes all geometries to BufferGeometries which result in inproved performance
+- Added default values for all the non compulsary parameters in different graph settings
+- Add projection feature in bar graph to show the cuummulative data
+- Added rotationOnDrag feature which let the user to rotate the visualization on drag on computers
+- Added billboarding for all the text by default
 
 ## If using NPM
 
