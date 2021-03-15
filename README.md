@@ -47,7 +47,6 @@ In the project directory, you can run:
 
     yarn start
 
-
 or using `node`
 
     git clone https://github.com/mustafasaifee42/VR-Viz.git
@@ -57,7 +56,6 @@ or using `node`
 In the project directory, you can run:
 
     npm run start
-
 
 Runs the app in the development mode.
 
@@ -590,4 +588,3 @@ This is use to define the rotation animation of the graph for viewing it in diff
 - Multiple a-frame screens cannot be embedded in the same page [(https://github.com/aframevr/aframe/issues/916)](https://github.com/aframevr/aframe/issues/916)
 - Ticks in Spiral chart is not working
 - Holes in the maps don't work (for example Lesotho in South Africa)
-- While using multiple graphs there is a possibility that rotation on drag might not rotate the graph from there center point in that case user might have to add the pivot points manually in json specification.
