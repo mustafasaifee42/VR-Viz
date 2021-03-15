@@ -35,19 +35,29 @@ Then just renders it
 
 ## Local Development Using this Repo
 
-To run this project using this repo, simply clone the repo and run yarn
+This project can be deployed using `yarn` or `node`. Install `yarn` as described here [https://yarnpkg.com/en/docs/install](https://yarnpkg.com/en/docs/install) if you haven't already or `node` as described here [https://nodejs.org/en/](https://nodejs.org/en/) if you haven't already.
 
-```
-git clone https://github.com/mustafasaifee42/VR-Viz.git
-cd vr-viz
-yarn
-```
+To install this boilerplate, simply clone the repo and run `yarn` or `npm install`;
+
+    git clone https://github.com/mustafasaifee42/VR-Viz.git
+    cd vr-viz
+    yarn
 
 In the project directory, you can run:
 
-```
-yarn start
-```
+    yarn start
+
+
+or using `node`
+
+    git clone https://github.com/mustafasaifee42/VR-Viz.git
+    cd vr-viz
+    npm install
+
+In the project directory, you can run:
+
+    npm run start
+
 
 Runs the app in the development mode.
 
@@ -360,7 +370,7 @@ _Maps_
 - [3D Map Bar Graph](/ReadMe/Maps/MapBarChart.md)
 - [3D Map Stacked Bar Graph](/ReadMe/Maps/MapStackedBarChart.md)
 - [MapTimeBars](/ReadMe/Maps/MapTimeBars.md)
-- [IsolineMap](/ReadMe/Maps/MapWithIsoLines.md)
+- [IsolineMap](/ReadMe/Maps/IsolineMap.md)
 - [3D Flow Map](/ReadMe/Maps/FlowMap.md)
 
 _Diagrams_
