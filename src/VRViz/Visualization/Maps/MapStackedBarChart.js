@@ -22,11 +22,11 @@ const MapStackedBarChart = (props) => {
   let heightDomain = props.graphSettings.mark.bars.style.height?.domain
     ? props.graphSettings.mark.bars.style.height?.domain
     : GetDomain(
-        _.flattenDepth(data, 1),
-        1,
-        "linear",
-        props.graphSettings.mark.bars.style.height?.startFromZero
-      );
+      _.flattenDepth(data, 1),
+      1,
+      "linear",
+      props.graphSettings.mark.bars.style.height?.startFromZero
+    );
   //Adding scales
 
   let yScale;
@@ -88,9 +88,8 @@ const MapStackedBarChart = (props) => {
         width={max.x - min.x}
         height={max.y - min.y}
         depth={extrusionHeight}
-        position={`${max.x / 2 + min.x / 2} ${(max.y + min.y) / 2} ${
-          extrusionHeight / 2
-        }`}
+        position={`${max.x / 2 + min.x / 2} ${(max.y + min.y) / 2} ${extrusionHeight / 2
+          }`}
         opacity={0}
       />
     );
@@ -148,15 +147,14 @@ const MapStackedBarChart = (props) => {
         props.graphSettings.mark.mapOrigin
       );
 
-      const position = `${coordinates[0]} ${0 - coordinates[1]} ${
-        yScale(d1[0]) + hght / 2
-      }`;
+      const position = `${coordinates[0]} ${0 - coordinates[1]} ${yScale(d1[0]) + hght / 2
+        }`;
 
       const hoverText = props.graphSettings.mark.bars.mouseOver?.label
         ? props.graphSettings.mark.bars.mouseOver.label
-            .value(d1.data)
-            .replace("Label", `${d.key}`)
-            .replace("LabelValue", `${d1.data[d.key]}`)
+          .value(d1.data)
+          .replace("Label", `${d.key}`)
+          .replace("LabelValue", `${d1.data[d.key]}`)
         : null;
 
       return (

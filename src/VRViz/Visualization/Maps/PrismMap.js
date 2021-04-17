@@ -11,13 +11,13 @@ const PrismMap = (props) => {
     data[d[props.graphSettings.mark.shapeIdentifier]] = props.graphSettings.mark
       .style.fill?.scaleType
       ? {
-          value: d[props.graphSettings.mark.style.extrusion.field],
-          colorField: d[props.graphSettings.mark.style.fill?.field],
-        }
+        value: d[props.graphSettings.mark.style.extrusion.field],
+        colorField: d[props.graphSettings.mark.style.fill?.field],
+      }
       : {
-          value: d[props.graphSettings.mark.style.extrusion.field],
-          colorField: null,
-        };
+        value: d[props.graphSettings.mark.style.extrusion.field],
+        colorField: null,
+      };
   });
 
   // Getting domain
@@ -25,21 +25,21 @@ const PrismMap = (props) => {
   const extrusionDomain = props.graphSettings.mark.style.extrusion.domain
     ? props.graphSettings.mark.style.extrusion.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.style.extrusion.field,
-        "linear",
-        props.graphSettings.mark.style.extrusion.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.style.extrusion.field,
+      "linear",
+      props.graphSettings.mark.style.extrusion.startFromZero
+    );
 
   const colorDomain = props.graphSettings.mark.style.fill?.scaleType
     ? props.graphSettings.mark.style.fill?.scaleType
       ? props.graphSettings.mark.style.fill?.scaleType
       : GetDomain(
-          props.data,
-          props.graphSettings.mark.style.fill?.field,
-          props.graphSettings.mark.style.fill?.scaleType,
-          props.graphSettings.mark.style.fill?.startFromZero
-        )
+        props.data,
+        props.graphSettings.mark.style.fill?.field,
+        props.graphSettings.mark.style.fill?.scaleType,
+        props.graphSettings.mark.style.fill?.startFromZero
+      )
     : null;
 
   //Adding scales
@@ -103,8 +103,8 @@ const PrismMap = (props) => {
       colorScale
         ? colorScale(data[d["code"]]["colorField"])
         : props.graphSettings.mark.style.fill?.color
-        ? props.graphSettings.mark.style.fill?.color
-        : "#ff0000"
+          ? props.graphSettings.mark.style.fill?.color
+          : "#ff0000"
     );
 
     let min = {
@@ -122,9 +122,8 @@ const PrismMap = (props) => {
         width={max.x - min.x}
         height={max.y - min.y}
         depth={extrusionHeight}
-        position={`${(max.x + min.x) / 2} ${(max.y + min.y) / 2} ${
-          extrusionHeight / 2
-        }`}
+        position={`${(max.x + min.x) / 2} ${(max.y + min.y) / 2} ${extrusionHeight / 2
+          }`}
         opacity={0}
       />
     );
@@ -151,31 +150,31 @@ const PrismMap = (props) => {
   const shapes = props.graphSettings.mark.projection
     ? projectiocMapShape
     : geoData.map((d, i) => (
-        <a-frame-globe
-          key={i}
-          points={JSON.stringify(d.vertices.geometry)}
-          radius={props.graphSettings.mark.mapScale}
-          extrude={
-            extrusionScale(data[d.code].value) === 0
-              ? 0.000000000001
-              : extrusionScale(data[d.code].value)
-          }
-          color={
-            colorScale
-              ? colorScale(data[d.code].colorField)
-              : props.graphSettings.mark.style.fill?.color
+      <a-frame-globe
+        key={i}
+        points={JSON.stringify(d.vertices.geometry)}
+        radius={props.graphSettings.mark.mapScale}
+        extrude={
+          extrusionScale(data[d.code].value) === 0
+            ? 0.000000000001
+            : extrusionScale(data[d.code].value)
+        }
+        color={
+          colorScale
+            ? colorScale(data[d.code].colorField)
+            : props.graphSettings.mark.style.fill?.color
               ? props.graphSettings.mark.style.fill?.color
               : "#ff0000"
-          }
-          opacity={
-            props.graphSettings.mark.style.fill?.opacity
-              ? props.graphSettings.mark.style.fill?.opacity
-              : 1
-          }
-          stroke_bool={stroke}
-          stroke_color={strokeColor}
-        />
-      ));
+        }
+        opacity={
+          props.graphSettings.mark.style.fill?.opacity
+            ? props.graphSettings.mark.style.fill?.opacity
+            : 1
+        }
+        stroke_bool={stroke}
+        stroke_color={strokeColor}
+      />
+    ));
 
   return (
     <a-entity

@@ -26,10 +26,8 @@ function App() {
           },
         ],
         camera: {
-          position: "0 5 10",
+          position: "0 0 10",
           rotation: "0 0 0",
-          nearClipping: 0.5,
-          fov: 80,
         },
         floor: {
           style: {
@@ -42,17 +40,7 @@ function App() {
       }}
       graph={[
         {
-          type: "BarGraph",
-          data: {
-            dataFile: "data/barGraph.csv",
-            fileType: "csv",
-            fieldDesc: [
-              ["Year", "text"],
-              ["Month", "text"],
-              ["Tornadoes", "number"],
-              ["Deaths", "number"],
-            ],
-          },
+          type: "ScatterPlot",
           style: {
             origin: { x: 0, y: 0, z: 0 },
             dimensions: {
@@ -61,46 +49,42 @@ function App() {
               depth: 10,
             },
           },
+          data: {
+            dataFile: "data/scatterPlot.csv",
+            fileType: "csv",
+            fieldDesc: [
+              ["sepal_length", "number"],
+              ["sepal_width", "number"],
+              ["petal_length", "number"],
+              ["petal_width", "number"],
+              ["species", "text"],
+            ],
+          },
           mark: {
-            type: "cone",
-            class: (d, i) => `boxes`,
-            id: (d, i) => `boxes_${d.Month}_${d.Year}`,
             position: {
               x: {
-                field: "Month",
-                domain: [
-                  "January",
-                  "February",
-                  "March",
-                  "April",
-                  "May",
-                  "June",
-                  "July",
-                  "August",
-                  "September",
-                  "October",
-                  "November",
-                  "December",
-                ],
+                field: "sepal_length",
+              },
+              y: {
+                field: "sepal_width",
               },
               z: {
-                field: "Year",
+                field: "petal_length",
               },
             },
+            type: "sphere",
             style: {
-              padding: {
-                x: 0.1,
-                z: 0.1,
-              },
-              height: {
-                startFromZero: true,
-                field: "Tornadoes",
+              radius: {
+                scaleType: "linear",
+                field: "petal_width",
+                value: [0, 0.2],
               },
               fill: {
+                scaleType: "ordinal",
                 opacity: 0.4,
-                scaleType: "linear",
-                field: "Deaths",
-                color: ["red", "green"],
+                field: "species",
+                color: ["red", "green", "blue"],
+                domain: ["setosa", "versicolor", "virginica"],
               },
             },
             mouseOver: {
@@ -113,7 +97,7 @@ function App() {
               },
               label: {
                 value: (d) =>
-                  `Year:${d.Year}\nMonth:${d.Month}\nDeaths:${d.Deaths}\nTornadoes:${d.Tornadoes}\n`,
+                  `sepal_length:${d.sepal_length}\nsepal_width:${d.sepal_width}\npetal_length:${d.petal_length}\npetal_width:${d.petal_width}\nspecies:${d.species}`,
                 align: "center",
                 fontSize: 1,
                 backgroundColor: "#333",
@@ -121,7 +105,20 @@ function App() {
                 fontColor: "#fff",
               },
             },
+            onClick: (d) => {
+              console.log(d.sepal_length);
+            },
+            droplines: {
+              xz: true,
+              yz: false,
+              xy: false,
+              style: {
+                opacity: 0.4,
+                color: "#ffff00",
+              },
+            },
             projections: {
+              xz: false,
               yz: true,
               xy: true,
               style: {

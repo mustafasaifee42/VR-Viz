@@ -11,20 +11,20 @@ const IsolineMap = (props) => {
   const colorDomain = props.graphSettings.mark.isoLines.style?.stroke?.domain
     ? props.graphSettings.mark.isoLines.style?.stroke?.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.isoLines.style?.stroke?.field,
-        props.graphSettings.mark.isoLines.style?.stroke?.scaleType,
-        props.graphSettings.mark.isoLines.style?.stroke?.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.isoLines.style?.stroke?.field,
+      props.graphSettings.mark.isoLines.style?.stroke?.scaleType,
+      props.graphSettings.mark.isoLines.style?.stroke?.startFromZero
+    );
 
   const elevationDomain = props.graphSettings.mark.isoLines.elevation.domain
     ? props.graphSettings.mark.isoLines.elevation.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.isoLines.elevation.field,
-        "linear",
-        props.graphSettings.mark.isoLines.elevation.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.isoLines.elevation.field,
+      "linear",
+      props.graphSettings.mark.isoLines.elevation.startFromZero
+    );
 
   //Adding scales
 
@@ -94,9 +94,8 @@ const IsolineMap = (props) => {
         width={max.x - min.x}
         height={max.y - min.y}
         depth={extrusionHeight}
-        position={`${(max.x + min.x) / 2} ${(max.y + min.y) / 2} ${
-          extrusionHeight / 2
-        }`}
+        position={`${(max.x + min.x) / 2} ${(max.y + min.y) / 2} ${extrusionHeight / 2
+          }`}
         opacity={0}
       />
     );
@@ -160,11 +159,11 @@ const IsolineMap = (props) => {
         colorArray.push(
           colorScale
             ? colorScale(
-                d[props.graphSettings.mark.isoLines.style?.stroke?.field]
-              )
+              d[props.graphSettings.mark.isoLines.style?.stroke?.field]
+            )
             : props.graphSettings.mark.isoLines.style?.stroke?.color
-            ? props.graphSettings.mark.isoLines.style?.stroke?.color
-            : "#000000"
+              ? props.graphSettings.mark.isoLines.style?.stroke?.color
+              : "#000000"
         );
       } else {
         path.push({
@@ -184,20 +183,20 @@ const IsolineMap = (props) => {
         colorArray.push(
           colorScale
             ? colorScale(
-                d[props.graphSettings.mark.isoLines.style?.stroke?.field]
-              )
+              d[props.graphSettings.mark.isoLines.style?.stroke?.field]
+            )
             : props.graphSettings.mark.isoLines.style?.stroke?.color
-            ? props.graphSettings.mark.isoLines.style?.stroke?.color
-            : "#000000"
+              ? props.graphSettings.mark.isoLines.style?.stroke?.color
+              : "#000000"
         );
         colorArray.push(
           colorScale
             ? colorScale(
-                d[props.graphSettings.mark.isoLines.style?.stroke?.field]
-              )
+              d[props.graphSettings.mark.isoLines.style?.stroke?.field]
+            )
             : props.graphSettings.mark.isoLines.style?.stroke?.color
-            ? props.graphSettings.mark.isoLines.style?.stroke?.color
-            : "#000000"
+              ? props.graphSettings.mark.isoLines.style?.stroke?.color
+              : "#000000"
         );
       }
     }

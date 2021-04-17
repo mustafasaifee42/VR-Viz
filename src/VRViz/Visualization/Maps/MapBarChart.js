@@ -11,21 +11,21 @@ const MapBarChart = (props) => {
   const heightDomain = props.graphSettings.mark.bars.style.height.domain
     ? props.graphSettings.mark.bars.style.height.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.bars.style.height.field,
-        props.graphSettings.mark.bars.style.height.scaleType,
-        props.graphSettings.mark.bars.style.height.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.bars.style.height.field,
+      props.graphSettings.mark.bars.style.height.scaleType,
+      props.graphSettings.mark.bars.style.height.startFromZero
+    );
 
   const colorDomain = props.graphSettings.mark.bars.style.fill?.scaleType
     ? props.graphSettings.mark.bars.style.fill?.domain
       ? props.graphSettings.mark.bars.style.fill?.domain
       : GetDomain(
-          props.data,
-          props.graphSettings.mark.bars.style.fill?.field,
-          props.graphSettings.mark.bars.style.fill?.scaleType,
-          props.graphSettings.mark.bars.style.fill?.startFromZero
-        )
+        props.data,
+        props.graphSettings.mark.bars.style.fill?.field,
+        props.graphSettings.mark.bars.style.fill?.scaleType,
+        props.graphSettings.mark.bars.style.fill?.startFromZero
+      )
     : null;
 
   //Adding scales
@@ -97,9 +97,8 @@ const MapBarChart = (props) => {
         width={max.x - min.x}
         height={max.y - min.y}
         depth={extrusionHeight}
-        position={`${(max.x + min.x) / 2} ${(max.y + min.y) / 2} ${
-          extrusionHeight / 2
-        }`}
+        position={`${(max.x + min.x) / 2} ${(max.y + min.y) / 2} ${extrusionHeight / 2
+          }`}
         opacity={0}
       />
     );
@@ -146,8 +145,8 @@ const MapBarChart = (props) => {
     const color = colorScale
       ? colorScale(d[props.graphSettings.mark.bars.style.fill?.field])
       : props.graphSettings.mark.bars.style.fill?.color
-      ? props.graphSettings.mark.bars.style.fill?.color
-      : "#ffff00";
+        ? props.graphSettings.mark.bars.style.fill?.color
+        : "#ffff00";
 
     const coordinates = GetMapCoordinates(
       d.longitude,

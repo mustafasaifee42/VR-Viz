@@ -32,9 +32,9 @@ const SurfacePlot = (props) => {
         props.graphSettings.mark.position.z.domain[0] + zStep * j,
         props.graphSettings.mark.style?.fill?.function
           ? props.graphSettings.mark.style?.fill?.function(
-              props.graphSettings.mark.position.x.domain[0] + xStep * i,
-              props.graphSettings.mark.position.z.domain[0] + zStep * j
-            )
+            props.graphSettings.mark.position.x.domain[0] + xStep * i,
+            props.graphSettings.mark.position.z.domain[0] + zStep * j
+          )
           : null,
       ]);
     }
@@ -44,8 +44,8 @@ const SurfacePlot = (props) => {
   const xDomain = props.graphSettings.mark.position.x.domain
     ? props.graphSettings.mark.position.x.domain
     : props.graphSettings.mark.position.x.startFromZero
-    ? [0, d3.max(dataSphere, (d) => d[0])]
-    : [d3.min(dataSphere, (d) => d[0]), d3.max(dataSphere, (d) => d[0])];
+      ? [0, d3.max(dataSphere, (d) => d[0])]
+      : [d3.min(dataSphere, (d) => d[0]), d3.max(dataSphere, (d) => d[0])];
 
   const yDomain = props.graphSettings.mark.position.y.domain
     ? props.graphSettings.mark.position.y.domain
@@ -122,14 +122,14 @@ const SurfacePlot = (props) => {
       colorMatrix.push(
         colorScale
           ? colorScale(
-              props.graphSettings.mark.style?.fill?.function(
-                props.graphSettings.mark.position.x.domain[0] + xStep * i,
-                props.graphSettings.mark.position.z.domain[0] + zStep * j
-              )
+            props.graphSettings.mark.style?.fill?.function(
+              props.graphSettings.mark.position.x.domain[0] + xStep * i,
+              props.graphSettings.mark.position.z.domain[0] + zStep * j
             )
+          )
           : props.graphSettings.mark.style?.fill?.color
-          ? props.graphSettings.mark.style?.fill?.color
-          : "#ff0000"
+            ? props.graphSettings.mark.style?.fill?.color
+            : "#ff0000"
       );
 
       meshVertices.push(
@@ -149,14 +149,14 @@ const SurfacePlot = (props) => {
       colorMatrix.push(
         colorScale
           ? colorScale(
-              props.graphSettings.mark.style?.fill?.function(
-                props.graphSettings.mark.position.x.domain[0] + xStep * (i + 1),
-                props.graphSettings.mark.position.z.domain[0] + zStep * j
-              )
+            props.graphSettings.mark.style?.fill?.function(
+              props.graphSettings.mark.position.x.domain[0] + xStep * (i + 1),
+              props.graphSettings.mark.position.z.domain[0] + zStep * j
             )
+          )
           : props.graphSettings.mark.style?.fill?.color
-          ? props.graphSettings.mark.style?.fill?.color
-          : "#ff0000"
+            ? props.graphSettings.mark.style?.fill?.color
+            : "#ff0000"
       );
 
       meshVertices.push(
@@ -176,14 +176,14 @@ const SurfacePlot = (props) => {
       colorMatrix.push(
         colorScale
           ? colorScale(
-              props.graphSettings.mark.style?.fill?.function(
-                props.graphSettings.mark.position.x.domain[0] + xStep * (i + 1),
-                props.graphSettings.mark.position.z.domain[0] + zStep * (j + 1)
-              )
+            props.graphSettings.mark.style?.fill?.function(
+              props.graphSettings.mark.position.x.domain[0] + xStep * (i + 1),
+              props.graphSettings.mark.position.z.domain[0] + zStep * (j + 1)
             )
+          )
           : props.graphSettings.mark.style?.fill?.color
-          ? props.graphSettings.mark.style?.fill?.color
-          : "#ff0000"
+            ? props.graphSettings.mark.style?.fill?.color
+            : "#ff0000"
       );
 
       meshVertices.push(
@@ -203,14 +203,14 @@ const SurfacePlot = (props) => {
       colorMatrix.push(
         colorScale
           ? colorScale(
-              props.graphSettings.mark.style?.fill?.function(
-                props.graphSettings.mark.position.x.domain[0] + xStep * (i + 1),
-                props.graphSettings.mark.position.z.domain[0] + zStep * (j + 1)
-              )
+            props.graphSettings.mark.style?.fill?.function(
+              props.graphSettings.mark.position.x.domain[0] + xStep * (i + 1),
+              props.graphSettings.mark.position.z.domain[0] + zStep * (j + 1)
             )
+          )
           : props.graphSettings.mark.style?.fill?.color
-          ? props.graphSettings.mark.style?.fill?.color
-          : "#ff0000"
+            ? props.graphSettings.mark.style?.fill?.color
+            : "#ff0000"
       );
 
       meshVertices.push(
@@ -230,14 +230,14 @@ const SurfacePlot = (props) => {
       colorMatrix.push(
         colorScale
           ? colorScale(
-              props.graphSettings.mark.style?.fill?.function(
-                props.graphSettings.mark.position.x.domain[0] + xStep * i,
-                props.graphSettings.mark.position.z.domain[0] + zStep * (j + 1)
-              )
+            props.graphSettings.mark.style?.fill?.function(
+              props.graphSettings.mark.position.x.domain[0] + xStep * i,
+              props.graphSettings.mark.position.z.domain[0] + zStep * (j + 1)
             )
+          )
           : props.graphSettings.mark.style?.fill?.color
-          ? props.graphSettings.mark.style?.fill?.color
-          : "#ff0000"
+            ? props.graphSettings.mark.style?.fill?.color
+            : "#ff0000"
       );
 
       meshVertices.push(
@@ -257,14 +257,14 @@ const SurfacePlot = (props) => {
       colorMatrix.push(
         colorScale
           ? colorScale(
-              props.graphSettings.mark.style?.fill?.function(
-                props.graphSettings.mark.position.x.domain[0] + xStep * i,
-                props.graphSettings.mark.position.z.domain[0] + zStep * j
-              )
+            props.graphSettings.mark.style?.fill?.function(
+              props.graphSettings.mark.position.x.domain[0] + xStep * i,
+              props.graphSettings.mark.position.z.domain[0] + zStep * j
             )
+          )
           : props.graphSettings.mark.style?.fill?.color
-          ? props.graphSettings.mark.style?.fill?.color
-          : "#ff0000"
+            ? props.graphSettings.mark.style?.fill?.color
+            : "#ff0000"
       );
     }
   }
@@ -412,19 +412,16 @@ const SurfacePlot = (props) => {
             ? props.graphSettings.style?.dimensions?.depth
             : 10
         }
-        position={`${
-          props.graphSettings.style?.dimensions?.width
+        position={`${props.graphSettings.style?.dimensions?.width
             ? props.graphSettings.style?.dimensions?.width / 2
             : 5
-        } ${
-          props.graphSettings.style?.dimensions?.height
+          } ${props.graphSettings.style?.dimensions?.height
             ? props.graphSettings.style?.dimensions?.height / 2
             : 5
-        } ${
-          props.graphSettings.style?.dimensions?.depth
+          } ${props.graphSettings.style?.dimensions?.depth
             ? props.graphSettings.style?.dimensions?.depth / 2
             : 5
-        }`}
+          }`}
         opacity={0}
       />
     </>

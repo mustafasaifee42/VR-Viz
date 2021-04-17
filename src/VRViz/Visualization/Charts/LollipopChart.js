@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as d3 from "d3";
 import GetDomain from "../../utils/GetDomain";
 import Shape from "../Components/Shape";
 import { XAxis, YAxis, ZAxis, AxisBox } from "../Components/Axis";
 
 const LollipopChart = (props) => {
+
+  useEffect(() => {
+    d3.selectAll(".clickShape").on("click", (event) => {
+      if (typeof props.graphSettings.mark?.onClick === "function")
+        props.graphSettings.mark?.onClick(JSON.parse(d3.select(event.currentTarget).attr("data")));
+    });
+  }, [props.graphSettings.mark]);
+
   if (!props.data || !props.graphSettings.mark) {
     console.warn(
       `Error: Some necessary attributes missing for ${props.graphSettings.type}`
@@ -15,48 +23,48 @@ const LollipopChart = (props) => {
   const xDomain = props.graphSettings.mark.position.x.domain
     ? props.graphSettings.mark.position.x.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.position.x.field,
-        "ordinal",
-        props.graphSettings.mark.position.x.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.position.x.field,
+      "ordinal",
+      props.graphSettings.mark.position.x.startFromZero
+    );
 
   const yDomain = props.graphSettings.mark.position.y.domain
     ? props.graphSettings.mark.position.y.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.position.y.field,
-        "linear",
-        props.graphSettings.mark.position.y.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.position.y.field,
+      "linear",
+      props.graphSettings.mark.position.y.startFromZero
+    );
 
   const zDomain = props.graphSettings.mark.position.z.domain
     ? props.graphSettings.mark.position.z.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.position.z.field,
-        "ordinal",
-        props.graphSettings.mark.position.z.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.position.z.field,
+      "ordinal",
+      props.graphSettings.mark.position.z.startFromZero
+    );
 
   const colorDomain = props.graphSettings.mark.style?.fill?.scaleType
     ? props.graphSettings.mark.style?.fill?.domain
       ? props.graphSettings.mark.style?.fill?.domain
       : GetDomain(
-          props.data,
-          props.graphSettings.mark.style?.fill?.field,
-          props.graphSettings.mark.style?.fill?.scaleType,
-          props.graphSettings.mark.style?.fill?.startFromZero
-        )
+        props.data,
+        props.graphSettings.mark.style?.fill?.field,
+        props.graphSettings.mark.style?.fill?.scaleType,
+        props.graphSettings.mark.style?.fill?.startFromZero
+      )
     : null;
 
   const radiusDomain = !props.graphSettings.mark.style?.radius?.domain
     ? GetDomain(
-        props.data,
-        props.graphSettings.mark.style?.radius?.field,
-        "linear",
-        props.graphSettings.mark.style?.radius?.startFromZero
-      )
+      props.data,
+      props.graphSettings.mark.style?.radius?.field,
+      "linear",
+      props.graphSettings.mark.style?.radius?.startFromZero
+    )
     : props.graphSettings.mark.style?.radius?.domain;
 
   const stemColorDomain = props.graphSettings.mark.droplines?.style?.fill
@@ -64,11 +72,11 @@ const LollipopChart = (props) => {
     ? props.graphSettings.mark.droplines?.style?.fill?.domain
       ? props.graphSettings.mark.droplines?.style?.fill?.domain
       : GetDomain(
-          props.data,
-          props.graphSettings.mark.droplines?.style?.fill?.field,
-          props.graphSettings.mark.droplines?.style?.fill?.scaleType,
-          props.graphSettings.mark.droplines?.style?.fill?.startFromZero
-        )
+        props.data,
+        props.graphSettings.mark.droplines?.style?.fill?.field,
+        props.graphSettings.mark.droplines?.style?.fill?.scaleType,
+        props.graphSettings.mark.droplines?.style?.fill?.startFromZero
+      )
     : null;
 
   //Adding Scale
@@ -119,9 +127,9 @@ const LollipopChart = (props) => {
 
   const radiusScale = props.graphSettings.mark.style?.radius?.scaleType
     ? d3
-        .scaleLinear()
-        .domain(radiusDomain)
-        .range(props.graphSettings.mark.style?.radius?.value)
+      .scaleLinear()
+      .domain(radiusDomain)
+      .range(props.graphSettings.mark.style?.radius?.value)
     : null;
 
   const colorRange = props.graphSettings.mark.style?.fill?.color
@@ -150,21 +158,19 @@ const LollipopChart = (props) => {
       colorScale && props.graphSettings.mark.style?.fill?.field
         ? colorScale(d[props.graphSettings.mark.style?.fill?.field])
         : props.graphSettings.mark.style?.fill.color
-        ? props.graphSettings.mark.style?.fill.color
-        : "#ff0000";
+          ? props.graphSettings.mark.style?.fill.color
+          : "#ff0000";
 
     const radiusValue =
       radiusScale && props.graphSettings.mark.style?.radius?.field
         ? radiusScale(d[props.graphSettings.mark.style?.radius?.field])
         : props.graphSettings.mark.style?.radius?.value
-        ? props.graphSettings.mark.style?.radius?.value
-        : 0.1;
+          ? props.graphSettings.mark.style?.radius?.value
+          : 0.1;
 
-    const position = `${
-      xScale(d[props.graphSettings.mark.position.x.field]) + width / 2
-    } ${yScale(d[props.graphSettings.mark.position.y.field])} ${
-      zScale(d[props.graphSettings.mark.position.z.field]) + depth / 2
-    }`;
+    const position = `${xScale(d[props.graphSettings.mark.position.x.field]) + width / 2
+      } ${yScale(d[props.graphSettings.mark.position.y.field])} ${zScale(d[props.graphSettings.mark.position.z.field]) + depth / 2
+      }`;
 
     const hoverText = props.graphSettings.mark.mouseOver?.label
       ? props.graphSettings.mark.mouseOver?.label?.value(d)
@@ -218,21 +224,22 @@ const LollipopChart = (props) => {
     const color =
       stemColorScale && props.graphSettings.mark.droplines?.style?.fill?.field
         ? stemColorScale(
-            d[props.graphSettings.mark.droplines?.style?.fill?.field]
-          )
+          d[props.graphSettings.mark.droplines?.style?.fill?.field]
+        )
         : props.graphSettings.mark.droplines?.style?.fill?.color
-        ? props.graphSettings.mark.droplines?.style?.fill?.color
-        : "#ff0000";
-    const position = `${
-      xScale(d[props.graphSettings.mark.position.x.field]) + width / 2
-    } ${yScale(d[props.graphSettings.mark.position.y.field]) / 2} ${
-      zScale(d[props.graphSettings.mark.position.z.field]) + depth / 2
-    }`;
+          ? props.graphSettings.mark.droplines?.style?.fill?.color
+          : "#ff0000";
+    const position = `${xScale(d[props.graphSettings.mark.position.x.field]) + width / 2
+      } ${yScale(d[props.graphSettings.mark.position.y.field]) / 2} ${zScale(d[props.graphSettings.mark.position.z.field]) + depth / 2
+      }`;
 
     const className =
       typeof props.graphSettings.mark.droplines?.class === "function"
-        ? `clickable ${props.graphSettings.mark.droplines?.class(d, i)}`
-        : "clickable";
+        ? `clickShape clickable ${props.graphSettings.mark.droplines?.class(
+          d,
+          i
+        )}`
+        : "clickShape clickable";
 
     const idName =
       typeof props.graphSettings.mark.droplines?.id === "function"

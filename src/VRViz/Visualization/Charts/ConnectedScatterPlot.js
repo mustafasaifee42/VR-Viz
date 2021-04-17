@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as d3 from "d3";
 import GetDomain from "../../utils/GetDomain";
 import Shape from "../Components/Shape";
 import { XAxis, YAxis, ZAxis, AxisBox } from "../Components/Axis";
 
 const ConnectedScatterPlot = (props) => {
+
+  useEffect(() => {
+    d3.selectAll(".clickShape").on("click", (event) => {
+      if (typeof props.graphSettings.mark?.points?.onClick === "function")
+        props.graphSettings.mark?.points?.onClick(JSON.parse(d3.select(event.currentTarget).attr("data")));
+    });
+  }, [props.graphSettings.mark?.points]);
+
   if (!props.data || !props.graphSettings.mark) {
     console.warn(
       `Error: Some necessary attributes missing for ${props.graphSettings.type}`
@@ -15,51 +23,51 @@ const ConnectedScatterPlot = (props) => {
   const xDomain = props.graphSettings.mark.position.x.domain
     ? props.graphSettings.mark.position.x.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.position.x.field,
-        "linear",
-        props.graphSettings.mark.position.x.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.position.x.field,
+      "linear",
+      props.graphSettings.mark.position.x.startFromZero
+    );
 
   const yDomain = props.graphSettings.mark.position.y.domain
     ? props.graphSettings.mark.position.y.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.position.y.field,
-        "liner",
-        props.graphSettings.mark.position.y.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.position.y.field,
+      "liner",
+      props.graphSettings.mark.position.y.startFromZero
+    );
 
   const zDomain = props.graphSettings.mark.position.z.domain
     ? props.graphSettings.mark.position.z.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.position.z.field,
-        "linear",
-        props.graphSettings.mark.position.z.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.position.z.field,
+      "linear",
+      props.graphSettings.mark.position.z.startFromZero
+    );
 
   const colorDomain = props.graphSettings.mark.points?.style?.fill?.scaleType
     ? props.graphSettings.mark.points?.style?.fill?.domain
       ? props.graphSettings.mark.points?.style?.fill?.domain
       : GetDomain(
-          props.data,
-          props.graphSettings.mark.points?.style?.fill?.field,
-          props.graphSettings.mark.points?.style?.fill?.scaleType
-            ? props.graphSettings.mark.points?.style?.fill?.scaleType
-            : "ordinal",
-          props.graphSettings.mark.points?.style?.fill?.startFromZero
-        )
+        props.data,
+        props.graphSettings.mark.points?.style?.fill?.field,
+        props.graphSettings.mark.points?.style?.fill?.scaleType
+          ? props.graphSettings.mark.points?.style?.fill?.scaleType
+          : "ordinal",
+        props.graphSettings.mark.points?.style?.fill?.startFromZero
+      )
     : null;
 
   const radiusDomain = props.graphSettings.mark.points?.style?.radius?.domain
     ? props.graphSettings.mark.points?.style?.radius?.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.points?.style?.radius?.field,
-        "linear",
-        props.graphSettings.mark.points?.style?.radius?.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.points?.style?.radius?.field,
+      "linear",
+      props.graphSettings.mark.points?.style?.radius?.startFromZero
+    );
 
   //Adding Scale
 
@@ -105,13 +113,13 @@ const ConnectedScatterPlot = (props) => {
 
   const radiusScale = props.graphSettings.mark.points?.style?.radius?.scaleType
     ? d3
-        .scaleLinear()
-        .domain(radiusDomain)
-        .range(
-          props.graphSettings.mark.points?.style?.radius?.value
-            ? props.graphSettings.mark.points?.style?.radius?.value
-            : [0, 0.5]
-        )
+      .scaleLinear()
+      .domain(radiusDomain)
+      .range(
+        props.graphSettings.mark.points?.style?.radius?.value
+          ? props.graphSettings.mark.points?.style?.radius?.value
+          : [0, 0.5]
+      )
     : null;
 
   //Adding marks
@@ -120,15 +128,15 @@ const ConnectedScatterPlot = (props) => {
       colorScale && props.graphSettings.mark.points?.style?.fill?.field
         ? colorScale(d[props.graphSettings.mark.points?.style?.fill?.field])
         : props.graphSettings.mark.points?.style?.fill?.color
-        ? props.graphSettings.mark.points?.style?.fill?.color
-        : "#ff0000";
+          ? props.graphSettings.mark.points?.style?.fill?.color
+          : "#ff0000";
 
     const radius =
       radiusScale && props.graphSettings.mark.points?.style?.radius?.field
         ? radiusScale(d[props.graphSettings.mark.points?.style?.radius?.field])
         : props.graphSettings.mark.points?.style?.radius?.value
-        ? props.graphSettings.mark.points?.style?.radius?.value
-        : 0.05;
+          ? props.graphSettings.mark.points?.style?.radius?.value
+          : 0.05;
 
     const position = `${xScale(
       d[props.graphSettings.mark.position.x.field]
@@ -142,8 +150,8 @@ const ConnectedScatterPlot = (props) => {
 
     const className =
       typeof props.graphSettings.mark.points?.class === "function"
-        ? `clickable ${props.graphSettings.mark.points?.class(d, i)}`
-        : "clickable";
+        ? `clickShape clickable ${props.graphSettings.mark.points?.class(d, i)}`
+        : "clickShape clickable";
 
     const idName =
       typeof props.graphSettings.mark.points?.id === "function"
@@ -188,85 +196,83 @@ const ConnectedScatterPlot = (props) => {
   const labels = props.graphSettings.mark.label
     ? props.graphSettings.mark.points?.style?.radius?.scaleType
       ? props.data.map((d, i) => (
-          <a-text
-            key={i}
-            opacity={
-              props.graphSettings.mark.label?.opacity
-                ? props.graphSettings.mark.label?.opacity
-                : 1
-            }
-            color={
-              props.graphSettings.mark.label?.color
-                ? props.graphSettings.mark.label?.color
-                : "#000000"
-            }
-            width={
-              props.graphSettings.mark.label?.fontSize
-                ? props.graphSettings.mark.label?.fontSize
-                : 1
-            }
-            value={`${d[props.graphSettings.mark.label.field]}`}
-            anchor="align"
-            side="double"
-            align="left"
-            position={`${
-              props.graphSettings.mark.points?.style?.radius?.field
-                ? xScale(d[props.graphSettings.mark.position.x.field]) +
-                  0.05 +
-                  radiusScale(
-                    d[props.graphSettings.mark.points?.style?.radius?.field]
-                  )
-                : xScale(d[props.graphSettings.mark.position.x.field]) + 0.05
+        <a-text
+          key={i}
+          opacity={
+            props.graphSettings.mark.label?.opacity
+              ? props.graphSettings.mark.label?.opacity
+              : 1
+          }
+          color={
+            props.graphSettings.mark.label?.color
+              ? props.graphSettings.mark.label?.color
+              : "#000000"
+          }
+          width={
+            props.graphSettings.mark.label?.fontSize
+              ? props.graphSettings.mark.label?.fontSize
+              : 1
+          }
+          value={`${d[props.graphSettings.mark.label.field]}`}
+          anchor="align"
+          side="double"
+          align="left"
+          position={`${props.graphSettings.mark.points?.style?.radius?.field
+            ? xScale(d[props.graphSettings.mark.position.x.field]) +
+            0.05 +
+            radiusScale(
+              d[props.graphSettings.mark.points?.style?.radius?.field]
+            )
+            : xScale(d[props.graphSettings.mark.position.x.field]) + 0.05
             } ${yScale(d[props.graphSettings.mark.position.y.field])} ${zScale(
               d[props.graphSettings.mark.position.z.field]
             )}`}
-            billboard={
-              props.graphSettings.mark.label?.billboarding === false
-                ? false
-                : true
-            }
-          />
-        ))
+          billboard={
+            props.graphSettings.mark.label?.billboarding === false
+              ? false
+              : true
+          }
+        />
+      ))
       : props.data.map((d, i) => (
-          <a-text
-            key={i}
-            opacity={
-              props.graphSettings.mark.label?.opacity
-                ? props.graphSettings.mark.label?.opacity
-                : 1
-            }
-            color={
-              props.graphSettings.mark.label?.color
-                ? props.graphSettings.mark.label?.color
-                : "#000000"
-            }
-            width={
-              props.graphSettings.mark.label?.fontSize
-                ? props.graphSettings.mark.label?.fontSize
-                : 1
-            }
-            value={`${d[props.graphSettings.mark.label.field]}`}
-            anchor="align"
-            side="double"
-            align="left"
-            position={`${
-              props.graphSettings.mark.points?.style?.radius?.value
-                ? xScale(d[props.graphSettings.mark.position.x.field]) +
-                  0.05 +
-                  props.graphSettings.mark.points?.style?.radius?.value
-                : xScale(d[props.graphSettings.mark.position.x.field]) +
-                  0.05 +
-                  0.05
+        <a-text
+          key={i}
+          opacity={
+            props.graphSettings.mark.label?.opacity
+              ? props.graphSettings.mark.label?.opacity
+              : 1
+          }
+          color={
+            props.graphSettings.mark.label?.color
+              ? props.graphSettings.mark.label?.color
+              : "#000000"
+          }
+          width={
+            props.graphSettings.mark.label?.fontSize
+              ? props.graphSettings.mark.label?.fontSize
+              : 1
+          }
+          value={`${d[props.graphSettings.mark.label.field]}`}
+          anchor="align"
+          side="double"
+          align="left"
+          position={`${props.graphSettings.mark.points?.style?.radius?.value
+            ? xScale(d[props.graphSettings.mark.position.x.field]) +
+            0.05 +
+            props.graphSettings.mark.points?.style?.radius?.value
+            : xScale(d[props.graphSettings.mark.position.x.field]) +
+            0.05 +
+            0.05
             } ${yScale(d[props.graphSettings.mark.position.y.field])} ${zScale(
               d[props.graphSettings.mark.position.z.field]
             )}`}
-            billboard={
-              props.graphSettings.mark.label?.billboarding === false
-                ? false
-                : true
-            }
-          />
-        ))
+          billboard={
+            props.graphSettings.mark.label?.billboarding === false
+              ? false
+              : true
+          }
+        />
+      ))
     : null;
 
   const pointList = props.data.map((d, i) => ({

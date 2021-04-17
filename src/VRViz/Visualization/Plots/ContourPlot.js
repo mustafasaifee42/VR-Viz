@@ -32,8 +32,8 @@ const ContourPlot = (props) => {
   const xDomain = props.graphSettings.mark.position.x.domain
     ? props.graphSettings.mark.position.x.domain
     : props.graphSettings.mark.position.x.startFromZero
-    ? [0, d3.max(dataCoordinate, (d) => d[0])]
-    : [
+      ? [0, d3.max(dataCoordinate, (d) => d[0])]
+      : [
         d3.min(dataCoordinate, (d) => d[0]),
         d3.max(dataCoordinate, (d) => d[0]),
       ];
@@ -43,11 +43,11 @@ const ContourPlot = (props) => {
   const zDomain = props.graphSettings.mark.position.z.domain
     ? props.graphSettings.mark.position.z.domain
     : GetDomain(
-        dataCoordinate,
-        2,
-        "linear",
-        props.graphSettings.mark.position.z.startFromZero
-      );
+      dataCoordinate,
+      2,
+      "linear",
+      props.graphSettings.mark.position.z.startFromZero
+    );
 
   //Adding Scale
   const xScale = d3
@@ -225,19 +225,16 @@ const ContourPlot = (props) => {
             ? props.graphSettings.style?.dimensions?.depth
             : 10
         }
-        position={`${
-          props.graphSettings.style?.dimensions?.width
+        position={`${props.graphSettings.style?.dimensions?.width
             ? props.graphSettings.style?.dimensions?.width / 2
             : 5
-        } ${
-          props.graphSettings.style?.dimensions?.height
+          } ${props.graphSettings.style?.dimensions?.height
             ? props.graphSettings.style?.dimensions?.height / 2
             : 5
-        } ${
-          props.graphSettings.style?.dimensions?.depth
+          } ${props.graphSettings.style?.dimensions?.depth
             ? props.graphSettings.style?.dimensions?.depth / 2
             : 5
-        }`}
+          }`}
         opacity={0}
       />
     </>

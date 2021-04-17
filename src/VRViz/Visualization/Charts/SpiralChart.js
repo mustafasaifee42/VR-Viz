@@ -8,22 +8,22 @@ const SpiralChart = (props) => {
     ? props.graphSettings.mark.style?.stroke?.domain
       ? props.graphSettings.mark.style?.stroke?.domain
       : GetDomain(
-          props.data,
-          props.graphSettings.mark.style?.stroke?.field,
-          props.graphSettings.mark.style?.stroke?.scaleType,
-          props.graphSettings.mark.style?.stroke?.startFromZero
-        )
+        props.data,
+        props.graphSettings.mark.style?.stroke?.field,
+        props.graphSettings.mark.style?.stroke?.scaleType,
+        props.graphSettings.mark.style?.stroke?.startFromZero
+      )
     : null;
 
   const fillColorDomain = props.graphSettings.mark.style?.fill?.scaleType
     ? props.graphSettings.mark.style?.fill?.domain
       ? props.graphSettings.mark.style?.fill?.domain
       : GetDomain(
-          props.data,
-          props.graphSettings.mark.style?.fill?.field,
-          props.graphSettings.mark.style?.fill?.scaleType,
-          props.graphSettings.mark.style?.fill?.startFromZero
-        )
+        props.data,
+        props.graphSettings.mark.style?.fill?.field,
+        props.graphSettings.mark.style?.fill?.scaleType,
+        props.graphSettings.mark.style?.fill?.startFromZero
+      )
     : null;
 
   //Adding scales
@@ -68,22 +68,18 @@ const SpiralChart = (props) => {
     scales.forEach((scale, j) => {
       coordinates =
         coordinates +
-        `${
-          scale(d[props.graphSettings.mark.vertices[j].title]) *
-          Math.sin(j * angle)
-        } ${
-          0 -
-          scale(d[props.graphSettings.mark.vertices[j].title]) *
-            Math.cos(j * angle)
+        `${scale(d[props.graphSettings.mark.vertices[j].title]) *
+        Math.sin(j * angle)
+        } ${0 -
+        scale(d[props.graphSettings.mark.vertices[j].title]) *
+        Math.cos(j * angle)
         },`;
     });
     coordinates =
       coordinates +
-      `${
-        scales[0](d[props.graphSettings.mark.vertices[0].title]) * Math.sin(0)
-      } ${
-        0 -
-        scales[0](d[props.graphSettings.mark.vertices[0].title]) * Math.cos(0)
+      `${scales[0](d[props.graphSettings.mark.vertices[0].title]) * Math.sin(0)
+      } ${0 -
+      scales[0](d[props.graphSettings.mark.vertices[0].title]) * Math.cos(0)
       }`;
 
     return coordinates;
