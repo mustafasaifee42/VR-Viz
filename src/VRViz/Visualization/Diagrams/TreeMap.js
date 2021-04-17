@@ -1,14 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as d3 from "d3";
 import Shape from "../Components/Shape";
 
 const TreeMap = (props) => {
+
+  useEffect(() => {
+    d3.selectAll(".clickShape").on("click", (event) => {
+      if (typeof props.graphSettings.mark?.onClick === "function") {
+        const data = JSON.parse(d3.select(event.currentTarget).attr("data"));
+        props.graphSettings.mark?.onClick(data.data, data.parent);
+      }
+    });
+  }, [props.graphSettings.mark]);
+
   if (!props.data || !props.graphSettings.mark) {
     console.warn(
       `Error: Some necessary attributes missing for ${props.graphSettings.type}`
     );
     return null;
   }
+
 
   const treemap = d3
     .treemap()
@@ -48,14 +59,14 @@ const TreeMap = (props) => {
   const heightDomain = props.graphSettings.mark.style.extrusion.domain
     ? props.graphSettings.mark.style.extrusion.domain
     : props.graphSettings.mark.style.extrusion.startFromZero
-    ? [
+      ? [
         0,
         d3.max(
           tree.leaves(),
           (d) => d.data[props.graphSettings.mark.style.extrusion.field]
         ),
       ]
-    : [
+      : [
         d3.min(
           tree.leaves(),
           (d) => d.data[props.graphSettings.mark.style.extrusion.field]
@@ -68,28 +79,28 @@ const TreeMap = (props) => {
 
   const heightScale = props.graphSettings.mark.style.extrusion.value
     ? d3
-        .scaleLinear()
-        .domain(heightDomain)
-        .range(props.graphSettings.mark.style.extrusion.value)
+      .scaleLinear()
+      .domain(heightDomain)
+      .range(props.graphSettings.mark.style.extrusion.value)
     : d3
-        .scaleLinear()
-        .domain(heightDomain)
-        .range([
-          0,
-          props.graphSettings.style?.dimensions?.height
-            ? props.graphSettings.style?.dimensions?.height
-            : 10,
-        ]);
+      .scaleLinear()
+      .domain(heightDomain)
+      .range([
+        0,
+        props.graphSettings.style?.dimensions?.height
+          ? props.graphSettings.style?.dimensions?.height
+          : 10,
+      ]);
 
   const colorScale = props.graphSettings.mark.style.fill?.scaleType
     ? d3
-        .scaleOrdinal()
-        .domain(parent)
-        .range(
-          props.graphSettings.mark.style.fill?.color
-            ? props.graphSettings.mark.style.fill?.color
-            : d3.schemeCategory10
-        )
+      .scaleOrdinal()
+      .domain(parent)
+      .range(
+        props.graphSettings.mark.style.fill?.color
+          ? props.graphSettings.mark.style.fill?.color
+          : d3.schemeCategory10
+      )
     : null;
 
   //Adding marks
@@ -110,8 +121,8 @@ const TreeMap = (props) => {
     const color = colorScale
       ? colorScale(d.parent.data.name)
       : props.graphSettings.mark.style.fill?.color
-      ? props.graphSettings.mark.style.fill?.color
-      : "#ff0000";
+        ? props.graphSettings.mark.style.fill?.color
+        : "#ff0000";
 
     const hoverText = props.graphSettings.mark.mouseOver?.label
       ? props.graphSettings.mark.mouseOver.label.value(d)
@@ -119,8 +130,8 @@ const TreeMap = (props) => {
 
     const className =
       typeof props.graphSettings.mark.class === "function"
-        ? `clickable ${props.graphSettings.mark.class(d, i)}`
-        : "clickable";
+        ? `clickable clickShape ${props.graphSettings.mark.class(d, i)}`
+        : "clickable clickShape";
 
     const idName =
       typeof props.graphSettings.mark.id === "function"

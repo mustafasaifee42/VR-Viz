@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as d3 from "d3";
 import GetDomain from "../../utils/GetDomain";
 import Shape from "../Components/Shape";
 import { XAxis, YAxis, ZAxis, AxisBox } from "../Components/Axis";
 
 const ScatterPlot = (props) => {
+
+  useEffect(() => {
+    d3.selectAll(".clickShape").on("click", (event) => {
+      if (typeof props.graphSettings.mark?.onClick === "function")
+        props.graphSettings.mark?.onClick(JSON.parse(d3.select(event.currentTarget).attr("data")));
+    });
+  }, [props.graphSettings.mark]);
+
   if (!props.data || !props.graphSettings.mark) {
     console.warn(
       `Error: Some necessary attributes missing for ${props.graphSettings.type}`
@@ -15,48 +23,48 @@ const ScatterPlot = (props) => {
   const xDomain = props.graphSettings.mark.position.x.domain
     ? props.graphSettings.mark.position.x.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.position.x.field,
-        "linear",
-        props.graphSettings.mark.position.x.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.position.x.field,
+      "linear",
+      props.graphSettings.mark.position.x.startFromZero
+    );
 
   const yDomain = props.graphSettings.mark.position.y.domain
     ? props.graphSettings.mark.position.y.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.position.y.field,
-        "liner",
-        props.graphSettings.mark.position.y.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.position.y.field,
+      "liner",
+      props.graphSettings.mark.position.y.startFromZero
+    );
 
   const zDomain = props.graphSettings.mark.position.z.domain
     ? props.graphSettings.mark.position.z.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.position.z.field,
-        "linear",
-        props.graphSettings.mark.position.z.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.position.z.field,
+      "linear",
+      props.graphSettings.mark.position.z.startFromZero
+    );
 
   const colorDomain = props.graphSettings.mark.style?.fill?.scaleType
     ? props.graphSettings.mark.style?.fill?.domain
       ? props.graphSettings.mark.style?.fill?.domain
       : GetDomain(
-          props.data,
-          props.graphSettings.mark.style?.fill?.field,
-          props.graphSettings.mark.style?.fill?.scaleType,
-          props.graphSettings.mark.style?.fill?.startFromZero
-        )
+        props.data,
+        props.graphSettings.mark.style?.fill?.field,
+        props.graphSettings.mark.style?.fill?.scaleType,
+        props.graphSettings.mark.style?.fill?.startFromZero
+      )
     : null;
 
   const radiusDomain = !props.graphSettings.mark.style?.radius?.domain
     ? GetDomain(
-        props.data,
-        props.graphSettings.mark.style?.radius?.field,
-        "linear",
-        props.graphSettings.mark.style?.radius?.startFromZero
-      )
+      props.data,
+      props.graphSettings.mark.style?.radius?.field,
+      "linear",
+      props.graphSettings.mark.style?.radius?.startFromZero
+    )
     : props.graphSettings.mark.style?.radius?.domain;
 
   //Adding Scale
@@ -103,29 +111,28 @@ const ScatterPlot = (props) => {
 
   const radiusScale = props.graphSettings.mark.style?.radius?.scaleType
     ? d3
-        .scaleLinear()
-        .domain(radiusDomain)
-        .range(
-          props.graphSettings.mark.style?.radius?.value
-            ? props.graphSettings.mark.style?.radius?.value
-            : [0, 1]
-        )
+      .scaleLinear()
+      .domain(radiusDomain)
+      .range(
+        props.graphSettings.mark.style?.radius?.value
+          ? props.graphSettings.mark.style?.radius?.value
+          : [0, 1]
+      )
     : null;
-
   //Adding marks
   const marks = props.data.map((d, i) => {
     const color =
       colorScale && props.graphSettings.mark.style?.fill?.field
         ? colorScale(d[props.graphSettings.mark.style?.fill?.field])
         : props.graphSettings.mark.style?.fill?.color
-        ? props.graphSettings.mark.style?.fill?.color
-        : "#ff0000";
+          ? props.graphSettings.mark.style?.fill?.color
+          : "#ff0000";
 
     const radius = radiusScale
       ? radiusScale(d[props.graphSettings.mark.style?.radius?.field])
       : props.graphSettings.mark.style?.radius?.value
-      ? props.graphSettings.mark.style?.radius?.value
-      : 0.5;
+        ? props.graphSettings.mark.style?.radius?.value
+        : 0.5;
 
     const position = `${xScale(
       d[props.graphSettings.mark.position.x.field]
@@ -139,8 +146,8 @@ const ScatterPlot = (props) => {
 
     const className =
       typeof props.graphSettings.mark.class === "function"
-        ? `clickable ${props.graphSettings.mark.class(d, i)}`
-        : "clickable";
+        ? `clickShape clickable ${props.graphSettings.mark.class(d, i)}`
+        : "clickable clickShape";
 
     const idName =
       typeof props.graphSettings.mark.id === "function"
@@ -185,145 +192,142 @@ const ScatterPlot = (props) => {
 
   const droplines = props.graphSettings.mark.droplines
     ? props.data.map((d, i) => {
-        const color = props.graphSettings.mark.droplines?.style?.color
-          ? props.graphSettings.mark.droplines?.style?.color
-          : colorScale && props.graphSettings.mark.style?.fill?.field
+      const color = props.graphSettings.mark.droplines?.style?.color
+        ? props.graphSettings.mark.droplines?.style?.color
+        : colorScale && props.graphSettings.mark.style?.fill?.field
           ? colorScale(d[props.graphSettings.mark.style?.fill?.field])
           : props.graphSettings.mark.style?.fill?.color
-          ? props.graphSettings.mark.style?.fill?.color
-          : "#ff0000";
-        const xz = props.graphSettings.mark.droplines.xz ? (
-          <a-entity
-            key={`xz_${i}`}
-            line={`start:${xScale(
-              d[props.graphSettings.mark.position.x.field]
-            )} 0 ${zScale(
-              d[props.graphSettings.mark.position.z.field]
-            )}; end:${xScale(
-              d[props.graphSettings.mark.position.x.field]
-            )} ${yScale(d[props.graphSettings.mark.position.y.field])} ${zScale(
-              d[props.graphSettings.mark.position.z.field]
-            )}; opacity:${
-              props.graphSettings.mark.droplines?.style?.opacity
-                ? props.graphSettings.mark.droplines?.style?.opacity
-                : 1
+            ? props.graphSettings.mark.style?.fill?.color
+            : "#ff0000";
+      const xz = props.graphSettings.mark.droplines.xz ? (
+        <a-entity
+          key={`xz_${i}`}
+          line={`start:${xScale(
+            d[props.graphSettings.mark.position.x.field]
+          )} 0 ${zScale(
+            d[props.graphSettings.mark.position.z.field]
+          )}; end:${xScale(
+            d[props.graphSettings.mark.position.x.field]
+          )} ${yScale(d[props.graphSettings.mark.position.y.field])} ${zScale(
+            d[props.graphSettings.mark.position.z.field]
+          )}; opacity:${props.graphSettings.mark.droplines?.style?.opacity
+            ? props.graphSettings.mark.droplines?.style?.opacity
+            : 1
             }; color:${color}`}
-          />
-        ) : null;
-        const xy = props.graphSettings.mark.droplines.xy ? (
-          <a-entity
-            key={`xy_${i}`}
-            line={`start:${xScale(
-              d[props.graphSettings.mark.position.x.field]
-            )} ${yScale(
-              d[props.graphSettings.mark.position.y.field]
-            )} 0; end:${xScale(
-              d[props.graphSettings.mark.position.x.field]
-            )} ${yScale(d[props.graphSettings.mark.position.y.field])} ${zScale(
-              d[props.graphSettings.mark.position.z.field]
-            )}; opacity:${
-              props.graphSettings.mark.droplines?.style?.opacity
-                ? props.graphSettings.mark.droplines?.style?.opacity
-                : 1
+        />
+      ) : null;
+      const xy = props.graphSettings.mark.droplines.xy ? (
+        <a-entity
+          key={`xy_${i}`}
+          line={`start:${xScale(
+            d[props.graphSettings.mark.position.x.field]
+          )} ${yScale(
+            d[props.graphSettings.mark.position.y.field]
+          )} 0; end:${xScale(
+            d[props.graphSettings.mark.position.x.field]
+          )} ${yScale(d[props.graphSettings.mark.position.y.field])} ${zScale(
+            d[props.graphSettings.mark.position.z.field]
+          )}; opacity:${props.graphSettings.mark.droplines?.style?.opacity
+            ? props.graphSettings.mark.droplines?.style?.opacity
+            : 1
             }; color:${color}`}
-          />
-        ) : null;
-        const yz = props.graphSettings.mark.droplines.yz ? (
-          <a-entity
-            key={`yz_${i}`}
-            line={`start:0 ${yScale(
-              d[props.graphSettings.mark.position.y.field]
-            )} 0; end:${xScale(
-              d[props.graphSettings.mark.position.x.field]
-            )} ${yScale(d[props.graphSettings.mark.position.y.field])} ${zScale(
-              d[props.graphSettings.mark.position.z.field]
-            )}; opacity:${
-              props.graphSettings.mark.droplines?.style?.opacity
-                ? props.graphSettings.mark.droplines?.style?.opacity
-                : 1
+        />
+      ) : null;
+      const yz = props.graphSettings.mark.droplines.yz ? (
+        <a-entity
+          key={`yz_${i}`}
+          line={`start:0 ${yScale(
+            d[props.graphSettings.mark.position.y.field]
+          )} 0; end:${xScale(
+            d[props.graphSettings.mark.position.x.field]
+          )} ${yScale(d[props.graphSettings.mark.position.y.field])} ${zScale(
+            d[props.graphSettings.mark.position.z.field]
+          )}; opacity:${props.graphSettings.mark.droplines?.style?.opacity
+            ? props.graphSettings.mark.droplines?.style?.opacity
+            : 1
             }; color:${color}`}
-          />
-        ) : null;
-        return (
-          <>
-            {xz}
-            {xy}
-            {yz}
-          </>
-        );
-      })
+        />
+      ) : null;
+      return (
+        <>
+          {xz}
+          {xy}
+          {yz}
+        </>
+      );
+    })
     : null;
 
   // Adding Projections
 
   const projections = props.graphSettings.mark.projections
     ? props.data.map((d, i) => {
-        const color = colorScale
-          ? colorScale(d[props.graphSettings.mark.style.fill.field])
-          : props.graphSettings.mark.style.fill.color
+      const color = colorScale
+        ? colorScale(d[props.graphSettings.mark.style.fill.field])
+        : props.graphSettings.mark.style.fill.color
           ? props.graphSettings.mark.style.fill.color
           : "#ff0000";
-        const radius = radiusScale
-          ? radiusScale(d[props.graphSettings.mark.style.radius.field])
-          : props.graphSettings.mark.style.radius.value
+      const radius = radiusScale
+        ? radiusScale(d[props.graphSettings.mark.style.radius.field])
+        : props.graphSettings.mark.style.radius.value
           ? props.graphSettings.mark.style.radius.value
           : 0.5;
-        const xz = props.graphSettings.mark.projections.xz ? (
-          <a-circle
-            key={`xz_${i}`}
-            position={`${xScale(
-              d[props.graphSettings.mark.position.x.field]
-            )} 0 ${zScale(d[props.graphSettings.mark.position.z.field])}`}
-            opacity={
-              props.graphSettings.mark.projections.style?.opacity
-                ? props.graphSettings.mark.projections.style?.opacity
-                : 1
-            }
-            color={`${color}`}
-            radius={radius}
-            rotation="-90 0 0"
-          />
-        ) : null;
-        const xy = props.graphSettings.mark.projections.xy ? (
-          <a-circle
-            key={`xy_${i}`}
-            position={`${xScale(
-              d[props.graphSettings.mark.position.x.field]
-            )} ${yScale(d[props.graphSettings.mark.position.y.field])} 0`}
-            opacity={
-              props.graphSettings.mark.projections.style?.opacity
-                ? props.graphSettings.mark.projections.style?.opacity
-                : 1
-            }
-            color={`${color}`}
-            radius={radius}
-            rotation="00 0"
-          />
-        ) : null;
-        const yz = props.graphSettings.mark.projections.yz ? (
-          <a-circle
-            key={`yz_${i}`}
-            position={`0 ${yScale(
-              d[props.graphSettings.mark.position.y.field]
-            )} ${zScale(d[props.graphSettings.mark.position.z.field])}`}
-            opacity={
-              props.graphSettings.mark.projections.style?.opacity
-                ? props.graphSettings.mark.projections.style?.opacity
-                : 1
-            }
-            color={`${color}`}
-            radius={radius}
-            rotation="0 90 0"
-          />
-        ) : null;
-        return (
-          <>
-            {xz}
-            {xy}
-            {yz}
-          </>
-        );
-      })
+      const xz = props.graphSettings.mark.projections.xz ? (
+        <a-circle
+          key={`xz_${i}`}
+          position={`${xScale(
+            d[props.graphSettings.mark.position.x.field]
+          )} 0 ${zScale(d[props.graphSettings.mark.position.z.field])}`}
+          opacity={
+            props.graphSettings.mark.projections.style?.opacity
+              ? props.graphSettings.mark.projections.style?.opacity
+              : 1
+          }
+          color={`${color}`}
+          radius={radius}
+          rotation="-90 0 0"
+        />
+      ) : null;
+      const xy = props.graphSettings.mark.projections.xy ? (
+        <a-circle
+          key={`xy_${i}`}
+          position={`${xScale(
+            d[props.graphSettings.mark.position.x.field]
+          )} ${yScale(d[props.graphSettings.mark.position.y.field])} 0`}
+          opacity={
+            props.graphSettings.mark.projections.style?.opacity
+              ? props.graphSettings.mark.projections.style?.opacity
+              : 1
+          }
+          color={`${color}`}
+          radius={radius}
+          rotation="00 0"
+        />
+      ) : null;
+      const yz = props.graphSettings.mark.projections.yz ? (
+        <a-circle
+          key={`yz_${i}`}
+          position={`0 ${yScale(
+            d[props.graphSettings.mark.position.y.field]
+          )} ${zScale(d[props.graphSettings.mark.position.z.field])}`}
+          opacity={
+            props.graphSettings.mark.projections.style?.opacity
+              ? props.graphSettings.mark.projections.style?.opacity
+              : 1
+          }
+          color={`${color}`}
+          radius={radius}
+          rotation="0 90 0"
+        />
+      ) : null;
+      return (
+        <>
+          {xz}
+          {xy}
+          {yz}
+        </>
+      );
+    })
     : null;
 
   //Axis

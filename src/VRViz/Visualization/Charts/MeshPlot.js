@@ -15,19 +15,19 @@ const MeshPlot = (props) => {
   const xDomain = props.graphSettings.mark.position.x.domain
     ? props.graphSettings.mark.position.x.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.position.x.field,
-        props.graphSettings.mark.position.x.scaleType
-          ? props.graphSettings.mark.position.x.scaleType
-          : "ordinal",
-        props.graphSettings.mark.position.x.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.position.x.field,
+      props.graphSettings.mark.position.x.scaleType
+        ? props.graphSettings.mark.position.x.scaleType
+        : "ordinal",
+      props.graphSettings.mark.position.x.startFromZero
+    );
 
   const zDomain = props.graphSettings.mark.position.z.domain
     ? props.graphSettings.mark.position.z.domain
     : Object.keys(props.data[0]).map((d) =>
-        d !== props.graphSettings.mark.position.x.field ? d : null
-      );
+      d !== props.graphSettings.mark.position.x.field ? d : null
+    );
 
   let yDomain = props.graphSettings.mark.position.y?.domain;
   if (!yDomain) {
@@ -65,24 +65,24 @@ const MeshPlot = (props) => {
 
   const colorDomain = props.graphSettings.mark.style?.fill?.axis
     ? [
-        0,
-        props.graphSettings.mark.style?.fill?.axis === "y"
-          ? graphHeight
-          : props.graphSettings.mark.style?.fill?.axis === "z"
+      0,
+      props.graphSettings.mark.style?.fill?.axis === "y"
+        ? graphHeight
+        : props.graphSettings.mark.style?.fill?.axis === "z"
           ? graphDepth
           : graphWidth,
-      ]
+    ]
     : null;
   //Adding Scale
   const xScale =
     props.graphSettings.mark.position.x.scaleType === "linear"
       ? d3.scaleLinear().range([0, graphWidth]).domain(xDomain)
       : d3
-          .scaleOrdinal()
-          .range(
-            xDomain.map((_d, i) => (i * graphWidth) / (xDomain.length - 1))
-          )
-          .domain(xDomain);
+        .scaleOrdinal()
+        .range(
+          xDomain.map((_d, i) => (i * graphWidth) / (xDomain.length - 1))
+        )
+        .domain(xDomain);
 
   const yScale = d3.scaleLinear().domain(yDomain).range([0, graphHeight]);
 
@@ -113,14 +113,14 @@ const MeshPlot = (props) => {
         props.graphSettings.mark.style?.fill?.axis === "y"
           ? yScale(props.data[i][zDomain[j]])
           : props.graphSettings.mark.style?.fill?.axis === "z"
-          ? zScale(zDomain[j])
-          : xScale(props.data[i][props.graphSettings.mark.position.x.field]);
+            ? zScale(zDomain[j])
+            : xScale(props.data[i][props.graphSettings.mark.position.x.field]);
 
       let vertColor = colorScale
         ? colorScale(vertColorIndex)
         : props.graphSettings.mark.style?.fill?.color
-        ? props.graphSettings.mark.style?.fill?.color
-        : "#ff0000";
+          ? props.graphSettings.mark.style?.fill?.color
+          : "#ff0000";
 
       colorMatrix.push(vertColor);
 
@@ -134,16 +134,16 @@ const MeshPlot = (props) => {
         props.graphSettings.mark.style?.fill?.axis === "y"
           ? yScale(props.data[i + 1][zDomain[j]])
           : props.graphSettings.mark.style?.fill?.axis === "z"
-          ? zScale(zDomain[j])
-          : xScale(
+            ? zScale(zDomain[j])
+            : xScale(
               props.data[i + 1][props.graphSettings.mark.position.x.field]
             );
 
       vertColor = colorScale
         ? colorScale(vertColorIndex)
         : props.graphSettings.mark.style?.fill?.color
-        ? props.graphSettings.mark.style?.fill?.color
-        : "#ff0000";
+          ? props.graphSettings.mark.style?.fill?.color
+          : "#ff0000";
 
       colorMatrix.push(vertColor);
 
@@ -157,16 +157,16 @@ const MeshPlot = (props) => {
         props.graphSettings.mark.style?.fill?.axis === "y"
           ? yScale(props.data[i + 1][zDomain[j + 1]])
           : props.graphSettings.mark.style?.fill?.axis === "z"
-          ? zScale(zDomain[j + 1])
-          : xScale(
+            ? zScale(zDomain[j + 1])
+            : xScale(
               props.data[i + 1][props.graphSettings.mark.position.x.field]
             );
 
       vertColor = colorScale
         ? colorScale(vertColorIndex)
         : props.graphSettings.mark.style?.fill?.color
-        ? props.graphSettings.mark.style?.fill?.color
-        : "#ff0000";
+          ? props.graphSettings.mark.style?.fill?.color
+          : "#ff0000";
 
       colorMatrix.push(vertColor);
 
@@ -180,16 +180,16 @@ const MeshPlot = (props) => {
         props.graphSettings.mark.style?.fill?.axis === "y"
           ? yScale(props.data[i + 1][zDomain[j + 1]])
           : props.graphSettings.mark.style?.fill?.axis === "z"
-          ? zScale(zDomain[j + 1])
-          : xScale(
+            ? zScale(zDomain[j + 1])
+            : xScale(
               props.data[i + 1][props.graphSettings.mark.position.x.field]
             );
 
       vertColor = colorScale
         ? colorScale(vertColorIndex)
         : props.graphSettings.mark.style?.fill?.color
-        ? props.graphSettings.mark.style?.fill?.color
-        : "#ff0000";
+          ? props.graphSettings.mark.style?.fill?.color
+          : "#ff0000";
 
       colorMatrix.push(vertColor);
 
@@ -203,14 +203,14 @@ const MeshPlot = (props) => {
         props.graphSettings.mark.style?.fill?.axis === "y"
           ? yScale(props.data[i][zDomain[j + 1]])
           : props.graphSettings.mark.style?.fill?.axis === "z"
-          ? zScale(zDomain[j + 1])
-          : xScale(props.data[i][props.graphSettings.mark.position.x.field]);
+            ? zScale(zDomain[j + 1])
+            : xScale(props.data[i][props.graphSettings.mark.position.x.field]);
 
       vertColor = colorScale
         ? colorScale(vertColorIndex)
         : props.graphSettings.mark.style?.fill?.color
-        ? props.graphSettings.mark.style?.fill?.color
-        : "#ff0000";
+          ? props.graphSettings.mark.style?.fill?.color
+          : "#ff0000";
 
       colorMatrix.push(vertColor);
 
@@ -224,14 +224,14 @@ const MeshPlot = (props) => {
         props.graphSettings.mark.style?.fill?.axis === "y"
           ? yScale(props.data[i][zDomain[j]])
           : props.graphSettings.mark.style?.fill?.axis === "z"
-          ? zScale(zDomain[j])
-          : xScale(props.data[i][props.graphSettings.mark.position.x.field]);
+            ? zScale(zDomain[j])
+            : xScale(props.data[i][props.graphSettings.mark.position.x.field]);
 
       vertColor = colorScale
         ? colorScale(vertColorIndex)
         : props.graphSettings.mark.style?.fill?.color
-        ? props.graphSettings.mark.style?.fill?.color
-        : "#ff0000";
+          ? props.graphSettings.mark.style?.fill?.color
+          : "#ff0000";
 
       colorMatrix.push(vertColor);
     }
@@ -244,10 +244,10 @@ const MeshPlot = (props) => {
         domain={
           props.graphSettings.mark.position.z.scaleType === "linear"
             ? xScale.ticks(
-                props.graphSettings.axis["x-axis"].ticks?.noOfTicks
-                  ? props.graphSettings.axis["x-axis"].ticks.noOfTicks
-                  : 5
-              )
+              props.graphSettings.axis["x-axis"].ticks?.noOfTicks
+                ? props.graphSettings.axis["x-axis"].ticks.noOfTicks
+                : 5
+            )
             : xDomain
         }
         tick={props.graphSettings.axis["x-axis"].ticks}
@@ -292,10 +292,10 @@ const MeshPlot = (props) => {
         domain={
           props.graphSettings.mark.position.z.scaleType === "linear"
             ? zScale.ticks(
-                props.graphSettings.axis["z-axis"].ticks?.noOfTicks
-                  ? props.graphSettings.axis["z-axis"].ticks.noOfTicks
-                  : 5
-              )
+              props.graphSettings.axis["z-axis"].ticks?.noOfTicks
+                ? props.graphSettings.axis["z-axis"].ticks.noOfTicks
+                : 5
+            )
             : zDomain
         }
         tick={props.graphSettings.axis["z-axis"].ticks}
@@ -387,19 +387,16 @@ const MeshPlot = (props) => {
             ? props.graphSettings.style?.dimensions?.depth
             : 10
         }
-        position={`${
-          props.graphSettings.style?.dimensions?.width
+        position={`${props.graphSettings.style?.dimensions?.width
             ? props.graphSettings.style?.dimensions?.width / 2
             : 5
-        } ${
-          props.graphSettings.style?.dimensions?.height
+          } ${props.graphSettings.style?.dimensions?.height
             ? props.graphSettings.style?.dimensions?.height / 2
             : 5
-        } ${
-          props.graphSettings.style?.dimensions?.depth
+          } ${props.graphSettings.style?.dimensions?.depth
             ? props.graphSettings.style?.dimensions?.depth / 2
             : 5
-        }`}
+          }`}
         opacity={0}
       />
     </>

@@ -15,11 +15,11 @@ const PointCloud = (props) => {
     ? props.graphSettings.mark?.style?.fill?.domain
       ? props.graphSettings.mark?.style?.fill?.domain
       : GetDomain(
-          props.data,
-          props.graphSettings.mark?.style?.fill?.field,
-          props.graphSettings.mark?.style?.fill?.scaleType,
-          props.graphSettings.mark?.style?.fill?.startFromZero
-        )
+        props.data,
+        props.graphSettings.mark?.style?.fill?.field,
+        props.graphSettings.mark?.style?.fill?.scaleType,
+        props.graphSettings.mark?.style?.fill?.startFromZero
+      )
     : null;
 
   let vertX = [],
@@ -43,10 +43,10 @@ const PointCloud = (props) => {
       d.r && d.g && d.b
         ? `rgb(${d.r},${d.g},${d.b})`
         : colorScale
-        ? colorScale(d[props.graphSettings.mark?.style?.fill?.field])
-        : props.graphSettings.mark?.style?.fill?.color
-        ? props.graphSettings.mark?.style?.fill?.color
-        : "#ff0000";
+          ? colorScale(d[props.graphSettings.mark?.style?.fill?.field])
+          : props.graphSettings.mark?.style?.fill?.color
+            ? props.graphSettings.mark?.style?.fill?.color
+            : "#ff0000";
 
     const radius = props.graphSettings.mark?.style?.radius
       ? props.graphSettings.mark?.style?.radius
@@ -83,9 +83,8 @@ const PointCloud = (props) => {
             ? `${props.graphSettings.mark?.style?.segments}`
             : "16"
         }
-        position={`${d.x * scalingFactor} ${d.y * scalingFactor} ${
-          d.z * scalingFactor
-        }`}
+        position={`${d.x * scalingFactor} ${d.y * scalingFactor} ${d.z * scalingFactor
+          }`}
         hover={props.graphSettings.mark?.mouseOver}
         hoverText={hoverText}
         graphID={props.graphID}
@@ -100,9 +99,8 @@ const PointCloud = (props) => {
         width={d3.max(vertX) - d3.min(vertX)}
         height={d3.max(vertY) - d3.min(vertY)}
         depth={d3.max(vertZ) - d3.min(vertZ)}
-        position={`${(d3.max(vertX) + d3.min(vertX)) / 2} ${
-          (d3.max(vertY) + d3.min(vertY)) / 2
-        } ${(d3.max(vertZ) + d3.min(vertZ)) / 2}`}
+        position={`${(d3.max(vertX) + d3.min(vertX)) / 2} ${(d3.max(vertY) + d3.min(vertY)) / 2
+          } ${(d3.max(vertZ) + d3.min(vertZ)) / 2}`}
         opacity={0}
       />
     </>

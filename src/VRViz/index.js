@@ -202,9 +202,9 @@ const VRViz = (props) => {
 
   const graphs = props.graph?.map((d, i) => (
     <Visualization
+      key={i}
       graphType={d.type}
       graphSettings={d}
-      key={i}
       graphID={`graph_${i}`}
     />
   ));

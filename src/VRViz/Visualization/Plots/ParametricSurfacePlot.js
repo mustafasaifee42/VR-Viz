@@ -45,36 +45,36 @@ const ParametricSurfacePlot = (props) => {
   const xDomain = props.graphSettings.mark.position.x.domain
     ? props.graphSettings.mark.position.x.domain
     : props.graphSettings.mark.position.x.startFromZero
-    ? [0, d3.max(dataSphere, (d) => d[0])]
-    : [d3.min(dataSphere, (d) => d[0]), d3.max(dataSphere, (d) => d[0])];
+      ? [0, d3.max(dataSphere, (d) => d[0])]
+      : [d3.min(dataSphere, (d) => d[0]), d3.max(dataSphere, (d) => d[0])];
 
   const yDomain = props.graphSettings.mark.position.y.domain
     ? props.graphSettings.mark.position.y.domain
     : GetDomain(
-        dataSphere,
-        1,
-        "linear",
-        props.graphSettings.mark.position.y.startFromZero
-      );
+      dataSphere,
+      1,
+      "linear",
+      props.graphSettings.mark.position.y.startFromZero
+    );
 
   const zDomain = props.graphSettings.mark.position.z.domain
     ? props.graphSettings.mark.position.z.domain
     : GetDomain(
-        dataSphere,
-        2,
-        "linear",
-        props.graphSettings.mark.position.z.startFromZero
-      );
+      dataSphere,
+      2,
+      "linear",
+      props.graphSettings.mark.position.z.startFromZero
+    );
 
   const colorDomain = props.graphSettings.mark.style?.fill?.function
     ? props.graphSettings.mark.style?.fill?.domain
       ? props.graphSettings.mark.style?.fill?.domain
       : GetDomain(
-          dataSphere,
-          3,
-          "linear",
-          props.graphSettings.mark.style?.fill?.domain?.startFromZero
-        )
+        dataSphere,
+        3,
+        "linear",
+        props.graphSettings.mark.style?.fill?.domain?.startFromZero
+      )
     : null;
 
   //Adding Scale
@@ -135,11 +135,11 @@ const ParametricSurfacePlot = (props) => {
       colorMatrix.push(
         colorScale
           ? colorScale(
-              props.graphSettings.mark.style?.fill?.color?.function(i, j)
-            )
+            props.graphSettings.mark.style?.fill?.color?.function(i, j)
+          )
           : props.graphSettings.mark.style?.fill?.color
-          ? props.graphSettings.mark.style?.fill?.color
-          : "#ff0000"
+            ? props.graphSettings.mark.style?.fill?.color
+            : "#ff0000"
       );
 
       meshVertices.push(
@@ -154,14 +154,14 @@ const ParametricSurfacePlot = (props) => {
       colorMatrix.push(
         colorScale
           ? colorScale(
-              props.graphSettings.mark.style?.fill?.color?.function(
-                i + parameterStep1,
-                j
-              )
+            props.graphSettings.mark.style?.fill?.color?.function(
+              i + parameterStep1,
+              j
             )
+          )
           : props.graphSettings.mark.style?.fill?.color
-          ? props.graphSettings.mark.style?.fill?.color
-          : "#ff0000"
+            ? props.graphSettings.mark.style?.fill?.color
+            : "#ff0000"
       );
 
       meshVertices.push(
@@ -185,14 +185,14 @@ const ParametricSurfacePlot = (props) => {
       colorMatrix.push(
         colorScale
           ? colorScale(
-              props.graphSettings.mark.style?.fill?.color?.function(
-                i + parameterStep1,
-                j + parameterStep2
-              )
+            props.graphSettings.mark.style?.fill?.color?.function(
+              i + parameterStep1,
+              j + parameterStep2
             )
+          )
           : props.graphSettings.mark.style?.fill?.color
-          ? props.graphSettings.mark.style?.fill?.color
-          : "#ff0000"
+            ? props.graphSettings.mark.style?.fill?.color
+            : "#ff0000"
       );
 
       meshVertices.push(
@@ -216,14 +216,14 @@ const ParametricSurfacePlot = (props) => {
       colorMatrix.push(
         colorScale
           ? colorScale(
-              props.graphSettings.mark.style?.fill?.color?.function(
-                i + parameterStep1,
-                j + parameterStep2
-              )
+            props.graphSettings.mark.style?.fill?.color?.function(
+              i + parameterStep1,
+              j + parameterStep2
             )
+          )
           : props.graphSettings.mark.style?.fill?.color
-          ? props.graphSettings.mark.style?.fill?.color
-          : "#ff0000"
+            ? props.graphSettings.mark.style?.fill?.color
+            : "#ff0000"
       );
 
       meshVertices.push(
@@ -238,14 +238,14 @@ const ParametricSurfacePlot = (props) => {
       colorMatrix.push(
         colorScale
           ? colorScale(
-              props.graphSettings.mark.style?.fill?.color?.function(
-                i,
-                j + parameterStep2
-              )
+            props.graphSettings.mark.style?.fill?.color?.function(
+              i,
+              j + parameterStep2
             )
+          )
           : props.graphSettings.mark.style?.fill?.color
-          ? props.graphSettings.mark.style?.fill?.color
-          : "#ff0000"
+            ? props.graphSettings.mark.style?.fill?.color
+            : "#ff0000"
       );
 
       meshVertices.push(props.graphSettings.mark.position.x.function(i, j));
@@ -254,11 +254,11 @@ const ParametricSurfacePlot = (props) => {
       colorMatrix.push(
         colorScale
           ? colorScale(
-              props.graphSettings.mark.style?.fill?.color.function(i, j)
-            )
+            props.graphSettings.mark.style?.fill?.color.function(i, j)
+          )
           : props.graphSettings.mark.style?.fill?.color
-          ? props.graphSettings.mark.style?.fill?.color
-          : "#ff0000"
+            ? props.graphSettings.mark.style?.fill?.color
+            : "#ff0000"
       );
     }
   }
@@ -406,19 +406,16 @@ const ParametricSurfacePlot = (props) => {
             ? props.graphSettings.style?.dimensions?.depth
             : 10
         }
-        position={`${
-          props.graphSettings.style?.dimensions?.width
+        position={`${props.graphSettings.style?.dimensions?.width
             ? props.graphSettings.style?.dimensions?.width / 2
             : 5
-        } ${
-          props.graphSettings.style?.dimensions?.height
+          } ${props.graphSettings.style?.dimensions?.height
             ? props.graphSettings.style?.dimensions?.height / 2
             : 5
-        } ${
-          props.graphSettings.style?.dimensions?.depth
+          } ${props.graphSettings.style?.dimensions?.depth
             ? props.graphSettings.style?.dimensions?.depth / 2
             : 5
-        }`}
+          }`}
         opacity={0}
       />
     </>

@@ -16,52 +16,52 @@ const TimeSeries = (props) => {
   const xDomain = props.graphSettings.mark.position.x.domain
     ? props.graphSettings.mark.position.x.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.position.x.field,
-        props.graphSettings.mark.position.x.scaleType
-          ? props.graphSettings.mark.position.x.scaleType
-          : "linear",
-        props.graphSettings.mark.position.x.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.position.x.field,
+      props.graphSettings.mark.position.x.scaleType
+        ? props.graphSettings.mark.position.x.scaleType
+        : "linear",
+      props.graphSettings.mark.position.x.startFromZero
+    );
 
   const yDomain = props.graphSettings.mark.position.y.domain
     ? props.graphSettings.mark.position.y.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.position.y.field,
-        "linear",
-        props.graphSettings.mark.position.y.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.position.y.field,
+      "linear",
+      props.graphSettings.mark.position.y.startFromZero
+    );
 
   const zDomain = props.graphSettings.mark.position.z.domain
     ? props.graphSettings.mark.position.z.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.position.z.field,
-        "linear",
-        props.graphSettings.mark.position.z.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.position.z.field,
+      "linear",
+      props.graphSettings.mark.position.z.startFromZero
+    );
   //Adding Scale
   const xScale =
     props.graphSettings.mark.position.x.scaleType === "ordinal"
       ? d3
-          .scaleBand()
-          .range([
-            0,
-            props.graphSettings.style?.dimensions?.width
-              ? props.graphSettings.style?.dimensions?.width
-              : 10,
-          ])
-          .domain(xDomain)
+        .scaleBand()
+        .range([
+          0,
+          props.graphSettings.style?.dimensions?.width
+            ? props.graphSettings.style?.dimensions?.width
+            : 10,
+        ])
+        .domain(xDomain)
       : d3
-          .scaleLinear()
-          .domain(xDomain)
-          .range([
-            0,
-            props.graphSettings.style?.dimensions?.width
-              ? props.graphSettings.style?.dimensions?.width
-              : 10,
-          ]);
+        .scaleLinear()
+        .domain(xDomain)
+        .range([
+          0,
+          props.graphSettings.style?.dimensions?.width
+            ? props.graphSettings.style?.dimensions?.width
+            : 10,
+        ]);
 
   const yScale = d3
     .scaleLinear()
@@ -183,10 +183,10 @@ const TimeSeries = (props) => {
           props.graphSettings.mark.position.x.scaleType === "ordinal"
             ? xDomain
             : xScale.ticks(
-                props.graphSettings.axis["x-axis"].ticks?.noOfTicks
-                  ? props.graphSettings.axis["x-axis"].ticks.noOfTicks
-                  : 5
-              )
+              props.graphSettings.axis["x-axis"].ticks?.noOfTicks
+                ? props.graphSettings.axis["x-axis"].ticks.noOfTicks
+                : 5
+            )
         }
         tick={props.graphSettings.axis["x-axis"].ticks}
         scale={xScale}
@@ -235,10 +235,10 @@ const TimeSeries = (props) => {
         domain={
           props.graphSettings.mark.position.z.scaleType === "linear"
             ? zScale.ticks(
-                props.graphSettings.axis["z-axis"].ticks?.noOfTicks
-                  ? props.graphSettings.axis["z-axis"].ticks.noOfTicks
-                  : 5
-              )
+              props.graphSettings.axis["z-axis"].ticks?.noOfTicks
+                ? props.graphSettings.axis["z-axis"].ticks.noOfTicks
+                : 5
+            )
             : zDomain
         }
         tick={props.graphSettings.axis["z-axis"].ticks}
@@ -337,19 +337,16 @@ const TimeSeries = (props) => {
             ? props.graphSettings.style?.dimensions?.depth
             : 10
         }
-        position={`${
-          props.graphSettings.style?.dimensions?.width
+        position={`${props.graphSettings.style?.dimensions?.width
             ? props.graphSettings.style?.dimensions?.width / 2
             : 5
-        } ${
-          props.graphSettings.style?.dimensions?.height
+          } ${props.graphSettings.style?.dimensions?.height
             ? props.graphSettings.style?.dimensions?.height / 2
             : 5
-        } ${
-          props.graphSettings.style?.dimensions?.depth
+          } ${props.graphSettings.style?.dimensions?.depth
             ? props.graphSettings.style?.dimensions?.depth / 2
             : 5
-        }`}
+          }`}
         opacity={0}
       />
     </>

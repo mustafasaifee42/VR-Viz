@@ -22,14 +22,14 @@ const MapTimeBars = (props) => {
   const radiusDomain = props.graphSettings.mark.timeLayers.style.radius.domain
     ? props.graphSettings.mark.timeLayers.style.radius.domain
     : props.graphSettings.mark.timeLayers.style.radius.startFromZero
-    ? [0, d3.max(dataset)]
-    : [d3.min(dataset), d3.max(dataset)];
+      ? [0, d3.max(dataset)]
+      : [d3.min(dataset), d3.max(dataset)];
 
   const colorDomain = props.graphSettings.mark.timeLayers.style.fill?.domain
     ? props.graphSettings.mark.timeLayers.style.fill?.domain
     : props.graphSettings.mark.timeLayers.style.fill?.startFromZero
-    ? [0, d3.max(dataset)]
-    : [d3.min(dataset), d3.max(dataset)];
+      ? [0, d3.max(dataset)]
+      : [d3.min(dataset), d3.max(dataset)];
 
   //Adding Scale
 
@@ -100,9 +100,8 @@ const MapTimeBars = (props) => {
         width={max.x - min.x}
         height={max.y - min.y}
         depth={extrusionHeight}
-        position={`${(max.x + min.x) / 2} ${(max.y + min.y) / 2} ${
-          extrusionHeight / 2
-        }`}
+        position={`${(max.x + min.x) / 2} ${(max.y + min.y) / 2} ${extrusionHeight / 2
+          }`}
         opacity={0}
       />
     );
@@ -145,8 +144,8 @@ const MapTimeBars = (props) => {
       const color = colorScale
         ? colorScale(d[d1])
         : props.graphSettings.mark.timeLayers.style.fill?.color
-        ? props.graphSettings.mark.timeLayers.style.fill?.color
-        : "#ffff00";
+          ? props.graphSettings.mark.timeLayers.style.fill?.color
+          : "#ffff00";
 
       const coordinates = GetMapCoordinates(
         d[props.graphSettings.mark.timeLayers.position.x.field],
@@ -165,17 +164,16 @@ const MapTimeBars = (props) => {
         ? props.graphSettings.mark.timeLayers.style.padding
         : 0;
 
-      const position = `${coordinates[0]} ${0 - coordinates[1]} ${
-        (j + 1 / 2) * timebarsHeight + j * timebarsPadding
-      }`;
+      const position = `${coordinates[0]} ${0 - coordinates[1]} ${(j + 1 / 2) * timebarsHeight + j * timebarsPadding
+        }`;
 
       const radius = radiusScale(d[d1]);
 
       const hoverText = props.graphSettings.mark.timeLayers.mouseOver?.label
         ? props.graphSettings.mark.timeLayers.mouseOver.label
-            .value(d)
-            .replace("Label", `${d1}`)
-            .replace("LabelValue", `${d[d1]}`)
+          .value(d)
+          .replace("Label", `${d1}`)
+          .replace("LabelValue", `${d[d1]}`)
         : null;
       return (
         <Shape

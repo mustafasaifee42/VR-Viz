@@ -16,19 +16,19 @@ const WaterFallPlot = (props) => {
   const zDomain = props.graphSettings.mark.position.z.domain
     ? props.graphSettings.mark.position.z.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.position.z.field,
-        props.graphSettings.mark.position.z.scaleType
-          ? props.graphSettings.mark.position.z.scaleType
-          : "ordinal",
-        false
-      );
+      props.data,
+      props.graphSettings.mark.position.z.field,
+      props.graphSettings.mark.position.z.scaleType
+        ? props.graphSettings.mark.position.z.scaleType
+        : "ordinal",
+      false
+    );
 
   const xDomain = props.graphSettings.mark.position.x.domain
     ? props.graphSettings.mark.position.x.domain
     : Object.keys(props.data[0]).map((d) =>
-        d !== props.graphSettings.mark.position.z.field ? d : null
-      );
+      d !== props.graphSettings.mark.position.z.field ? d : null
+    );
 
   let yDomain = props.graphSettings.mark.position.y?.domain;
   if (!yDomain) {
@@ -74,13 +74,13 @@ const WaterFallPlot = (props) => {
   const fillColorDomain = props.graphSettings.mark.style?.fill?.domain
     ? props.graphSettings.mark.style?.fill?.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.style?.fill?.field,
-        props.graphSettings.mark.style?.fill?.scaleType
-          ? props.graphSettings.mark.style?.fill?.scaleType
-          : "ordinal",
-        false
-      );
+      props.data,
+      props.graphSettings.mark.style?.fill?.field,
+      props.graphSettings.mark.style?.fill?.scaleType
+        ? props.graphSettings.mark.style?.fill?.scaleType
+        : "ordinal",
+      false
+    );
   const fillColorRange = props.graphSettings.mark.style?.fill?.color
     ? props.graphSettings.mark.style?.fill?.color
     : d3.schemeCategory10;
@@ -127,8 +127,8 @@ const WaterFallPlot = (props) => {
           fillColorScale && props.graphSettings.mark.style?.fill?.field
             ? fillColorScale(d[props.graphSettings.mark.style?.fill?.field])
             : props.graphSettings.mark.style?.fill?.color
-            ? props.graphSettings.mark.style?.fill?.color
-            : "#ff0000"
+              ? props.graphSettings.mark.style?.fill?.color
+              : "#ff0000"
         }
         opacity={
           props.graphSettings.mark.style?.fill?.opacity
@@ -285,19 +285,16 @@ const WaterFallPlot = (props) => {
             ? props.graphSettings.style?.dimensions?.depth
             : 10
         }
-        position={`${
-          props.graphSettings.style?.dimensions?.width
+        position={`${props.graphSettings.style?.dimensions?.width
             ? props.graphSettings.style?.dimensions?.width / 2
             : 5
-        } ${
-          props.graphSettings.style?.dimensions?.height
+          } ${props.graphSettings.style?.dimensions?.height
             ? props.graphSettings.style?.dimensions?.height / 2
             : 5
-        } ${
-          props.graphSettings.style?.dimensions?.depth
+          } ${props.graphSettings.style?.dimensions?.depth
             ? props.graphSettings.style?.dimensions?.depth / 2
             : 5
-        }`}
+          }`}
         opacity={0}
       />
     </>

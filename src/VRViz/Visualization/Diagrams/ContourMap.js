@@ -63,8 +63,8 @@ const ContourMap = (props) => {
         colorScale
           ? colorScale(props.data[i][k])
           : props.graphSettings.mark?.style?.fill?.color
-          ? props.graphSettings.mark?.style?.fill?.color
-          : "#ff0000"
+            ? props.graphSettings.mark?.style?.fill?.color
+            : "#ff0000"
       );
 
       meshVertices.push((i + 1) * objScaleGround);
@@ -74,8 +74,8 @@ const ContourMap = (props) => {
         colorScale
           ? colorScale(props.data[i + 1][k])
           : props.graphSettings.mark?.style?.fill?.color
-          ? props.graphSettings.mark?.style?.fill?.color
-          : "#ff0000"
+            ? props.graphSettings.mark?.style?.fill?.color
+            : "#ff0000"
       );
 
       meshVertices.push((i + 1) * objScaleGround);
@@ -87,8 +87,8 @@ const ContourMap = (props) => {
         colorScale
           ? colorScale(props.data[i + 1][k + 1])
           : props.graphSettings.mark?.style?.fill?.color
-          ? props.graphSettings.mark?.style?.fill?.color
-          : "#ff0000"
+            ? props.graphSettings.mark?.style?.fill?.color
+            : "#ff0000"
       );
 
       meshVertices.push((i + 1) * objScaleGround);
@@ -100,8 +100,8 @@ const ContourMap = (props) => {
         colorScale
           ? colorScale(props.data[i + 1][k + 1])
           : props.graphSettings.mark?.style?.fill?.color
-          ? props.graphSettings.mark?.style?.fill?.color
-          : "#ff0000"
+            ? props.graphSettings.mark?.style?.fill?.color
+            : "#ff0000"
       );
 
       meshVertices.push(i * objScaleGround);
@@ -111,8 +111,8 @@ const ContourMap = (props) => {
         colorScale
           ? colorScale(props.data[i][k + 1])
           : props.graphSettings.mark?.style?.fill?.color
-          ? props.graphSettings.mark?.style?.fill?.color
-          : "#ff0000"
+            ? props.graphSettings.mark?.style?.fill?.color
+            : "#ff0000"
       );
 
       meshVertices.push(i * objScaleGround);
@@ -122,8 +122,8 @@ const ContourMap = (props) => {
         colorScale
           ? colorScale(props.data[i][k])
           : props.graphSettings.mark?.style?.fill?.color
-          ? props.graphSettings.mark?.style?.fill?.color
-          : "#ff0000"
+            ? props.graphSettings.mark?.style?.fill?.color
+            : "#ff0000"
       );
     }
   }
@@ -158,9 +158,8 @@ const ContourMap = (props) => {
         width={d3.max(vertX) - d3.min(vertX)}
         height={d3.max(vertY) - d3.min(vertY)}
         depth={d3.max(vertZ) - d3.min(vertZ)}
-        position={`${(d3.max(vertX) + d3.min(vertX)) / 2} ${
-          (d3.max(vertY) + d3.min(vertY)) / 2
-        } ${(d3.max(vertZ) + d3.min(vertZ)) / 2}`}
+        position={`${(d3.max(vertX) + d3.min(vertX)) / 2} ${(d3.max(vertY) + d3.min(vertY)) / 2
+          } ${(d3.max(vertZ) + d3.min(vertZ)) / 2}`}
         opacity={0}
       />
     </>

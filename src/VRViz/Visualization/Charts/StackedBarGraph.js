@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as d3 from "d3";
 import GetDomain from "../../utils/GetDomain";
 import Shape from "../Components/Shape";
@@ -6,6 +6,14 @@ import { XAxis, YAxis, ZAxis, AxisBox } from "../Components/Axis";
 import _ from "lodash";
 
 const StackedBarGraph = (props) => {
+
+  useEffect(() => {
+    d3.selectAll(".clickShape").on("click", (event) => {
+      if (typeof props.graphSettings.mark?.onClick === "function")
+        props.graphSettings.mark?.onClick(JSON.parse(d3.select(event.currentTarget).attr("data")));
+    });
+  }, [props.graphSettings.mark]);
+
   if (!props.data || !props.graphSettings.mark) {
     console.warn(
       `Error: Some necessary attributes missing for ${props.graphSettings.type}`
@@ -13,35 +21,37 @@ const StackedBarGraph = (props) => {
     return null;
   }
 
+
   const data = d3.stack().keys(props.graphSettings.mark.style.fill.field)(
     props.data
   );
+
   const xDomain = props.graphSettings.mark.position.x.domain
     ? props.graphSettings.mark.position.x.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.position.x.field,
-        "ordinal",
-        props.graphSettings.mark.position.x.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.position.x.field,
+      "ordinal",
+      props.graphSettings.mark.position.x.startFromZero
+    );
 
   const yDomain = props.graphSettings.mark.style.height.domain
     ? props.graphSettings.mark.style.height.domain
     : GetDomain(
-        _.flattenDepth(data, 1),
-        1,
-        "linear",
-        props.graphSettings.mark.style.height.startFromZero
-      );
+      _.flattenDepth(data, 1),
+      1,
+      "linear",
+      props.graphSettings.mark.style.height.startFromZero
+    );
 
   const zDomain = props.graphSettings.mark.position.z.domain
     ? props.graphSettings.mark.position.z.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.position.z.field,
-        "ordinal",
-        props.graphSettings.mark.position.z.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.position.z.field,
+      "ordinal",
+      props.graphSettings.mark.position.z.startFromZero
+    );
 
   //Adding Scale
 
@@ -68,11 +78,11 @@ const StackedBarGraph = (props) => {
       props.graphSettings.mark.style.height.value
         ? props.graphSettings.mark.style.height.value
         : [
-            0,
-            props.graphSettings.style?.dimensions?.height
-              ? props.graphSettings.style?.dimensions?.height
-              : 10,
-          ]
+          0,
+          props.graphSettings.style?.dimensions?.height
+            ? props.graphSettings.style?.dimensions?.height
+            : 10,
+        ]
     );
   const zScale = d3
     .scaleBand()
@@ -101,16 +111,14 @@ const StackedBarGraph = (props) => {
       const color = props.graphSettings.mark.style.fill?.color
         ? props.graphSettings.mark.style.fill?.color[i]
         : d3.schemeCategory10[i % 10];
-      const position = `${
-        xScale(d1.data[props.graphSettings.mark.position.x.field]) + width / 2
-      } ${yScale(d1[0]) + hght / 2} ${
-        zScale(d1.data[props.graphSettings.mark.position.z.field]) + depth / 2
-      }`;
+      const position = `${xScale(d1.data[props.graphSettings.mark.position.x.field]) + width / 2
+        } ${yScale(d1[0]) + hght / 2} ${zScale(d1.data[props.graphSettings.mark.position.z.field]) + depth / 2
+        }`;
       const hoverText = props.graphSettings.mark.mouseOver?.label
         ? props.graphSettings.mark.mouseOver.label
-            .value(d1.data)
-            .replace("Label", `${d.key}`)
-            .replace("LabelValue", `${d1.data[d.key]}`)
+          .value(d1.data)
+          .replace("Label", `${d.key}`)
+          .replace("LabelValue", `${d1.data[d.key]}`)
         : null;
       return (
         <Shape
@@ -133,7 +141,7 @@ const StackedBarGraph = (props) => {
           }
           position={position}
           hover={props.graphSettings.mark.mouseOver}
-          class={"clickable"}
+          class={"clickable clickShape"}
           hoverText={hoverText}
           graphID={props.graphID}
         />

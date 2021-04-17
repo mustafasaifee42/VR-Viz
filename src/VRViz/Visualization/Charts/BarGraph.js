@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as d3 from "d3";
 import GetDomain from "../../utils/GetDomain";
 import Shape from "../Components/Shape";
 import { XAxis, YAxis, ZAxis, AxisBox } from "../Components/Axis";
 
 const BarGraph = (props) => {
+
+  useEffect(() => {
+    d3.selectAll(".clickShape").on("click", (event) => {
+      if (typeof props.graphSettings.mark?.onClick === "function")
+        props.graphSettings.mark?.onClick(JSON.parse(d3.select(event.currentTarget).attr("data")));
+    });
+  }, [props.graphSettings.mark]);
+
   if (!props.data || !props.graphSettings.mark) {
     console.warn(
       `Error: Some necessary attributes missing for ${props.graphSettings.type}`
@@ -15,29 +23,29 @@ const BarGraph = (props) => {
   const xDomain = props.graphSettings.mark.position.x.domain
     ? props.graphSettings.mark.position.x.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.position.x.field,
-        "ordinal",
-        props.graphSettings.mark.position.x.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.position.x.field,
+      "ordinal",
+      props.graphSettings.mark.position.x.startFromZero
+    );
 
   let yDomain = props.graphSettings.mark.style.height.domain
     ? props.graphSettings.mark.style.height.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.style.height.field,
-        "linear",
-        props.graphSettings.mark.style.height.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.style.height.field,
+      "linear",
+      props.graphSettings.mark.style.height.startFromZero
+    );
 
   const zDomain = props.graphSettings.mark.position.z.domain
     ? props.graphSettings.mark.position.z.domain
     : GetDomain(
-        props.data,
-        props.graphSettings.mark.position.z.field,
-        "ordinal",
-        props.graphSettings.mark.position.z.startFromZero
-      );
+      props.data,
+      props.graphSettings.mark.position.z.field,
+      "ordinal",
+      props.graphSettings.mark.position.z.startFromZero
+    );
 
   let xyProjectionData = xDomain.map((d) => ({
     label: d,
@@ -87,11 +95,11 @@ const BarGraph = (props) => {
     ? props.graphSettings.mark.style.fill?.domain
       ? props.graphSettings.mark.style.fill?.domain
       : GetDomain(
-          props.data,
-          props.graphSettings.mark.style.fill?.field,
-          props.graphSettings.mark.style.fill?.scaleType,
-          props.graphSettings.mark.style.fill?.startFromZero
-        )
+        props.data,
+        props.graphSettings.mark.style.fill?.field,
+        props.graphSettings.mark.style.fill?.scaleType,
+        props.graphSettings.mark.style.fill?.startFromZero
+      )
     : null;
 
   //Adding Scale
@@ -163,14 +171,12 @@ const BarGraph = (props) => {
       colorScale && props.graphSettings.mark.style.fill?.field
         ? colorScale(d[props.graphSettings.mark.style.fill?.field])
         : props.graphSettings.mark.style.fill?.color
-        ? props.graphSettings.mark.style.fill?.color
-        : "#ff0000";
+          ? props.graphSettings.mark.style.fill?.color
+          : "#ff0000";
 
-    const position = `${
-      xScale(d[props.graphSettings.mark.position.x.field]) + width / 2
-    } ${hght / 2} ${
-      zScale(d[props.graphSettings.mark.position.z.field]) + depth / 2
-    }`;
+    const position = `${xScale(d[props.graphSettings.mark.position.x.field]) + width / 2
+      } ${hght / 2} ${zScale(d[props.graphSettings.mark.position.z.field]) + depth / 2
+      }`;
 
     const hoverText = props.graphSettings.mark.mouseOver?.label
       ? props.graphSettings.mark.mouseOver?.label?.value(d)
@@ -178,8 +184,8 @@ const BarGraph = (props) => {
 
     const className =
       typeof props.graphSettings.mark.class === "function"
-        ? `clickable ${props.graphSettings.mark.class(d, i)}`
-        : "clickable";
+        ? `clickShape clickable ${props.graphSettings.mark.class(d, i)}`
+        : "clickShape clickable";
 
     const idName =
       typeof props.graphSettings.mark.id === "function"
@@ -237,15 +243,14 @@ const BarGraph = (props) => {
       height={`${yScale(d.value) === 0 ? 0.000000000001 : yScale(d.value)}`}
       width={
         props.graphSettings.mark.type === "box" ||
-        !props.graphSettings.mark.type
+          !props.graphSettings.mark.type
           ? width
           : radius * 2
       }
       radius={`${radius}`}
       segments={"16"}
-      position={`${xScale(d.label) + width / 2} ${
-        yScale(d.value) === 0 ? 0.000000000001 / 2 : yScale(d.value) / 2
-      } 0`}
+      position={`${xScale(d.label) + width / 2} ${yScale(d.value) === 0 ? 0.000000000001 / 2 : yScale(d.value) / 2
+        } 0`}
       hover={false}
       hoverText={null}
       graphID={props.graphID}
@@ -269,7 +274,7 @@ const BarGraph = (props) => {
       }
       depth={
         props.graphSettings.mark.type === "box" ||
-        !props.graphSettings.mark.type
+          !props.graphSettings.mark.type
           ? depth
           : radius * 2
       }
@@ -277,9 +282,8 @@ const BarGraph = (props) => {
       width="0.000000000001"
       radius={`${radius}`}
       segments={"16"}
-      position={`0 ${
-        yScale(d.value) === 0 ? 0.000000000001 / 2 : yScale(d.value) / 2
-      } ${zScale(d.label) + depth / 2}`}
+      position={`0 ${yScale(d.value) === 0 ? 0.000000000001 / 2 : yScale(d.value) / 2
+        } ${zScale(d.label) + depth / 2}`}
       hover={false}
       hoverText={null}
       graphID={props.graphID}

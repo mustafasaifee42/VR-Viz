@@ -3,7 +3,7 @@ import React from "react";
 const CrossSectionView = (props) => {
   const clickRotation =
     props.graphSettings.animateRotation ||
-    props.graphSettings.rotationOnDrag?.rotateVisualization === false
+      props.graphSettings.rotationOnDrag?.rotateVisualization === false
       ? "false"
       : "true";
   const modifyMaterial = props.graphSettings.mark.material ? true : false;
@@ -71,46 +71,37 @@ const CrossSectionView = (props) => {
   return (
     <>
       <a-entity
-        click-rotation={`enabled:${clickRotation};yAxis:${
-          props.graphSettings.rotationOnDrag?.rotateAroundYaxis === false
+        click-rotation={`enabled:${clickRotation};yAxis:${props.graphSettings.rotationOnDrag?.rotateAroundYaxis === false
             ? false
             : true
-        };xAxis:${
-          props.graphSettings.rotationOnDrag?.rotateAroundXaxis === false
+          };xAxis:${props.graphSettings.rotationOnDrag?.rotateAroundXaxis === false
             ? false
             : true
-        }`}
+          }`}
         class={"clickable"}
         gltf-model={`url(${props.graphSettings.mark.object})`}
-        position={`${
-          props.graphSettings.style?.origin?.x
+        position={`${props.graphSettings.style?.origin?.x
             ? props.graphSettings.style?.origin?.x
             : 0
-        } ${
-          props.graphSettings.style?.origin?.y
+          } ${props.graphSettings.style?.origin?.y
             ? props.graphSettings.style?.origin?.y
             : 0
-        } ${
-          props.graphSettings.style?.origin?.z
+          } ${props.graphSettings.style?.origin?.z
             ? props.graphSettings.style?.origin?.z
             : 0
-        }`}
+          }`}
         play-all-model-animations
-        pivot-center-model={`xPosition:${
-          props.graphSettings.style?.origin?.x
+        pivot-center-model={`xPosition:${props.graphSettings.style?.origin?.x
             ? props.graphSettings.style?.origin?.x
             : 0
-        };yPosition:${
-          props.graphSettings.style?.origin?.y
+          };yPosition:${props.graphSettings.style?.origin?.y
             ? props.graphSettings.style?.origin?.y
             : 0
-        };zPosition:${
-          props.graphSettings.style?.origin?.z
+          };zPosition:${props.graphSettings.style?.origin?.z
             ? props.graphSettings.style?.origin?.z
             : 0
-        };pivotX:${props.graphSettings.style?.pivot?.x};pivotY:${
-          props.graphSettings.style?.pivot?.y
-        };pivotZ:${props.graphSettings.style?.pivot?.z}`}
+          };pivotX:${props.graphSettings.style?.pivot?.x};pivotY:${props.graphSettings.style?.pivot?.y
+          };pivotZ:${props.graphSettings.style?.pivot?.z}`}
         modify-material={`specular:${specular};shininess:${shininess};emissive:${emissive};emphasisMaterial:${emphasisMaterial};emphasisMeshName:${meshName};emphasisOpacity:${emphasisOpacity};emphasisColor:${emphasisColor};modifyMaterial:${modifyMaterial};material:${material};materialColor:${materialColor};materialOpacity:${materialOpacity};edgeThresholdAngle:${edgeThresholdAngle};stroke:${stroke};strokeWidth:${strokeWidth};strokeColor:${strokeColor}`}
         highlight-on-click={`materialOpacity:${materialOpacity};emphasisOpacity:${emphasisOpacity};emphasisColor:${emphasisColor};materialColor:${materialColor};highlightEffect:${highlightEffect};highlightedOpacity:${highlightedOpacity};highlightedColor:${highlightedColor}`}
         scale={
