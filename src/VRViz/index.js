@@ -146,12 +146,12 @@ const VRViz = (props) => {
   );
 
   //Sky
-  const sky =
-    props.scene?.sky.style.texture === false ? (
-      <a-sky id="bg" color={props.scene?.sky.style.color} />
+  const sky = props.scene?.sky ?
+    props.scene?.sky?.style?.texture === true ? (
+      <a-sky id="bg" src={props.scene?.sky?.style.img} />
     ) : (
-      <a-sky id="bg" src={props.scene?.sky.style.img} />
-    );
+      <a-sky id="bg" color={props.scene?.sky?.style?.color ? props.scene?.sky?.style?.color : '#fff'} />
+    ) : null;
 
   //Floor
   const floor = props.scene?.floor ? (
