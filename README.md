@@ -298,6 +298,7 @@ Graph object help the developer to define the visualization. Although different 
 Main features / properties of the graph objects are:
 
 - type
+- optimizeView `Only applicable for ScatterPlot and PointCloud`
 - data
 - style `Not Required`
 - mark
@@ -385,6 +386,10 @@ _Plots_
 - [3D Parametric Curve Plot](/ReadMe/Plots/ParametricCurvePlot.md)
 - [3D Surface Plot](/ReadMe/Plots/SurfacePlot.md)
 - [3D Parametric Surface Plot](/ReadMe/Plots/ParametricSurfacePlot.md)
+
+#### optimizeView `bool`
+
+**Only applicable for ScatterPlot and PointCloud**. This boolean property which can be used to plot scatter plot and point clouds with millions of points. If this is true, properties like opacity and any mouse event on the individual data points like clicks and hover will be ignored. _This should be used if the data set is greater than 10,000 points._
 
 #### data
 

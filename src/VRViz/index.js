@@ -21,6 +21,7 @@ import "./AFrameGeometries/AFrameMap";
 import "./AFrameGeometries/AFrameMapOutline";
 import "./AFrameGeometries/AFrameMeshFromPoints";
 import "./AFrameGeometries/AFrameShape";
+import "./AFrameGeometries/AFramePointGeometry";
 
 require("aframe-teleport-controls");
 

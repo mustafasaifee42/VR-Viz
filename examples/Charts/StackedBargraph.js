@@ -1,4 +1,3 @@
-import React from "react";
 import VRViz from "./VRViz";
 
 function App() {
