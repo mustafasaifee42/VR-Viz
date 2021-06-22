@@ -120,6 +120,11 @@ const ScatterPlot = (props) => {
       )
     : null;
   //Adding marks
+  const pointForPointGeom = [];
+  const colorForPointGeom = [];
+  const radiusForPointGeom = radiusScale ? 0.1 : props.graphSettings.mark.style?.radius?.value
+    ? props.graphSettings.mark.style?.radius?.value
+    : 0.1
   const marks = props.data.map((d, i) => {
     const color =
       colorScale && props.graphSettings.mark.style?.fill?.field
@@ -127,7 +132,7 @@ const ScatterPlot = (props) => {
         : props.graphSettings.mark.style?.fill?.color
           ? props.graphSettings.mark.style?.fill?.color
           : "#ff0000";
-
+    colorForPointGeom.push(color)
     const radius = radiusScale
       ? radiusScale(d[props.graphSettings.mark.style?.radius?.field])
       : props.graphSettings.mark.style?.radius?.value
@@ -139,7 +144,7 @@ const ScatterPlot = (props) => {
     )} ${yScale(d[props.graphSettings.mark.position.y.field])} ${zScale(
       d[props.graphSettings.mark.position.z.field]
     )}`;
-
+    pointForPointGeom.push(xScale(d[props.graphSettings.mark.position.x.field]), yScale(d[props.graphSettings.mark.position.y.field]), zScale(d[props.graphSettings.mark.position.z.field]));
     const hoverText = props.graphSettings.mark.mouseOver?.label
       ? props.graphSettings.mark.mouseOver?.label.value(d)
       : null;
@@ -423,18 +428,51 @@ const ScatterPlot = (props) => {
       />
     ) : null
   ) : null;
-
+  if (!props.graphSettings.optimizeView)
+    return (
+      <>
+        {droplines}
+        {projections}
+        {marks}
+        {xAxis}
+        {yAxis}
+        {zAxis}
+        {box}
+      </>
+    );
   return (
     <>
-      {droplines}
-      {projections}
-      {marks}
+      <a-frame-point-geometry
+        points={JSON.stringify(pointForPointGeom)}
+        color={JSON.stringify(colorForPointGeom)}
+        size={radiusForPointGeom}
+      />
       {xAxis}
       {yAxis}
       {zAxis}
       {box}
+      <a-box
+        class="clickable"
+        width={
+          props.graphSettings.style?.dimensions?.width
+            ? props.graphSettings.style?.dimensions?.width
+            : 10
+        }
+        height={
+          props.graphSettings.style?.dimensions?.height
+            ? props.graphSettings.style?.dimensions?.height
+            : 10
+        }
+        depth={
+          props.graphSettings.style?.dimensions?.depth
+            ? props.graphSettings.style?.dimensions?.depth
+            : 10
+        }
+        position={'0 0 0'}
+        opacity={0}
+      />
     </>
-  );
+  )
 };
 
 export default ScatterPlot;

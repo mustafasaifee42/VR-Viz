@@ -38,6 +38,11 @@ const PointCloud = (props) => {
     ? props.graphSettings.style?.objectScale
     : 1;
   //Adding marks
+  const pointForPointGeom = [];
+  const colorForPointGeom = [];
+  const radiusForPointGeom = props.graphSettings.mark?.style?.radius
+    ? props.graphSettings.mark?.style?.radius
+    : 0.1;
   const marks = props.data.map((d, i) => {
     const color =
       d.r && d.g && d.b
@@ -47,7 +52,7 @@ const PointCloud = (props) => {
           : props.graphSettings.mark?.style?.fill?.color
             ? props.graphSettings.mark?.style?.fill?.color
             : "#ff0000";
-
+    colorForPointGeom.push(color)
     const radius = props.graphSettings.mark?.style?.radius
       ? props.graphSettings.mark?.style?.radius
       : 0.1;
@@ -59,6 +64,7 @@ const PointCloud = (props) => {
     vertX.push(d.x * scalingFactor);
     vertY.push(d.y * scalingFactor);
     vertZ.push(d.z * scalingFactor);
+    pointForPointGeom.push(d.x * scalingFactor, d.y * scalingFactor, d.z * scalingFactor);
 
     return (
       <Shape
@@ -91,9 +97,28 @@ const PointCloud = (props) => {
       />
     );
   });
+  if (!props.graphSettings.optimizeView)
+    return (
+      <>
+        {marks}
+        <a-box
+          class="clickable"
+          width={d3.max(vertX) - d3.min(vertX)}
+          height={d3.max(vertY) - d3.min(vertY)}
+          depth={d3.max(vertZ) - d3.min(vertZ)}
+          position={`${(d3.max(vertX) + d3.min(vertX)) / 2} ${(d3.max(vertY) + d3.min(vertY)) / 2
+            } ${(d3.max(vertZ) + d3.min(vertZ)) / 2}`}
+          opacity={0}
+        />
+      </>
+    );
   return (
     <>
-      {marks}
+      <a-frame-point-geometry
+        points={JSON.stringify(pointForPointGeom)}
+        color={JSON.stringify(colorForPointGeom)}
+        size={radiusForPointGeom}
+      />
       <a-box
         class="clickable"
         width={d3.max(vertX) - d3.min(vertX)}

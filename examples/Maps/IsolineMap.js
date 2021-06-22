@@ -1,4 +1,3 @@
-import React from "react";
 import VRViz from "./VRViz";
 import sfMapData from "./mapData/sfMapData.json";
 
